@@ -1,14 +1,35 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import React, { useState } from 'react';
+import stylesbutton from './buttonStyle';
 
-const Buttoncomponet = () => {
+const buttonComponent = ({ style, title, onPress, image, changeButton }) => {
+  const [pressed, setPressed] = useState(false);
+
+  const handlePress = () => {
+    setPressed(true);
+    if (onPress) {
+      onPress();
+    }
+  };
+
   return (
-    <View>
-      <Text>B</Text>
+    <View style={stylesbutton.container}>
+      {!changeButton ? (
+        <TouchableOpacity style={[stylesbutton.buttoncomponet, style]} onPress={handlePress}>
+          <Text style={stylesbutton.txtbutoncomponent}>
+            {title}
+          </Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={stylesbutton.buttoncomponet}>
+          <View style={stylesbutton.containericonbtn}>
+            <Image source={image}/>
+            <Text style={stylesbutton.txtbutoncomponent}> {title}</Text>
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
-  )
-}
+  );
+};
 
-export default Buttoncomponet
-
-const styles = StyleSheet.create({})
+export default buttonComponent;
