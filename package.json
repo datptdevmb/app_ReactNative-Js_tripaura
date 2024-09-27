@@ -10,9 +10,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-picker/picker": "^2.8.1",
+    "@reduxjs/toolkit": "^2.2.7",
     "react": "18.3.1",
     "react-native": "0.75.3",
+<<<<<<< HEAD
     "react-native-svg": "^15.7.1"
+=======
+    "react-native-svg": "^15.7.1",
+    "react-redux": "^9.1.2"
+>>>>>>> 45e3ff1bbd828c5bd1cb3fb9e3fd1b750e55030b
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
