@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Headercomponet from './Headercomponet'
+import HomeScreen from '../../screens/home/HomeScreen'
 
 const addd = () => {
     const leftIcon = require('./../../assets/icons/lop.jpg'); // Thay đổi với đường dẫn ảnh thực tế
-    const rightIcon =  require('./../../assets/icons/lop.jpg'); // Thay đổi với đường dẫn ảnh thực tế
-  
+    const rightIcon = require('./../../assets/icons/lop.jpg'); // Thay đổi với đường dẫn ảnh thực tế
+
     const handleLeftIconPress = () => {
-      console.log('Left icon pressed');
+        console.log('Left icon pressed');
     };
-  
+
     const handleRightIconPress = () => {
-      console.log('Right icon pressed');
+        console.log('Right icon pressed');
     };
     return (
         <View style={styles.container}>

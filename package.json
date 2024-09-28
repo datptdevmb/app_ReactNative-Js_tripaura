@@ -11,15 +11,16 @@
   },
   "dependencies": {
     "@react-native-picker/picker": "^2.8.1",
+    "@react-navigation/bottom-tabs": "^6.6.1",
+    "@react-navigation/native": "^6.1.18",
     "@reduxjs/toolkit": "^2.2.7",
     "react": "18.3.1",
     "react-native": "0.75.3",
-<<<<<<< HEAD
-    "react-native-svg": "^15.7.1"
-=======
+    "react-native-safe-area-context": "^4.11.0",
+    "react-native-screens": "^3.34.0",
     "react-native-svg": "^15.7.1",
-    "react-redux": "^9.1.2"
->>>>>>> 45e3ff1bbd828c5bd1cb3fb9e3fd1b750e55030b
+    "react-redux": "^9.1.2",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
