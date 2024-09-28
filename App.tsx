@@ -1,9 +1,13 @@
 import React from 'react';
+// <<<<<<< HEAD
 
 import HomeScreen from './src/screens/Home/HomeScreen';
+import FavouriteScreenNoLogin from './src/screens/favourite/FavouriteScreenNoLogin';
+import FavouriteScreenNoItem from './src/screens/favourite/FavouriteScreenNoItem';
+import FavoriteScreen from './src/screens/favourite/FavoriteScreen';
 
 function App(): React.JSX.Element {
-  return <HomeScreen></HomeScreen>;
+  return <FavoriteScreen></FavoriteScreen>;
 }
 
 export default App;
@@ -24,3 +28,17 @@ export default App;
 //   );
 // };
 // export default App;
+// =======
+// import { Provider } from 'react-redux';
+// import store from './src/api/store';
+// import HomeScreen from './src/screens/Home/HomeScreen';
+
+// const App = () => {
+//   return (
+//     <Provider store={store}>
+//       <HomeScreen />
+//     </Provider>
+//   );
+// };
+// export default App;
+// >>>>>>> 1b0e86081fb940b82d375e79f851670dda3f2bce

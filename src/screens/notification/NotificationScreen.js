@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const FavoriteScreen_NoLogin = () => {
+const NotificationScreen = () => {
   return (
     <View>
-      <Text>FavoriteScreen_NoLogin</Text>
+      <Text>NotificationScreen</Text>
     </View>
   )
 }
 
-export default FavoriteScreen_NoLogin
+export default NotificationScreen
 
 const styles = StyleSheet.create({})
