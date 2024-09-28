@@ -6,7 +6,6 @@ import {
     fetchLocations,
     selectProvinces,
     selectDistricts,
-    selectLoading,
     setDistricts,
 } from './../../../api/reducers';
 import stylesdown from './dropdownstyle';
