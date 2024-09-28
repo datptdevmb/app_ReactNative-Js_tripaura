@@ -68,14 +68,12 @@ const SettingScreen = () => {
           <View style={styles.btnContainer}>
             <Image style={styles.imageBtn}
               source={require('../../../assets/images/dkdv.png')} />
-            <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
+            <Text style={styles.txtDieuKhoan}>Về chúng tôi</Text>
             <Image style={styles.btnNext}
               source={require('../../../assets/images/iconNext.png')} />
           </View>
         </TouchableOpacity>
-
       </View>
-
     </View>
   )
 }
