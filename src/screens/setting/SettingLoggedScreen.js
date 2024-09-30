@@ -1,7 +1,8 @@
 import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 
-const SettingLoggedScreen = () => {
+const SettingLoggedScreen = (props) => {
+    const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     return (
@@ -15,11 +16,15 @@ const SettingLoggedScreen = () => {
                 </View>
                 <View style={styles.txtNameContainer}>
                     <Text style={styles.txtName}>Name</Text>
-                    <TouchableOpacity style={styles.btnCapNhaHoSo}>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate('EditProfileScreen')}
+                    style={styles.btnCapNhaHoSo}>
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.iconNextContainer}>
+                <TouchableOpacity 
+                onPress={() => navigation.navigate('ProfileScreen')}
+                style={styles.iconNextContainer}>
                     <Image
                         style={styles.iconNext}
                         source={require('../../../assets/images/iconNext.png')} />

@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
+import 'react-native-gesture-handler';
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import BottomNavigation from './BottomNavigation'
+import MainStaskNavigation from './MainStaskNavigation';
 const AppNavigation = () => {
   return (
    <NavigationContainer>
-      <BottomNavigation/>
+      <MainStaskNavigation/>
    </NavigationContainer>
   )
 }
