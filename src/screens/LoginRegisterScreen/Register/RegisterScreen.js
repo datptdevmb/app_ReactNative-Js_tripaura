@@ -1,6 +1,8 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {styles} from '../Login/LoginScreenStyle';
+import {styles} from '../Register/RegisterScreenStyle';
+import {styles} from '../../../../src/screens/LoginRegisterScreen/Forgot/ForgotScreenStyle';
+
 import Header from '../../../components/header/Headercomponet';
 import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
