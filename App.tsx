@@ -6,8 +6,13 @@ import FavouriteScreenNoLogin from './src/screens/favourite/FavouriteScreenNoLog
 import FavouriteScreenNoItem from './src/screens/favourite/FavouriteScreenNoItem';
 import FavoriteScreen from './src/screens/favourite/FavoriteScreen';
 
+import LoginRegisterScreen from './src/screens/LoginRegisterScreen/LoginRegisterScreen';
+import LoginScreen from './src/screens/LoginRegisterScreen/Login/LoginScreen';
+import RegisterScreen from './src/screens/LoginRegisterScreen/Register/RegisterScreen';
+import ForgotScreen from './src/screens/LoginRegisterScreen/Forgot/ForgotScreen';
+
 function App(): React.JSX.Element {
-  return <FavoriteScreen></FavoriteScreen>;
+  return <ForgotScreen></ForgotScreen>;
 }
 
 export default App;
