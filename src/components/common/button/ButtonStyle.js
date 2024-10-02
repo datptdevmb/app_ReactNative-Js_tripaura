@@ -3,7 +3,7 @@ import colors from "../../../constants/colors";
 import fontSize from "../../../constants/fontsize";
 const styles = StyleSheet.create({
     buttonContainer: {
-        width: 339,
+        width: '100%',
         height: 56,
         justifyContent: "center",
         borderRadius: 16,
