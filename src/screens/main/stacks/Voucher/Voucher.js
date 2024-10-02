@@ -1,12 +1,11 @@
 import { StyleSheet, Text, Image, View } from 'react-native';
 import React from 'react';
-import colors from '../../../constants/colors';
-import Headercomponet from '../../../components/common/header/Headercomponet';
-import Icons from '../../../constants/Icons';
-import CategroryCity from '../../../components/multiComponent/categroryctity';
-import { datacity, voucher,placename } from './../../../constants/data';
-import Vouchercomponent from '../../../components/multiComponent/vouchercomponent';
-import SectionViewVoucher from '../../../components/multiComponent/SectionViewVoucher';
+import Headercomponet from './../../../../components/common/header/Headercomponet';
+import Icons from './../../../../constants/Icons';
+import CategroryCity from './../../../../components/multiComponent/categroryctity';
+import { datacity, voucher,placename } from './../../../../constants/data';
+import Vouchercomponent from './../../../../components/multiComponent/vouchercomponent';
+import SectionViewVoucher from './../../../../components/multiComponent/SectionViewVoucher';
 
 
 const Voucher = () => {

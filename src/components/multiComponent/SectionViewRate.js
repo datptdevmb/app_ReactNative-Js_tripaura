@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         alignSelf: 'stretch',
         flexWrap: 'wrap',
-        backgroundColor: colors.Gray_100,
+        backgroundColor: colors.Grey_100,
         marginTop: 8,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: colors.Gray_100,
+        borderColor: colors.Grey_100,
 
     },
     containeravt: {
@@ -107,14 +107,14 @@ const styles = StyleSheet.create({
     },
     textname: {
         fontSize: fontsize.md,
-        color: colors.Gray_900,
+        color: colors.Grey_900,
         fontWeight: '700',
         marginLeft: 10,
         lineHeight: 24,
     },
     textday: {
         fontSize: fontsize.sm,
-        color: colors.Gray_800,
+        color: colors.Grey_800,
         fontWeight: '400',
         marginLeft: 10,
         lineHeight: 20,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontWeight: '400',
         lineHeight: 20,
-        color: colors.Gray_800,
+        color: colors.Grey_800,
         marginTop: 8,
     },
     containerimage: {

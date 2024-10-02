@@ -1,11 +1,6 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1, // Đảm bảo container chiếm toàn bộ không gian
-    padding: 16,
-  },
-  Header: {},
   text: {
     fontSize: 32,
     lineHeight: 48,

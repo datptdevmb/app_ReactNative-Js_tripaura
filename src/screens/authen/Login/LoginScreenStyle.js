@@ -1,11 +1,6 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1, // Đảm bảo container chiếm toàn bộ không gian
-    padding: 16,
-  },
-  Header: {},
   text: {
     fontSize: 32,
     lineHeight: 48,
@@ -13,7 +8,6 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#212121',
     marginTop: 14,
-    marginLeft: 16,
   },
   text2: {
     fontSize: 16,
@@ -21,7 +15,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Lato',
     fontWeight: '400',
     color: '#212121',
-    marginLeft: 16,
+
   },
   TripAru: {
     color: '#0572E7',
@@ -31,49 +25,43 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#2E2E2E',
     marginTop: 29,
-    marginLeft: 16,
+
   },
   pass: {
     fontSize: 16,
     fontWeight: '700',
     color: '#2E2E2E',
     marginTop: 12,
-    marginLeft: 16,
+
   },
   button: {
-    width: 339,
-    height: 47,
     borderRadius: 8,
-    marginLeft: 16,
+
+    marginTop: 29,
+  },
+  containertxttaotk:{
+    flexDirection: 'row',
+    justifyContent:'space-between',
     marginTop: 29,
   },
   Taotk: {
-    width: 100,
-    height: 16,
     fontSize: 12,
     lineHeight: 16,
     fontWeight: '400',
     color: '#2E2E2E',
     letterSpacing: 0.05,
-    marginTop: 29,
-    marginLeft: 16,
+  
   },
   Quenmk: {
-    width: 100,
-    height: 16,
     fontSize: 12,
     lineHeight: 16,
     fontWeight: '400',
     color: '#2E2E2E',
     letterSpacing: 0.05,
-    marginTop: -15,
-    marginLeft: 256,
   },
   mota: {
-    // fontFamily = FontFamily(Font(R.font.lato)),
-    marginLeft: 16,
-    marginTop: 254,
-    width: 348,
+    marginTop: 104,
+    width: '100%',
     height: 26,
     fontSize: 11,
     fontWeight: '400',

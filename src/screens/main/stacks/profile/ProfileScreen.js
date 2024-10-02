@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import Headercomponet from '../../components/header/Headercomponet'
+import Headercomponet from '../../../../components/common/header/Headercomponet'
+import stylesglobal from '../../../../constants/global';
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -9,18 +10,18 @@ const ProfileScreen = (props) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={stylesglobal.container}>
       <Headercomponet
-        leftIcon={require('../../../assets/images/icBack.png')}
+        leftIcon={require('./../../../../../assets/images/icBack.png')}
         title={"Thông tin cá nhân"}
         style={styles.header}
         onPressLeftIcon={nhanBack}
       />
       <View style={styles.avatarContainer}>
         <View style={styles.imageAvatar}>
-          <Image source={require('../../../assets/images/h1.png')} />
+          <Image source={require('./../../../../../assets/images/h1.png')} />
           <TouchableOpacity style={styles.icCameraContainer}>
-            <Image source={require('../../../assets/images/icCamera.png')} />
+            <Image source={require('./../../../../../assets/images/icCamera.png')} />
           </TouchableOpacity>
         </View>
         <Text style={styles.txtName}>Nguyễn Văn Bảo Hoàng</Text>
@@ -32,13 +33,13 @@ const ProfileScreen = (props) => {
         <Text style={styles.title}>Giới thiệu</Text>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('../../../assets/images/icBack.png')} />
+            source={require('./../../../../../assets/images/icBack.png')} />
           <Text style={styles.txtTitle}>Ngày sinh:</Text>
           <Text style={styles.txtContent}>29/11/2004</Text>
         </View>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('../../../assets/images/icBack.png')} />
+            source={require('./../../../../../assets/images/icBack.png')} />
           <Text style={styles.txtTitle}>Ngày sinh:</Text>
           <Text style={styles.txtContent}>29/11/2004</Text>
         </View>
@@ -49,26 +50,26 @@ const ProfileScreen = (props) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('EditProfileScreen')}>
             <Image style={styles.icon}
-              source={require('../../../assets/images/icBack.png')} />
+              source={require('./../../../../../assets/images/icBack.png')} />
           </TouchableOpacity>
         </View>
 
 
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('../../../assets/images/icBack.png')} />
+            source={require('./../../../../../assets/images/icBack.png')} />
           <Text style={styles.txtTitle}>Emai:</Text>
           <Text style={styles.txtContent}>nvbaohoang@gmail.com</Text>
         </View>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('../../../assets/images/icBack.png')} />
+            source={require('./../../../../../assets/images/icBack.png')} />
           <Text style={styles.txtTitle}>Phone:</Text>
           <Text style={styles.txtContent}>03427245744</Text>
         </View>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('../../../assets/images/icBack.png')} />
+            source={require('./../../../../../assets/images/icBack.png')} />
           <Text style={styles.txtTitle}>Địa chỉ:</Text>
           <Text numberOfLines={1}
             style={styles.txtContent}>Triệu Phong, Tỉnh Quảng Trị</Text>
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   ttlhContainer: {
-    width: 350,
+    width: '100%',
     marginTop: 24,
 
   },
@@ -131,11 +132,11 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   gioiThieuContainer: {
-    width: 350,
+    width: '100%',
     marginTop: 18
   },
   underline: {
-    width: 350,
+    width: '100%',
     height: 1,
     backgroundColor: '#515252',
     marginTop: 16,
@@ -178,9 +179,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 27
   },
-  container: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center'
-  }
 })

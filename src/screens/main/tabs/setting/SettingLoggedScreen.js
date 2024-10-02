@@ -1,17 +1,18 @@
 import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
+import stylesglobal from '../../../../constants/global';
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     return (
-        <View style={styles.container}>
+        <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
-                    <Image source={require('../../../assets/images/h1.png')} />
+                    <Image source={require('../.././../../../assets/images/h1.png')} />
                     <TouchableOpacity style={styles.icCameraContainer}>
-                        <Image source={require('../../../assets/images/icCamera.png')} />
+                        <Image source={require('./../../../../../assets/images/icCamera.png')} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
@@ -27,7 +28,7 @@ const SettingLoggedScreen = (props) => {
                 style={styles.iconNextContainer}>
                     <Image
                         style={styles.iconNext}
-                        source={require('../../../assets/images/iconNext.png')} />
+                        source={require('./../../../../../assets/images/iconNext.png')} />
                 </TouchableOpacity>
             </View>
 
@@ -37,7 +38,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('../../../assets/images/cauHoi.png')} />
+                                source={require('./../../../../../assets/images/cauHoi.png')} />
                         </View>
                         <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
                     </TouchableOpacity>
@@ -47,7 +48,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('../../../assets/images/cauHoi.png')} />
+                                source={require('./../../../../../assets/images/cauHoi.png')} />
                         </View>
                         <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
                     </TouchableOpacity>
@@ -57,7 +58,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('../../../assets/images/cauHoi.png')} />
+                                source={require('./../../../../../assets/images/cauHoi.png')} />
                         </View>
                         <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
                     </TouchableOpacity>
@@ -67,7 +68,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('../../../assets/images/cauHoi.png')} />
+                                source={require('./../../../../../assets/images/cauHoi.png')} />
                         </View>
                         <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
                     </TouchableOpacity>
@@ -79,7 +80,7 @@ const SettingLoggedScreen = (props) => {
             <View style={styles.thongBaoContainer}>
                 <View style={styles.btnContainer}>
                     <Image style={styles.imageBtn}
-                        source={require('../../../assets/images/dkdv.png')} />
+                        source={require('./../../../../../assets/images/dkdv.png')} />
                     <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
                     <View style={styles.lefticon}>
                         <Switch
@@ -94,7 +95,7 @@ const SettingLoggedScreen = (props) => {
             <View style={styles.SangToiContainer}>
                 <View style={styles.btnContainer}>
                     <Image style={styles.imageBtn}
-                        source={require('../../../assets/images/dkdv.png')} />
+                        source={require('./../../../../../assets/images/dkdv.png')} />
                     <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
                     <View style={styles.lefticon}>
                         <Switch
@@ -111,12 +112,12 @@ const SettingLoggedScreen = (props) => {
                 <TouchableOpacity>
                     <View style={styles.btnContainer}>
                         <Image style={styles.imageBtn}
-                            source={require('../../../assets/images/dkdv.png')} />
+                            source={require('./../../../../../assets/images/dkdv.png')} />
                         <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
                         <View style={styles.lefticon}>
                             <Text>VN</Text>
                             <Image style={styles.btnNext}
-                                source={require('../../../assets/images/iconNext.png')} />
+                                source={require('./../../../../../assets/images/iconNext.png')} />
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -126,12 +127,12 @@ const SettingLoggedScreen = (props) => {
                 <TouchableOpacity>
                     <View style={styles.btnContainer}>
                         <Image style={styles.imageBtn}
-                            source={require('../../../assets/images/dkdv.png')} />
+                            source={require('./../../../../../assets/images/dkdv.png')} />
                         <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
                         <View style={styles.lefticon}>
                             <Text>VND</Text>
                             <Image style={styles.btnNext}
-                                source={require('../../../assets/images/iconNext.png')} />
+                                source={require('./../../../../../assets/images/iconNext.png')} />
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -144,11 +145,11 @@ const SettingLoggedScreen = (props) => {
                 <TouchableOpacity>
                     <View style={styles.btnContainer}>
                         <Image style={styles.imageBtn}
-                            source={require('../../../assets/images/dkdv.png')} />
+                            source={require('./../../../../../assets/images/dkdv.png')} />
                         <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
                         <View style={styles.lefticon}>
                             <Image style={styles.btnNext}
-                                source={require('../../../assets/images/iconNext.png')} />
+                                source={require('./../../../../../assets/images/iconNext.png')} />
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -187,14 +188,14 @@ const styles = StyleSheet.create({
         lineHeight: 24
     },
     btnContainer: {
-        width: 350,
+        width: '100%',
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     underline: {
-        width: 350,
+        width: '100%',
         height: 1,
         backgroundColor: '#B3B3B3CC',
         marginTop: 16,
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     btnHorizontalContainer: {
-        width: 350,
+        width: '100%',
         flexDirection: 'row',
         marginTop: 38,
         justifyContent: 'space-between',
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     headerContainer: {
-        width: 350,
+        width: '100%',
         height: 70,
         marginTop: 20,
         flexDirection: 'row',
@@ -286,9 +287,4 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0
     },
-    container: {
-        width: '100%',
-        height: '100%',
-        alignItems: 'center'
-    }
 })

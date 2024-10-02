@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Headercomponet from '../../components/common/header/Headercomponet'
-import Icons from '../../constants/Icons'
-import colors from '../../constants/colors'
-import InputOtpComponent from '../../components/common/inputotp/inputotpcomponent'
-import Button from '../../components/common/button/Button'
+import Headercomponet from '../../../components/common/header/Headercomponet'
+import Icons from '../../../constants/Icons'
+import colors from '../../../constants/colors'
+import InputOtpComponent from '../../../components/common/inputotp/inputotpcomponent'
+import Button from '../../../components/common/button/Button'
 
 const Otp = () => {
   return (
@@ -14,7 +14,7 @@ const Otp = () => {
       />
       <View style={styles.containerotp}>
         <Text style={styles.textotp}>Xác minh OTP</Text>
-        <Text style={styles.textthongbao}> Vui lòng kiểm tra email nhutnm2306@gmail.com{"\n"}để xem mã xác minh</Text>
+        <Text style={styles.textthongbao}> Vui lòng kiểm tra email nhutnm2306@gmail.com để xem mã xác minh</Text>
         <Text style={styles.textmaotp}>Mã OTP</Text>
         <View style={styles.containerinputotp}>
           <InputOtpComponent />
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '600',
     lineHeight: 34,
-    color: colors.Gray_800,
+    color: colors.Grey_800,
   },
   textthongbao: {
     textAlign: 'center',

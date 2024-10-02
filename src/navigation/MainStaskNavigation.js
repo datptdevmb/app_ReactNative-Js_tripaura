@@ -4,10 +4,10 @@ import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/home/HomeScreen';
-import FavouriteScreen from '../screens/favourite/FavouriteScreen';
-import NotificationScreen from '../screens/notification/NotificationScreen';
-import SettingScreen from '../screens/setting/SettingScreen';
-import SettingLoggedScreen from '../screens/setting/SettingLoggedScreen';
+import FavouriteScreen from '../screens/main/tabs/favourite/FavouriteScreen';
+import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
+import SettingScreen from '../screens/main/tabs/setting/SettingScreen';
+import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScreen';
 import EditProfileScreen from '../screens/profile/EditProfileScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 

@@ -34,7 +34,7 @@ export default vouchercomponent
 const styles = StyleSheet.create({
     luuvoucher: {
         display: 'flex',
-        width: 110,
+        width: 100,
         height: 100,
         backgroundColor: '#B2D3F8',
         borderRadius: 5,

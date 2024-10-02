@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import Headercomponet from '../../../components/common/header/Headercomponet'
-import Icons from '../../../constants/Icons'
-import colors from '../../../constants/colors'
-import { datarate } from '../../../constants/data'
-import SectionViewRate from '../../../components/multiComponent/SectionViewRate'
+import Headercomponet from '../../../../components/common/header/Headercomponet'
+import Icons from '../../../../constants/Icons'
+import colors from '../../../../constants/colors'
+import { datarate } from '../../../../constants/data'
+import SectionViewRate from '../../../../components/multiComponent/SectionViewRate'
 
 const Rate = () => {
     return (
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     textstar: {
         lineHeight: 32,
-        color: colors.Gray_900,
+        color: colors.Grey_900,
         fontFamily: 'Lato',
         fontWeight: '700',
         overflow: 'hidden',

@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, Image, ToastAndroid} from 'react-native';
 import React from 'react';
 import {styles} from './FavouriteScreenNoLoginStyle';
-import Button from '../../components/common/button/Button';
+import Button from '../../../../components/common/button/Button';
 
 const FavouriteScreenNoLogin = () => {
   return (
@@ -9,7 +9,7 @@ const FavouriteScreenNoLogin = () => {
       <Text style={styles.textStyle}>Yêu Thích</Text>
       <Image
         resizeMode="contain"
-        source={require('./../../../assets/images/Favorite.png')} 
+        source={require('./../../../../../assets/images/Favorite.png')} 
         style={styles.image}
       />
       <Text style={styles.text2Style}>

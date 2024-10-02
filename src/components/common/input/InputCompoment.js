@@ -32,7 +32,7 @@ const InputComponent = ({
         keyboardType={keyboardType || 'default'}
         onChangeText={handleTextChange}
         value={text}
-        placeholderTextColor={placeholderTextColor || colors.Gray_400}
+        placeholderTextColor={placeholderTextColor || colors.Grey_400}
         secureTextEntry={hide}
         style={stylesinput.inputComponent}
       />

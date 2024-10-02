@@ -1,15 +1,15 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {styles} from '../Login/LoginScreenStyle';
-import Header from '../../../components/header/Headercomponet';
+import Header from '../../../components/common/header/Headercomponet';
 import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
+import stylesglobal from '../../../constants/global';
 
 const Forgot= () => {
   return (
-    <View style={styles.container}>
+    <View style={stylesglobal.container}>
       <Header
-        style={styles.Header}
         leftIcon={require('../../../../assets/images/back1.png')}
       />
 
@@ -18,8 +18,6 @@ const Forgot= () => {
       Nhập email của bạn để đặc lại mật khẩu{' '}
         <Text style={styles.TripAru}>TripAru</Text>
       </Text>
-
-      
       <InputComponent
         placeholder="Nhập email của bạn"
         onTextChange={text => console.log(text)}

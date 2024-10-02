@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Headercomponet from '../../components/header/Headercomponet'
-import InputComponent from '../../components/common/input/InputCompoment'
-import DropdownComponent from '../../components/common/dropdown/DropdownComponent'
-import Button from '../../components/common/button/Button'
+import Headercomponet from '../../../../components/common/header/Headercomponet'
+import InputComponent from '../../../../components/common/input/InputCompoment'
+import DropdownComponent from '../../../../components/common/dropdown/DropdownComponent'
+import Button from '../../../../components/common/button/Button'
+import stylesglobal from '../../../../constants/global'
 
 const EditProfileScreen = (props) => {
   const { navigation } = props;
@@ -11,9 +12,9 @@ const EditProfileScreen = (props) => {
     navigation.goBack()
   }
   return (
-    <View style={styles.container}>
+    <View style={stylesglobal.container}>
       <Headercomponet
-        leftIcon={require('../../../assets/images/icBack.png')}
+        leftIcon={require('../../../../../assets/images/icBack.png')}
         title={"Cập nhật thông tin cá nhân"}
         style={styles.header}
         onPressLeftIcon={nhanBack}
@@ -31,7 +32,7 @@ const EditProfileScreen = (props) => {
         />
       </View>
       <View style={styles.adressContainer}>
-        {/* <DropdownComponent/> */}
+        <DropdownComponent/>
       </View>
       <View style={styles.inputPhone}>
         <Text>Chi tiết</Text>
@@ -69,9 +70,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 27
   },
-  container: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center'
-  }
 })

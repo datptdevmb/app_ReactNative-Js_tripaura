@@ -1,19 +1,20 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
-import {styles} from './LoginRegisterScreenStyle';
-import Header from '../../components/header/Headercomponet';
+import { styles } from './LoginRegisterScreenStyle';
+import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
+import stylesglobal from '../../constants/global';
+
 
 const LoginRegisterScreen = () => {
   return (
-    <View style={styles.container}>
+    <View style={stylesglobal.container}>
       <Header
         style={styles.Header}
         leftIcon={require('../../../assets/images/back.png')}
       />
-
       <Text style={styles.text}>Đăng nhập / Đăng ký</Text>
-      <Text style={styles.text2}>
+      <Text style={styles.txtnhantaikhoan}>
         Nhận tài khoản <Text style={styles.TripAru}>TripAru</Text> để khám phá
         tiện ích
       </Text>
@@ -22,7 +23,6 @@ const LoginRegisterScreen = () => {
         icon={
           <Image
             source={require('../../../assets/images/email.png')}
-            style={styles.iconEmailStyle}
           />
         }
         style={styles.EmailButton}
@@ -36,7 +36,6 @@ const LoginRegisterScreen = () => {
         icon={
           <Image
             source={require('../../../assets/images/phone.png')}
-            style={styles.iconPhoneStyle}
           />
         }
         style={styles.PhoneButton}

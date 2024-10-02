@@ -2,9 +2,9 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/home/HomeScreen';
-import FavouriteScreen from '../screens/favourite/FavouriteScreenNoLogin';
-import NotificationScreen from '../screens/notification/NotificationScreen';
-import SettingScreen from '../screens/setting/SettingScreen';
+import FavouriteScreen from '../screens/main/tabs/favourite/FavouriteScreenNoLogin';
+import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
+import SettingScreen from '../screens/main/tabs/setting/SettingScreen';
 const Tab = createBottomTabNavigator();
 
 const ButtomNavigation = () => {

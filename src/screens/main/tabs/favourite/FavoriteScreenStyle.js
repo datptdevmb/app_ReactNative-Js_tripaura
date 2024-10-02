@@ -3,17 +3,6 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   Header: {
     color: '#0568D2',
-    marginTop: 20,
-    marginBottom: 10,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  container: {
-    flex: 1,
-    padding: 16,
-    width: 369,
-    height: 120,
-    backgroundColor: '#FFFFFFFF',
   },
   title: {
     fontSize: 24,
