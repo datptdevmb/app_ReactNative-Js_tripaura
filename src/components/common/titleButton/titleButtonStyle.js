@@ -2,8 +2,6 @@ import {StyleSheet} from 'react-native';
 
 const stylesheader = StyleSheet.create({
     container: {
-        width:350,
-        height:47,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -11,15 +9,21 @@ const stylesheader = StyleSheet.create({
         width: 24,
         height: 24,
     },
+    sizeIconRight:{
+        width:55,
+        height:24
+
+    },
     text: {
         flex: 10,
-        fontSize: 18,
-        fontWeight: '700',
-        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: '400',
         fontStyle: 'normal',
         justifyContent: 'center',
         fontFamily: 'Lato',
         lineHeight: 27,
+        color:'#000000',
+        marginLeft:16
     },
     placeholder: {
         flex: 0,

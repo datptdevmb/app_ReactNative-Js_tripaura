@@ -15,6 +15,7 @@ function HomeScreen() {
         <View style={{ flex: 1, justifyContent: "center" }}>
             <Accordion values={values}/>
         </View>
+        
     )
 }
 
