@@ -1,5 +1,5 @@
 export const ROUTES = {
-    home: 'Home',
+    home: 'Trang chu',
     profile: 'Profile',
     settings: 'Settings',
 };

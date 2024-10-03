@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
         lineHeight: fontSize.sm * 1.5,
         color:colors.onPrimary
 
-
     }
 })
 

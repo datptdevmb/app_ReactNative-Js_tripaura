@@ -10,16 +10,26 @@
     "test": "jest"
   },
   "dependencies": {
+    "@photo-sphere-viewer/core": "^5.10.1",
     "@react-native-picker/picker": "^2.8.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@reduxjs/toolkit": "^2.2.7",
+    "lottie-ios": "^3.1.8",
+    "lottie-react-native": "^7.0.0",
+    "prop-types": "^15.8.1",
     "react": "18.3.1",
     "react-native": "0.75.3",
-
+    "react-native-fast-image": "^8.6.3",
+    "react-native-image-slider-box": "^2.0.7",
+    "react-native-pull-refresh": "^1.0.0",
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-svg": "^15.7.1",
+    "react-native-swiper": "^1.6.0",
+    "react-native-webview": "^13.12.2",
+    "react-pannellum": "^0.2.16",
+    "react-photo-sphere-viewer": "^6.0.0",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1"
   },
