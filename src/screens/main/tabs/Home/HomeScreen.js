@@ -2,17 +2,17 @@ import React, { useState, useCallback } from 'react';
 import { View, ScrollView, RefreshControl, Text, StyleSheet, Image, StatusBar, TouchableOpacity } from 'react-native';
 
 import LottieView from 'lottie-react-native';
-import colors from '../../constants/colors';
+import colors from '../../../../constants/colors';
 import Swiper from 'react-native-swiper';
-import TourCard from '../../components/common/card/CardTour';
-import TourCardVetical from '../../components/common/card/TourCardVetical';
+import TourCard from '../../../../components/common/card/CardTour';
+import TourCardVetical from '../../../../components/common/card/TourCardVetical';
 
 const data = [
-    { uri: require('../../assets/images/image.png') },
-    { uri: require('../../assets/images/slider1.png') },
-    { uri: require('../../assets/images/image.png') },
-    { uri: require('../../assets/images/image.png') },
-    { uri: require('../../assets/images/image.png') },
+    { uri: require('../../../../assets/images/image.png') },
+    { uri: require('../../../../assets/images/slider1.png') },
+    { uri: require('../../../../assets/images/image.png') },
+    { uri: require('../../../../assets/images/image.png') },
+    { uri: require('../../../../assets/images/image.png') },
 
 ]
 
@@ -25,11 +25,11 @@ const categorys = [
 ]
 
 const tours = [
-    { id: 0, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../assets/images/image.png'), price: 300000 },
-    { id: 1, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../assets/images/image.png'), price: 300000 },
-    { id: 2, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../assets/images/image.png'), price: 300000 },
-    { id: 3, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../assets/images/image.png'), price: 300000 },
-    { id: 4, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../assets/images/image.png'), price: 300000 },
+    { id: 0, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
+    { id: 1, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
+    { id: 2, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
+    { id: 3, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
+    { id: 4, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
 ]
 const HomeScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -42,17 +42,6 @@ const HomeScreen = () => {
             setSelectedIndex(index);  // Cập nhật chỉ số của mục được chọn
         }
     }
-<<<<<<< HEAD:src/screens/Home/HomeScreen.js
-=======
-    return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-            <Accordion values={values}/>
-        </View>
-        
-    )
-}
->>>>>>> 006b0348efa4e5e4ce45023656f4c03c1edb0a22:src/screens/main/tabs/Home/HomeScreen.js
-
     function handleClickFavorite(index) {
         if (selectedFavorite !== index) {
             setSelectedFavorite(index);  // Cập nhật chỉ số của mục được chọn
@@ -94,18 +83,18 @@ const HomeScreen = () => {
                         <TouchableOpacity>
                             <Image
                                 style={styles.serchIcon}
-                                source={require('../../assets/images/searchIcon.png')} />
+                                source={require('../../../../assets/images/searchIcon.png')} />
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Image
                                 style={styles.noticeIcon}
-                                source={require('../../assets/images/noticeIcon.png')} />
+                                source={require('../../../../assets/images/noticeIcon.png')} />
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 {refreshing ? <LottieView
-                    source={require('../../assets/lottile/lote.json')}
+                    source={require('../../../../assets/lottile/lote.json')}
                     autoPlay
                     loop
                     style={styles.lottieAnimation}
