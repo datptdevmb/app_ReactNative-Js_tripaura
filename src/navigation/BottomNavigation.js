@@ -1,6 +1,7 @@
 import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+<<<<<<< HEAD
 import HomeScreen from '../screens/Home/HomeScreen';
 import FavouriteScreen from '../screens/favourite/FavouriteScreen';
 import NotificationScreen from '../screens/notification/NotificationScreen';
@@ -9,6 +10,12 @@ import { ROUTES } from '../constants/routes';
 import colors from '../constants/colors';
 import SlideChangeText from '../components/common/slide/SlideChangeText';
 import DetailScreen from '../screens/Home/Detail';
+=======
+import HomeScreen from '../screens/home/HomeScreen';
+import FavouriteScreen from '../screens/main/tabs/favourite/FavouriteScreenNoLogin';
+import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
+import SettingScreen from '../screens/main/tabs/setting/SettingScreen';
+>>>>>>> 006b0348efa4e5e4ce45023656f4c03c1edb0a22
 const Tab = createBottomTabNavigator();
 
 

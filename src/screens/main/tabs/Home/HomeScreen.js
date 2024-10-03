@@ -42,6 +42,16 @@ const HomeScreen = () => {
             setSelectedIndex(index);  // Cập nhật chỉ số của mục được chọn
         }
     }
+<<<<<<< HEAD:src/screens/Home/HomeScreen.js
+=======
+    return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+            <Accordion values={values}/>
+        </View>
+        
+    )
+}
+>>>>>>> 006b0348efa4e5e4ce45023656f4c03c1edb0a22:src/screens/main/tabs/Home/HomeScreen.js
 
     function handleClickFavorite(index) {
         if (selectedFavorite !== index) {

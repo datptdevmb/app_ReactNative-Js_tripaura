@@ -1,8 +1,9 @@
 import {StyleSheet} from 'react-native';
 
-
 const stylesheader = StyleSheet.create({
     container: {
+        width:350,
+        height:47,
         flexDirection: 'row',
         alignItems: 'center',
     },
