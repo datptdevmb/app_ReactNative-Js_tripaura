@@ -10,6 +10,7 @@ const InputComponent = ({
   hidePassword,
   placeholderTextColor,
   keyboardType,
+  style
 }) => {
   const [text, setText] = useState(value);
   const [hide, setHide] = useState(hidePassword);
@@ -34,7 +35,7 @@ const InputComponent = ({
         value={text}
         placeholderTextColor={placeholderTextColor || colors.Grey_400}
         secureTextEntry={hide}
-        style={stylesinput.inputComponent}
+        style={[stylesinput.inputComponent,style]}
       />
     </View>
   );

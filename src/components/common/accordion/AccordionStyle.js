@@ -3,7 +3,7 @@ import colors from "../../../constants/colors";
 
 const styles = StyleSheet.create({
     container :{
-        width:341,
+        width:'100%',
         height:50,
         justifyContent:"center",
         backgroundColor:colors.primary

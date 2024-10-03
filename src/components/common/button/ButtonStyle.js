@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 16,
         alignItems: 'center',
-        backgroundColor: colors.primary
+        backgroundColor: colors.primary_500
     },
     buttonLabel: {
         fontSize: fontSize.sm,

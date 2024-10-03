@@ -48,7 +48,7 @@ function CustomBottom({ onPress, children }) {
           <View
             style={
               {
-                backgroundColor: colors.primary,
+                backgroundColor: colors.primary_200,
                 width: 60,
                 height: 60,
                 borderRadius: 30,
@@ -107,7 +107,6 @@ const ButtomNavigation = () => {
                 source={require('../assets/icons/HomeIcon.png')}
                 style={{
                   tintColor: focused ? colors.primary : "#A8A8A8",
-
                 }} />
               <Text style={{ fontSize: 8 }}>{ROUTES.home}</Text>
             </View>
@@ -133,7 +132,7 @@ const ButtomNavigation = () => {
                 resizeMode='contain'
                 source={require('../assets/icons/HomeIcon.png')}
                 style={{
-                  tintColor: focused ? colors.primary : colors.Gray_800,
+                  tintColor: focused ? colors.primary : colors.Grey_800,
 
                 }} />
               <Text>Uu dai</Text>
@@ -179,7 +178,7 @@ const ButtomNavigation = () => {
                 resizeMode='contain'
                 source={require('../assets/icons/HomeIcon.png')}
                 style={{
-                  tintColor: focused ? colors.primary : colors.Gray_800,
+                  tintColor: focused ? colors.primary : colors.Grey_800,
 
                 }} />
               <Text>{ROUTES.home}</Text>
@@ -205,7 +204,7 @@ const ButtomNavigation = () => {
                 resizeMode='contain'
                 source={require('../assets/icons/HomeIcon.png')}
                 style={{
-                  tintColor: focused ? colors.primary : colors.Gray_800,
+                  tintColor: focused ? colors.primary : colors.Grey_800,
 
                 }} />
               <Text>{ROUTES.home}</Text>

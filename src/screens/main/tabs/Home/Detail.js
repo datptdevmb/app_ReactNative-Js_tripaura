@@ -109,9 +109,6 @@ function Detail() {
           lable={"Đánh giá chuyến đi"} />
 
       </View>
-
-
-
     </ScrollView>
   )
 }

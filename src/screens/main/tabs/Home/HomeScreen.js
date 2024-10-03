@@ -39,7 +39,7 @@ const HomeScreen = () => {
     function handleCatePress(index) {
         console.log('onpress')
         if (selectedIndex !== index) {
-            setSelectedIndex(index);  // Cập nhật chỉ số của mục được chọn
+            setSelectedIndex(index);  
         }
     }
     function handleClickFavorite(index) {
@@ -179,9 +179,6 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    // itemCate: {
-    //     alignItems:'center'
-    // },
     cardVetical: {
         width: '100%',
         marginTop: 8
@@ -189,6 +186,7 @@ const styles = StyleSheet.create({
     itemSwiper: {
         borderRadius: 30,
         height: 192,
+        width:'100%'
     },
     heading: {
         fontSize: 16,
@@ -221,7 +219,7 @@ const styles = StyleSheet.create({
         width: 6,
         height: 6,
         borderRadius: 3,
-        backgroundColor: colors.primary
+        backgroundColor: colors.primary_200
     },
     categoryContainer: {
         width: "100%",
@@ -230,7 +228,7 @@ const styles = StyleSheet.create({
         marginTop: 24
     },
     selectedItem: {
-        color: colors.primary
+        color: colors.primary_200
     },
     textCate: {
         color: '#A8A8A8',

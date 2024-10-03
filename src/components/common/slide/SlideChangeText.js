@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
         paddingHorizontal:12,
         marginTop: 5,
         // width: 60,
-        height: 15,
+        height:15,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.primary,
+        backgroundColor: colors.primary_200,
     },
     text: {
         fontSize: 10,

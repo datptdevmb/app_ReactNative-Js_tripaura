@@ -82,7 +82,7 @@ const CustomRefreshScrollView = ({ onRefresh, children }) => {
                 ) : (
                     <View style={{
                         height: 250,
-                        backgroundColor: colors.Gray_400
+                        backgroundColor: colors.Grey_400
                     }}>
                         <Text>Kéo xuống để làm mới</Text>
                     </View>

@@ -3,31 +3,6 @@ import colors from '../../constants/colors';
 import fontsize from '../../constants/fontsize';
 
 export const styles = StyleSheet.create({
-  text: {
-    fontSize: fontsize.xxl,
-    lineHeight: 48,
-    fontFamily: 'Lato',
-    fontWeight: '700',
-    color: colors.Grey_900,
-    width: '100%',
-    height:'auto',
-    marginTop: 14,
-  },
-  txtnhantaikhoan: {
-    fontSize: fontsize.md,
-    width: '100%',
-    height: 'auto',
-    lineHeight: 24,
-    fontFamily: 'Lato',
-    fontWeight: '400',
-    color: colors.Grey_900,
-    letterSpacing: 0.08,
-  },
-  TripAru: {
-    color: colors.primary_500,
-    fontSize: 16,
-  },
-
   EmailButton: {
     backgroundColor: colors.vividOrange,
     marginTop: 83,
@@ -70,11 +45,6 @@ export const styles = StyleSheet.create({
     color: '#212121',
     fontSize: 16,
     fontWeight: '600',
-  },
-  iconggeStyle: {
-    width: 30,
-    height: 30,
-    padding: 1,
   },
   mota: {
     marginLeft: 16,

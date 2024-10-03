@@ -1,9 +1,8 @@
 export default COLORS ={
-    primary:'#0572E7',
     onPrimary:'#FFFFFF',
     vividOrange: '#EE730E',
-    primary_500: '#0572E7',
     primary_200: '#8CBEF4',
+    primary_500: '#0572E7',
     background:"#F4F4F4",
     Grey_0: '#EDEDED',
     Grey_100: '#C9C9C9',

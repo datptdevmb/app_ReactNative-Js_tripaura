@@ -13,9 +13,9 @@ const LoginRegisterScreen = () => {
         style={styles.Header}
         leftIcon={require('../../../assets/images/back.png')}
       />
-      <Text style={styles.text}>Đăng nhập / Đăng ký</Text>
-      <Text style={styles.txtnhantaikhoan}>
-        Nhận tài khoản <Text style={styles.TripAru}>TripAru</Text> để khám phá
+      <Text style={stylesglobal.textheader}>Đăng nhập / Đăng ký</Text>
+      <Text style={stylesglobal.textauth_description}>
+        Nhận tài khoản <Text style={{ color: '#0572E7'}}>TripAru</Text> để khám phá
         tiện ích
       </Text>
       <SocialButton
@@ -49,7 +49,6 @@ const LoginRegisterScreen = () => {
         icon={
           <Image
             source={require('../../../assets/images/fb.png')}
-            style={styles.iconfbStyle}
           />
         }
         style={styles.fbButton}
@@ -63,7 +62,6 @@ const LoginRegisterScreen = () => {
         icon={
           <Image
             source={require('../../../assets/images/gg.png')}
-            style={styles.iconggStyle}
           />
         }
         style={styles.ggButton}

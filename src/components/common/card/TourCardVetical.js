@@ -15,23 +15,20 @@ function TourCardVetical({ tour }) {
                 <Text>{tour.locate}</Text>
             </View>
             <Button styleText={styles.btntext} style={styles.btn} label="Xem" />
-
         </View>
     )
 }
-
 export default memo(TourCardVetical)
 
 const styles = StyleSheet.create({
     container: {
-        flexWrap: "nowrap",
+        flexWrap: 'nowrap',
         flexDirection: 'row',
         borderRadius: 16,
         alignItems: "center",
         backgroundColor: '#F8F8F8',
-        width: "100%",
-        height: 84,
-        padding: 12
+        width: '100%',
+        height: 84
     },
     image: {
         width: 81,
@@ -39,7 +36,6 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     textName: {
-        width: 117,
         fontSize: 16,
         fontStyle: 'normal',
         fontWeight: "500",
@@ -56,6 +52,6 @@ const styles = StyleSheet.create({
         marginStart: 55
     },
     btntext: {
-        color: colors.primary
+        color: colors.primary_200
     }
 })
