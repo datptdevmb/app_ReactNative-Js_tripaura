@@ -7,7 +7,6 @@ const ProfileScreen = (props) => {
   const nhanBack = () => {
     navigation.goBack()
   }
-
   return (
     <View style={styles.container}>
       <Headercomponet
@@ -52,8 +51,6 @@ const ProfileScreen = (props) => {
               source={require('../../../assets/images/icBack.png')} />
           </TouchableOpacity>
         </View>
-
-
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
             source={require('../../../assets/images/icBack.png')} />
@@ -91,7 +88,6 @@ const styles = StyleSheet.create({
   ttlhContainer: {
     width: 350,
     marginTop: 24,
-
   },
   icon: {
     width: 24,

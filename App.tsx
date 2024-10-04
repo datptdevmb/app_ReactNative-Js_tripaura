@@ -7,10 +7,12 @@ import SettingLoggedScreen from './src/screens/setting/SettingLoggedScreen';
 import TitleBotton from './src/components/common/titleButton/TitleButton';
 import ProfileScreen from './src/screens/profile/ProfileScreen';
 import EditProfileScreen from './src/screens/profile/EditProfileScreen';
+import SettingScreen from './src/screens/setting/SettingScreen';
 const App = () => {
   return (
     <Provider store={store}>
-       <AppNavigation/>
+       {/* <AppNavigation/> */}
+       <SettingScreen></SettingScreen>
     </Provider>
   );
 };

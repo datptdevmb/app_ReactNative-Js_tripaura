@@ -31,7 +31,7 @@ const EditProfileScreen = (props) => {
         />
       </View>
       <View style={styles.adressContainer}>
-        {/* <DropdownComponent/> */}
+        <DropdownComponent/>
       </View>
       <View style={styles.inputPhone}>
         <Text>Chi tiết</Text>
