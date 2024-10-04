@@ -2,9 +2,11 @@ import { memo } from "react"
 import { Image, StyleSheet, Text, View } from "react-native"
 import Button from "../button/Button"
 import colors from "../../../constants/colors"
+import { useNavigation } from '@react-navigation/native';
 
 
 function TourCardVetical({ tour }) {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Image
@@ -14,7 +16,7 @@ function TourCardVetical({ tour }) {
                 <Text style={styles.textName}>{tour.name}</Text>
                 <Text>{tour.locate}</Text>
             </View>
-            <Button styleText={styles.btntext} style={styles.btn} label="Xem" />
+            <Button  onPressed={() => navigation.navigate('Detail')} styleText={styles.btntext} style={styles.btn} label="Xem" />
         </View>
     )
 }

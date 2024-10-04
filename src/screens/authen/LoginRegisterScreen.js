@@ -5,9 +5,12 @@ import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
 import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
+import { useNavigation } from '@react-navigation/native';
 
 
 const LoginRegisterScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={stylesglobal.container}>
       <Header
@@ -29,7 +32,7 @@ const LoginRegisterScreen = () => {
         style={styles.EmailButton}
         labelStyle={styles.EmailLabel}
         onPressed={() => {
-          console.log(' Email');
+            navigation.navigate('RegisterScreen');
         }}
       />
       <SocialButton

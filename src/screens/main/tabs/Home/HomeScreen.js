@@ -7,9 +7,11 @@ import Swiper from 'react-native-swiper';
 import TourCard from '../../../../components/common/card/CardTour';
 import TourCardVetical from '../../../../components/common/card/TourCardVetical';
 import { tours,categorys,data} from '../../../../constants/data';
+import { useNavigation } from '@react-navigation/native';
 
 
 const HomeScreen = () => {
+    const navigation = useNavigation();
     const [refreshing, setRefreshing] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [selectedFavorite, setSelectedFavorite] = useState(null)
@@ -44,7 +46,7 @@ const HomeScreen = () => {
                         accessibilityElementsHidden={false}
                         accessible={false}
                         refreshing={refreshing}
-                        progressBackgroundColor={colors.Gray_0}
+                        progressBackgroundColor={colors.Grey_0}
                         onRefresh={onRefresh}
                         style={styles.refreshControl}
                     >
@@ -63,7 +65,7 @@ const HomeScreen = () => {
                                 style={styles.serchIcon}
                                 source={require('../../../../assets/images/searchIcon.png')} />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Voucher')}>
                             <Image
                                 style={styles.noticeIcon}
                                 source={require('../../../../assets/images/noticeIcon.png')} />

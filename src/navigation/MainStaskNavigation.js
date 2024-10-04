@@ -12,8 +12,10 @@ import EditProfileScreen from '../screens/main/stacks/profile/EditProfileScreen'
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
+import Detail from '../screens/main/tabs/Home/Detail';
 import ButtomNavigation from './BottomNavigation';
-
+import Voucher from '../screens/main/stacks/Voucher/Voucher';
+import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -43,6 +45,9 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
             <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="Detail" component={Detail} />
+            <Stack.Screen name="Voucher" component={Voucher} />
+            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
         </Stack.Navigator>
     )
 }

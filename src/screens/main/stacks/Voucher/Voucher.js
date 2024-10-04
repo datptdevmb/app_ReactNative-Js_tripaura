@@ -9,14 +9,17 @@ import SectionViewVoucher from './../../../../components/multiComponent/SectionV
 import stylesglobal from '../../../../constants/global';
 import colors from '../../../../constants/colors';
 import fontsize from '../../../../constants/fontsize';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Voucher = () => {
+  const navigation = useNavigation();
   return (
     <ScrollView style={stylesglobal.container}>
       <Headercomponet
         leftIcon={Icons.ic_leftarrow}
         title={"Ưu đãi"}
+        onPressLeftIcon={() => navigation.goBack()}
       />
       <View style={{ marginTop: 40 }}>
         <CategroryCity data={datacity} />

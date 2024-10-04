@@ -1,16 +1,22 @@
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Header from '../../../components/common/header/Headercomponet';
 import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Login = () => {
+  const navigation = useNavigation();
+  const back = () => {
+    navigation.goBack()
+  }
   return (
     <View style={stylesglobal.container}>
       <Header
         leftIcon={Icons.ic_leftarrow}
+        onPressLeftIcon={back}
       />
       <Text style={[stylesglobal.textheader, { marginTop: 14 }]}>Đăng nhập</Text>
       <Text style={stylesglobal.textauth_description}>
@@ -38,12 +44,16 @@ const Login = () => {
       />
       <Button
         label="Đăng nhập"
-        onPressed={''}
+        onPressed={() => navigation.navigate('MainTabNavigation')}
         style={{ marginTop: 29 }}
       />
       <View style={[stylesglobal.containerTextOptions, { marginTop: 30 }]}>
-        <Text style={stylesglobal.commonTextStyle}>Tạo tài khoản</Text>
-        <Text style={stylesglobal.commonTextStyle}>Quên mật khẩu ?</Text>
+        <TouchableOpacity  onPress={() => navigation.goBack()}  >
+          <Text style={stylesglobal.commonTextStyle}>Tạo tài khoản</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotScreen')} >
+          <Text style={stylesglobal.commonTextStyle}>Quên mật khẩu</Text>
+        </TouchableOpacity>
       </View>
       <Text style={[stylesglobal.descriptionText, { marginTop: 104 }]}>
         Bằng cách đăng kí hoặc đăng nhập , bạn đã hiểu và đồng ý với Điều khoản
