@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Headercomponet from '../../../../components/common/header/Headercomponet'
 import stylesglobal from '../../../../constants/global';
+import Icons from '../../../../constants/Icons';
+import colors from '../../../../constants/colors';
+import fontsize from '../../../../constants/fontsize';
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -12,16 +15,16 @@ const ProfileScreen = (props) => {
   return (
     <View style={stylesglobal.container}>
       <Headercomponet
-        leftIcon={require('./../../../../../assets/images/icBack.png')}
+        leftIcon={Icons.ic_leftarrow}
         title={"Thông tin cá nhân"}
         style={styles.header}
         onPressLeftIcon={nhanBack}
       />
       <View style={styles.avatarContainer}>
         <View style={styles.imageAvatar}>
-          <Image source={require('./../../../../../assets/images/h1.png')} />
+          <Image source={Icons.avatar} />
           <TouchableOpacity style={styles.icCameraContainer}>
-            <Image source={require('./../../../../../assets/images/icCamera.png')} />
+            <Image source={Icons.ic_camera} />
           </TouchableOpacity>
         </View>
         <Text style={styles.txtName}>Nguyễn Văn Bảo Hoàng</Text>
@@ -33,15 +36,15 @@ const ProfileScreen = (props) => {
         <Text style={styles.title}>Giới thiệu</Text>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('./../../../../../assets/images/icBack.png')} />
-          <Text style={styles.txtTitle}>Ngày sinh:</Text>
+            source={Icons.ic_giftbox} />
+          <Text style={[styles.txtTitle,{color:colors.Grey_600}]}>Ngày sinh:</Text>
           <Text style={styles.txtContent}>29/11/2004</Text>
         </View>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('./../../../../../assets/images/icBack.png')} />
-          <Text style={styles.txtTitle}>Ngày sinh:</Text>
-          <Text style={styles.txtContent}>29/11/2004</Text>
+            source={Icons.ic_person} />
+          <Text style={[styles.txtTitle,{color:colors.Grey_600}]}>Gioi tính</Text>
+          <Text style={styles.txtContent}>Nam</Text>
         </View>
       </View>
       <View style={styles.ttlhContainer}>
@@ -49,27 +52,25 @@ const ProfileScreen = (props) => {
           <Text style={styles.title}>Thông tin liên hệ</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('EditProfileScreen')}>
-            <Image style={styles.icon}
-              source={require('./../../../../../assets/images/icBack.png')} />
+            <Image 
+              source={Icons.ic_edit} />
           </TouchableOpacity>
         </View>
-
-
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('./../../../../../assets/images/icBack.png')} />
+            source={Icons.ic_email} />
           <Text style={styles.txtTitle}>Emai:</Text>
           <Text style={styles.txtContent}>nvbaohoang@gmail.com</Text>
         </View>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('./../../../../../assets/images/icBack.png')} />
+            source={Icons.ic_cellphone} />
           <Text style={styles.txtTitle}>Phone:</Text>
           <Text style={styles.txtContent}>03427245744</Text>
         </View>
         <View style={styles.itemProfile}>
           <Image style={styles.icon}
-            source={require('./../../../../../assets/images/icBack.png')} />
+            source={Icons.ic_address} />
           <Text style={styles.txtTitle}>Địa chỉ:</Text>
           <Text numberOfLines={1}
             style={styles.txtContent}>Triệu Phong, Tỉnh Quảng Trị</Text>
@@ -98,23 +99,24 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    tintColor:  colors.Grey_300,
   },
   txtContent: {
     width: 250,
     fontFamily: 'Lato',
-    fontSize: 16,
+    fontSize: fontsize.md,
     fontWeight: '400',
     lineHeight: 24,
-    color: '#4D6F99',
+    color: colors.Steelblue,
     marginLeft: 4
   },
   txtTitle: {
     fontFamily: 'Lato',
-    fontSize: 16,
+    fontSize: fontsize.md,
     fontWeight: '400',
     lineHeight: 24,
-    color: '#494B4B',
+    color: colors.Semi_transparentGray,
     marginLeft: 16
   },
   itemProfile: {
@@ -124,11 +126,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Lato',
-    fontSize: 16,
+    fontSize: fontsize.md,
     fontWeight: '700',
     lineHeight: 24,
     textTransform: 'uppercase',
-    color: '#212121',
+    color: colors.Grey_900,
     marginBottom: 5
   },
   gioiThieuContainer: {
@@ -138,13 +140,13 @@ const styles = StyleSheet.create({
   underline: {
     width: '100%',
     height: 1,
-    backgroundColor: '#515252',
+    backgroundColor: colors.Grey_500,
     marginTop: 16,
   },
   txtName: {
     color: '#212121',
     fontFamily: 'Lato',
-    fontSize: 16,
+    fontSize: fontsize.md,
     fontWeight: '700',
     lineHeight: 27
   },
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
   icCameraContainer: {
     width: 28,
     height: 28,
-    backgroundColor: '#0572E7',
+    backgroundColor: colors.primary_500,
     borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   header: {
-    color: '#0572E7',
+    color: colors.primary_500,
     fontFamily: 'Lato',
     fontSize: 18,
     fontWeight: '700',

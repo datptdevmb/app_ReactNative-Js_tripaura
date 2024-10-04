@@ -5,12 +5,13 @@ import Icons from '../../../../constants/Icons'
 import colors from '../../../../constants/colors'
 import { datarate } from '../../../../constants/data'
 import SectionViewRate from '../../../../components/multiComponent/SectionViewRate'
+import stylesglobal from '../../../../constants/global'
 
 const Rate = () => {
     return (
-        <View style={styles.container}>
+        <View style={stylesglobal.container}>
             <Headercomponet
-                leftIcon={Icons.lefticon}
+                leftIcon={Icons.ic_leftarrow}
                 title={"Đánh gía"}
             />
             <View style={styles.containerstarrate}>
@@ -20,7 +21,7 @@ const Rate = () => {
                 {[1, 2, 3, 4, 5].map((star) => (
                     <Image
                         key={star}
-                        source={Icons.star}
+                        source={Icons.ic_star}
                         style={styles.star}
                     />
                 ))}
@@ -33,10 +34,6 @@ const Rate = () => {
 export default Rate
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-        flex: 1,
-    },
     containerstarrate: {
         alignItems: 'center',
         flexDirection: 'row',

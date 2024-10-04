@@ -11,7 +11,7 @@ const AppNavigation = () => {
         <NavigationContainer>
             {
                 isLogin ?
-                    <TabNavigation /> :
+                    < TabNavigation/> :
                     <AuthenStackNavigation />
             }
         </NavigationContainer>

@@ -7,7 +7,7 @@ const FavouriteScreenNoItem = () => {
       <Text style={styles.textStyle}>Yêu Thích</Text>
       <Image
         resizeMode="contain"
-        source={require('./../../../../../assets/images/Favorite.png')}
+        source={require('./../../../../assets/images/Favorite.png')}
         style={styles.image}
       />
       <Text style={styles.textfa}>Bạn chưa có địa điểm yêu thích ?</Text>

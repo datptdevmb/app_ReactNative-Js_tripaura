@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import stylesglobal from '../../../../constants/global';
+import Icons from '../../../../constants/Icons';
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
@@ -10,9 +11,9 @@ const SettingLoggedScreen = (props) => {
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
-                    <Image source={require('../.././../../../assets/images/h1.png')} />
+                    <Image source={Icons.avatar} />
                     <TouchableOpacity style={styles.icCameraContainer}>
-                        <Image source={require('./../../../../../assets/images/icCamera.png')} />
+                        <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
@@ -28,7 +29,7 @@ const SettingLoggedScreen = (props) => {
                 style={styles.iconNextContainer}>
                     <Image
                         style={styles.iconNext}
-                        source={require('./../../../../../assets/images/iconNext.png')} />
+                        source={Icons.ic_arrowright} />
                 </TouchableOpacity>
             </View>
 
@@ -38,7 +39,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('./../../../../../assets/images/cauHoi.png')} />
+                                source={Icons.ic_map} />
                         </View>
                         <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
                     </TouchableOpacity>
@@ -48,7 +49,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('./../../../../../assets/images/cauHoi.png')} />
+                                source={Icons.ic_message} />
                         </View>
                         <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
                     </TouchableOpacity>
@@ -58,7 +59,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('./../../../../../assets/images/cauHoi.png')} />
+                                source={Icons.ic_lock} />
                         </View>
                         <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
                     </TouchableOpacity>
@@ -68,7 +69,7 @@ const SettingLoggedScreen = (props) => {
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
-                                source={require('./../../../../../assets/images/cauHoi.png')} />
+                                source={Icons.ic_orther} />
                         </View>
                         <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
                     </TouchableOpacity>
@@ -80,7 +81,7 @@ const SettingLoggedScreen = (props) => {
             <View style={styles.thongBaoContainer}>
                 <View style={styles.btnContainer}>
                     <Image style={styles.imageBtn}
-                        source={require('./../../../../../assets/images/dkdv.png')} />
+                        source={Icons.ic_bell} />
                     <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
                     <View style={styles.lefticon}>
                         <Switch
@@ -95,7 +96,7 @@ const SettingLoggedScreen = (props) => {
             <View style={styles.SangToiContainer}>
                 <View style={styles.btnContainer}>
                     <Image style={styles.imageBtn}
-                        source={require('./../../../../../assets/images/dkdv.png')} />
+                        source={Icons.ic_moon} />
                     <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
                     <View style={styles.lefticon}>
                         <Switch
@@ -112,12 +113,12 @@ const SettingLoggedScreen = (props) => {
                 <TouchableOpacity>
                     <View style={styles.btnContainer}>
                         <Image style={styles.imageBtn}
-                            source={require('./../../../../../assets/images/dkdv.png')} />
+                            source={Icons.ic_earth} />
                         <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
                         <View style={styles.lefticon}>
                             <Text>VN</Text>
                             <Image style={styles.btnNext}
-                                source={require('./../../../../../assets/images/iconNext.png')} />
+                                source={Icons.ic_arrowbottom} />
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -127,12 +128,12 @@ const SettingLoggedScreen = (props) => {
                 <TouchableOpacity>
                     <View style={styles.btnContainer}>
                         <Image style={styles.imageBtn}
-                            source={require('./../../../../../assets/images/dkdv.png')} />
+                            source={Icons.ic_mony} />
                         <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
                         <View style={styles.lefticon}>
                             <Text>VND</Text>
                             <Image style={styles.btnNext}
-                                source={require('./../../../../../assets/images/iconNext.png')} />
+                                source={Icons.ic_arrowbottom} />
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -145,11 +146,11 @@ const SettingLoggedScreen = (props) => {
                 <TouchableOpacity>
                     <View style={styles.btnContainer}>
                         <Image style={styles.imageBtn}
-                            source={require('./../../../../../assets/images/dkdv.png')} />
+                            source={Icons.ic_lockout} />
                         <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
                         <View style={styles.lefticon}>
                             <Image style={styles.btnNext}
-                                source={require('./../../../../../assets/images/iconNext.png')} />
+                                source={Icons.ic_arrowright} />
                         </View>
                     </View>
                 </TouchableOpacity>

@@ -106,7 +106,7 @@ const ButtomNavigation = () => {
                 resizeMode='contain'
                 source={require('../assets/icons/HomeIcon.png')}
                 style={{
-                  tintColor: focused ? colors.primary : "#A8A8A8",
+                  tintColor: focused ? colors.primary_500 : "#A8A8A8",
                 }} />
               <Text style={{ fontSize: 8 }}>{ROUTES.home}</Text>
             </View>
@@ -125,7 +125,6 @@ const ButtomNavigation = () => {
               borderTopWidth: focused ? 2 : 0,
               borderTopColor: focused ? colors.primary : colors.onPrimary,
               height: 90,
-
               // backgroundColor:colors.primary
             }}>
               <Image

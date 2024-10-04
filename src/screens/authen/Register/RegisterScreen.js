@@ -5,12 +5,13 @@ import Header from '../../../components/common/header/Headercomponet';
 import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
+import Icons from '../../../constants/Icons';
 
 const RegisterScreen = () => {
   return (
     <View style={stylesglobal.container}>
       <Header
-        leftIcon={require('../../../../assets/images/back1.png')}
+        leftIcon={Icons.ic_leftarrow}
       />
 
       <Text style={[stylesglobal.textheader,{marginTop:7}]}>Đăng Ký</Text>

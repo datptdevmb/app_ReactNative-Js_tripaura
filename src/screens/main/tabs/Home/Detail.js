@@ -1,27 +1,10 @@
 import { Image, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
-import Lable from "../../components/common/labelText";
-import Button from "../../components/common/button/Button";
+import Lable from "../../../../components/common/labelText";
+import Button from "../../../../components/common/button/Button";
 import { useState } from "react";
-import colors from "../../constants/colors";
-
-const data = [
-  { uri: require('../../assets/images/image.png') },
-  { uri: require('../../assets/images/slider1.png') },
-  { uri: require('../../assets/images/image.png') },
-  { uri: require('../../assets/images/image.png') },
-  { uri: require('../../assets/images/image.png') },
-
-]
-
-days = [
-  { day: '4/9' },
-  { day: '5/9' },
-  { day: '7/9' },
-  { day: 'Ngày khác' }
-]
-
-
-const tour = { id: 0, day: '3 ngay 1 dem', name: 'Tour [ Biển Đảo ] - Trải nghiêm , tham quan thắng  cảnh', locate: 'VietNam', image: require('../../assets/images/image.png'), price: 300000 }
+import colors from "../../../../constants/colors";
+import { dataimage,tourdetail,days} from "../../../../constants/data";
+import Icons from "../../../../constants/Icons";
 
 
 function Detail() {
@@ -38,14 +21,14 @@ function Detail() {
       <StatusBar translucent backgroundColor="transparent" barStyle={'light-content'} />
       <Image
         style={styles.image}
-        source={require('../../assets/images/image.png')} />
+        source={Icons.image} />
 
       <ScrollView
       >
         <View
           style={styles.containerItemImage}>
           {
-            data && data.map((item, index) => (
+            dataimage && dataimage.map((item, index) => (
               <View
                 key={index}>
                 <Image
@@ -59,22 +42,22 @@ function Detail() {
 
       <View style={styles.contentContaienr}>
 
-        <Text style={styles.tourname}>{tour.name}</Text>
+        <Text style={styles.tourname}>{tourdetail.name}</Text>
         <View
           style={[styles.mr_top, styles.cl]}>
           <View
             style={styles.flex_row}>
             <Image
-              source={require('../../assets/images/locateIcon.png')} />
+              source={Icons.ic_address} />
             <Text
-              style={styles.text}>{tour.locate}</Text>
+              style={styles.text}>{tourdetail.locate}</Text>
           </View>
           <View
             style={[styles.flex_row, styles.mr_top]}>
             <Image
-              source={require('../../assets/images/IconTime.png')} />
+              source={Icons.ic_time} />
             <Text
-              style={styles.text}>{tour.day}</Text>
+              style={styles.text}>{tourdetail.day}</Text>
           </View>
         </View>
 
@@ -125,7 +108,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF'
+    backgroundColor:colors.onPrimary
   },
   image: {
     width: '100%',
@@ -137,7 +120,7 @@ const styles = StyleSheet.create({
     marginEnd: 2
   },
   selectedItem: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primary_500,
     width: 80,
     height: 32,
     marginEnd: 12,
@@ -149,7 +132,7 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
   },
   tourname: {
-    color: "#212121",
+    color: colors.Grey_900,
     fontSize: 18,
     fontStyle: "normal",
     fontWeight: "800"
@@ -164,7 +147,7 @@ const styles = StyleSheet.create({
   btnday: {
     width: 80,
     height: 32,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: colors.Gainsboro,
     marginEnd: 12,
     marginTop: 16
   },
@@ -176,10 +159,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontStyle: "normal",
     fontWeight: "regular",
-    color: "#2E2E2E"
+    color: colors.Grey_800
   },
   btndaytext: {
-    color: "#B0B0B0",
+    color: colors.Grey_800,
 
   },
   mr_top: {
@@ -194,7 +177,7 @@ const styles = StyleSheet.create({
   indicator: {
     width: '100%',
     height: 1,
-    backgroundColor: '#EDEDED',
+    backgroundColor: colors.Grey_0,
     marginTop: 25
   },
   mr_t_14: {

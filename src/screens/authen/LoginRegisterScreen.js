@@ -4,6 +4,7 @@ import { styles } from './LoginRegisterScreenStyle';
 import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
 import stylesglobal from '../../constants/global';
+import Icons from '../../constants/Icons';
 
 
 const LoginRegisterScreen = () => {
@@ -11,7 +12,7 @@ const LoginRegisterScreen = () => {
     <View style={stylesglobal.container}>
       <Header
         style={styles.Header}
-        leftIcon={require('../../../assets/images/back.png')}
+        leftIcon={Icons.ic_leftarrow}
       />
       <Text style={stylesglobal.textheader}>Đăng nhập / Đăng ký</Text>
       <Text style={stylesglobal.textauth_description}>
@@ -22,7 +23,7 @@ const LoginRegisterScreen = () => {
         label=" Email"
         icon={
           <Image
-            source={require('../../../assets/images/email.png')}
+            source={Icons.ic_email}
           />
         }
         style={styles.EmailButton}
@@ -35,7 +36,7 @@ const LoginRegisterScreen = () => {
         label=" Số điên thoại"
         icon={
           <Image
-            source={require('../../../assets/images/phone.png')}
+            source={Icons.ic_phone}
           />
         }
         style={styles.PhoneButton}
@@ -48,7 +49,7 @@ const LoginRegisterScreen = () => {
         label=" Đăng nhập bằng Facebook"
         icon={
           <Image
-            source={require('../../../assets/images/fb.png')}
+            source={Icons.ic_facebook}
           />
         }
         style={styles.fbButton}
@@ -61,7 +62,7 @@ const LoginRegisterScreen = () => {
         label=" Đăng nhập bằng Google"
         icon={
           <Image
-            source={require('../../../assets/images/gg.png')}
+            source={Icons.ic_google}
           />
         }
         style={styles.ggButton}

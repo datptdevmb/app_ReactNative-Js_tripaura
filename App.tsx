@@ -4,6 +4,8 @@ import store from './src/api/store';
 import { AppProvider } from './src/screens/AppContext'; 
 import { NavigationContainer } from '@react-navigation/native'; 
 import AppNavigation from './src/AppNavigation';
+import Rate from './src/screens/main/tabs/setting/SettingLoggedScreen'
+
 
 const App = () => {
   return (
@@ -16,3 +18,4 @@ const App = () => {
 };
 
 export default App;
+

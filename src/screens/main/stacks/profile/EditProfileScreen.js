@@ -5,6 +5,9 @@ import InputComponent from '../../../../components/common/input/InputCompoment'
 import DropdownComponent from '../../../../components/common/dropdown/DropdownComponent'
 import Button from '../../../../components/common/button/Button'
 import stylesglobal from '../../../../constants/global'
+import Icons from '../../../../constants/Icons'
+import colors from '../../../../constants/colors'
+import fontsize from '../../../../constants/fontsize'
 
 const EditProfileScreen = (props) => {
   const { navigation } = props;
@@ -14,7 +17,7 @@ const EditProfileScreen = (props) => {
   return (
     <View style={stylesglobal.container}>
       <Headercomponet
-        leftIcon={require('../../../../../assets/images/icBack.png')}
+        leftIcon={Icons.ic_leftarrow}
         title={"Cập nhật thông tin cá nhân"}
         style={styles.header}
         onPressLeftIcon={nhanBack}
@@ -32,7 +35,7 @@ const EditProfileScreen = (props) => {
         />
       </View>
       <View style={styles.adressContainer}>
-        <DropdownComponent/>
+        {/* <DropdownComponent/> */}
       </View>
       <View style={styles.inputPhone}>
         <Text>Chi tiết</Text>
@@ -64,9 +67,9 @@ const styles = StyleSheet.create({
     marginTop: 35
   },
   header: {
-    color: '#2E2E2E',
+    color: colors.Grey_900,
     fontFamily: 'Lato',
-    fontSize: 16,
+    fontSize: fontsize.md,
     fontWeight: '700',
     lineHeight: 27
   },

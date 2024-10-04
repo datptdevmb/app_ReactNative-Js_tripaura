@@ -10,7 +10,7 @@ const Otp = () => {
   return (
     <View style={styles.container}>
       <Headercomponet
-        leftIcon={Icons.lefticon}
+        leftIcon={Icons.ic_leftarrow}
       />
       <View style={styles.containerotp}>
         <Text style={styles.textotp}>Xác minh OTP</Text>

@@ -6,31 +6,9 @@ import colors from '../../../../constants/colors';
 import Swiper from 'react-native-swiper';
 import TourCard from '../../../../components/common/card/CardTour';
 import TourCardVetical from '../../../../components/common/card/TourCardVetical';
+import { tours,categorys,data} from '../../../../constants/data';
 
-const data = [
-    { uri: require('../../../../assets/images/image.png') },
-    { uri: require('../../../../assets/images/slider1.png') },
-    { uri: require('../../../../assets/images/image.png') },
-    { uri: require('../../../../assets/images/image.png') },
-    { uri: require('../../../../assets/images/image.png') },
 
-]
-
-const categorys = [
-    { name: "Tất cả" },
-    { name: "Biển đảo" },
-    { name: "Leo núi" },
-    { name: "Cấm trại" },
-    { name: "Khám phá thiên nhiên" },
-]
-
-const tours = [
-    { id: 0, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
-    { id: 1, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
-    { id: 2, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
-    { id: 3, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
-    { id: 4, name: 'Vinh Ha Long', locate: 'VietNam', image: require('../../../../assets/images/image.png'), price: 300000 },
-]
 const HomeScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);

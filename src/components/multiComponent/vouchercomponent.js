@@ -1,11 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import colors from '../../constants/colors'
+import fontsize from '../../constants/fontsize'
 
 const vouchercomponent = ({data}) => {
 
     const renderItems = (item ) => {
         return (
-            <View style={styles.luuvoucher}>
+            <View key={item.id} style={styles.luuvoucher}>
                 <View style={styles.containertext}>
                     <Text style={styles.textvoucher}>Toàn nền tảng</Text>
                 </View>
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: 100,
         height: 100,
-        backgroundColor: '#B2D3F8',
+        backgroundColor: colors.primary_100,
         borderRadius: 5,
         marginStart: 7,
     },
@@ -46,13 +48,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 3,
-        backgroundColor: '#0568D2',
+        backgroundColor: colors.primary_600,
     },
     textvoucher: {
         fontSize: 10,
         fontFamily: 'Lato',
         fontWeight: '400',
-        color: '#FFFFFF',
+        color: colors.onPrimary,
         textAlign: 'center',
         lineHeight: 20,
     },
@@ -63,9 +65,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     txtgiamgia: {
-        color: '#FF0000',
+        color: colors.Red,
         textAlign: 'center',
-        fontSize: 12,
+        fontSize: fontsize.xs,
         fontStyle: 'normal',
         fontWeight: '400',
         marginTop: 2
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
         marginTop: 3,
     },
     textdon: {
-        color: '#8A8A8A',
+        color: colors.Grey_350_Day,
         textAlign: 'center',
         fontFamily: 'Lato',
         fontSize: 10,
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#0568D2',
+        backgroundColor: colors.primary_600,
         borderRadius: 20,
         marginTop: 4,
     },
