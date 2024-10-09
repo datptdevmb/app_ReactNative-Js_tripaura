@@ -6,10 +6,10 @@ import colors from '../../../../constants/colors';
 import Swiper from 'react-native-swiper';
 import TourCard from '../../../../components/common/card/CardTour';
 import TourCardVetical from '../../../../components/common/card/TourCardVetical';
-import { tours,categorys,data} from '../../../../constants/data';
+import { tours, categorys, data } from '../../../../constants/data';
 
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [selectedFavorite, setSelectedFavorite] = useState(null)
@@ -17,13 +17,17 @@ const HomeScreen = () => {
     function handleCatePress(index) {
         console.log('onpress')
         if (selectedIndex !== index) {
-            setSelectedIndex(index);  
+            setSelectedIndex(index);
         }
     }
     function handleClickFavorite(index) {
         if (selectedFavorite !== index) {
-            setSelectedFavorite(index);  // Cập nhật chỉ số của mục được chọn
+            setSelectedFavorite(index);
         }
+    }
+
+    function handleClickItem() {
+        navigation.navigate('Detail')
     }
 
     const onRefresh = useCallback(() => {
@@ -35,9 +39,24 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.container}>
+
+            <View style={[styles.flex_row, styles.headerContainer]}>
+                <Text style={styles.textHeader}>Chào mừng </Text>
+                <View style={[styles.flex_row, styles.iconContainer]}>
+                    <TouchableOpacity>
+                        <Image
+                            style={styles.serchIcon}
+                            source={require('../../../../assets/images/searchIcon.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Image
+                            style={styles.noticeIcon}
+                            source={require('../../../../assets/images/noticeIcon.png')} />
+                    </TouchableOpacity>
+                </View>
+            </View>
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                // contentContainerStyle={styles.container}
                 refreshControl={
                     <RefreshControl
                         progressViewOffset={-200}
@@ -55,38 +74,30 @@ const HomeScreen = () => {
                 <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
 
 
-                <View style={[styles.flex_row, styles.headerContainer]}>
-                    <Text style={styles.textHeader}>Chào mừng </Text>
-                    <View style={[styles.flex_row, styles.iconContainer]}>
-                        <TouchableOpacity>
-                            <Image
-                                style={styles.serchIcon}
-                                source={require('../../../../assets/images/searchIcon.png')} />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image
-                                style={styles.noticeIcon}
-                                source={require('../../../../assets/images/noticeIcon.png')} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
                 {refreshing ? <LottieView
                     source={require('../../../../assets/lottile/lote.json')}
                     autoPlay
                     loop
                     style={styles.lottieAnimation}
                 /> : <></>}
-                <Swiper
-                    style={styles.swiper}
-                    showsHorizontalScrollIndicator={true}
-                    indicatorStyle='white'
-                    autoplay
-                    autoplayTimeout={3}>
-                    {data.map((item, index) => (
-                        <Image style={styles.itemSwiper} key={index} source={item.uri} />
-                    ))}
-                </Swiper>
+
+                {
+                    data && <Swiper
+                        style={styles.swiper}
+                        showsHorizontalScrollIndicator={true}
+                        indicatorStyle='white'
+                        autoplay
+                        autoplayTimeout={3}>
+                        {data.map((item, index) => (
+                            <Image
+                                key={index}
+                                style={styles.itemSwiper}
+                                source={item.uri} />
+                        ))}
+                    </Swiper>
+                }
+
+
 
                 <ScrollView
                     style={styles.categoryContainer}
@@ -100,7 +111,9 @@ const HomeScreen = () => {
                             <View style={styles.itemContainer}>
                                 <TouchableOpacity
                                     onPress={() => handleCatePress(index)}>
-                                    <Text style={[styles.textCate, selectedIndex === index && styles.selectedItem]}>{item.name}</Text>
+                                    <Text
+                                        style={[styles.textCate, selectedIndex === index && styles.selectedItem]}>
+                                        {item.name}</Text>
 
                                 </TouchableOpacity>
                                 {
@@ -118,15 +131,17 @@ const HomeScreen = () => {
                         style={styles.cardContainer}>
                         {
                             tours && tours.map((item, index) => (
-                                <View
+                                <TouchableOpacity
                                     key={index}
                                     style={styles.card}
+                                    onPress={handleClickItem}
                                 >
                                     <TourCard
                                         tour={item}
                                         onPressed={() => handleClickFavorite(index)}
                                     />
-                                </View>
+                                </TouchableOpacity>
+
                             ))
                         }
 
@@ -164,7 +179,7 @@ const styles = StyleSheet.create({
     itemSwiper: {
         borderRadius: 30,
         height: 192,
-        width:'100%'
+        width: '100%'
     },
     heading: {
         fontSize: 16,
@@ -258,6 +273,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         width: '100%',
         paddingVertical: 10,
+        position: "static",
         justifyContent: 'space-between'
     },
     textHeader: {

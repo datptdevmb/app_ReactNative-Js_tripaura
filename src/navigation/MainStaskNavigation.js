@@ -13,7 +13,9 @@ import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import ButtomNavigation from './BottomNavigation';
-
+import Detail from '../screens/main/tabs/Home/Detail';
+import ImageDetail from '../screens/main/tabs/Home/ImageDetail';
+import PanoramaViewer from '../screens/main/tabs/Home/Ponorama';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -42,6 +44,9 @@ const MainStaskNavigation = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
             <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+            <Stack.Screen name="Detail" component={Detail} />
+            <Stack.Screen name="Ponorama" component={PanoramaViewer} />
+            <Stack.Screen name="ImageDetail" component={ImageDetail} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         </Stack.Navigator>
     )

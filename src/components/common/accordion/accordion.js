@@ -1,32 +1,79 @@
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
+const Accordion = ({ title, sections }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
 
-/* 
-{
-title :""
-subtitle:""
-content : "noi dung "
-}
-*/
+    const toggleAccordion = () => {
+        setIsExpanded(!isExpanded);
+    };
 
-import { Text, TouchableOpacity, View } from "react-native";
-import styles from "../accordion/AccordionStyle";
-
-
-function Accordion({
-    values
-}) {
     return (
-        <View>
-            {
-                values && <TouchableOpacity
-                    style={styles.container}
-                >
-                    <Text>{values?.title}</Text>
-                </TouchableOpacity>
-            }
+        <View style={styles.container}>
+            {/* Phần tiêu đề của Accordion */}
+            <TouchableOpacity onPress={toggleAccordion} style={styles.header}>
+                <Text style={styles.headerText}>{title}</Text>
+                <Text style={styles.arrow}>
+                    {isExpanded ? '▲' : '▼'}
+                </Text>
+            </TouchableOpacity>
 
+            {/* Nội dung mở rộng với tiêu đề phụ */}
+            {isExpanded && (
+                <View style={styles.content}>
+                    {sections.map((section, index) => (
+                        <View key={index} style={styles.subSection}>
+                            {/* Tiêu đề phụ */}
+                            {section?.subHeader && <Text style={styles.subHeader}>{section.subTitle}</Text>}
+                            {/* Nội dung của mỗi phần */}
+                            {section.content.map((item, i) => (
+                                <Text key={i} style={styles.bulletPoint}>• {item}</Text>
+                            ))}
+                        </View>
+                    ))}
+                </View>
+            )}
         </View>
-    )
-}
+    );
+};
 
-export default Accordion
+const styles = StyleSheet.create({
+    container: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginVertical: 10,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 5,
+    },
+    headerText: {
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    arrow: {
+        fontSize: 16,  // Kích thước của mũi tên
+    },
+    content: {
+        marginTop: 10,
+        paddingHorizontal: 5,
+    },
+    subSection: {
+        marginBottom: 10,
+    },
+    subHeader: {
+        fontWeight: 'bold',
+        fontSize: 14,
+        marginBottom: 5,
+    },
+    bulletPoint: {
+        fontSize: 14,
+        marginBottom: 5,
+    },
+});
+
+export default Accordion;

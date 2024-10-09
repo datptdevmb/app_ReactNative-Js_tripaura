@@ -1,12 +1,12 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-function FavoriteIcon(props) {
+function IcFavorite(props) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width={18}
-      height={18}
+      width={24}
+      height={24}
       viewBox="0 0 18 18"
       fill="none"
       {...props}
@@ -19,4 +19,4 @@ function FavoriteIcon(props) {
   )
 }
 
-export default FavoriteIcon
+export default IcFavorite
