@@ -15,7 +15,7 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -30,18 +30,21 @@ const RegisterScreen = () => {
     console.log('Register Data:', registerData);
 
     if (registerStatus === 'succeeded' && registerData.status) {
-        ToastAndroid.show(registerData.message, ToastAndroid.SHORT);
-        navigation.navigate('Login');
+      ToastAndroid.show(registerData.message, ToastAndroid.SHORT);
+      // Reset input fields
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      navigation.navigate('Login');
     }
     
     if (registerStatus === 'failed') {
-        if (registerData.code === 400) {
-            setEmailError(registerData.message);
-            console.log('Email Error:', registerData.message);
-        }
+      if (registerData.code === 400) {
+        setEmailError(registerData.message);
+        console.log('Email Error:', registerData.message);
+      }
     }
-}, [registerStatus, registerData, navigation]);
-
+  }, [registerStatus, registerData, navigation]);
 
   const validateInputs = () => {
     let isValid = true;
@@ -71,7 +74,7 @@ const RegisterScreen = () => {
     if (validateInputs()) {
       dispatch(DangKyTaiKhoan({ email, password }));
     }
-  }
+  };
 
   return (
     <View style={stylesglobal.container}>
@@ -125,7 +128,7 @@ const RegisterScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <Text style={[stylesglobal.descriptionText, { marginTop: 100 }]}>
+      <Text style={[stylesglobal.descriptionText, { marginTop: 100 }]} >
         Bằng cách đăng kí hoặc đăng nhập, bạn đã hiểu và đồng ý với Điều khoản chung và Chính sách bảo mật của TripAura
       </Text>
     </View>

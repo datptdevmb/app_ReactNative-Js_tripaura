@@ -12,10 +12,12 @@ import { DangNhapTaiKhoan } from '../../../api/slice/loginreducers';
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loginData, loginStatus } = useSelector((state) => state.login);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     console.log('Login Status:', loginStatus);
@@ -23,16 +25,25 @@ const Login = () => {
 
     if (loginStatus === 'succeeded' && loginData.status) {
       ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
+      setIsLoggedIn(true);
       navigation.navigate('MainTabNavigation');
     }
-    
+
     if (loginStatus === 'failed') {
       if (loginData.code === 400) {
-        ToastAndroid.show(loginData.message, ToastAndroid.SHORT);  // Hiển thị thông báo lỗi
+        ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
         console.log('Error:', loginData.message);
       }
     }
   }, [loginStatus, loginData, navigation]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setEmail('');
+      setPassword('');
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn]);
 
   const back = () => {
     navigation.goBack();
@@ -44,7 +55,7 @@ const Login = () => {
       ToastAndroid.show('Email không được để trống', ToastAndroid.SHORT);
       valid = false;
     }
-    
+
     if (!password) {
       ToastAndroid.show('Mật khẩu không được để trống', ToastAndroid.SHORT);
       valid = false;
@@ -75,8 +86,8 @@ const Login = () => {
       <Text style={[stylesglobal.textauth_description, { marginTop: 30 }]}>Email</Text>
       <InputComponent
         placeholder="Nhập email của bạn"
-        onTextChange={text => setEmail(text)}  
-        value={email}  
+        onTextChange={text => setEmail(text)}
+        value={email}
         hidePassword={false}
         placeholderTextColor="#B0B0B0"
         keyboardType="email-address"
@@ -85,15 +96,15 @@ const Login = () => {
       <Text style={[stylesglobal.textauth_description, { marginTop: 12 }]}>Mật khẩu</Text>
       <InputComponent
         placeholder="Nhập mật khẩu của bạn"
-        onTextChange={text => setPassword(text)}  
-        value={password}  
+        onTextChange={text => setPassword(text)}
+        value={password}
         hidePassword={true}
         placeholderTextColor="#B0B0B0"
         keyboardType="default"
       />
       <Button
         label="Đăng nhập"
-        onPressed={dangnhaptaikhoan}  // Gọi hàm ở đây
+        onPressed={dangnhaptaikhoan}
         style={{ marginTop: 29 }}
       />
       <View style={[stylesglobal.containerTextOptions, { marginTop: 30 }]}>
