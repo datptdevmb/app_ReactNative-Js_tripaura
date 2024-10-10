@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* TripAuraAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TripAuraAppTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-TripAuraApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-TripAuraApp.a */; };
+		00E356F31AD99517003FC87E /* TRIPAURAAPPTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TRIPAURAAPPTests.m */; };
+		0C80B921A6F3F58F76C31292 /* libPods-TRIPAURAAPP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-TRIPAURAAPP.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-TripAuraApp-TripAuraAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TripAuraApp-TripAuraAppTests.a */; };
+		7699B88040F8A987B510C191 /* libPods-TRIPAURAAPP-TRIPAURAAPPTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TRIPAURAAPP-TRIPAURAAPPTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		73FD5B72A35842E6B66A1B99 /* Lato.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98B6455F627F47969A0B6061 /* Lato.ttf */; };
 		0C2B742A5DFB48829FADD993 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28C5C7ABFDB841A5AC62C98F /* Poppins-Black.ttf */; };
@@ -42,28 +42,28 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = TripAuraApp;
+			remoteInfo = "TRIPAURAAPP";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* TripAuraAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TripAuraAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* TRIPAURAAPPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TRIPAURAAPPTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* TripAuraAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TripAuraAppTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* TripAuraApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TripAuraApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TripAuraApp/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = TripAuraApp/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TripAuraApp/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TripAuraApp/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TripAuraApp/main.m; sourceTree = "<group>"; };
-		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = TripAuraApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TripAuraApp-TripAuraAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TripAuraApp-TripAuraAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-TripAuraApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TripAuraApp.debug.xcconfig"; path = "Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-TripAuraApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TripAuraApp.release.xcconfig"; path = "Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-TripAuraApp-TripAuraAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TripAuraApp-TripAuraAppTests.debug.xcconfig"; path = "Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-TripAuraApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TripAuraApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TripAuraApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-TripAuraApp-TripAuraAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TripAuraApp-TripAuraAppTests.release.xcconfig"; path = "Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* TRIPAURAAPPTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TRIPAURAAPPTests.m"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* TRIPAURAAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TRIPAURAAPP.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "TRIPAURAAPP/AppDelegate.h"; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = "TRIPAURAAPP/AppDelegate.mm"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "TRIPAURAAPP/Images.xcassets"; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "TRIPAURAAPP/Info.plist"; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "TRIPAURAAPP/main.m"; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = TRIPAURAAPP/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TRIPAURAAPP-TRIPAURAAPPTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRIPAURAAPP-TRIPAURAAPPTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B4392A12AC88292D35C810B /* Pods-TRIPAURAAPP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRIPAURAAPP.debug.xcconfig"; path = "Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP.debug.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-TRIPAURAAPP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRIPAURAAPP.release.xcconfig"; path = "Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-TRIPAURAAPP-TRIPAURAAPPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRIPAURAAPP-TRIPAURAAPPTests.debug.xcconfig"; path = "Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-TRIPAURAAPP.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRIPAURAAPP.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "TRIPAURAAPP/LaunchScreen.storyboard"; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-TRIPAURAAPP-TRIPAURAAPPTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRIPAURAAPP-TRIPAURAAPPTests.release.xcconfig"; path = "Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		98B6455F627F47969A0B6061 /* Lato.ttf */ = {isa = PBXFileReference; name = "Lato.ttf"; path = "../src/assets/fonts/Lato.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		28C5C7ABFDB841A5AC62C98F /* Poppins-Black.ttf */ = {isa = PBXFileReference; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
@@ -92,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-TripAuraApp-TripAuraAppTests.a in Frameworks */,
+				7699B88040F8A987B510C191 /* libPods-TRIPAURAAPP-TRIPAURAAPPTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,20 +100,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-TripAuraApp.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* libPods-TRIPAURAAPP.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* TripAuraAppTests */ = {
+		00E356EF1AD99517003FC87E /* TRIPAURAAPPTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* TripAuraAppTests.m */,
+				00E356F21AD99517003FC87E /* TRIPAURAAPPTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = TripAuraAppTests;
+			path = "TRIPAURAAPPTests";
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -124,7 +124,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* TripAuraApp */ = {
+		13B07FAE1A68108700A75B9A /* TRIPAURAAPP */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -135,15 +135,15 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 			);
-			name = TripAuraApp;
+			name = "TRIPAURAAPP";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-TripAuraApp.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-TripAuraApp-TripAuraAppTests.a */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-TRIPAURAAPP.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-TRIPAURAAPP-TRIPAURAAPPTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -158,9 +158,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* TripAuraApp */,
+				13B07FAE1A68108700A75B9A /* TRIPAURAAPP */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* TripAuraAppTests */,
+				00E356EF1AD99517003FC87E /* TRIPAURAAPPTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -174,8 +174,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* TripAuraApp.app */,
-				00E356EE1AD99517003FC87E /* TripAuraAppTests.xctest */,
+				13B07F961A680F5B00A75B9A /* TRIPAURAAPP.app */,
+				00E356EE1AD99517003FC87E /* TRIPAURAAPPTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,10 +183,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-TripAuraApp.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-TripAuraApp.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-TripAuraApp-TripAuraAppTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-TripAuraApp-TripAuraAppTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-TRIPAURAAPP.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-TRIPAURAAPP.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-TRIPAURAAPP-TRIPAURAAPPTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-TRIPAURAAPP-TRIPAURAAPPTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -222,9 +222,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* TripAuraAppTests */ = {
+		00E356ED1AD99517003FC87E /* TRIPAURAAPPTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TripAuraAppTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TRIPAURAAPPTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -238,14 +238,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = TripAuraAppTests;
-			productName = TripAuraAppTests;
-			productReference = 00E356EE1AD99517003FC87E /* TripAuraAppTests.xctest */;
+			name = "TRIPAURAAPPTests";
+			productname = "TRIPAURAAPPTests";
+			productReference = 00E356EE1AD99517003FC87E /* TRIPAURAAPPTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* TripAuraApp */ = {
+		13B07F861A680F5B00A75B9A /* TRIPAURAAPP */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TripAuraApp" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TRIPAURAAPP" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -259,9 +259,9 @@
 			);
 			dependencies = (
 			);
-			name = TripAuraApp;
-			productName = TripAuraApp;
-			productReference = 13B07F961A680F5B00A75B9A /* TripAuraApp.app */;
+			name = "TRIPAURAAPP";
+			productName = "TRIPAURAAPP";
+			productReference = 13B07F961A680F5B00A75B9A /* TRIPAURAAPP.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -281,7 +281,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TripAuraApp" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TRIPAURAAPP" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -294,8 +294,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* TripAuraApp */,
-				00E356ED1AD99517003FC87E /* TripAuraAppTests */,
+				13B07F861A680F5B00A75B9A /* TRIPAURAAPP */,
+				00E356ED1AD99517003FC87E /* TRIPAURAAPPTests */,
 			);
 		};
 /* End PBXProject section */
@@ -362,15 +362,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -388,7 +388,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TripAuraApp-TripAuraAppTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TRIPAURAAPP-TRIPAURAAPPTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -410,7 +410,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TripAuraApp-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TRIPAURAAPP-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -423,15 +423,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -440,15 +440,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp/Pods-TripAuraApp-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP/Pods-TRIPAURAAPP-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -457,15 +457,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TripAuraApp-TripAuraAppTests/Pods-TripAuraApp-TripAuraAppTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TRIPAURAAPP-TRIPAURAAPPTests/Pods-TRIPAURAAPP-TRIPAURAAPPTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -475,7 +475,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* TripAuraAppTests.m in Sources */,
+				00E356F31AD99517003FC87E /* TRIPAURAAPPTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,7 +493,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* TripAuraApp */;
+			target = 13B07F861A680F5B00A75B9A /* TRIPAURAAPP */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -501,14 +501,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-TripAuraApp-TripAuraAppTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-TRIPAURAAPP-TRIPAURAAPPTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = TripAuraAppTests/Info.plist;
+				INFOPLIST_FILE = "TRIPAURAAPPTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -520,19 +520,19 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.myapp.tripaura";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TripAuraApp.app/TripAuraApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TRIPAURAAPP.app/TRIPAURAAPP";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-TripAuraApp-TripAuraAppTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-TRIPAURAAPP-TRIPAURAAPPTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = TripAuraAppTests/Info.plist;
+				INFOPLIST_FILE = "TRIPAURAAPPTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -544,21 +544,22 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.myapp.tripaura";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TripAuraApp.app/TripAuraApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TRIPAURAAPP.app/TRIPAURAAPP";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-TripAuraApp.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-TRIPAURAAPP.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = TripAuraApp/Info.plist;
+				INFOPLIST_FILE = "TRIPAURAAPP/Info.plist";
+             INFOPLIST_KEY_CFBundleDisplayName = "TRIPAURAAPP";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -569,8 +570,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = TripAuraApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.myapp.tripaura";
+				PRODUCT_NAME = "TRIPAURAAPP";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -579,12 +580,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-TripAuraApp.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-TRIPAURAAPP.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = TripAuraApp/Info.plist;
+				INFOPLIST_FILE = "TRIPAURAAPP/Info.plist";
+             INFOPLIST_KEY_CFBundleDisplayName = "TRIPAURAAPP";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -595,8 +597,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = TripAuraApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.myapp.tripaura";
+				PRODUCT_NAME = "TRIPAURAAPP";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -744,7 +746,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TripAuraAppTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TRIPAURAAPPTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -753,7 +755,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TripAuraApp" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TRIPAURAAPP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -762,7 +764,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TripAuraApp" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TRIPAURAAPP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

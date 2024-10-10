@@ -1,4 +1,4 @@
-package com.tripauraapp
+package com.myapp.tripaura
 
 
 import com.facebook.react.ReactActivity
@@ -14,7 +14,7 @@ class MainActivity : ReactActivity() {
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
    */
-  override fun getMainComponentName(): String = "TripAuraApp"
+  override fun getMainComponentName(): String = "TRIPAURAAPP"
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]

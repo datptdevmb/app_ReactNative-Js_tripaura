@@ -89,7 +89,7 @@ const ButtomNavigation = () => {
       }}>
       <Tab.Screen
         name={ROUTES.home}
-        component={LoginRegisterScreen}
+        component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{

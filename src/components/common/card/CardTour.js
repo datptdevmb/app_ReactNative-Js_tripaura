@@ -10,7 +10,7 @@ const TourCard = ({ tour, onPressed }) => {
         <View style={styles.cardContainer}>
             <View style={styles.imageContainer}>
                 <Image
-                    source={tour.image}
+                    source={{uri:tour?.imageInfo.linkImage[0]}}
                     style={styles.image} />
                 <TouchableOpacity
                     onPress={onPressed}
@@ -23,15 +23,15 @@ const TourCard = ({ tour, onPressed }) => {
             <View
                 style={styles.infoContainer}>
                 <Text
-                    style={styles.tourTitle}>{tour.name}</Text>
+                    style={styles.tourTitle}>{tour?.tourName}</Text>
                 <View
                     style={styles.locationContainer}>
                     <IcLocate />
                     <Text
-                        style={styles.locationText}>{tour.locate}</Text>
+                        style={styles.locationText}>{tour?.locationInfo?.destination}</Text>
                 </View>
                 <Text
-                    style={styles.price}>{tour.price} VND
+                    style={styles.price}>{tour?.detailInfo?.priceAdult} VND
                 </Text>
             </View>
         </View>

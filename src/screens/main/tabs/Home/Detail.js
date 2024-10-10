@@ -44,33 +44,6 @@ const HEADER_MAX_HEIGHT = 317
 const HEADER_MIN_HEIGHT = 120
 const Scroll_Distance = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT
 
-const DynamicHeader = ({ value }) => {
-
-  const animatedHeader = value.interpolate({
-    inputRange: [0, Scroll_Distance],
-    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-    extrapolate: 'clamp'
-  })
-
-  const animatedHeaderColor = value.interpolate({
-    inputRange: [0, Scroll_Distance],
-    outputRange: ['white', 'black'],
-    extrapolate: 'clamp'
-  })
-  return (
-    <Animated.View
-      style={[styles.header, { height: animatedHeader, backgroundColor: animatedHeaderColor }]}>
-      <TouchableOpacity
-      // onPress={handleClickImage}
-      >
-        {/* <Image
-          style={styles.image}
-          source={Icons.image} /> */}
-      </TouchableOpacity>
-    </Animated.View>
-  )
-}
-
 const HeaderNavBar = ({ title, onPressed }) => {
   return (
     <TouchableOpacity
@@ -106,7 +79,11 @@ const TopNavBar = () => {
 }
 
 
-function Detail({ navigation }) {
+function Detail({ navigation ,route }) {
+
+  const { _id } = route.params;
+
+  console.log(_id)
 
   const [selectedInd, setSeletedInd] = useState(0);
   const [selectedAllday, setSelectedAllday] = useState(false);

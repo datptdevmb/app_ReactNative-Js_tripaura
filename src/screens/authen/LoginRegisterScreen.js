@@ -1,64 +1,121 @@
+import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useEffect } from 'react';
-import { Button, Text, View, Alert } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
 import { styles } from './LoginRegisterScreenStyle';
+import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
-import Icons from '../../constants/Icons';
 import stylesglobal from '../../constants/global';
-
-GoogleSignin.configure({
-  webClientId: '467005316673-f7mcvgp3hmoocp41g2ju3rdqrjpbujto.apps.googleusercontent.com', // Thay YOUR_FIREBASE_WEB_CLIENT_ID bằng ID từ Firebase
-});
-
-const LoginRegisterScreen = () => {
-  const navigation = useNavigation();
+import Icons from '../../constants/Icons';
 
 
-  const signInWithGoogle = async () => {
+
+const LoginRegisterScreen = ({ navigation }) => {
+
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '425470674648-kruk5stcsfk9gbi4chvoqu00fd02jad0.apps.googleusercontent.com',
+    });
+  }, []);
+
+  const handleLoginWithGoogle = async () => {
     try {
-      // Kiểm tra xem thiết bị có hỗ trợ Google Play services không
-      await GoogleSignin.hasPlayServices();
 
-      // Đăng nhập và lấy idToken từ Google
-      const { idToken } = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const { data } = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(data.idToken);
+      const currentUser = await auth().signInWithCredential(googleCredential);
+      console.log(currentUser);
 
-      // Tạo credential Firebase từ idToken của Google
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-      // Đăng nhập vào Firebase bằng credential từ Google
-      const userCredential = await auth().signInWithCredential(googleCredential);
-      console.log('User Info:', userCredential.user);
-
-      // Hiển thị thông báo đăng nhập thành công
-      Alert.alert('Login Success', `Welcome ${userCredential.user.displayName}!`);
-
-      // Điều hướng sau khi đăng nhập thành công
-      navigation.navigate('HomeScreen');
     } catch (error) {
-      console.error('Error during Google Sign-In', error);
-
-      // Xử lý lỗi đăng nhập Google
-      Alert.alert('Login Failed', 'An error occurred during Google sign-in.');
+      switch (error.code) {
+        case statusCodes.SIGN_IN_CANCELLED:
+          Alert.alert('Sign in cancelled', 'Bạn đã hủy đăng nhập.');
+          break;
+        case statusCodes.IN_PROGRESS:
+          Alert.alert('Sign in in progress', 'Đang tiến hành đăng nhập...');
+          break;
+        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+          Alert.alert('Play services unavailable', 'Dịch vụ Google Play không khả dụng.');
+          break;
+        default:
+          Alert.alert('Error', `Đã xảy ra lỗi: ${error.message}`);
+          console.error(error);
+      }
     }
   };
 
+
+
+
   return (
     <View style={stylesglobal.container}>
+      <Header
+        style={styles.Header}
+        leftIcon={Icons.ic_leftarrow}
+      />
       <Text style={stylesglobal.textheader}>Đăng nhập / Đăng ký</Text>
       <Text style={stylesglobal.textauth_description}>
-        Nhận tài khoản <Text style={{ color: '#0572E7' }}>TripAura</Text> để khám phá tiện ích
+        Nhận tài khoản <Text style={{ color: '#0572E7' }}>TripAru</Text> để khám phá
+        tiện ích
       </Text>
       <SocialButton
-        label="Đăng nhập bằng Google"
-        // icon={<Icons.ic_google />} // Icon của Google
+        label=" Email"
+        icon={
+          <Image
+            source={Icons.ic_email}
+          />
+        }
+        style={styles.EmailButton}
+        labelStyle={styles.EmailLabel}
+        onPressed={() => {
+          navigation.navigate('RegisterScreen');
+        }}
+      />
+      <SocialButton
+        label=" Số điên thoại"
+        icon={
+          <Image
+            source={Icons.ic_phone}
+          />
+        }
+        style={styles.PhoneButton}
+        labelStyle={styles.PhoneLabel}
+        onPressed={() => {
+          console.log(' Số điên thoại');
+        }}
+      />
+      <SocialButton
+        label=" Đăng nhập bằng Facebook"
+
+        icon={
+          <Image
+            source={Icons.ic_facebook}
+          />
+        }
+        style={styles.fbButton}
+        labelStyle={styles.fbLabel}
+        onPressed={() => {
+          console.log(' Đăng nhập bằng Facebook');
+        }}
+      />
+      <SocialButton
+        onPressed={handleLoginWithGoogle}
+        label=" Đăng nhập bằng Google"
+        icon={
+          <Image
+            source={Icons.ic_google}
+          />
+        }
         style={styles.ggButton}
         labelStyle={styles.ggLabel}
-        onPressed={signInWithGoogle} // Gọi hàm đăng nhập Google
       />
+      <Text style={styles.mota}>
+        Bằng cách đăng kí hoặc đăng nhập , bạn đã hiểu và đồng ý với Điều khoản
+        chung và Chính sách bảo mật của TripAura
+      </Text>
     </View>
   );
-};
-
+}
 export default LoginRegisterScreen;

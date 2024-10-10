@@ -1,4 +1,4 @@
-package com.tripauraapp
+package com.myapp.tripaura
 
 import android.app.Application
 import com.facebook.react.PackageList
