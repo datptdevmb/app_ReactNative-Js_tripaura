@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategory} from '../../../../redux/slices/category.slice';
 import { fetchTours } from '../../../../redux/slices/tour.slice';
 
+
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
@@ -51,6 +52,7 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate('Detail',{_id});
   }
 
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -75,6 +77,7 @@ const HomeScreen = ({navigation}) => {
               source={require('../../../../assets/images/noticeIcon.png')}
             />
           </TouchableOpacity>
+
         </View>
       </View>
       <ScrollView

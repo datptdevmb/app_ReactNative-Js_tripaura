@@ -5,12 +5,15 @@ import Icons from '../../../constants/Icons'
 import colors from '../../../constants/colors'
 import InputOtpComponent from '../../../components/common/inputotp/inputotpcomponent'
 import Button from '../../../components/common/button/Button'
+import { useNavigation } from '@react-navigation/native';
 
 const Otp = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Headercomponet
         leftIcon={Icons.ic_leftarrow}
+        onPressLeftIcon={() => navigation.goBack()}
       />
       <View style={styles.containerotp}>
         <Text style={styles.textotp}>Xác minh OTP</Text>
@@ -24,11 +27,11 @@ const Otp = () => {
         </View>
         <Button
           style={styles.btnnext}
+          onPressed={() => navigation.navigate('Login')} 
           label='Very' />
         <View style={styles.containercountnumbers}>
           <Text style={styles.textcountnumbers}>Gửi lại mã tới</Text>
           <Text style={styles.textcountnumbers}>01:28</Text>
-
         </View>
       </View>
     </View>

@@ -2,6 +2,7 @@ import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-n
 import React, { useState } from 'react'
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
+import colors from '../../../../constants/colors';
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
@@ -143,7 +144,7 @@ const SettingLoggedScreen = (props) => {
             <View style={styles.underline} />
 
             <View style={styles.language}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('LoginRegisterScreen')} >
                     <View style={styles.btnContainer}>
                         <Image style={styles.imageBtn}
                             source={Icons.ic_lockout} />
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     txtDieuKhoan: {
         width: 230,
         fontFamily: 'Lato',
-        color: '#212121',
+        color: colors.Grey_900,
         fontSize: 16,
         fontWeight: '400',
         lineHeight: 24
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Lato',
         fontSize: 14,
         fontWeight: '400',
-        color: '#0572E7'
+        color: colors.primary_500
     },
     txtNameContainer: {
         width: 200,
@@ -280,7 +281,7 @@ const styles = StyleSheet.create({
     icCameraContainer: {
         width: 28,
         height: 28,
-        backgroundColor: '#0572E7',
+        backgroundColor: colors.primary_500,
         borderRadius: 28,
         justifyContent: 'center',
         alignItems: 'center',

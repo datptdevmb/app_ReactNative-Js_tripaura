@@ -2,10 +2,15 @@ import { memo } from "react"
 import { Image, StyleSheet, Text, View } from "react-native"
 import Button from "../button/Button"
 import colors from "../../../constants/colors"
+<<<<<<< HEAD
 import IcLocate from "../../../assets/icons/Ic_locate"
+=======
+import { useNavigation } from '@react-navigation/native';
+>>>>>>> b2f58fc1a68d5a10e7ba1b2ae096260f0f52e340
 
 
 function TourCardVetical({ tour }) {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row' }}>
@@ -24,8 +29,12 @@ function TourCardVetical({ tour }) {
 
                 </View>
             </View>
+<<<<<<< HEAD
 
             <Button styleText={styles.btntext} style={styles.btn} label="Xem" />
+=======
+            <Button  onPressed={() => navigation.navigate('Detail')} styleText={styles.btntext} style={styles.btn} label="Xem" />
+>>>>>>> b2f58fc1a68d5a10e7ba1b2ae096260f0f52e340
         </View>
     )
 }
