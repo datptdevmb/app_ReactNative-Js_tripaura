@@ -6,7 +6,9 @@ function ButtonApp(
     { label = ''
         , onPressed
         , style = {}
+        ,styleText
         , ...props
+       
     }
 ) {
     return (
@@ -15,7 +17,7 @@ function ButtonApp(
             style={[styles.buttonContainer, style]}
             {...props}
         >
-            <Text style={styles.buttonLabel}>{label}</Text>
+            <Text style={[styles.buttonLabel,styleText]}>{label}</Text>
         </TouchableOpacity>
     )
 }

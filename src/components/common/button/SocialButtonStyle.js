@@ -4,9 +4,9 @@ import colors from "../../../constants/colors";
 
 const styles = StyleSheet.create({
     btnContainer: {
-        backgroundColor: colors.primary,
+        backgroundColor: colors.primary_500,
         height:56,
-        width:347,
+        width:'100%',
         justifyContent:"flex-start",
         alignItems:"center",
         paddingHorizontal:16,

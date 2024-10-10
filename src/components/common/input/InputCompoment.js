@@ -1,5 +1,5 @@
-import { StyleSheet, TextInput, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import {StyleSheet, TextInput, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import colors from '../../../constants/colors';
 import stylesinput from './inputstyle';
 
@@ -10,15 +10,16 @@ const InputComponent = ({
   hidePassword,
   placeholderTextColor,
   keyboardType,
+  style
 }) => {
   const [text, setText] = useState(value);
   const [hide, setHide] = useState(hidePassword);
 
   useEffect(() => {
-    setHide(hidePassword); 
+    setHide(hidePassword);
   }, [hidePassword]);
 
-  const handleTextChange = (inputText) => {
+  const handleTextChange = inputText => {
     setText(inputText);
     if (onTextChange) {
       onTextChange(inputText);
@@ -32,9 +33,9 @@ const InputComponent = ({
         keyboardType={keyboardType || 'default'}
         onChangeText={handleTextChange}
         value={text}
-        placeholderTextColor={placeholderTextColor || colors.Gray_400}
-        secureTextEntry={hide} 
-        style={stylesinput.inputComponent}
+        placeholderTextColor={placeholderTextColor || colors.Grey_400}
+        secureTextEntry={hide}
+        style={[stylesinput.inputComponent,style]}
       />
     </View>
   );

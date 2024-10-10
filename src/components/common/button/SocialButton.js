@@ -1,9 +1,10 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import styles from "./SocialButtonStyle";
+import { memo } from "react";
 
 function SocialButton({
     label,
-    icon = () => { },
+    icon ,
     style = {},
     labelStyle,
     onPressed,
@@ -39,4 +40,4 @@ function SocialButton({
     );
 }
 
-export default SocialButton;
+export default memo(SocialButton)
