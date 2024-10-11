@@ -24,7 +24,7 @@ export const registerSlice = createSlice({
   initialState: {
     registerData: {},
     registerStatus: 'idle',
-  },
+},
   reducers: {},
   extraReducers: builder => {
     builder

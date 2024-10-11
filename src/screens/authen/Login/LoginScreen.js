@@ -7,7 +7,7 @@ import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
-import { DangNhapTaiKhoan } from '../../../api/slice/loginreducers';
+import { DangNhapTaiKhoan } from '../../../api/slices/loginreducers';
 
 const Login = (props) => {
   const { navigation } = props;

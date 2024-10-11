@@ -12,7 +12,8 @@ import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
 import { useNavigation } from '@react-navigation/native';
 
-const LoginRegisterScreen = ({ navigation }) => {
+const LoginRegisterScreen = () => {
+  const navigation = useNavigation();
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:

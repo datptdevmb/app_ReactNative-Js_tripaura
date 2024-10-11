@@ -7,7 +7,7 @@ import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { DangKyTaiKhoan } from '../../../api/slice/registerreducers';
+import { DangKyTaiKhoan } from '../../../api/slices/registerreducers';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +19,7 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { registerData, registerStatus } = useSelector((state) => state.register);
+  const { registerData, registerStatus } = useSelector((state) => state.register || {});
 
   const back = () => {
     navigation.goBack();
@@ -29,13 +29,14 @@ const RegisterScreen = () => {
     console.log('Register Status:', registerStatus);
     console.log('Register Data:', registerData);
 
-    if (registerStatus === 'succeeded' && registerData.status) {
-      ToastAndroid.show(registerData.message, ToastAndroid.SHORT);
-      // Reset input fields
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      navigation.navigate('Login');
+    if (registerStatus === 'succeeded') {
+      if (registerData.code === 200) {
+        ToastAndroid.show(registerData.message, ToastAndroid.SHORT);
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        navigation.navigate('Login');
+      }
     }
 
     if (registerStatus === 'failed') {
