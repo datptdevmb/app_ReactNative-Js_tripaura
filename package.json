@@ -35,7 +35,8 @@
     "react-pannellum": "^0.2.16",
     "react-photo-sphere-viewer": "^6.0.0",
     "react-redux": "^9.1.2",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

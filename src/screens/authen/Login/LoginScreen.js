@@ -1,12 +1,50 @@
-import { Text, View } from 'react-native';
-import React from 'react';
+import { Text, View, ToastAndroid } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppContext } from '../../AppContext'
 import Header from '../../../components/common/header/Headercomponet';
 import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
+import { DangNhap } from '../../../api/slices/LoginSlice';
 
-const Login = () => {
+const Login = (props) => {
+  const { navigation } = props;
+  const { user, setUser } = useContext(AppContext)
+  const { isLogin, setIsLogin } = useContext(AppContext)
+  const { loginData, loginStatus } = useSelector((state) => state.login);
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+
+  useEffect(() => {
+    if (loginStatus === 'successed') {
+      if (loginData.status === true) {
+        setUser(loginData.data)
+        // console.log("============data", loginData.data);
+        // console.log("============user", user);
+        // ToastAndroid.show(changeUserData.message, ToastAndroid.SHORT)
+        ToastAndroid.show(loginData.message, ToastAndroid.SHORT)
+        setIsLogin(true)
+
+      }
+    }
+  }, [loginData])
+
+  const NhanDangNhap = () => {
+    dispatch(
+      DangNhap({
+        email: email,
+        password: password
+      }),
+    );
+    // {
+    //   !loginData.message &&
+    //     ToastAndroid.show(loginData.message, ToastAndroid.SHORT)
+    // }
+  }
+
   return (
     <View style={stylesglobal.container}>
       <Header
@@ -21,7 +59,7 @@ const Login = () => {
       <Text style={[stylesglobal.textauth_description, { marginTop: 30 }]}>Email</Text>
       <InputComponent
         placeholder="Nhập email của bạn"
-        onTextChange={text => console.log(text)}
+        onTextChange={text => setEmail(text)}
         value=""
         hidePassword={false}
         placeholderTextColor="#B0B0B0"
@@ -30,7 +68,7 @@ const Login = () => {
       <Text style={[stylesglobal.textauth_description, { marginTop: 12 }]}>Mật khẩu</Text>
       <InputComponent
         placeholder="Nhập mật khẩu của bạn"
-        onTextChange={text => console.log(text)}
+        onTextChange={text => setPassword(text)}
         value=""
         hidePassword={true}
         placeholderTextColor="#B0B0B0"
@@ -38,7 +76,7 @@ const Login = () => {
       />
       <Button
         label="Đăng nhập"
-        onPressed={''}
+        onPressed={NhanDangNhap}
         style={{ marginTop: 29 }}
       />
       <View style={[stylesglobal.containerTextOptions, { marginTop: 30 }]}>
