@@ -9,8 +9,8 @@ const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
     const { user, setUser } = useContext(AppContext)
-    
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
@@ -19,7 +19,6 @@ const SettingLoggedScreen = (props) => {
                         !user.avatar ? <Image source={Icons.avatar} /> :
                             <Image source={{ uri: user.avatar }} />
                     }
-
                     <TouchableOpacity style={styles.icCameraContainer}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>

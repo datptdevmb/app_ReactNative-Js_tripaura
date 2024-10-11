@@ -7,7 +7,7 @@ import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { DangKyTaiKhoan } from '../../../api/slices/registerreducers';
+import { DangKyTaiKhoan } from '../../../redux/slices/registerreducers';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -16,19 +16,27 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => state);
-  console.log('Full Redux State:', state);
-  
-
-  const registerStatus = useSelector((state) => state.register?.registerStatus);
-  const registerData = useSelector((state) => state.register?.registerData);
-  
-  console.log('Current Register Status:', registerStatus);
-  console.log('Register Data :', registerData);
+  const { registerData, registerStatus } = useSelector((state) => state.register || {});
 
   const back = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    console.log('Register Status:', registerStatus);
+    console.log('Register Data:', registerData);
+
+    if (registerStatus === 'succeeded') {
+      if (registerData && registerData.status === 'success') {
+        navigation.navigate('Login');
+      } else {
+        console.log('Register Data is not valid:', registerData);
+      }
+    }
+    if (registerStatus === 'failed') {
+      console.log('Registration failed:', registerData);
+    }
+  }, [registerStatus, registerData, navigation]);
   const dangkytaikhoan = () => {
     console.log('Trying to register with:', { email, password });
     if (!email || !password) {
@@ -38,17 +46,6 @@ const RegisterScreen = () => {
     dispatch(DangKyTaiKhoan({ email, password }));
   };
 
-  useEffect(() => {
-    if (registerStatus === 'succeeded') {
-      ToastAndroid.show(registerData.message, ToastAndroid.SHORT);
-      navigation.navigate('Login');
-    }
-    if (registerStatus === 'failed') {
-      ToastAndroid.show('Registration failed', ToastAndroid.SHORT);
-    }
-  }, [registerStatus, registerData, navigation]);
-
-  
   return (
     <View style={stylesglobal.container}>
       <Header leftIcon={Icons.ic_leftarrow} onPressLeftIcon={back} />

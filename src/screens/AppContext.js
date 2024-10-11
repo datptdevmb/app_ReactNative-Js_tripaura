@@ -4,9 +4,9 @@ export const AppContext = createContext();
 export const AppProvider = (props) => {
     const { children } = props;
     const [isLogin, setIsLogin] = useState(true);
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState(null);
 
-    return (
+    return (        
         <AppContext.Provider
             value={{
                 isLogin, setIsLogin,

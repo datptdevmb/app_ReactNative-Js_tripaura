@@ -63,8 +63,10 @@ const LoginRegisterScreen = () => {
         style={styles.EmailButton}
         labelStyle={styles.EmailLabel}
         onPressed={() => {
+          console.log('Navigating to DangNhap');
           navigation.navigate('RegisterScreen');
         }}
+
       />
       <SocialButton
         label=" Số điên thoại"

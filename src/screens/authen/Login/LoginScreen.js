@@ -7,7 +7,7 @@ import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
-import { DangNhapTaiKhoan } from '../../../api/slices/loginreducers';
+import { DangNhapTaiKhoan } from '../../../redux/slices/loginreducers';
 
 const Login = (props) => {
   const { navigation } = props;
@@ -20,15 +20,14 @@ const Login = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (loginStatus === 'succeeded' && loginData.code === 200) {
-      ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
-      setUser(loginData.data);
-      setIsLoggedIn(true);
-      setIsLogin(true);
-      navigation.navigate('MainTabNavigation');
+    if (loginStatus === 'succeeded') {
+        setUser(loginData.user);
+        setIsLogin(true);
+        navigation.navigate('MainTabNavigation');
+        ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
     }
 
-    if (loginStatus === 'failed' && loginData.code === 400) {
+    if (loginStatus === 'failed') {
       ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
     }
   }, [loginStatus, loginData, navigation]);

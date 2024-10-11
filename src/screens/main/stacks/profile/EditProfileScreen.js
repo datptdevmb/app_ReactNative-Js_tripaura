@@ -9,7 +9,7 @@ import Icons from '../../../../constants/Icons'
 import colors from '../../../../constants/colors'
 import fontsize from '../../../../constants/fontsize'
 import { useDispatch, useSelector } from 'react-redux';
-import { ThayDoiThongTin } from '../../../../api/slices/ChangeUserSlice'
+import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice'
 import { AppContext } from '../../../AppContext'
 import { number } from 'prop-types'
 import { data } from '../../../../constants/data'
