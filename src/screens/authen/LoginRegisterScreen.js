@@ -10,7 +10,6 @@ import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
 import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
-import {useNavigation} from '@react-navigation/native';
 
 const LoginRegisterScreen = ({navigation}) => {
   useEffect(() => {
@@ -63,6 +62,7 @@ const LoginRegisterScreen = ({navigation}) => {
         labelStyle={styles.EmailLabel}
         onPressed={() => {
           navigation.navigate('RegisterScreen');
+          console.log("Navigating to RegisterScreen");
         }}
       />
       <SocialButton

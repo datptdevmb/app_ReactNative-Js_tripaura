@@ -11,8 +11,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <AppProvider> 
-          {/* <AppNavigation /> */}
-          <VietnamMap/>
+          <AppNavigation />
+   
       </AppProvider>
     </Provider>
   );
