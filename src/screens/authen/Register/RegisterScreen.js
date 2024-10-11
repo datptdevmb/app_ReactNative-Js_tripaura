@@ -13,70 +13,42 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { registerData, registerStatus } = useSelector((state) => state.register || {});
+  const state = useSelector((state) => state);
+  console.log('Full Redux State:', state);
+  
+
+  const registerStatus = useSelector((state) => state.register?.registerStatus);
+  const registerData = useSelector((state) => state.register?.registerData);
+  
+  console.log('Current Register Status:', registerStatus);
+  console.log('Register Data :', registerData);
 
   const back = () => {
     navigation.goBack();
   };
+  const dangkytaikhoan = () => {
+    console.log('Trying to register with:', { email, password });
+    if (!email || !password) {
+      console.warn('Email or password is empty');
+      return;
+    }
+    dispatch(DangKyTaiKhoan({ email, password }));
+  };
 
   useEffect(() => {
-    console.log('Register Status:', registerStatus);
-    console.log('Register Data:', registerData);
-
     if (registerStatus === 'succeeded') {
-      if (registerData.code === 200) {
-        ToastAndroid.show(registerData.message, ToastAndroid.SHORT);
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        navigation.navigate('Login');
-      }
+      ToastAndroid.show(registerData.message, ToastAndroid.SHORT);
+      navigation.navigate('Login');
     }
-
     if (registerStatus === 'failed') {
-      if (registerData.code === 400) {
-        setEmailError(registerData.message);
-        console.log('Email Error:', registerData.message);
-      }
+      ToastAndroid.show('Registration failed', ToastAndroid.SHORT);
     }
   }, [registerStatus, registerData, navigation]);
 
-  const validateInputs = () => {
-    let isValid = true;
-    setEmailError('');
-    setPasswordError('');
-
-    if (!email) {
-      setEmailError('Vui lòng nhập email.');
-      console.log('Email Error: Vui lòng nhập email.');
-      isValid = false;
-    }
-    if (!password) {
-      setPasswordError('Vui lòng nhập mật khẩu.');
-      console.log('Password Error: Vui lòng nhập mật khẩu.');
-      isValid = false;
-    } else if (password !== confirmPassword) {
-      setPasswordError('Mật khẩu không khớp.');
-      console.log('Password Error: Mật khẩu không khớp.');
-      isValid = false;
-    }
-
-    return isValid;
-  };
-
-  const dangkytaikhoan = () => {
-    console.log('Attempting to register with:', { email, password });
-    if (validateInputs()) {
-      dispatch(DangKyTaiKhoan({ email, password }));
-    }
-  };
-
+  
   return (
     <View style={stylesglobal.container}>
       <Header leftIcon={Icons.ic_leftarrow} onPressLeftIcon={back} />

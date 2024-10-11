@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#E6F1FD",
         width: 81,
         height: 64,
-        marginStart: 75
+        marginStart: 55
     },
     btntext: {
         color: colors.primary_200

@@ -13,7 +13,7 @@ const Login = (props) => {
   const { navigation } = props;
   const { setUser, setIsLogin } = useContext(AppContext);
   const dispatch = useDispatch();
-  const { loginData, loginStatus } = useSelector((state) => state.login);
+  const { loginData, loginStatus } = useSelector((state) => state.login || {});
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
