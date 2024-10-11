@@ -9,7 +9,7 @@ const FavouriteScreenNoLogin = () => {
       <Text style={styles.textStyle}>Yêu Thích</Text>
       <Image
         resizeMode="contain"
-        source={require('./../../../../../assets/images/Favorite.png')} 
+        source={require('./../../../../assets/images/Favorite.png')}
         style={styles.image}
       />
       <Text style={styles.text2Style}>

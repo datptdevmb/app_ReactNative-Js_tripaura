@@ -8,6 +8,12 @@ import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScree
 import { ROUTES } from '../constants/routes';
 import colors from '../constants/colors';
 import SlideChangeText from '../components/common/slide/SlideChangeText';
+import IcHome from '../assets/icons/bottom_tab/Ic_home';
+import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
+import IcProfile from '../assets/icons/bottom_tab/ic_profile';
+import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
+import Mymap from '../screens/main/tabs/Home/Mymap';
+import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -64,8 +70,6 @@ function CustomBottom({ onPress, children }) {
 
       </ImageBackground>
 
-
-
     </TouchableOpacity>
   )
 }
@@ -81,10 +85,6 @@ const ButtomNavigation = () => {
           position: 'absolute',
           shadowColor: colors.onPrimary,
           height: 90,
-          // left: 10,
-          // right: 10,
-          // bottom: -30,
-          // borderRadius: 16
         }
       }}>
       <Tab.Screen
@@ -99,15 +99,8 @@ const ButtomNavigation = () => {
               borderTopWidth: focused ? 1 : 0,
               borderTopColor: focused ? colors.primary : colors.onPrimary,
               height: 90,
-
-              // backgroundColor:colors.primary
             }}>
-              <Image
-                resizeMode='contain'
-                source={require('../assets/icons/HomeIcon.png')}
-                style={{
-                  tintColor: focused ? colors.primary_500 : "#A8A8A8",
-                }} />
+              <IcHome />
               <Text style={{ fontSize: 8 }}>{ROUTES.home}</Text>
             </View>
           )
@@ -134,6 +127,7 @@ const ButtomNavigation = () => {
                   tintColor: focused ? colors.primary_500 : colors.Grey_800,
 
                 }} />
+              <IcVoucher />
               <Text>Uu dai</Text>
             </View>
           )
@@ -173,13 +167,7 @@ const ButtomNavigation = () => {
 
               // backgroundColor:colors.primary
             }}>
-              <Image
-                resizeMode='contain'
-                source={require('../assets/icons/HomeIcon.png')}
-                style={{
-                  tintColor: focused ? colors.primary : colors.Grey_800,
-
-                }} />
+              <IcFavorite />
               <Text>{ROUTES.home}</Text>
             </View>
           )
@@ -199,13 +187,7 @@ const ButtomNavigation = () => {
 
               // backgroundColor:colors.primary
             }}>
-              <Image
-                resizeMode='contain'
-                source={require('../assets/icons/HomeIcon.png')}
-                style={{
-                  tintColor: focused ? colors.primary : colors.Grey_800,
-
-                }} />
+              <IcProfile />
               <Text>{ROUTES.home}</Text>
             </View>
           )

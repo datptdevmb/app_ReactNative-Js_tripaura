@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import EmailIcon from '../../../assets/icons/EmailIcon';
-import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
+import EmailIcon from '../../../assets/icons/bottom_tab/Ic_email';
+import FavoriteIcon from '../../../assets/icons/bottom_tab/Ic_favorite';
+import IcLocate from '../../../assets/icons/Ic_locate';
 
 
 const TourCard = ({ tour, onPressed }) => {
@@ -9,7 +10,7 @@ const TourCard = ({ tour, onPressed }) => {
         <View style={styles.cardContainer}>
             <View style={styles.imageContainer}>
                 <Image
-                    source={tour.image}
+                    source={{uri:tour?.imageInfo.linkImage[0]}}
                     style={styles.image} />
                 <TouchableOpacity
                     onPress={onPressed}
@@ -19,13 +20,19 @@ const TourCard = ({ tour, onPressed }) => {
             </View>
 
 
-            <View style={styles.infoContainer}>
-                <Text style={styles.tourTitle}>{tour.name}</Text>
-                <View style={styles.locationContainer}>
-                    {/* <FontAwesome name="map-marker" size={18} color="#FF6347" /> */}
-                    <Text style={styles.locationText}>{tour.locate}</Text>
+            <View
+                style={styles.infoContainer}>
+                <Text
+                    style={styles.tourTitle}>{tour?.tourName}</Text>
+                <View
+                    style={styles.locationContainer}>
+                    <IcLocate />
+                    <Text
+                        style={styles.locationText}>{tour?.locationInfo?.destination}</Text>
                 </View>
-                <Text style={styles.price}>{tour.price} VND</Text>
+                <Text
+                    style={styles.price}>{tour?.detailInfo?.priceAdult} VND
+                </Text>
             </View>
         </View>
     );
@@ -37,12 +44,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#F8F8F8',
         borderRadius: 10,
         shadowColor: '#000',
-        // shadowOffset: { width: 0, height: 2 },
-        // shadowOpacity: 0.3,
-        // shadowRadius: 4,
-        // elevation: 5,
-        // margin: 10,
-        // overflow: 'hidden',
     },
     imageContainer: {
         position: 'relative',

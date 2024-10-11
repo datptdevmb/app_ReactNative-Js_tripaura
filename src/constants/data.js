@@ -176,5 +176,5 @@ export const days = [
     { day: '4/9' },
     { day: '5/9' },
     { day: '7/9' },
-    { day: 'Ngày khác' }
+   
 ]

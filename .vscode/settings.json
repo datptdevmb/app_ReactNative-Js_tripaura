@@ -1,0 +1,5 @@
+{
+    "editor.suggest.showStatusBar": false,
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "java.compile.nullAnalysis.mode": "automatic"
+}

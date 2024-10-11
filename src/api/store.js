@@ -1,17 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import locationsReducer from './reducers';
-// import registerReducer from './slice/registerreducers';
 import loginReducer from './slices/LoginSlice';
 import { createLogger } from 'redux-logger';
 import changeUserReducer from './slices/ChangeUserSlice';
 
 const logger = createLogger();
+import registerReducer from './slice/registerreducers';
+import loginReducer from './slice/loginreducers';
 
 const store = configureStore({
     reducer: {
         locations: locationsReducer,
         changeUser: changeUserReducer,
-        // register: registerReducer, 
+        register: registerReducer, 
         login: loginReducer,  
     },
     middleware: (getDefaultMiddleware) =>

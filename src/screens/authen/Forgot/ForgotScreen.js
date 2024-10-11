@@ -5,12 +5,16 @@ import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Forgot = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={stylesglobal.container}>
       <Header
         leftIcon={Icons.ic_leftarrow}
+        onPressLeftIcon={() => navigation.goBack()}
       />
 
       <Text style={[stylesglobal.textheader, { marginTop: 14 }]}>Quên mật khẩu   </Text>
@@ -29,7 +33,7 @@ const Forgot = () => {
       />
       <Button
         label="Gửi mã xác thực" 
-        onPressed={''} 
+        onPressed={() => navigation.navigate('Otp')}
         style={{marginTop: 32}} 
       />
 

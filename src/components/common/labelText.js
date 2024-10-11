@@ -17,12 +17,13 @@ const styles = StyleSheet.create({
     dotStyle: {
         height: 25,
         width: 6,
-        backgroundColor: colors.primary
+        backgroundColor: colors.primary_500
     },
     textlabel: {
         marginStart: 12,
-        color: "black",
+        color: "#494B4B",
         fontSize: 16,
+        fontFamily:'Poppins_Regular',
         fontStyle: "normal",
         fontWeight: "700",
         lineHeight: 24
