@@ -12,7 +12,6 @@ import IcHome from '../assets/icons/bottom_tab/Ic_home';
 import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
 import IcProfile from '../assets/icons/bottom_tab/ic_profile';
 import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
-import Mymap from '../screens/main/tabs/Home/Mymap';
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 
 

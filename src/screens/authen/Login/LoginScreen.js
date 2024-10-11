@@ -20,7 +20,7 @@ const Login = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (loginStatus === 'succeeded' && loginData.status) {
+    if (loginStatus === 'succeeded' && loginData.code === 200) {
       ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
       setUser(loginData.data);
       setIsLoggedIn(true);
