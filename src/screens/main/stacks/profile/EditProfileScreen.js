@@ -13,6 +13,7 @@ import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { AppContext } from '../../../AppContext';
 
 const EditProfileScreen = (props) => {
+  const { navigation } = props
   const { user, setUser } = useContext(AppContext);
   const { changeUserData, changeUserStatus } = useSelector((state) => state.changeUser);
   const dispatch = useDispatch();
@@ -42,16 +43,18 @@ const EditProfileScreen = (props) => {
   };
 
   useEffect(() => {
-    if (changeUserStatus === 'succeeded') {
+    if (changeUserStatus === 'successed') {
       const { status, message, data } = changeUserData;
-      if (status) {
+      if (changeUserData.status == true) {
         setUser(data);
-        ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);
-        navigation.goBack(); 
+        // ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);
+        // navigation.goBack();
       } else {
         ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
       }
     }
+    console.log("========== changeData ==========", changeUserData);
+
   }, [changeUserData, changeUserStatus]);
 
   const validateInputs = () => {
@@ -118,7 +121,6 @@ const EditProfileScreen = (props) => {
       <View style={styles.inputPhone}>
         <Text>Chi tiết</Text>
         <InputComponent
-          value={address}
           onTextChange={(text) => {
             console.log("Street changed:", text);
             setAddress(text);

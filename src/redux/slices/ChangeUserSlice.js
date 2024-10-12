@@ -14,6 +14,7 @@ export const ThayDoiThongTin = createAsyncThunk('changeUser', async data => {
     );
     const user = await response.json();
     if (response.ok) {
+        console.log("============== changeUser =========", user);
         return user;
     }
     throw new Error('Failed');
