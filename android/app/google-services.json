@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "425470674648",
+    "project_id": "reactnative-tripaura-app",
+    "storage_bucket": "reactnative-tripaura-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425470674648:android:1018e7681c3916443eb9ad",
+        "android_client_info": {
+          "package_name": "com.myapp.tripaura"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425470674648-0g9n6lhcj9tgo4qgqt89ulqnf7925s3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myapp.tripaura",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "425470674648-0sshsqeq71k474i7i5v2vco2b102meag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myapp.tripaura",
+            "certificate_hash": "b5b4b877ed9b7911a7267bf0c79dfaded3ea9390"
+          }
+        },
+        {
+          "client_id": "425470674648-kruk5stcsfk9gbi4chvoqu00fd02jad0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy_JhHbnA3e8aIQhnmv84eaVScVXe2Njk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425470674648-kruk5stcsfk9gbi4chvoqu00fd02jad0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
