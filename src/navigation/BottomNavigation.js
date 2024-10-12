@@ -1,44 +1,45 @@
-import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
-import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
+import React from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/main/tabs/Home/HomeScreen';
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
 import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScreen';
-import { ROUTES } from '../constants/routes';
+import {ROUTES} from '../constants/routes';
 import colors from '../constants/colors';
 import SlideChangeText from '../components/common/slide/SlideChangeText';
 import IcHome from '../assets/icons/bottom_tab/Ic_home';
 import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
 import IcProfile from '../assets/icons/bottom_tab/ic_profile';
 import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
-import Mymap from '../screens/main/tabs/Home/Mymap';
+// import Mymap from '../screens/main/tabs/Home/Mymap';
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
-
 
 const Tab = createBottomTabNavigator();
 
-
-function CustomBottom({ onPress, children }) {
+function CustomBottom({onPress, children}) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={
-        {
-          top: -15,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }
-      }>
+      style={{
+        top: -15,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
       <ImageBackground
         style={{
           width: 95,
           height: 95,
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
-        source={require('../assets/images/imgButtonTab.png')}
-      >
+        source={require('../assets/images/imgButtonTab.png')}>
         <View
           style={{
             width: 70,
@@ -47,31 +48,23 @@ function CustomBottom({ onPress, children }) {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: colors.onPrimary,
-
-          }}
-        >
-
+          }}>
           <View
-            style={
-              {
-                backgroundColor: colors.primary_200,
-                width: 60,
-                height: 60,
-                borderRadius: 30,
-                borderWidth: 2,
-                borderColor: colors.onPrimary
-              }
-            }>
+            style={{
+              backgroundColor: colors.primary_200,
+              width: 60,
+              height: 60,
+              borderRadius: 30,
+              borderWidth: 2,
+              borderColor: colors.onPrimary,
+            }}>
             {children}
           </View>
           <SlideChangeText />
-
         </View>
-
       </ImageBackground>
-
     </TouchableOpacity>
-  )
+  );
 }
 
 const ButtomNavigation = () => {
@@ -85,108 +78,113 @@ const ButtomNavigation = () => {
           position: 'absolute',
           shadowColor: colors.onPrimary,
           height: 90,
-        }
+        },
       }}>
       <Tab.Screen
         name={ROUTES.home}
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              borderTopWidth: focused ? 1 : 0,
-              borderTopColor: focused ? colors.primary : colors.onPrimary,
-              height: 90,
-            }}>
+          tabBarIcon: ({focused}) => (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                borderTopWidth: focused ? 1 : 0,
+                borderTopColor: focused ? colors.primary : colors.onPrimary,
+                height: 90,
+              }}>
               <IcHome />
-              <Text style={{ fontSize: 8 }}>{ROUTES.home}</Text>
+              <Text style={{fontSize: 8}}>{ROUTES.home}</Text>
             </View>
-          )
+          ),
         }}
       />
       <Tab.Screen
         name="Favourite"
         component={FavouriteScreenNoItem}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              borderTopWidth: focused ? 2 : 0,
-              borderTopColor: focused ? colors.primary : colors.onPrimary,
-              height: 90,
-              // backgroundColor:colors.primary
-            }}>
+          tabBarIcon: ({focused}) => (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                borderTopWidth: focused ? 2 : 0,
+                borderTopColor: focused ? colors.primary : colors.onPrimary,
+                height: 90,
+                // backgroundColor:colors.primary
+              }}>
               <IcVoucher />
               <Text>Uu dai</Text>
             </View>
-          )
+          ),
         }}
       />
       <Tab.Screen
-        name='yeuthich'
+        name="yeuthich"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          tabBarIcon: ({focused}) => (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
-                resizeMode='contain'
+                resizeMode="contain"
                 source={require('../assets/icons/SearchIcon.png')}
                 style={{
-                  tintColor: colors.onPrimary
-                }} />
+                  tintColor: colors.onPrimary,
+                }}
+              />
             </View>
           ),
-          tabBarButton: (props) => (
-            <CustomBottom {...props} />
-          )
+          tabBarButton: props => <CustomBottom {...props} />,
         }}
       />
       <Tab.Screen
         name="Notification"
         component={NotificationScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              borderTopWidth: focused ? 2 : 0,
-              borderTopColor: focused ? colors.primary : colors.onPrimary,
-              height: 90,
+          tabBarIcon: ({focused}) => (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                borderTopWidth: focused ? 2 : 0,
+                borderTopColor: focused ? colors.primary : colors.onPrimary,
+                height: 90,
 
-              // backgroundColor:colors.primary
-            }}>
+                // backgroundColor:colors.primary
+              }}>
               <IcFavorite />
               <Text>{ROUTES.home}</Text>
             </View>
-          )
-        }} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Setting"
         component={SettingLoggedScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{
-              justifyContent: 'center',
-              width: '100%',
-              alignItems: 'center',
-              borderTopWidth: focused ? 2 : 0,
-              borderTopColor: focused ? colors.primary : colors.onPrimary,
-              height: 90,
+          tabBarIcon: ({focused}) => (
+            <View
+              style={{
+                justifyContent: 'center',
+                width: '100%',
+                alignItems: 'center',
+                borderTopWidth: focused ? 2 : 0,
+                borderTopColor: focused ? colors.primary : colors.onPrimary,
+                height: 90,
 
-              // backgroundColor:colors.primary
-            }}>
+                // backgroundColor:colors.primary
+              }}>
               <IcProfile />
               <Text>{ROUTES.home}</Text>
             </View>
-          )
-        }} />
+          ),
+        }}
+      />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-export default ButtomNavigation
+export default ButtomNavigation;
