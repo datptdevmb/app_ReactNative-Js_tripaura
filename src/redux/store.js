@@ -6,7 +6,6 @@ import tourReducer from './slices/tour.slice';
 import categoryReducer from './slices/category.slice';
 import provincesReducer from './slices/cityprovince'
 import districtReducer from './slices/district';
-import dropdownReducer from './slices/userDropdownSlice';
 
 // Combine reducers in the store configuration
 const store = configureStore({
