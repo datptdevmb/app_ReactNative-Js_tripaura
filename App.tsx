@@ -6,12 +6,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './src/AppNavigation';
 import Rate from './src/screens/main/tabs/setting/SettingLoggedScreen'
 import DropdownComponent from './src/components/common/dropdown/DropdownComponent.js';
+import AboutusSrceen from './src/screens/main/stacks/termspage/termspageScreen.js';
 
 const App = () => {
   return (
     <Provider store={store}>
       <AppProvider>
-        <AppNavigation />
+        <AboutusSrceen/>
       </AppProvider>
     </Provider>
   );
