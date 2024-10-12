@@ -1,105 +1,99 @@
-import { StyleSheet, Text, View, ToastAndroid } from 'react-native'
-import React, { useEffect, useState, useContext } from 'react'
-import Headercomponet from '../../../../components/common/header/Headercomponet'
-import InputComponent from '../../../../components/common/input/InputCompoment'
-import DropdownComponent from '../../../../components/common/dropdown/DropdownComponent'
-import Button from '../../../../components/common/button/Button'
-import stylesglobal from '../../../../constants/global'
-import Icons from '../../../../constants/Icons'
-import colors from '../../../../constants/colors'
-import fontsize from '../../../../constants/fontsize'
+import { StyleSheet, Text, View, ToastAndroid } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import Headercomponet from '../../../../components/common/header/Headercomponet';
+import InputComponent from '../../../../components/common/input/InputCompoment';
+import DropdownComponent from '../../../../components/common/dropdown/DropdownComponent';
+import Button from '../../../../components/common/button/Button';
+import stylesglobal from '../../../../constants/global';
+import Icons from '../../../../constants/Icons';
+import colors from '../../../../constants/colors';
+import fontsize from '../../../../constants/fontsize';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice'
-import { AppContext } from '../../../AppContext'
-import { number } from 'prop-types'
-import { data } from '../../../../constants/data'
-
+import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
+import { AppContext } from '../../../AppContext';
 
 const EditProfileScreen = (props) => {
-  const { navigation } = props;
   const { user, setUser } = useContext(AppContext);
   const { changeUserData, changeUserStatus } = useSelector((state) => state.changeUser);
   const dispatch = useDispatch();
-  const [message, setMessage] = useState("");
-  const [fullname, setFullname] = useState("Nguyễn Văn Bảo Hoàng");
-  const [email, setEmail] = useState(user.email)
-  const [phone, setPhone] = useState(user.phone)
-  const [textError, setTextError] = useState()
-  const [gender, setGender] = useState("Nam")
-  const [address, setAddress] = useState("Quảng Trị")
-  const [nationality, setNationality] = useState("Việt Nam")
-  const [dateofbirth, setDateofbirths] = useState("2024-10-11")
-  const [street, setStreet] = useState()
+  const { provinces } = useSelector((state) => state.provinces);
+  const { districts } = useSelector((state) => state.district);
 
+  const [email, setEmail] = useState(user?.email || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [textError, setTextError] = useState("");
+  const [address, setAddress] = useState(user?.address || "");
+  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
 
-  const changeTextEmail = (data) => {
-    setEmail(data);
-    setTextError("")
-  }
+  const filteredDistricts = selectedProvince
+    ? districts.filter(district => district.province_code === selectedProvince.code)
+    : [];
 
-  const changeTextPhone = (data) => {
-    setPhone(data);
-    setTextError("")
-  }
+  const handleProvinceSelect = (provinceCode) => {
+    const province = provinces.find(p => p.code === provinceCode);
+    setSelectedProvince(province);
+    setSelectedDistrict(null);
+  };
 
-  const changeTextStreet = (data) => {
-    setStreet(data);
-    setTextError("")
-  }
-
-  const nhanBack = () => {
-    navigation.goBack()
-  }
+  const handleDistrictSelect = (districtCode) => {
+    const district = filteredDistricts.find(d => d.code === districtCode);
+    setSelectedDistrict(district);
+  };
 
   useEffect(() => {
-    if (changeUserStatus === 'successed') {
-      if (changeUserData.status === true) {
-        setUser({ ...changeUserData.data })
-        console.log("============user", user);
-        // ToastAndroid.show(changeUserData.message, ToastAndroid.SHORT)
-
+    if (changeUserStatus === 'succeeded') {
+      const { status, message, data } = changeUserData;
+      if (status) {
+        setUser(data);
+        ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);
+        navigation.goBack(); 
+      } else {
+        ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
       }
     }
-  }, [changeUserData])
+  }, [changeUserData, changeUserStatus]);
+
+  const validateInputs = () => {
+    if (!email || !phone || !address || !selectedDistrict || !selectedProvince) {
+      setTextError("Vui lòng điền đầy đủ thông tin!");
+      return false;
+    }
+    setTextError("");
+    return true;
+  };
 
   const thayDoi = () => {
-    if (!email || !phone || !street) {
-      setTextError('Bạn cần nhập đầy đủ thông tin.')
-      return;
-    }
-    dispatch(
-      ThayDoiThongTin({
-        userId: "6705e798df463fee90387e79",
-        fullname: fullname,
-        email: email,
-        phone: phone,
-        nationality: nationality,
-        gender: gender,
-        address: address,
-        dateofbirth: dateofbirth
-      }),
-    );
-    {
-      changeUserData.message ?
-        ToastAndroid.show(changeUserData.message, ToastAndroid.SHORT) : ToastAndroid.show("Đã cập nhật", ToastAndroid.SHORT)
-    }
+    if (!validateInputs()) return;
 
-  }
+    const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
+    const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
+    const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
+
+    dispatch(ThayDoiThongTin({
+      userId: user._id,
+      email,
+      phone,
+      address: addressWithDetails,
+    }));
+  };
 
   return (
     <View style={stylesglobal.container}>
       <Headercomponet
         leftIcon={Icons.ic_leftarrow}
         title={"Cập nhật thông tin cá nhân"}
-        style={styles.header}
-        onPressLeftIcon={nhanBack}
+        onPressLeftIcon={() => navigation.goBack()}
       />
       <View style={styles.inputEmail}>
         <Text>Email</Text>
         <InputComponent
           keyboardType={"email-address"}
           value={email}
-          onTextChange={(data) => changeTextEmail(data)}
+          onTextChange={(text) => {
+            console.log("Email changed:", text);
+            setEmail(text);
+          }}
           placeholder={'Nhập email của bạn'}
         />
       </View>
@@ -108,55 +102,69 @@ const EditProfileScreen = (props) => {
         <InputComponent
           keyboardType={"phone-pad"}
           value={phone}
-          onTextChange={(data) => changeTextPhone(data)}
+          onTextChange={(text) => {
+            console.log("Phone number changed:", text);
+            setPhone(text);
+          }}
           placeholder={'Nhập số điện thoại của bạn'}
         />
       </View>
       <View style={styles.adressContainer}>
-        <DropdownComponent />
+        <DropdownComponent
+          onProvinceSelect={handleProvinceSelect}
+          onDistrictSelect={handleDistrictSelect}
+        />
       </View>
       <View style={styles.inputPhone}>
         <Text>Chi tiết</Text>
         <InputComponent
-          onTextChange={(data) => changeTextStreet(data)}
-          placeholder={'Số nha, tên đường'}
+          value={address}
+          onTextChange={(text) => {
+            console.log("Street changed:", text);
+            setAddress(text);
+          }}
+          placeholder={`Số nhà, tên đường`}
         />
       </View>
       {!!textError && <Text style={styles.textError}>{textError}</Text>}
       <View style={styles.btnCapNhat}>
-        <Button
-          label='Cập nhập'
-          onPressed={thayDoi} />
+        <Button label='Cập nhật' onPressed={thayDoi} />
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default EditProfileScreen
+export default EditProfileScreen;
 
 const styles = StyleSheet.create({
   textError: {
     color: 'red',
-    textAlign:'center'
+    textAlign: 'center',
   },
   btnCapNhat: {
     marginTop: 50,
   },
   adressContainer: {
-    marginTop: 20
+    marginTop: 20,
   },
   inputPhone: {
-    marginTop: 20
-
+    marginTop: 20,
   },
   inputEmail: {
-    marginTop: 35
+    marginTop: 35,
+  },
+  selectedInfo: {
+    marginTop: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: colors.Grey_300,
+    borderRadius: 5,
   },
   header: {
     color: colors.Grey_900,
     fontFamily: 'Lato',
     fontSize: fontsize.md,
     fontWeight: '700',
-    lineHeight: 27
+    lineHeight: 27,
   },
-})
+});

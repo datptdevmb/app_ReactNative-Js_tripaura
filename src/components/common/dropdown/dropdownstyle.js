@@ -4,8 +4,6 @@ import FONTSIZE from '../../../constants/fontsize';
 
 const stylesdown = StyleSheet.create({
     container: {
-        // width: '100%',
-        // height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -30,9 +28,12 @@ const stylesdown = StyleSheet.create({
         fontSize: FONTSIZE.sm,
         fontWeight: '700',
         fontFamily: 'Lato',
-        color: colors.Gray_800,
+        color: colors.Grey_800,
         marginBottom: 5,
     },
+    huyen:{
+        marginStart:10
+    }
 });
   
   export default stylesdown;

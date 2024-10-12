@@ -5,6 +5,8 @@ import { AppProvider } from './src/screens/AppContext';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './src/AppNavigation';
 import Rate from './src/screens/main/tabs/setting/SettingLoggedScreen'
+import DropdownComponent from './src/components/common/dropdown/DropdownComponent.js';
+
 const App = () => {
   return (
     <Provider store={store}>

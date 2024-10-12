@@ -19,18 +19,24 @@ const Login = (props) => {
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  console.log('login', loginData),
+  console.log('loginStatus', loginStatus)
+
   useEffect(() => {
     if (loginStatus === 'succeeded') {
-        setUser(loginData.user);
-        setIsLogin(true);
-        navigation.navigate('MainTabNavigation');
-        ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
+      console.log('loginData.data:', loginData.data); 
+      setUser(loginData.data);
+      setIsLogin(true);
+      console.log('user:', loginData.data);
+      navigation.navigate('MainTabNavigation');
     }
-
+  
     if (loginStatus === 'failed') {
       ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
     }
   }, [loginStatus, loginData, navigation]);
+  
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -44,25 +50,8 @@ const Login = (props) => {
     navigation.goBack();
   };
 
-  const validateInputs = () => {
-    let valid = true;
-    if (!email) {
-      ToastAndroid.show('Email không được để trống', ToastAndroid.SHORT);
-      valid = false;
-    }
-
-    if (!password) {
-      ToastAndroid.show('Mật khẩu không được để trống', ToastAndroid.SHORT);
-      valid = false;
-    }
-
-    return valid;
-  };
-
   const dangnhaptaikhoan = () => {
-    if (validateInputs()) {
-      dispatch(DangNhapTaiKhoan({ email, password }));
-    }
+    dispatch(DangNhapTaiKhoan({ email, password }));
   };
 
   return (
