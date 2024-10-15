@@ -14,12 +14,10 @@ const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
     
-    // Fetch provinces on component mount
     useEffect(() => {
         dispatch(fetchProvinces());
     }, [dispatch]);
 
-    // Fetch districts when a province is selected
     useEffect(() => {
         if (selectedProvince) {
             dispatch(fetchDistricts(selectedProvince));
@@ -29,19 +27,18 @@ const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
     const handleProvinceChange = (value) => {
         if (value !== selectedProvince) {
             setSelectedProvince(value);
-            setSelectedDistrict(null); // Reset district selection when province changes
-            onProvinceSelect(value); // Notify parent of the selected province
+            setSelectedDistrict(null); 
+            onProvinceSelect(value); 
         }
     };
 
     const handleDistrictChange = (value) => {
         if (value !== selectedDistrict) {
             setSelectedDistrict(value);
-            onDistrictSelect(value); // Notify parent of the selected district
+            onDistrictSelect(value); 
         }
     };
 
-    // Filter districts based on the selected province
     const filteredDistricts = selectedProvince
         ? districts.filter(district => district.province_code === selectedProvince)
         : [];
@@ -64,22 +61,24 @@ const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
                     selectedValue={selectedProvince}
                     onValueChange={handleProvinceChange}
                     items={items.length > 0 ? items : [{ label: 'Không có tỉnh nào', value: null }]}
+                    style={stylesdown.dropdown} 
                 />
                 <Dropdown
-                    style={stylesdown.huyen}
                     label="Chọn huyện"
                     selectedValue={selectedDistrict}
                     onValueChange={handleDistrictChange}
                     items={filteredDistricts.map(district => ({ label: district.name, value: district.code }))}
-                    enabled={!!selectedProvince} // Enable district dropdown only when a province is selected
+                    enabled={!!selectedProvince} 
+                    style={stylesdown.dropdown} 
                 />
             </View>
         </View>
     );
+    
 };
 
-const Dropdown = ({ label, selectedValue, onValueChange, items, enabled }) => (
-    <View style={stylesdown.contentchon}>
+const Dropdown = ({ label, selectedValue, onValueChange, items, enabled, style }) => (
+    <View style={[stylesdown.contentchon, style]}>
         <Text style={stylesdown.text}>{label}:</Text>
         <Picker
             style={stylesdown.picker}
@@ -87,12 +86,13 @@ const Dropdown = ({ label, selectedValue, onValueChange, items, enabled }) => (
             onValueChange={onValueChange}
             enabled={enabled}
         >
-            <Picker.Item label={`Chọn ${label.toLowerCase()}`} value={null} />
+            <Picker.Item label={`${label.toLowerCase()}`} value={null} />
             {items.map((item) => (
                 <Picker.Item key={item.value} label={item.label} value={item.value} />
             ))}
         </Picker>
     </View>
 );
+
 
 export default DropdownComponent;

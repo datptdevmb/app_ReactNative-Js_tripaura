@@ -9,7 +9,8 @@ const stylesdown = StyleSheet.create({
     },
     containerpicker: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent:'space-between'
     },
     contentchon: {
         display: 'flex',
@@ -19,8 +20,7 @@ const stylesdown = StyleSheet.create({
     picker: {
         width: 159,
         height: 44,
-        paddingVertical: 11,
-        paddingHorizontal: 10,
+        justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#f2f2f2'
     },
@@ -31,9 +31,9 @@ const stylesdown = StyleSheet.create({
         color: colors.Grey_800,
         marginBottom: 5,
     },
-    huyen:{
-        marginStart:10
-    }
+    dropdown: {
+        marginEnd: 10, 
+    },
 });
   
   export default stylesdown;

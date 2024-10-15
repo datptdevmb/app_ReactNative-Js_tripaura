@@ -8,9 +8,7 @@ export const fetchProvinces = createAsyncThunk(
     if (!response.ok) {
       throw new Error('Failed to fetch provinces');
     }
-    const data = await response.json();
-  
-    return data;
+    return await response.json();
   }
 );
 
