@@ -1,6 +1,5 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-
+import {View, Text} from 'react-native';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/main/tabs/home/HomeScreen';
@@ -14,15 +13,15 @@ import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import Detail from '../screens/main/stacks/detail/Detail';
 import ButtomNavigation from './BottomNavigation';
-
-
 import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const MainTabNavigation = () => {
+
     return (
         <ButtomNavigation />
     )
@@ -45,4 +44,5 @@ const MainStaskNavigation = () => {
     )
 }
 
-export default MainStaskNavigation
+
+export default MainStaskNavigation;

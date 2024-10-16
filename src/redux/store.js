@@ -13,14 +13,18 @@ const rootReducer = combineReducers({
     auth:authenReducer,
     category:categoryReducer,
     network: networkReducer,
-    images:imageSliderReducer
+    images:imageSliderReducer,
+    favorites: favoriteReducer,
+    favoriteAdDelete: favoriteAdDeleteReducer,
+    favouriteDelete: favouriteDeleteReducer,
+
 });
 
-
 const store = configureStore({
-    reducer: {
-        reducer: rootReducer
-    }
-})
+  reducer: {
+    reducer: rootReducer,
+   
+  },
+});
 
 export default store;

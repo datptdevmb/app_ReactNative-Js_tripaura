@@ -1,3 +1,4 @@
+
 import {memo} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import Button from '../button/Button';
@@ -15,6 +16,7 @@ function TourCardVetical({tour}) {
           <View style={styles.row}>
             <IcLocate />
             <Text style={styles.bodytext}>{tour?.destination}</Text>
+
           </View>
         </View>
       </View>

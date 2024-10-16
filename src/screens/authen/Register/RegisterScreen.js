@@ -37,7 +37,7 @@ const RegisterScreen = () => {
       setConfirmPassword('');
       navigation.navigate('Login');
     }
-    
+
     if (registerStatus === 'failed') {
       if (registerData.code === 400) {
         setEmailError(registerData.message);
@@ -87,17 +87,17 @@ const RegisterScreen = () => {
       <Text style={[stylesglobal.textauth_description, { marginTop: 29 }]}>Email</Text>
       <InputComponent
         placeholder="Nhập email của bạn"
-        onTextChange={setEmail} 
+        onTextChange={setEmail}
         value={email}
         hidePassword={false}
         placeholderTextColor="#B0B0B0"
         keyboardType="email-address"
       />
-      
+
       <Text style={[stylesglobal.textauth_description, { marginTop: 12 }]}>Mật khẩu</Text>
       <InputComponent
         placeholder="Nhập mật khẩu của bạn"
-        onTextChange={setPassword} 
+        onTextChange={setPassword}
         hidePassword={true}
         placeholderTextColor="#B0B0B0"
         keyboardType="default"
@@ -106,7 +106,7 @@ const RegisterScreen = () => {
       <Text style={[stylesglobal.textauth_description, { marginTop: 12 }]}>Xác nhận mật khẩu</Text>
       <InputComponent
         placeholder="Nhập lại mật khẩu của bạn"
-        onTextChange={setConfirmPassword} 
+        onTextChange={setConfirmPassword}
         value={confirmPassword}
         hidePassword={true}
         placeholderTextColor="#B0B0B0"
