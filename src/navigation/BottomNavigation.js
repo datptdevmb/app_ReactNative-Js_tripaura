@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/main/tabs/Home/HomeScreen';
+import HomeScreen from '../screens/main/tabs/home/HomeScreen';
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
 import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScreen';
@@ -12,7 +12,7 @@ import IcHome from '../assets/icons/bottom_tab/Ic_home';
 import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
 import IcProfile from '../assets/icons/bottom_tab/ic_profile';
 import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
-import Mymap from '../screens/main/tabs/Home/Mymap';
+
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 
 

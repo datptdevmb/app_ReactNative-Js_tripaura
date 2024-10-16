@@ -5,15 +5,17 @@ import FavoriteIcon from '../../../assets/icons/bottom_tab/Ic_favorite';
 import IcLocate from '../../../assets/icons/Ic_locate';
 
 
-const TourCard = ({ tour, onPressed }) => {
+const TourCard = ({ tour, onClickFavorite ,onClickItem}) => {
     return (
-        <View style={styles.cardContainer}>
+        <TouchableOpacity 
+        onPress={()=>onClickItem(tour._id)}
+        style={styles.cardContainer}>
             <View style={styles.imageContainer}>
                 <Image
                     source={{uri:tour?.imageInfo.linkImage[0]}}
                     style={styles.image} />
                 <TouchableOpacity
-                    onPress={onPressed}
+                    onPress={onClickFavorite}
                     style={styles.favoriteIcon}>
                     <FavoriteIcon />
                 </TouchableOpacity>
@@ -34,13 +36,14 @@ const TourCard = ({ tour, onPressed }) => {
                     style={styles.price}>{tour?.detailInfo?.priceAdult} VND
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
     cardContainer: {
         width: 168,
+        marginEnd:12,
         backgroundColor: '#F8F8F8',
         borderRadius: 10,
         shadowColor: '#000',
