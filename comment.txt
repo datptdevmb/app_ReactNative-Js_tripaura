@@ -1,3 +1,4 @@
 /// npm install @reduxjs/toolkit react-redux
+//npm install react-native-gesture-handler
 npm install react-native-gesture-handler
-a
+npm install react-native-reanimated
