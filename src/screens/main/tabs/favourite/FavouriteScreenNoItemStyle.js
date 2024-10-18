@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   textStyle: {
-    width: 144,
+    width: 145,
     height: 48,
     fontSize: 32,
     lineHeight: 48,

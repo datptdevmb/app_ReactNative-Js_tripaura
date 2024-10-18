@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text} from 'react-native';
+import React from 'react';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screens/main/tabs/Home/HomeScreen';
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
@@ -11,8 +11,7 @@ import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScree
 import EditProfileScreen from '../screens/main/stacks/profile/EditProfileScreen';
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import Detail from '../screens/main/tabs/Home/Detail';
+import {NavigationContainer} from '@react-navigation/native';
 import ButtomNavigation from './BottomNavigation';
 import ImageDetail from '../screens/main/tabs/Home/ImageDetail';
 import PanoramaViewer from '../screens/main/tabs/Home/Ponorama';
@@ -24,25 +23,23 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const MainTabNavigation = () => {
-    return (
-
-        // <Tab.Navigator
-        //     screenOptions={{
-        //         headerShown: false,
-        //         tabBarActiveTintColor: '#0085FF'
-        //     }}>
-        //     <Tab.Screen name="Home" component={HomeScreen} />
-        //     <Tab.Screen name="Favourite" component={FavoriteScreen} />
-        //     <Tab.Screen name="Notification" component={NotificationScreen} />
-        //     <Tab.Screen name="Setting" component={SettingLoggedScreen} />
-        // </Tab.Navigator>
-        <ButtomNavigation />
-
-    )
-}
-
+  return (
+    // <Tab.Navigator
+    //     screenOptions={{
+    //         headerShown: false,
+    //         tabBarActiveTintColor: '#0085FF'
+    //     }}>
+    //     <Tab.Screen name="Home" component={HomeScreen} />
+    //     <Tab.Screen name="Favourite" component={FavoriteScreen} />
+    //     <Tab.Screen name="Notification" component={NotificationScreen} />
+    //     <Tab.Screen name="Setting" component={SettingLoggedScreen} />
+    // </Tab.Navigator>
+    <ButtomNavigation />
+  );
+};
 
 const MainStaskNavigation = () => {
+
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
@@ -57,4 +54,5 @@ const MainStaskNavigation = () => {
     )
 }
 
-export default MainStaskNavigation
+
+export default MainStaskNavigation;
