@@ -15,7 +15,7 @@ import colors from '../../../../constants/colors';
 import Swiper from 'react-native-swiper';
 import TourCard from '../../../../components/common/card/CardTour';
 import TourCardVetical from '../../../../components/common/card/TourCardVetical';
-import {tours, categorys, data} from '../../../../constants/data';
+import {data} from '../../../../constants/data';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategory} from '../../../../redux/slices/category.slice';
 import { fetchTours } from '../../../../redux/slices/tour.slice';
@@ -24,8 +24,8 @@ import { fetchTours } from '../../../../redux/slices/tour.slice';
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
-  const {categories, loading} = useSelector(state => state.reducer.category);
-  const {tours} = useSelector(state => state.reducer.tour);
+  const { categories = [], loading } = useSelector((state) => state.category || {});
+  const { tours = [] } = useSelector((state) => state.tour || {});
 
   useEffect(() => {
     dispatch(fetchCategory());

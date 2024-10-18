@@ -18,8 +18,10 @@ import IcHome from '../assets/icons/bottom_tab/Ic_home';
 import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
 import IcProfile from '../assets/icons/bottom_tab/ic_profile';
 import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
-
+import Mymap from '../screens/main/tabs/Home/Mymap';
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
+
+
 const Tab = createBottomTabNavigator();
 
 function CustomBottom({onPress, children}) {
@@ -103,17 +105,16 @@ const ButtomNavigation = () => {
         name="Favourite"
         component={FavouriteScreenNoItem}
         options={{
-          tabBarIcon: ({focused}) => (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
-                height: 90,
-                // backgroundColor:colors.primary
-              }}>
+          tabBarIcon: ({ focused }) => (
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              borderTopWidth: focused ? 2 : 0,
+              borderTopColor: focused ? colors.primary : colors.onPrimary,
+              height: 90,
+              // backgroundColor:colors.primary
+            }}>
               <IcVoucher />
               <Text>Uu dai</Text>
             </View>

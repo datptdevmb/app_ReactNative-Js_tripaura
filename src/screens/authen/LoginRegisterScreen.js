@@ -1,17 +1,20 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useEffect} from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useEffect } from 'react';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import {styles} from './LoginRegisterScreenStyle';
+import { styles } from './LoginRegisterScreenStyle';
 import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
 import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
 
-const LoginRegisterScreen = ({navigation}) => {
+import { useNavigation } from '@react-navigation/native';
+
+const LoginRegisterScreen = () => {
+  const navigation = useNavigation();
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -21,8 +24,8 @@ const LoginRegisterScreen = ({navigation}) => {
 
   const handleLoginWithGoogle = async () => {
     try {
-      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      const {data} = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const { data } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(data.idToken);
       const currentUser = await auth().signInWithCredential(googleCredential);
       console.log(currentUser);
@@ -52,7 +55,7 @@ const LoginRegisterScreen = ({navigation}) => {
       <Header style={styles.Header} leftIcon={Icons.ic_leftarrow} />
       <Text style={stylesglobal.textheader}>Đăng nhập / Đăng ký</Text>
       <Text style={stylesglobal.textauth_description}>
-        Nhận tài khoản <Text style={{color: '#0572E7'}}>TripAru</Text> để khám
+        Nhận tài khoản <Text style={{ color: '#0572E7' }}>TripAru</Text> để khám
         phá tiện ích
       </Text>
       <SocialButton
@@ -61,9 +64,11 @@ const LoginRegisterScreen = ({navigation}) => {
         style={styles.EmailButton}
         labelStyle={styles.EmailLabel}
         onPressed={() => {
+          console.log('Navigating to DangNhap');
           navigation.navigate('RegisterScreen');
           console.log("Navigating to RegisterScreen");
         }}
+
       />
       <SocialButton
         label=" Số điên thoại"

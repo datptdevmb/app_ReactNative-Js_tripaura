@@ -8,10 +8,10 @@ class Category {
 
     getCategories = async ()=>{
         try {
-            console.log('ddddkk')
+            // console.log('ddddkk')
             const response = await axios.get(CATEGORY_API);
             this.tours = response
-            console.log(response)
+            // console.log(response)
             return this.tours;
 
         } catch (error) {
