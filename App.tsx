@@ -12,7 +12,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <AppProvider>
-        <HelpCenter />
+        <AppNavigation />
       </AppProvider>
     </Provider>
   );
