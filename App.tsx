@@ -4,9 +4,9 @@ import store from './src/redux/store.js';
 import { AppProvider } from './src/screens/AppContext';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './src/AppNavigation';
-import FAQsSrceen from './src/screens/main/stacks/FAQs/FAQsSrceen.js'
-import HelpCenter from './src/screens/main/stacks/HelpCenter/HelpCenter.js'
-import ButtonHelp from './src/components/common/button/ButtonHelp.js'
+import Rate from './src/screens/main/tabs/setting/SettingLoggedScreen'
+import DropdownComponent from './src/components/common/dropdown/DropdownComponent.js';
+import AboutusSrceen from './src/screens/main/stacks/termspage/termspageScreen.js';
 
 const App = () => {
   return (

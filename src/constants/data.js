@@ -245,9 +245,9 @@ export const mapdata = [
 ]
 
 export const colors = {
-    'VN-1': '#FF5722', 'VN-2': '#3F51B5', 'VN-3': '#FFC107', 'VN-4': '#4CAF50',
-    'VN-5': '#9C27B0', 'VN-6': '#2196F3', 'VN-7': '#FF9800', 'VN-8': '#673AB7',
-    'VN-9': '#009688', 'VN-10': '#FFEB3B', 'VN-11': '#E91E63', 'VN-12': '#FF5722',
+    'VN-1':  '#FF5722', 'VN-2':  '#3F51B5', 'VN-3':  '#FFC107', 'VN-4':  '#4CAF50',
+    'VN-5':  '#9C27B0', 'VN-6':  '#2196F3', 'VN-7':  '#FF9800', 'VN-8':  '#673AB7',
+    'VN-9':  '#009688', 'VN-10': '#FFEB3B', 'VN-11': '#E91E63', 'VN-12': '#FF5722',
     'VN-13': '#3F51B5', 'VN-14': '#FFC107', 'VN-15': '#4CAF50', 'VN-16': '#9C27B0',
     'VN-17': '#2196F3', 'VN-18': '#FF9800', 'VN-19': '#673AB7', 'VN-20': '#009688',
     'VN-21': '#FFEB3B', 'VN-22': '#E91E63', 'VN-23': '#FF5722', 'VN-24': '#3F51B5',
@@ -263,129 +263,4 @@ export const colors = {
     'VN-61': '#2196F3', 'VN-62': '#FF9800', 'VN-63': '#673AB7',
 };
 
-
 export const getColor = (id) => colors[id] || '#4CAF50';
-export const faqData = [
-    {
-        question: 'Làm thế nào để tôi đặt vé?',
-        answer: 'Mua hàng online trở thành xu hướng được nhiều người quan tâm. Việc lên mạng và chọn cho mình món hàng ưng ý dường như là thói quen của nhiều đối tượng chứ không chỉ riêng giới trẻ. Với sự bùng nổ của công nghệ số, làm sao bạn nắm rõ được cách thức mua.'
-    },
-    {
-        question: 'Tôi có thể hủy vé sau khi đặt không?',
-        answer: 'Có, bạn có thể hủy vé trong vòng 24 giờ sau khi đặt mà không phải chịu bất kỳ khoản phí nào. Sau 24 giờ, bạn sẽ phải chịu một khoản phí hủy vé.'
-    },
-    {
-        question: 'Phương thức thanh toán nào được chấp nhận?',
-        answer: 'Chúng tôi chấp nhận thanh toán qua các phương thức như thẻ tín dụng, thẻ ghi nợ, chuyển khoản ngân hàng và ví điện tử như Momo, ZaloPay.'
-    },
-    {
-        question: 'Làm thế nào để tôi nhận vé sau khi thanh toán?',
-        answer: 'Sau khi thanh toán thành công, vé của bạn sẽ được gửi qua email mà bạn đã cung cấp. Bạn cũng có thể tải vé về từ trang web của chúng tôi bằng cách đăng nhập vào tài khoản của bạn.'
-    },
-    {
-        question: 'Có chính sách hoàn tiền không?',
-        answer: 'Chúng tôi có chính sách hoàn tiền cho những trường hợp hủy vé trước 24 giờ sự kiện diễn ra. Để biết thêm chi tiết, vui lòng truy cập trang Chính Sách Hoàn Tiền trên trang web của chúng tôi.'
-    }
-];
-
-export const accordionData = [
-    {
-        title: "Làm thế nào để tôi đặt vé?",
-        sections: [
-            {
-                content: [
-                    "Mua hàng online trở thành xu hướng được nhiều người quan tâm.Việc lên mạng và chọn cho mình món hàng ứng ý dường như là thói quen của nhiều đối tượng chứ không chỉ riêng giới trẻ. Với sự bùng nổ của công nghệ số, làm sao bạn nắm rõ được cách thức mua."
-                ]
-            },
-        ]
-    },
-    {
-        title: "Làm thế nào để tôi đặt vé ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-    {
-        title: "Đặt chỗ trực tiếp để đảm bảo an toàn ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-    {
-        title: "Cách hủy vé và hoàn tiền cho đặt chỗ ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-    {
-        title: "Cách sửa và đổi tên khách hàng ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-    {
-        title: "Cách đổi lịch đặt vé của tôi ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-    {
-        title: "Xác nhận và xác nhận thanh toán ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-    {
-        title: "Cách làm thủ tục trực tuyến ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-    {
-        title: "Lời hứa hoàn lại tiền trên Tripaura ?",
-        sections: [
-            {
-
-            }
-        ]
-    },
-
-];
-
-export const helpcenterdata = [
-    {
-        title: "Hỗ trợ khách hàng",
-        iconSource: Icons.ic_helpcenter
-    },
-    {
-        title: "Website",
-        iconSource: Icons.ic_website
-    },
-    {
-        title: "Facebook",
-        iconSource: Icons.icon_fb
-    },
-
-    {
-        title: "Twitter",
-        iconSource: Icons.ic_twitter
-    }, 
-    {
-        title: "Instagram",
-        iconSource: Icons.ic_instagram
-    },
-]

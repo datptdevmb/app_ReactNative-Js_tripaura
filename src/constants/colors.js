@@ -22,7 +22,5 @@ export default COLORS = {
     Lavendermist: '#E6E6E6',
     Red: '#FF0000',
     LavenderGray: '#E6E0E9',
-    Gainsboro: '#F8F8F8',
-    Black: '#000',
-    LightGray: '#D9D9D9'
+    Gainsboro: '#F8F8F8'
 }
