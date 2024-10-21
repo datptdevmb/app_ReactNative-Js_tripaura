@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   GoogleSignin,
   statusCodes,
@@ -11,10 +11,22 @@ import SocialButton from '../../components/common/button/SocialButton';
 import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
 
-import { useNavigation } from '@react-navigation/native';
+const LoginRegisterScreen = (props) => {
+  const { navigation, route } = props;
+  const [loginType, setLoginType ] = useState('email');
 
-const LoginRegisterScreen = () => {
-  const navigation = useNavigation();
+  const loginemail = () => {
+    setLoginType('email');
+    navigation.navigate('Login', { loginType: 'email' });
+  };
+  
+  const loginphone = () => {
+    setLoginType('phone');
+    navigation.navigate('Login', { loginType: 'phone' });
+  };
+  
+
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -63,11 +75,7 @@ const LoginRegisterScreen = () => {
         icon={<Image source={Icons.ic_email} />}
         style={styles.EmailButton}
         labelStyle={styles.EmailLabel}
-        onPressed={() => {
-          console.log('Navigating to DangNhap');
-          navigation.navigate('RegisterScreen');
-          console.log("Navigating to RegisterScreen");
-        }}
+        onPressed={loginemail}
 
       />
       <SocialButton
@@ -75,9 +83,7 @@ const LoginRegisterScreen = () => {
         icon={<Image source={Icons.ic_phone} />}
         style={styles.PhoneButton}
         labelStyle={styles.PhoneLabel}
-        onPressed={() => {
-          console.log(' Số điên thoại');
-        }}
+        onPressed={loginphone}
       />
       <SocialButton
         label=" Đăng nhập bằng Facebook"

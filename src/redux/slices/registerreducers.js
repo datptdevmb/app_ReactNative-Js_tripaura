@@ -39,9 +39,10 @@ const registerSlice = createSlice({
             })
             .addCase(DangKyTaiKhoan.rejected, (state, action) => {
                 state.registerStatus = 'failed';
-                ToastAndroid.show(action.payload.message, ToastAndroid.SHORT);
+                const errorMessage = action.payload?.message || 'Đăng ký không thành công';
+                ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
             });
     },
 });
 
-export default registerSlice.reducer; // Ensure to export the reducer
+export default registerSlice.reducer;

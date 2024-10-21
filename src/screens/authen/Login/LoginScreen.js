@@ -10,37 +10,41 @@ import Icons from '../../../constants/Icons';
 import { DangNhapTaiKhoan } from '../../../redux/slices/loginreducers';
 
 const Login = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
   const { setUser, setIsLogin } = useContext(AppContext);
   const dispatch = useDispatch();
   const { loginData, loginStatus } = useSelector((state) => state.login || {});
 
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const loginType = route.params?.loginType || 'email';
+  console.log(loginType)
 
   console.log('login', loginData),
-  console.log('loginStatus', loginStatus)
+    console.log('loginStatus', loginStatus)
 
   useEffect(() => {
     if (loginStatus === 'succeeded') {
-      console.log('loginData.data:', loginData.data); 
+      console.log('loginData.data:', loginData.data);
       setUser(loginData.data);
       setIsLogin(true);
       console.log('user:', loginData.data);
       navigation.navigate('MainTabNavigation');
     }
-  
+
     if (loginStatus === 'failed') {
       ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
     }
   }, [loginStatus, loginData, navigation]);
-  
+
 
 
   useEffect(() => {
     if (isLoggedIn) {
       setEmail('');
+      setPhone('');
       setPassword('');
       setIsLoggedIn(false);
     }
@@ -51,8 +55,25 @@ const Login = (props) => {
   };
 
   const dangnhaptaikhoan = () => {
-    dispatch(DangNhapTaiKhoan({ email, password }));
+    // dispatch(DangNhapTaiKhoan({ email, password }));
+    if (loginType === 'email') {
+      if (!email) {
+        ToastAndroid.show('Vui lòng nhập email', ToastAndroid.SHORT);
+        return;
+      }
+      dispatch(DangNhapTaiKhoan({ email, password }));
+    } else {
+      if (!phone) {
+        ToastAndroid.show('Vui lòng nhập số điện thoại', ToastAndroid.SHORT);
+        return;
+      }
+      dispatch(DangNhapTaiKhoan({ phone, password }));
+    }
   };
+
+  const goToRegister = () => {
+    navigation.navigate('RegisterScreen', { loginType });
+  }
 
   return (
     <View style={stylesglobal.container}>
@@ -65,17 +86,33 @@ const Login = (props) => {
         Trải nghiệm & khám phá tiện ích của{' '}
         <Text style={{ color: '#0572E7' }}>TripAura</Text>
       </Text>
-
-      <Text style={[stylesglobal.textauth_description, { marginTop: 30 }]}>Email</Text>
-      <InputComponent
-        placeholder="Nhập email của bạn"
-        onTextChange={text => setEmail(text)}
-        value={email}
-        hidePassword={false}
-        placeholderTextColor="#B0B0B0"
-        keyboardType="email-address"
-      />
-
+      {
+        loginType === 'email' ? (
+          <>
+            <Text style={[stylesglobal.textauth_description, { marginTop: 30 }]}>Email</Text>
+            <InputComponent
+              placeholder="Nhập email của bạn"
+              onTextChange={text => setEmail(text)}
+              value={email}
+              hidePassword={false}
+              placeholderTextColor="#B0B0B0"
+              keyboardType="email-address"
+            />
+          </>
+        ) : (
+          <>
+            <Text style={[stylesglobal.textauth_description, { marginTop: 30 }]}>Số điện thoại</Text>
+            <InputComponent
+              placeholder="Nhập số điện thoại của bạn"
+              onTextChange={text => setPhone(text)}
+              value={phone}
+              hidePassword={false}
+              placeholderTextColor="#B0B0B0"
+              keyboardType="phone-pad"
+            />
+          </>
+        )
+      }
       <Text style={[stylesglobal.textauth_description, { marginTop: 12 }]}>Mật khẩu</Text>
       <InputComponent
         placeholder="Nhập mật khẩu của bạn"
@@ -91,7 +128,7 @@ const Login = (props) => {
         style={{ marginTop: 29 }}
       />
       <View style={[stylesglobal.containerTextOptions, { marginTop: 30 }]}>
-        <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+        <TouchableOpacity onPress={goToRegister}>
           <Text style={stylesglobal.commonTextStyle}>Tạo tài khoản</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('ForgotScreen')}>
