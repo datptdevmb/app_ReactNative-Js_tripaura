@@ -10,12 +10,18 @@ import MainStaskNavigation from '../../navigation/MainStaskNavigation';
 import FavouriteScreenNoItem from '../../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import FavoriteScreen from '../../screens/main/tabs/favourite/FavoriteScreen';
 import TestFavoriteAddDelete from '../main/tabs/favourite/TestFavoriteAddDelete';
+import SplashScreen from './Splash/SplashScreen';
+import SearchScreen from '../main/stacks/Sreach/SearchScreen';
+import FilterScreen from '../main/stacks/Filter/FilterScreen';
 
 const Stack = createNativeStackNavigator();
 
 const AuthenStackNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
+      <Stack.Screen name="FilterScreen" component={FilterScreen} />
+      {/* <Stack.Screen name="SplashScreen" component={SplashScreen} /> */}
       <Stack.Screen
         name="TestFavoriteAddDelete"
         component={TestFavoriteAddDelete}

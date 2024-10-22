@@ -6,8 +6,8 @@
       "sha1": "542498221d97bee5bdbccf86ee8890bf8e8005c9"
     },
     {
-      "path": "src/assets/fonts/Poppins-Black.ttf",
-      "sha1": "645e04c53c6b5b35bce654a811ebce16af8aa721"
+      "path": "src/assets/fonts/Limelight-Regular.ttf",
+      "sha1": "be438210a409ba7d43cf76055b20d8537810e76e"
     },
     {
       "path": "src/assets/fonts/Poppins-BlackItalic.ttf",
@@ -16,10 +16,6 @@
     {
       "path": "src/assets/fonts/Poppins-Bold.ttf",
       "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
-    },
-    {
-      "path": "src/assets/fonts/Poppins-BoldItalic.ttf",
-      "sha1": "6de8952ca08d27ee77f57347d2cef4b4e26aa78f"
     },
     {
       "path": "src/assets/fonts/Poppins-ExtraBold.ttf",
@@ -58,10 +54,6 @@
       "sha1": "b592c62fdf88c40cfd0f031bba6423b1d4430472"
     },
     {
-      "path": "src/assets/fonts/Poppins-Regular.ttf",
-      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
-    },
-    {
       "path": "src/assets/fonts/Poppins-SemiBold.ttf",
       "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
     },
@@ -80,6 +72,10 @@
     {
       "path": "src/assets/fonts/Poppins-ThinItalic.ttf",
       "sha1": "fb8fccca21550e71135f92bbaf8a2e8a12c90465"
+    },
+    {
+      "path": "src/assets/fonts/Poppins_Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
     }
   ]
 }
