@@ -50,7 +50,7 @@ const EditProfileScreen = (props) => {
     if (district) {
       const districtName = district.name;
       const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
-      setAddress(prev => `${prev}, ${districtName}, ${provinceName}`); // Update address
+      setAddress(prev => `${prev}, ${districtName}, ${provinceName}`);
     }
   };
 

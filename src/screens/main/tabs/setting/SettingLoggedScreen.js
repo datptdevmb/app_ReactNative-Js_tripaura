@@ -5,7 +5,7 @@ import Icons from '../../../../constants/Icons';
 import { AppContext } from '../../../AppContext';
 import colors from '../../../../constants/colors';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 
 const SettingLoggedScreen = (props) => {
 
@@ -15,6 +15,7 @@ const SettingLoggedScreen = (props) => {
     const [image, setImage] = useState(null);
 
     const { user } = useContext(AppContext);
+    console.log('user', user)
 
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
@@ -39,8 +40,9 @@ const SettingLoggedScreen = (props) => {
     const openImagePicker = async () => {
         const response = await launchImageLibrary(imageOptions);
         if (response?.assets?.[0]?.uri) {
-            console.log('Image URI:', response.assets[0].uri); // Kiểm tra URI của ảnh
+            console.log('Image URI:', response.assets[0].uri);
             setImage(response.assets[0].uri);
+            handleUpdate(response.assets[0]);
         } else {
             console.log('User cancelled image picker');
             setImage(null);
@@ -48,39 +50,57 @@ const SettingLoggedScreen = (props) => {
     };
 
     const openCamere = async () => {
-        const permission = await request(PERMISSIONS.ANDROID.CAMERA);
-
-        console.log('Permission status:', permission); // Log trạng thái quyền
-
-        if (permission === RESULTS.GRANTED) {
-            const response = await launchCamera(cameraOptions);
-            console.log('Camera response:', response);
-
-            if (response?.assets?.[0]?.uri) {
-                console.log('Image URI:', response.assets[0].uri);
-                setImage(response.assets[0].uri);
-            } else if (response.didCancel) {
-                console.log('User cancelled camera picker');
-                Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
-                setImage(null);
-            } else if (response.errorCode) {
-                console.log('Camera error:', response.errorMessage);
-                Alert.alert('Lỗi Camera', response.errorMessage);
-            } else {
-                console.log('Unknown error occurred', response);
-                Alert.alert('Lỗi', 'Một lỗi không xác định đã xảy ra khi truy cập camera.');
-            }
+        const response = await launchCamera(cameraOptions);
+        if (response?.assets?.[0]?.uri) {
+            console.log('Image URI:', response.assets[0].uri);
+            setImage(response.assets[0].uri);
+            handleUpdate(response.assets[0]);
+        } else if (response.didCancel) {
+            Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
+            setImage(null);
         } else {
-            // Log chi tiết thông tin quyền nếu bị từ chối
-            console.log('Permission denied:', permission);
-            Alert.alert('Quyền bị từ chối', 'Quyền camera là cần thiết để chụp ảnh.');
+            console.log('Lỗi không xác định', response);
+            Alert.alert('Lỗi', 'Một lỗi không xác định đã xảy ra khi truy cập camera.');
         }
     };
 
 
-
-    console.log('Current Image State:', image);
-
+    const handleUpdate = async (image) => {
+        const data = new FormData();
+        data.append('file', {
+            uri: image.uri,
+            type: image.type || 'image/jpeg',
+            name: `photo.${image.uri.split('.').pop()}`,
+        });
+        data.append('upload_preset', 'TripAuraAPI');
+        data.append('api_key', '976765598717887');
+    
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
+                method: 'POST',
+                body: data,
+            });
+    
+            const result = await response.json();
+            if (response.ok) {
+                console.log('Upload successful:', result);
+                const imageUrl = result.secure_url;
+                const userUpdateData = {
+                    ...user,
+                    avatar: imageUrl, 
+                };
+                console.log('Uploading successful, updating user data:', userUpdateData);
+                await ThayDoiThongTin(userUpdateData); // Gọi action để cập nhật thông tin người dùng
+            } else {
+                console.log('Upload failed:', result);
+                Alert.alert('Error', 'Failed to upload image');
+            }
+        } catch (error) {
+            console.log('Error uploading image:', error);
+            Alert.alert('Error', 'An error occurred while uploading the image');
+        }
+    };
+    
 
 
     return (
@@ -89,9 +109,10 @@ const SettingLoggedScreen = (props) => {
                 <View style={styles.avatarContainer}>
                     <TouchableOpacity onPress={openImagePicker}>
                         <Image
-                            source={image ? { uri: image } : Icons.avatar}
-                            style={[styles.avatarImage, { resizeMode: 'cover', flex: 1 }]}
+                            source={user && user.avatar ? { uri: user.avatar } : Icons.avatar}
+                            style={styles.imageAvatar}
                         />
+
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.icCameraContainer} onPress={openCamere}>
@@ -370,4 +391,10 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0
     },
+    imageAvatar: {
+        width: 65,
+        height: 65,
+        borderRadius: 50,
+        resizeMode: 'cover'
+    }
 })

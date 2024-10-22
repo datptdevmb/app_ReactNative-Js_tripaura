@@ -99,7 +99,7 @@ const Dropdown = ({ label, selectedValue, onValueChange, items, enabled, style }
             onValueChange={onValueChange}
             enabled={enabled}
         >
-            <Picker.Item label={`Chọn ${label.toLowerCase()}`} value={null} />
+            <Picker.Item label={`${label.toLowerCase()}`} value={null} />
             {items.map((item) => (
                 <Picker.Item key={item.value} label={item.label} value={item.value} />
             ))}
