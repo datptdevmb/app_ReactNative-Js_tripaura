@@ -5,7 +5,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Tạo hàm fetchDistricts
 export const fetchDistricts = createAsyncThunk(
     'districts/fetchDistricts',
-    async (provinceCode) => {
+    async () => {
         const response = await fetch(`https://provinces.open-api.vn/api/d/`);
         if (!response.ok) {
             throw new Error('Failed to fetch districts');

@@ -6,6 +6,7 @@ import { AppContext } from '../../../AppContext';
 import colors from '../../../../constants/colors';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SettingLoggedScreen = (props) => {
 
@@ -13,10 +14,12 @@ const SettingLoggedScreen = (props) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
     const [image, setImage] = useState(null);
+    const dispatch = useDispatch();
 
     const { user } = useContext(AppContext);
     console.log('user', user)
 
+    const changeUserStatus = useSelector(state => state.changeUser.changeUserStatus);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
@@ -36,6 +39,7 @@ const SettingLoggedScreen = (props) => {
         selectionLimit: 1,
         ...commonOptions,
     };
+    console.log('image', image);
 
     const openImagePicker = async () => {
         const response = await launchImageLibrary(imageOptions);
@@ -74,23 +78,26 @@ const SettingLoggedScreen = (props) => {
         });
         data.append('upload_preset', 'TripAuraAPI');
         data.append('api_key', '976765598717887');
-    
+
         try {
             const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
                 method: 'POST',
                 body: data,
             });
-    
+
             const result = await response.json();
             if (response.ok) {
                 console.log('Upload successful:', result);
                 const imageUrl = result.secure_url;
+
                 const userUpdateData = {
                     ...user,
-                    avatar: imageUrl, 
+                    avatar: imageUrl,
+                    userId: user._id,
                 };
                 console.log('Uploading successful, updating user data:', userUpdateData);
-                await ThayDoiThongTin(userUpdateData); // Gọi action để cập nhật thông tin người dùng
+
+                await dispatch(ThayDoiThongTin(userUpdateData));
             } else {
                 console.log('Upload failed:', result);
                 Alert.alert('Error', 'Failed to upload image');
@@ -100,7 +107,12 @@ const SettingLoggedScreen = (props) => {
             Alert.alert('Error', 'An error occurred while uploading the image');
         }
     };
-    
+
+    useEffect(() => {
+        if (changeUserStatus === 'failed') {
+            Alert.alert('Error', 'Failed to update user information');
+        }
+    }, [changeUserStatus]);
 
 
     return (
@@ -109,10 +121,9 @@ const SettingLoggedScreen = (props) => {
                 <View style={styles.avatarContainer}>
                     <TouchableOpacity onPress={openImagePicker}>
                         <Image
-                            source={user && user.avatar ? { uri: user.avatar } : Icons.avatar}
+                            source={image ? { uri: image } : (user && user.avatar ? { uri: user.avatar } : Icons.avatar)}
                             style={styles.imageAvatar}
                         />
-
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.icCameraContainer} onPress={openCamere}>

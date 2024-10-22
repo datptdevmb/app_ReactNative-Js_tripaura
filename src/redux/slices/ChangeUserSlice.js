@@ -17,7 +17,8 @@ export const ThayDoiThongTin = createAsyncThunk('changeUser', async data => {
         console.log("============== changeUser =========", user);
         return user;
     }
-    throw new Error('Failed');
+    console.error('Update user failed:', user); // Log the error response
+    throw new Error(user.message || 'Failed'); // Provide a more descriptive error
 });
 
 

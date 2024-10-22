@@ -43,28 +43,34 @@ const RegisterScreen = (props) => {
 
   const dangkytaikhoan = () => {
     if (loginType === 'email') {
-        if (!email || !password) {
-            ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-            return;
-        }
+      if (!email || !password) {
+        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
+        return;
+      }
     } else {
-        if (!phone || !password) {
-            ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-            return;
-        }
+      if (!phone || !password) {
+        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
+        return;
+      }
     }
 
     if (password !== confirmPassword) {
-        ToastAndroid.show('Mật khẩu không khớp', ToastAndroid.SHORT);
-        return;
+      ToastAndroid.show('Mật khẩu không khớp', ToastAndroid.SHORT);
+      return;
     }
-    dispatch(DangKyTaiKhoan(loginType === 'email' ? { email, password } : { phone, password }));
-};
 
+    const accountData = loginType === 'email'
+      ? { email, password, loginType }
+      : { phone, password, loginType };
+
+    dispatch(DangKyTaiKhoan(accountData));
+  };
 
   const goToLogin = () => {
-    navigation.navigate('Login', { loginType }); 
+    navigation.navigate('Login', { loginType });
   }
+
+
   return (
     <View style={stylesglobal.container}>
       <Header leftIcon={Icons.ic_leftarrow} onPressLeftIcon={back} />
@@ -85,7 +91,7 @@ const RegisterScreen = (props) => {
               keyboardType="email-address"
             />
           </>
-        ):(
+        ) : (
           <>
             <Text style={[stylesglobal.textauth_description, { marginTop: 29 }]}>Số điện thoại</Text>
             <InputComponent

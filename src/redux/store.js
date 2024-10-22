@@ -22,8 +22,6 @@ const rootReducer = combineReducers({
   register: registerReducer,
   provinces: provincesReducer,
   district: districtReducer,
-    tour: tourReducer,
-    category:categoryReducer
 });
 
 // Configure the store
