@@ -31,7 +31,7 @@ const RegisterScreen = (props) => {
 
     if (registerStatus === 'succeeded') {
       if (registerData && registerData.status === 'success') {
-        navigation.navigate('Login');
+        ToastAndroid.show('Đăng ký thành công', ToastAndroid.SHORT);
       } else {
         console.log('Register Data is not valid:', registerData);
       }
@@ -42,28 +42,30 @@ const RegisterScreen = (props) => {
   }, [registerStatus, registerData, navigation]);
 
   const dangkytaikhoan = () => {
+    console.log("Login Type: ", loginType);
     if (loginType === 'email') {
-        if (!email || !password) {
-            ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-            return;
-        }
+      if (!email || !password) {
+        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
+        return;
+      }
     } else {
-        if (!phone || !password) {
-            ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-            return;
-        }
+      if (!phone || !password) {
+        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
+        return;
+      }
     }
 
     if (password !== confirmPassword) {
-        ToastAndroid.show('Mật khẩu không khớp', ToastAndroid.SHORT);
-        return;
+      ToastAndroid.show('Mật khẩu không khớp', ToastAndroid.SHORT);
+      return;
     }
     dispatch(DangKyTaiKhoan(loginType === 'email' ? { email, password } : { phone, password }));
-};
+    navigation.navigate('Login', { loginType });
+  };
 
 
   const goToLogin = () => {
-    navigation.navigate('Login', { loginType }); 
+    navigation.navigate('Login', { loginType });
   }
   return (
     <View style={stylesglobal.container}>
@@ -85,7 +87,7 @@ const RegisterScreen = (props) => {
               keyboardType="email-address"
             />
           </>
-        ):(
+        ) : (
           <>
             <Text style={[stylesglobal.textauth_description, { marginTop: 29 }]}>Số điện thoại</Text>
             <InputComponent
