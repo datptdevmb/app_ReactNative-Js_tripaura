@@ -6,43 +6,57 @@ import { fetchProvinces } from './../../../redux/slices/cityprovince';
 import { fetchDistricts } from './../../../redux/slices/district';
 import stylesdown from './dropdownstyle';
 
-const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
+const DropdownComponent = ({ selectedProvince: selectedProvinceProp, selectedDistrict: selectedDistrictProp, onProvinceSelect, onDistrictSelect }) => {
     const dispatch = useDispatch();
+
     const { provinces, loading: provincesLoading, error: provincesError } = useSelector((state) => state.provinces);
     const { districts = [], loading: districtsLoading, error: districtsError } = useSelector((state) => state.district);
 
-    const [selectedProvince, setSelectedProvince] = useState(null);
-    const [selectedDistrict, setSelectedDistrict] = useState(null);
-    
+    const [selectedProvince, setSelectedProvince] = useState(selectedProvinceProp);
+    const [selectedDistrict, setSelectedDistrict] = useState(selectedDistrictProp);
+
     useEffect(() => {
         dispatch(fetchProvinces());
     }, [dispatch]);
 
     useEffect(() => {
-        if (selectedProvince) {
+        if (selectedProvince && selectedProvince !== selectedProvinceProp) {
             dispatch(fetchDistricts(selectedProvince));
         }
-    }, [selectedProvince, dispatch]);
+    }, [selectedProvince, dispatch, selectedProvinceProp]);
+
+    useEffect(() => {
+        if (selectedProvinceProp !== selectedProvince) {
+            setSelectedProvince(selectedProvinceProp);
+            setSelectedDistrict(null); 
+        }
+    }, [selectedProvinceProp]);
+
+    useEffect(() => {
+        if (selectedDistrictProp !== selectedDistrict) {
+            setSelectedDistrict(selectedDistrictProp);
+        }
+    }, [selectedDistrictProp]);
 
     const handleProvinceChange = (value) => {
         if (value !== selectedProvince) {
             setSelectedProvince(value);
-            setSelectedDistrict(null); 
-            onProvinceSelect(value); 
+            setSelectedDistrict(null);
+            onProvinceSelect(value);
         }
     };
 
     const handleDistrictChange = (value) => {
         if (value !== selectedDistrict) {
             setSelectedDistrict(value);
-            onDistrictSelect(value); 
+            onDistrictSelect(value);
         }
     };
 
     const filteredDistricts = selectedProvince
         ? districts.filter(district => district.province_code === selectedProvince)
         : [];
-    
+
     const items = provinces.map(province => ({ label: province.name, value: province.code }));
 
     if (provincesLoading || districtsLoading) {
@@ -50,7 +64,7 @@ const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
     }
 
     if (provincesError || districtsError) {
-        Alert.alert("Error", provincesError || districtsError);
+        Alert.alert("Lỗi", provincesError || districtsError);
     }
 
     return (
@@ -60,21 +74,20 @@ const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
                     label="Chọn tỉnh"
                     selectedValue={selectedProvince}
                     onValueChange={handleProvinceChange}
-                    items={items.length > 0 ? items : [{ label: 'Không có tỉnh nào', value: null }]}
-                    style={stylesdown.dropdown} 
+                    items={items}
+                    style={stylesdown.dropdown}
                 />
                 <Dropdown
                     label="Chọn huyện"
                     selectedValue={selectedDistrict}
                     onValueChange={handleDistrictChange}
                     items={filteredDistricts.map(district => ({ label: district.name, value: district.code }))}
-                    enabled={!!selectedProvince} 
-                    style={stylesdown.dropdown} 
+                    enabled={!!selectedProvince}
+                    style={stylesdown.dropdown}
                 />
             </View>
         </View>
     );
-    
 };
 
 const Dropdown = ({ label, selectedValue, onValueChange, items, enabled, style }) => (
@@ -86,13 +99,12 @@ const Dropdown = ({ label, selectedValue, onValueChange, items, enabled, style }
             onValueChange={onValueChange}
             enabled={enabled}
         >
-            <Picker.Item label={`${label.toLowerCase()}`} value={null} />
+            <Picker.Item label={`Chọn ${label.toLowerCase()}`} value={null} />
             {items.map((item) => (
                 <Picker.Item key={item.value} label={item.label} value={item.value} />
             ))}
         </Picker>
     </View>
 );
-
 
 export default DropdownComponent;

@@ -13,7 +13,7 @@ import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { AppContext } from '../../../AppContext';
 
 const EditProfileScreen = (props) => {
-  const { navigation } = props
+  const { navigation } = props;
   const { user, setUser } = useContext(AppContext);
   const { changeUserData, changeUserStatus } = useSelector((state) => state.changeUser);
   const dispatch = useDispatch();
@@ -21,9 +21,9 @@ const EditProfileScreen = (props) => {
   const { districts } = useSelector((state) => state.district);
 
   const [email, setEmail] = useState(user?.email || "");
+  const [fullname, setFullname] = useState(user?.fullname || "");
   const [phone, setPhone] = useState(user?.phone || "");
-  const [textError, setTextError] = useState("");
-  const [address, setAddress] = useState(user?.address || "");
+  const [address, setAddress] = useState(user?.address?.split(', ')[0] || "");
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
 
@@ -32,53 +32,73 @@ const EditProfileScreen = (props) => {
     : [];
 
   const handleProvinceSelect = (provinceCode) => {
+
     const province = provinces.find(p => p.code === provinceCode);
-    setSelectedProvince(province);
-    setSelectedDistrict(null);
+
+    if (province) {
+      setSelectedProvince(province);
+      console.log("Selected Province:", province);
+      setSelectedDistrict(null);
+      setAddress("");
+    }
   };
 
   const handleDistrictSelect = (districtCode) => {
     const district = filteredDistricts.find(d => d.code === districtCode);
     setSelectedDistrict(district);
+
+    if (district) {
+      const districtName = district.name;
+      const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
+      setAddress(prev => `${prev}, ${districtName}, ${provinceName}`); // Update address
+    }
   };
 
   useEffect(() => {
     if (changeUserStatus === 'successed') {
       const { status, message, data } = changeUserData;
-      if (changeUserData.status == true) {
+      if (status) {
         setUser(data);
-        // ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);
-        // navigation.goBack();
       } else {
         ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
       }
     }
-    console.log("========== changeData ==========", changeUserData);
+  }, [changeUserData, changeUserStatus, setUser]);
 
-  }, [changeUserData, changeUserStatus]);
+  useEffect(() => {
+    if (user.address) {
+      const addressParts = user.address.split(', ');
+      const street = addressParts[0];
+      const districtName = addressParts[1];
+      const provinceName = addressParts[2];
 
-  const validateInputs = () => {
-    if (!email || !phone || !address || !selectedDistrict || !selectedProvince) {
-      setTextError("Vui lòng điền đầy đủ thông tin!");
-      return false;
+      const province = provinces.find(p => p.name === provinceName);
+      console.log('province: ' + provinceName)
+      const district = districts.find(d => d.name === districtName);
+
+      setAddress(street);
+      setSelectedProvince(province || null);
+      setSelectedDistrict(district || null);
     }
-    setTextError("");
-    return true;
-  };
+  }, [user, provinces, districts]);
 
   const thayDoi = () => {
-    if (!validateInputs()) return;
+    try {
+      const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
+      const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
+      const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
 
-    const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
-    const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
-    const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
-
-    dispatch(ThayDoiThongTin({
-      userId: user._id,
-      email,
-      phone,
-      address: addressWithDetails,
-    }));
+      dispatch(ThayDoiThongTin({
+        userId: user._id,
+        fullname,
+        email,
+        phone,
+        address: addressWithDetails,
+      }));
+      ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
+    } catch (error) {
+      ToastAndroid.show("Cập nhật không thành công: " + error.message, ToastAndroid.SHORT);
+    }
   };
 
   return (
@@ -89,14 +109,18 @@ const EditProfileScreen = (props) => {
         onPressLeftIcon={() => navigation.goBack()}
       />
       <View style={styles.inputEmail}>
+        <Text>Họ và tên</Text>
+        <InputComponent
+          keyboardType={"name"}
+          value={fullname}
+          onTextChange={(text) => setFullname(text)}
+          placeholder={'Nhập họ và tên của bạn'}
+        />
         <Text>Email</Text>
         <InputComponent
           keyboardType={"email-address"}
           value={email}
-          onTextChange={(text) => {
-            console.log("Email changed:", text);
-            setEmail(text);
-          }}
+          onTextChange={(text) => setEmail(text)}
           placeholder={'Nhập email của bạn'}
         />
       </View>
@@ -105,10 +129,7 @@ const EditProfileScreen = (props) => {
         <InputComponent
           keyboardType={"phone-pad"}
           value={phone}
-          onTextChange={(text) => {
-            console.log("Phone number changed:", text);
-            setPhone(text);
-          }}
+          onTextChange={(text) => setPhone(text)}
           placeholder={'Nhập số điện thoại của bạn'}
         />
       </View>
@@ -116,19 +137,18 @@ const EditProfileScreen = (props) => {
         <DropdownComponent
           onProvinceSelect={handleProvinceSelect}
           onDistrictSelect={handleDistrictSelect}
+          selectedProvince={selectedProvince?.code || null}
+          selectedDistrict={selectedDistrict?.code || null}
         />
       </View>
       <View style={styles.inputPhone}>
         <Text>Chi tiết</Text>
         <InputComponent
-          onTextChange={(text) => {
-            console.log("Street changed:", text);
-            setAddress(text);
-          }}
+          value={address}
+          onTextChange={(text) => setAddress(text)}
           placeholder={`Số nhà, tên đường`}
         />
       </View>
-      {!!textError && <Text style={styles.textError}>{textError}</Text>}
       <View style={styles.btnCapNhat}>
         <Button label='Cập nhật' onPressed={thayDoi} />
       </View>

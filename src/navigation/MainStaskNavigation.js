@@ -15,6 +15,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import ButtomNavigation from './BottomNavigation';
 import ImageDetail from '../screens/main/tabs/Home/ImageDetail';
 import PanoramaViewer from '../screens/main/tabs/Home/Ponorama';
+import Detail from '../screens/main/tabs/Home/Detail';
+import Voucher from '../screens/main/stacks/Voucher/Voucher';
+import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

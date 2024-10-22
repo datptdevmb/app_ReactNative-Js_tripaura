@@ -1,33 +1,105 @@
-import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import { AppContext } from '../../../AppContext';
 import colors from '../../../../constants/colors';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const SettingLoggedScreen = (props) => {
+
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const { user, setUser } = useContext(AppContext)
+    const [image, setImage] = useState(null);
+
+    const { user } = useContext(AppContext);
+
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
-    
-    console.log('usersetting',user)
+
+    const commonOptions = {
+        mediaType: 'photo',
+        maxWidth: 100,
+        maxHeight: 100,
+    };
+
+    const cameraOptions = {
+        cameraType: 'front',
+        saveToPhotos: true,
+        ...commonOptions,
+    };
+
+    const imageOptions = {
+        selectionLimit: 1,
+        ...commonOptions,
+    };
+
+    const openImagePicker = async () => {
+        const response = await launchImageLibrary(imageOptions);
+        if (response?.assets?.[0]?.uri) {
+            console.log('Image URI:', response.assets[0].uri); // Kiểm tra URI của ảnh
+            setImage(response.assets[0].uri);
+        } else {
+            console.log('User cancelled image picker');
+            setImage(null);
+        }
+    };
+
+    const openCamere = async () => {
+        const permission = await request(PERMISSIONS.ANDROID.CAMERA);
+
+        console.log('Permission status:', permission); // Log trạng thái quyền
+
+        if (permission === RESULTS.GRANTED) {
+            const response = await launchCamera(cameraOptions);
+            console.log('Camera response:', response);
+
+            if (response?.assets?.[0]?.uri) {
+                console.log('Image URI:', response.assets[0].uri);
+                setImage(response.assets[0].uri);
+            } else if (response.didCancel) {
+                console.log('User cancelled camera picker');
+                Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
+                setImage(null);
+            } else if (response.errorCode) {
+                console.log('Camera error:', response.errorMessage);
+                Alert.alert('Lỗi Camera', response.errorMessage);
+            } else {
+                console.log('Unknown error occurred', response);
+                Alert.alert('Lỗi', 'Một lỗi không xác định đã xảy ra khi truy cập camera.');
+            }
+        } else {
+            // Log chi tiết thông tin quyền nếu bị từ chối
+            console.log('Permission denied:', permission);
+            Alert.alert('Quyền bị từ chối', 'Quyền camera là cần thiết để chụp ảnh.');
+        }
+    };
+
+
+
+    console.log('Current Image State:', image);
+
+
 
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
-                    <Image
-                       source={user && user.avatar ? { uri: user.avatar } : Icons.avatar}
-                    />
-                    <TouchableOpacity style={styles.icCameraContainer}>
+                    <TouchableOpacity onPress={openImagePicker}>
+                        <Image
+                            source={image ? { uri: image } : Icons.avatar}
+                            style={[styles.avatarImage, { resizeMode: 'cover', flex: 1 }]}
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamere}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-                    <Text style={styles.txtName}>{user && user.fullname}Nguyễn Văn A</Text>
+                    <Text style={styles.txtName}>{user && user.fullname ? user.fullname : 'Nguyễn Văn A'}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>
