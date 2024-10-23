@@ -10,6 +10,9 @@ import MainStaskNavigation from '../../navigation/MainStaskNavigation';
 import FavouriteScreenNoItem from '../../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import FavoriteScreen from '../../screens/main/tabs/favourite/FavoriteScreen';
 import TestFavoriteAddDelete from '../main/tabs/favourite/TestFavoriteAddDelete';
+import SplashScreen from './Splash/SplashScreen';
+import SearchScreen from '../main/tabs/Sreach/SearchScreen';
+import FilterScreen from '../main/stacks/Filter/FilterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +27,7 @@ const AuthenStackNavigation = () => {
       <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
       
       {/* If login goes directly to Main Navigation */}
+
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotScreen" component={ForgotScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />

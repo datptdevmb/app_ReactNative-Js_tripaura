@@ -3,10 +3,31 @@ import colors from '../../constants/colors';
 import fontsize from '../../constants/fontsize';
 
 export const styles = StyleSheet.create({
+  ActivityContai: {
+    position: 'absolute',
+    left:'50%',
+    top:'50%',
+    backgroundColor: 'transparent',
+  },
   EmailButton: {
     backgroundColor: colors.vividOrange,
     marginTop: 83,
     borderRadius: 8,
+  },
+  modalBackground: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Nền mờ đen
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   EmailLabel: {
     color: '#fff',

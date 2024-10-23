@@ -11,8 +11,17 @@ export const styles = StyleSheet.create({
     height: 110,
     borderRadius: 12,
   },
-  Header: {
-    color: '#0568D2',
+  // Header: {
+  //   color: '#0568D2',
+  //   width:28,
+  //   marginStart:16
+  // },
+  texttt: {
+    fontSize: 14,
+    fontWeight: '400',
+    fontStyle: 'normal',
+    lineHeight: 20,
+    color:'#8A8A8A'
   },
   title: {
     fontSize: 24,
@@ -22,6 +31,30 @@ export const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: 16,
+  },
+  Vie: {
+    backgroundColor: 'red',
+    flex: 1,
+  },
+  texty: {
+    marginTop: 23,
+    fontSize: 32,
+    fontWeight:'700',
+    fontStyle:'normal',
+    color:'#212121',
+    lineHeight:48,
+    marginStart: 16,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  textt: {
+    marginTop: 33,
+    color: '#212121',
+    fontSize: 18,
+    fontStyle: 'normal',
+    fontWeight: 'bold',
   },
   itemContainer: {
     textAlign: 'center',
@@ -37,6 +70,7 @@ export const styles = StyleSheet.create({
     height: 120,
   },
   image: {
+    marginTop: 144,
     marginLeft: 5,
     width: 145,
     height: 104,

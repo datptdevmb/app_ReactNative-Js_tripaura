@@ -1,3 +1,4 @@
+
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import tourReducer from './slices/tour.slice';
 import categoryReducer from './slices/category.slice';
@@ -22,16 +23,23 @@ const rootReducer = combineReducers({
   register: registerReducer,
   provinces: provincesReducer,
   district: districtReducer,
+
 });
 
 // Configure the store
 
 const store = configureStore({
+
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
+
+  reducer: {
+    reducer: rootReducer,
+  },
+
 });
 
 

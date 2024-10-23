@@ -3,30 +3,27 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import Button from '../button/Button';
 import colors from '../../../constants/colors';
 import IcLocate from '../../../assets/icons/Ic_locate';
-import { useNavigation } from '@react-navigation/native';
 
-function TourCardVetical({ tour }) {
-  const navigation = useNavigation();
+
+function TourCardVetical({tour , onClick}) {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image style={styles.image} source={tour.image} />
+      <View style={{flexDirection: 'row'}}>
+        <Image style={styles.image} source={{uri:tour?.image[0]}} />
+
         <View style={styles.mr_s_12}>
-          <Text style={styles.textName}>{tour.name}</Text>
+          <Text style={styles.textName}>{tour.tourName}</Text>
           <View style={styles.row}>
             <IcLocate />
-            <Text style={styles.bodytext}>{tour.locate}</Text>
+            <Text style={styles.bodytext}>{tour?.destination}</Text>
+
           </View>
         </View>
       </View>
 
-      <Button
-        onPressed={() => navigation.navigate('Detail')}
-        styleText={styles.btntext}
-        style={styles.btn}
-        label="Xem"
-      />
+
+      <Button onPressed={onClick} styleText={styles.btntext} style={styles.btn} label="Xem" />
     </View>
   );
 }

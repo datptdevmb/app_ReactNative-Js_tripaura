@@ -4,6 +4,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 export const themXoaYeuThichTour = createAsyncThunk(
   'favorites/toggle',
   async ({userId, tourId}) => {
+    console.log(userId ,tourId)
     // Gọi API để thêm hoặc xóa tour yêu thích
     const response = await fetch(
       'https://trip-aura-server.vercel.app/favourite/api/favourite',
