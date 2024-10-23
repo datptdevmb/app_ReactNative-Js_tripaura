@@ -9,11 +9,10 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 
 const AppNavigation = () => {
-  const {isLogin} = useContext(AppContext);
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer>
-        {isLogin ? <AuthenStackNavigation /> : <TabNavigation />}
+        <TabNavigation />
       </NavigationContainer>
     </GestureHandlerRootView>
   );

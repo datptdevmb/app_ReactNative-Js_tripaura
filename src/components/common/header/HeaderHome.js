@@ -2,7 +2,6 @@ import { memo } from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 
 function HeaderHome() {
-  console.log('header');
   return (
     <View style={[styles.flex_row, styles.headerContainer]}>
       <Text style={styles.textHeader}>Chào mừng </Text>

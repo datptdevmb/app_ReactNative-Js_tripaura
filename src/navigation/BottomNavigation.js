@@ -24,6 +24,8 @@ import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 import FavouriteScreenNoLogin from '../screens/main/tabs/favourite/FavouriteScreenNoLogin';
 import Voucher from '../screens/main/stacks/voucher/Voucher'
 import { useSelector } from 'react-redux';
+import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
+import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
 
 const Tab = createBottomTabNavigator();
 
@@ -72,7 +74,6 @@ function CustomBottom({onPress, children}) {
 }
 
 const ButtomNavigation = () => {
-  const [user, setUser] = useState(null);
   const {isLogin} = useSelector(state => state.reducer.auth);
 
   return (
@@ -130,7 +131,7 @@ const ButtomNavigation = () => {
       />
       <Tab.Screen
         name="yeuthich"
-        component={HomeScreen}
+        component={SearchScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -170,7 +171,7 @@ const ButtomNavigation = () => {
       />
       <Tab.Screen
         name="Setting"
-        component={user ? SettingLoggedScreen : HomeScreen}
+        component={isLogin ? SettingLoggedScreen :SettingScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View

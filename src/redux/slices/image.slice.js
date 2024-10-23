@@ -6,7 +6,6 @@ import { API_BASE_URL } from '../../constants/api';
 export const fetchImages = createAsyncThunk(
   'image/fetchImages',
   async () => {
-    console.log('kkkkkk') 
     try {
       const response = await axios.get(`${API_BASE_URL}adv/api/getAll`); 
       return response.data.data[0].image
@@ -35,7 +34,7 @@ const imageSliderSlice = createSlice({
       })
       .addCase(fetchImages.fulfilled, (state, action) => {
         state.loading = false;
-        state.images = action.payload; // Dữ liệu ảnh từ API
+        state.images = action.payload; 
       })
       .addCase(fetchImages.rejected, (state, action) => {
         state.loading = false;
@@ -43,6 +42,4 @@ const imageSliderSlice = createSlice({
       });
   },
 });
-
-// Xuất reducer để sử dụng trong store
 export default imageSliderSlice.reducer;

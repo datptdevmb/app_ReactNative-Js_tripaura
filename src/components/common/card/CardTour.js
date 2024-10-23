@@ -14,9 +14,9 @@ const TourCard = ({tour, onClickFavorite, onClickItem}) => {
           source={{uri: tour?.imageInfo.linkImage[0]}}
           style={styles.image}
         />
-        <TouchableOpacity onPress={onClickFavorite} style={styles.favoriteIcon}>
+        {/* <TouchableOpacity onPress={onClickFavorite} style={styles.favoriteIcon}>
           <FavoriteIcon isFavorite={tour.isFavorite} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.infoContainer}>

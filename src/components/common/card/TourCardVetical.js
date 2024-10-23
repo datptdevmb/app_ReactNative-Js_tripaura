@@ -5,7 +5,7 @@ import Button from '../button/Button';
 import colors from '../../../constants/colors';
 import IcLocate from '../../../assets/icons/Ic_locate';
 
-function TourCardVetical({tour}) {
+function TourCardVetical({tour , onClick}) {
 
   return (
     <View style={styles.container}>
@@ -21,7 +21,7 @@ function TourCardVetical({tour}) {
         </View>
       </View>
 
-      <Button styleText={styles.btntext} style={styles.btn} label="Xem" />
+      <Button onPressed={onClick} styleText={styles.btntext} style={styles.btn} label="Xem" />
     </View>
   );
 }

@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchImages} from '../redux/slices/image.slice';
 import {fetchCategory} from '../redux/slices/category.slice';
 import {fetchTours, fetchPopularTour} from '../redux/slices/tour.slice';
+import { checkLoginStatus } from '../redux/slices/auth.slice';
 
 export const useHomeData = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export const useHomeData = () => {
           dispatch(fetchCategory()),
           dispatch(fetchTours('67049d4526be2256863506cc')),
           dispatch(fetchPopularTour()),
+          dispatch(checkLoginStatus())
         ]);
         setIsLoading(false);
       } catch (err) {

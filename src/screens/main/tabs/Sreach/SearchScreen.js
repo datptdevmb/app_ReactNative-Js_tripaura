@@ -44,8 +44,8 @@ const DATA = [
   // Thêm nhiều sản phẩm hơn nếu cần
 ];
 
-const SearchScreen = () => {
-  const navigation = useNavigation();
+const SearchScreen = ({navigation}) => {
+ 
 
   const [searchText, setSearchText] = useState('');
 

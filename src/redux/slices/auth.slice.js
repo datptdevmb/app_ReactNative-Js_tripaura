@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {register, googleLogin} from '../../sevices/auth/auth.service'; // Nhập googleLogin từ service
+import {register, googleLogin} from '../../sevices/auth/auth.service'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchUser = createAsyncThunk(
   'auth/fetchUser',
@@ -18,16 +19,24 @@ export const fetchGoogleUser = createAsyncThunk(
   async (googleUserData, thunkApi) => {
     try {
       const response = await googleLogin(googleUserData);
+      await AsyncStorage.setItem('userId', JSON.stringify(response));
+      console.log('Thông tin người dùng đã được lưu vào AsyncStorage');
       return response;
     } catch (error) {
       throw error;
     }
   },
 );
+
 export const checkLoginStatus = createAsyncThunk('auth/checkLoginStatus', async () => {
   const userData = await AsyncStorage.getItem('userId');
-  return userData != null;
+  if (userData) {
+    return { isLogin: true, user: JSON.parse(userData) }; // Trả về dữ liệu user nếu có
+  } else {
+    return { isLogin: false, user: null }; 
+  }
 });
+
 const initialState = {
   user: {},
   isLogin: false,
@@ -66,6 +75,21 @@ const authenSlice = createSlice({
     builder.addCase(fetchGoogleUser.rejected, (state, action) => {
       state.loading = false;
       console.log('Đăng nhập Google thất bại:', action.error.message);
+      state.err = action.error.message;
+    });
+
+    // Xử lý trạng thái khi kiểm tra đăng nhập
+    builder.addCase(checkLoginStatus.fulfilled, (state, action) => {
+      state.isLogin = action.payload.isLogin;
+      state.user = action.payload.user || {};  // Nếu không có user, đặt thành object rỗng
+      state.loading = false;
+    });
+    builder.addCase(checkLoginStatus.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(checkLoginStatus.rejected, (state, action) => {
+      state.loading = false;
+      console.log('Kiểm tra đăng nhập thất bại:', action.error.message);
       state.err = action.error.message;
     });
   },

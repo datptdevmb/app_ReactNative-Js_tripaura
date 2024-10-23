@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {StyleSheet, View} from 'react-native';
-import TourCardVetical from '../../../../components/common/card/TourCardVetical'; // Đảm bảo bạn đã import TourCardVetical đúng
+import TourCardVetical from '../../../../components/common/card/TourCardVetical';
 
-const PopularToursList = ({popularTours}) => {
-  console.log('kkkkkkkkllll');
+const PopularToursList = ({popularTours ,onClick}) => {
+  console.log('rrrrr')
   return (
     <View style={styles.cardVeticalC}>
       {popularTours &&
         popularTours.map((item, index) => {
-            console.log(item)
             return(
                 <View key={index} style={styles.cardVetical}>
-                <TourCardVetical tour={item} />
+                <TourCardVetical onClick={() =>onClick} tour={item} />
               </View>
             )
         })}
@@ -33,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopularToursList;
+export default memo(PopularToursList);

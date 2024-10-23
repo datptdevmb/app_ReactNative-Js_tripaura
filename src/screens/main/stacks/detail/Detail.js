@@ -27,6 +27,7 @@ import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-
 import {fetchTourById} from '../../../../redux/slices/tour.slice';
 import {useDispatch, useSelector} from 'react-redux';
 import ImageList from './ImageList';
+import { themXoaYeuThichTour } from '../../../../redux/slices/favouriteAddDeleteducers';
 
 const review = {
   reviewName: 'datpham',
@@ -54,7 +55,7 @@ const general = [
   },
 ];
 
-const HeaderNavBar = ({title, onPressed}) => {
+const HeaderNavBar = ({title, onPressed, onPressFavorite}) => {
   return (
     <TouchableOpacity onPress={onPressed} style={styles.headerN}>
       <View style={styles.IconArrowCon}>
@@ -65,7 +66,9 @@ const HeaderNavBar = ({title, onPressed}) => {
         <IcFavorite />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.IconFavoriteCon}>
+      <TouchableOpacity
+        onPress={onPressFavorite}
+        style={styles.IconFavoriteCon}>
         <IcFavorite />
       </TouchableOpacity>
     </TouchableOpacity>
@@ -83,9 +86,12 @@ const TopNavBar = () => {
 };
 
 function Detail({navigation, route}) {
+
   const {_id} = route.params;
   const dispatch = useDispatch();
+  // const [selected , setSelected] = useState(flase)
   const {tourById: tour} = useSelector(state => state.reducer.tour);
+  const {user} =useSelector(state => state.reducer.auth);
 
   useEffect(() => {
     dispatch(fetchTourById(_id));
@@ -97,6 +103,12 @@ function Detail({navigation, route}) {
   function handleItemDayPress(index) {
     setSeletedInd(index);
     setSelectedAllday(false);
+  }
+
+  function handleFavorite() {
+   const userId = user.user._id;
+   const tourId = _id
+    dispatch(themXoaYeuThichTour({ userId, tourId }))
   }
 
   function handlePressed() {
@@ -116,13 +128,18 @@ function Detail({navigation, route}) {
         barStyle={'dark-content'}
       />
 
-      {tour && tour[0] && tour[0].images ?(
+      {tour && tour[0] && tour[0].images ? (
         <AnimatedScrollView
-          HeaderNavbarComponent={<HeaderNavBar onPressed={handlePressed} />}
+          HeaderNavbarComponent={
+            <HeaderNavBar
+              onPressFavorite={handleFavorite}
+              onPressed={handlePressed}
+            />
+          }
           TopNavBarComponent={<TopNavBar />}
           topBarHeight={120}
           headerImage={tour && {uri: tour[0].images[0].linkImage[0]}}>
-         <ImageList dataimage = {tour[0].images[0].linkImage}/>
+          <ImageList dataimage={tour[0].images[0].linkImage} />
 
           <View style={styles.contentContaienr}>
             <Text style={styles.tourname}>{tour[0].tourName}</Text>
@@ -132,7 +149,9 @@ function Detail({navigation, route}) {
                 <View style={styles.IclocateContainer}>
                   <IcLocate />
                 </View>
-                <Text style={styles.text}>{tour[0].locations[0].destination}</Text>
+                <Text style={styles.text}>
+                  {tour[0].locations[0].destination}
+                </Text>
               </View>
 
               <View style={[styles.flex_row, styles.ctVetical, styles.mr_s_24]}>
@@ -210,9 +229,9 @@ function Detail({navigation, route}) {
             <Accordion title="Điều khoản chung" sections={generalTerms} />
           </View>
         </AnimatedScrollView>
-      ):
-      <></>
-    }
+      ) : (
+        <></>
+      )}
 
       {/* <TouchableOpacity
         onPress={handleClickImage}
@@ -398,7 +417,7 @@ const styles = StyleSheet.create({
     marginEnd: 12,
     marginTop: 16,
   },
- 
+
   tourname: {
     color: colors.Grey_900,
     fontSize: 18,

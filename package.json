@@ -13,9 +13,8 @@
     "@kanelloc/react-native-animated-header-scroll-view": "^1.0.0",
     "@photo-sphere-viewer/core": "^5.10.1",
     "@react-native-async-storage/async-storage": "^2.0.0",
-    "@react-native-community/netinfo": "^11.4.1",
     "@react-native-community/datetimepicker": "^8.2.0",
-
+    "@react-native-community/netinfo": "^11.4.1",
     "@react-native-firebase/app": "^21.0.0",
     "@react-native-firebase/auth": "^21.0.0",
     "@react-native-google-signin/google-signin": "^13.1.0",
@@ -44,6 +43,7 @@
     "react-native-star-rating": "^1.1.0",
     "react-native-stars": "^1.2.2",
     "react-native-svg": "^15.7.1",
+    "react-native-swipe-list-view": "^3.2.9",
     "react-native-swiper": "^1.6.0",
     "react-native-webview": "^13.12.3",
     "react-pannellum": "^0.2.16",

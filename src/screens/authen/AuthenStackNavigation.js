@@ -11,7 +11,7 @@ import FavouriteScreenNoItem from '../../screens/main/tabs/favourite/FavouriteSc
 import FavoriteScreen from '../../screens/main/tabs/favourite/FavoriteScreen';
 import TestFavoriteAddDelete from '../main/tabs/favourite/TestFavoriteAddDelete';
 import SplashScreen from './Splash/SplashScreen';
-import SearchScreen from '../main/stacks/Sreach/SearchScreen';
+import SearchScreen from '../main/tabs/Sreach/SearchScreen';
 import FilterScreen from '../main/stacks/Filter/FilterScreen';
 
 const Stack = createNativeStackNavigator();
