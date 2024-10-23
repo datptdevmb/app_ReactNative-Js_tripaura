@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import colors from '../../../../constants/colors';
+import { useSelector } from 'react-redux';
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
+    const { user } = useSelector(state => state.reducer.auth);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     return (
         <View style={stylesglobal.container}>
@@ -18,7 +20,7 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-                    <Text style={styles.txtName}>Name</Text>
+                    <Text style={styles.txtName}>{user.user.fullname}</Text>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('EditProfileScreen')}
                     style={styles.btnCapNhaHoSo}>

@@ -20,7 +20,7 @@ const FavoriteScreen = ({ route }) => {
   const { user } = useSelector(state => state.reducer.auth);
   const { favoritesData, favoritesStatus } = useSelector(state => state.reducer.favorites);
 
-  console.log(favoritesData)
+  console.log(user?.user)
 
   useEffect(() => {
     if (user?.user?._id) {
