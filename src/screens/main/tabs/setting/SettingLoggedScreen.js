@@ -78,41 +78,42 @@ const SettingLoggedScreen = (props) => {
         });
         data.append('upload_preset', 'TripAuraAPI');
         data.append('api_key', '976765598717887');
-
+    
         try {
             const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
                 method: 'POST',
                 body: data,
             });
-
+    
             const result = await response.json();
             if (response.ok) {
-                console.log('Upload successful:', result);
+                console.log('Tải lên thành công:', result);
                 const imageUrl = result.secure_url;
-
+    
                 const userUpdateData = {
                     ...user,
                     avatar: imageUrl,
                     userId: user._id,
                 };
-                console.log('Uploading successful, updating user data:', userUpdateData);
-
+                console.log('Tải lên thành công, cập nhật thông tin người dùng:', userUpdateData);
+    
                 await dispatch(ThayDoiThongTin(userUpdateData));
             } else {
-                console.log('Upload failed:', result);
-                Alert.alert('Error', 'Failed to upload image');
+                console.log('Tải lên không thành công:', result);
+                Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
             }
         } catch (error) {
-            console.log('Error uploading image:', error);
-            Alert.alert('Error', 'An error occurred while uploading the image');
+            console.log('Lỗi khi tải lên hình ảnh:', error);
+            Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
         }
     };
-
+    
     useEffect(() => {
         if (changeUserStatus === 'failed') {
-            Alert.alert('Error', 'Failed to update user information');
+            Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
         }
     }, [changeUserStatus]);
+    
 
 
     return (

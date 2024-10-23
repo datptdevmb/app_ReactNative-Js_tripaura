@@ -6,6 +6,7 @@ const stylesdown = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 10,
     },
     containerpicker: {
         display: 'flex',
@@ -18,7 +19,7 @@ const stylesdown = StyleSheet.create({
         alignItems: 'center',
     },
     picker: {
-        width: 159,
+        width: 155,
         height: 44,
         justifyContent: 'space-between',
         alignItems: 'center',
