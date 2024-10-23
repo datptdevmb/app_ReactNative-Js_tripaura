@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react'; // Thêm useState vào import
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import {LayDanhSachYeuThich} from '../../../../redux/slices/favouriteducers';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {styles} from './FavoriteScreenStyle';
@@ -19,17 +20,25 @@ import {XaoYeuThich} from '../../../../redux/slices/favouriteDeleteDucers';
 
 const FavoriteScreen = ({route}) => {
   const dispatch = useDispatch();
-  const {userId} = route.params; // Lấy userId từ route.params
+  const [userId, setUserId] = useState(null);
   const {favoritesData, favoritesStatus} = useSelector(
-    state => state.favorites,
+    state => state.reducer.favorites,
   );
 
-  // Fetch danh sách yêu thích khi component được mount
   useEffect(() => {
-    if (userId) {
-      dispatch(LayDanhSachYeuThich(userId));
-    }
-  }, [userId, dispatch]);
+    const fetchUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId'); 
+        if (storedUserId) {
+          setUserId(storedUserId);
+          dispatch(LayDanhSachYeuThich(storedUserId)); 
+        }
+      } catch (error) {
+        console.error('Lỗi khi lấy userId từ AsyncStorage:', error);
+      }
+    };
+    fetchUserId();
+  }, [dispatch]);
 
   const handleToggleFavorite = selectedTourId => {
     if (!selectedTourId) {
@@ -43,7 +52,7 @@ const FavoriteScreen = ({route}) => {
         if (response.payload) {
           console.log('Xóa thành công tourId:', selectedTourId);
           ToastAndroid.show('Xóa Thành Công!', ToastAndroid.SHORT);
-          dispatch(LayDanhSachYeuThich(userId)); 
+          dispatch(LayDanhSachYeuThich(userId));
         } else {
           Alert.alert('Thông báo', 'Không thể xóa yêu thích, hãy thử lại sau.');
           console.log('Không xóa được, dữ liệu trả về:', response);
@@ -55,15 +64,14 @@ const FavoriteScreen = ({route}) => {
       });
   };
 
-  // Render mỗi mục yêu thích
   const renderFavoriteItem = ({item}) => {
     const tour = item.tour && item.tour.length > 0 ? item.tour[0] : null;
-    const tourId = tour ? tour._id : null; 
+    const tourId = tour ? tour._id : null;
 
     const renderRightActions = () => (
       <TouchableOpacity
         style={styles.deleteButton}
-        onPress={() => handleToggleFavorite(tourId)}// Gọi hàm xóa với tourId
+        onPress={() => handleToggleFavorite(tourId)} // Gọi hàm xóa với tourId
       >
         <Image
           source={require('../../../../assets/icons/bin.png')}
@@ -101,15 +109,25 @@ const FavoriteScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <Header style={styles.Header} title="Yêu Thích" />
+      <Text style={styles.texty}>Yêu thích</Text>
       {favoritesStatus === 'loading' ? (
         <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
+      ) : favoritesData.length > 0 ? ( 
         <FlatList
           data={favoritesData}
           renderItem={renderFavoriteItem}
           keyExtractor={item => item._id}
         />
+      ) : (
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Image
+            resizeMode="contain"
+            source={require('./../../../../assets/images/Favorite.png')}
+            style={styles.image}
+          />
+          <Text style={styles.textt}>Bạn chưa có địa điểm yêu thích ?.</Text>
+          <Text style={styles.texttt}>Chọn địa điểm yêu thích ngay thôi nào</Text>
+        </View>
       )}
     </View>
   );

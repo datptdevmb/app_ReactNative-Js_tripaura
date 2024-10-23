@@ -2,8 +2,12 @@ import {StyleSheet, Text, View, Image, ToastAndroid} from 'react-native';
 import React from 'react';
 import {styles} from './FavouriteScreenNoLoginStyle';
 import Button from '../../../../components/common/button/Button';
+import { ROUTES } from '../../../../constants/routes';
 
-const FavouriteScreenNoLogin = () => {
+const FavouriteScreenNoLogin = ({navigation}) => {
+  function handleLogin() {
+    navigation.navigate(ROUTES.login);
+  }
   return (
     <View>
       <Text style={styles.textStyle}>Yêu Thích</Text>
@@ -17,9 +21,7 @@ const FavouriteScreenNoLogin = () => {
       </Text>
       <Button
         label="Đăng nhập"
-        onPressed={() => {
-          console.log('Thành Công');
-        }}
+        onPressed={handleLogin}
         style={styles.buttonStyle}
       />
     </View>

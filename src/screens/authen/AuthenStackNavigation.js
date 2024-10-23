@@ -16,16 +16,17 @@ const Stack = createNativeStackNavigator();
 const AuthenStackNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen
+        <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
+      {/* <Stack.Screen
         name="TestFavoriteAddDelete"
         component={TestFavoriteAddDelete}
-      />
-      <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
+      /> */}
+      {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
       <Stack.Screen
         name="LoginRegisterScreen"
         component={LoginRegisterScreen}
       />
-      <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
+    
 
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotScreen" component={ForgotScreen} />

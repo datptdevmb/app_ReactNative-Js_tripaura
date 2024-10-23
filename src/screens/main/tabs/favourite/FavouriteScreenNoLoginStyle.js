@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   textStyle: {
     width: 144,
     height: 48,
-    fontSize: 32,
+    fontSize: 28,
     lineHeight: 48,
     fontWeight: '700',
     fontFamily: 'Lato',

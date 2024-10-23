@@ -11,7 +11,7 @@ const TourCardList = ({tours, onClickItem, isLoading,onClickFavorite}) => {
       ) : (
         
         tours.map((tour, index) => (
-          <TourCard key={index} tour={tour} onClickItem={onClickItem} onClickFavorite={onClickFavorite} />
+          <TourCard key={index} tour={tour} onClickItem={onClickItem} onClickFavorite={() => onClickFavorite(tour, index)} />
         ))
       )}
     </View>

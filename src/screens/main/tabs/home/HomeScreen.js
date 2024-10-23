@@ -18,42 +18,32 @@ import TourCardVetical from '../../../../components/common/card/TourCardVetical'
 import {tours, categorys, data} from '../../../../constants/data';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategory} from '../../../../redux/slices/category.slice';
-import {fetchPopularTour, fetchTours} from '../../../../redux/slices/tour.slice';
+import {
+  fetchPopularTour,
+  fetchTours,
+} from '../../../../redux/slices/tour.slice';
 import HeaderHome from '../../../../components/common/header/HeaderHome';
 import TourCardList from './TourCartList';
 import CategoryList from './CategoryList';
-import {fetchImages} from '../../../../redux/slices/image.slice';
 import Slider from './Slider';
 import PopularToursList from './PopularToursList';
+import {useHomeData} from '../../../../hooks/useHomeData';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const {categories} = useSelector(state => state.reducer.category);
-  const {tours , popularTours} = useSelector(state => state.reducer.tour);
-  const {images} = useSelector(state => state.reducer.images);
+
+  const {
+    categories,
+    tours,
+    popularTours,
+    images,
+    isLoading
+  } = useHomeData();
 
   console.log(popularTours);
-
-  const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedFavorite, setSelectedFavorite] = useState(null);
-
-  useEffect(() => {
-    const loadData = async () => {
-      await Promise.all([
-        dispatch(fetchImages()),
-        dispatch(fetchCategory()),
-        dispatch(fetchTours('67049d4526be2256863506cc')),
-        dispatch(fetchPopularTour())
-      ]);
-      setIsLoading(false);
-    };
-    loadData().catch(err => {
-      console.error('Error fetching data:', err);
-      setIsLoading(false);
-    });
-  }, [dispatch]);
 
   function handleCatePress(item, index) {
     if (selectedIndex !== index) {
@@ -61,11 +51,14 @@ const HomeScreen = ({navigation}) => {
     }
     dispatch(fetchTours(item._id));
   }
-  function handleClickFavorite(index) {
-    if (selectedFavorite !== index) {
+  const handleClickFavorite = (tour, index) => {
+    if (selectedFavorite === index) {
+      setSelectedFavorite(null);
+    } else {
       setSelectedFavorite(index);
     }
-  }
+    console.log(`Tour favorited`);
+  };
 
   function handleClickItem(_id) {
     navigation.navigate('Detail', {_id});
@@ -79,7 +72,7 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   if (isLoading) {
-    return <Text>Loading...</Text>; // Hoặc bạn có thể sử dụng một component loader
+    return <Text>Loading...</Text>;
   }
 
   return (
@@ -131,7 +124,7 @@ const HomeScreen = ({navigation}) => {
             isLoading={isLoading}
           />
         ) : (
-          !isLoading && <Text>Không có dữ liệu</Text> // Hiển thị thông báo khi không có dữ liệu và không đang load
+          !isLoading && <Text>Không có dữ liệu</Text>
         )}
         <Text style={styles.heading}>Điểm đến được săn đón</Text>
         <PopularToursList popularTours={popularTours} />
@@ -141,8 +134,6 @@ const HomeScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
- 
- 
   heading: {
     fontSize: 16,
     fontStyle: 'normal',
@@ -159,7 +150,7 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
     paddingTop: 26,
   },
-  
+
   itemContainer: {
     marginRight: 24,
     alignItems: 'center',

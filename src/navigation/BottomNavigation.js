@@ -1,7 +1,14 @@
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
-import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/main/tabs/home/HomeScreen';
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
@@ -13,8 +20,10 @@ import IcHome from '../assets/icons/bottom_tab/Ic_home';
 import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
 import IcProfile from '../assets/icons/bottom_tab/ic_profile';
 import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
-
-import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
+import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
+import FavouriteScreenNoLogin from '../screens/main/tabs/favourite/FavouriteScreenNoLogin';
+import Voucher from '../screens/main/stacks/voucher/Voucher'
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
@@ -63,6 +72,9 @@ function CustomBottom({onPress, children}) {
 }
 
 const ButtomNavigation = () => {
+  const [user, setUser] = useState(null);
+  const {isLogin} = useSelector(state => state.reducer.auth);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -90,14 +102,14 @@ const ButtomNavigation = () => {
                 height: 90,
               }}>
               <IcHome />
-              <Text style={{fontSize: 8}}>{ROUTES.home}</Text>
+              <Text style={{fontSize: 8}}>{ROUTES.voucher}</Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
         name="Favourite"
-        component={FavouriteScreenNoItem}
+        component={Voucher}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -136,7 +148,7 @@ const ButtomNavigation = () => {
       />
       <Tab.Screen
         name="Notification"
-        component={NotificationScreen}
+        component={isLogin ? FavoriteScreen : FavouriteScreenNoLogin}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -151,14 +163,14 @@ const ButtomNavigation = () => {
                 // backgroundColor:colors.primary
               }}>
               <IcFavorite />
-              <Text>{ROUTES.home}</Text>
+              <Text>{ROUTES.favorite}</Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
         name="Setting"
-        component={SettingLoggedScreen}
+        component={user ? SettingLoggedScreen : HomeScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -173,7 +185,7 @@ const ButtomNavigation = () => {
                 // backgroundColor:colors.primary
               }}>
               <IcProfile />
-              <Text>{ROUTES.home}</Text>
+              <Text>{ROUTES.settings}</Text>
             </View>
           ),
         }}

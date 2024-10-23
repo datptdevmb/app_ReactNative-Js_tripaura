@@ -2,7 +2,8 @@
 export const API_BASE_URL = 'https://trip-aura-server.vercel.app/';
 
 
-
+//auth 
+export const LOGIN_GOOGLE_API = `${API_BASE_URL}/auth/login/google`;
 
 // tours
 export const TOURS_API = `${API_BASE_URL}/tours`;

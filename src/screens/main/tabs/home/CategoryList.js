@@ -17,7 +17,7 @@ const CategoryList = ({ categories, selectedIndex, onCatePress }) => {
     <FlatList
       data={categories}
       renderItem={renderItem}
-      keyExtractor={(item) => item._id ? item._id.toString() : Math.random().toString()} // Thay thế nếu không có _id
+      keyExtractor={(item) => item._id ? item._id.toString() : Math.random().toString()}
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.categoryContainer}
@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   itemCate: {
-    marginRight: 24, // Khoảng cách giữa các danh mục
+    marginRight: 24, 
     alignItems: 'center',
   },
   selectedItem: {
-    color: '#007BFF', // Màu sắc cho mục được chọn
+    color: '#007BFF', 
   },
   textCate: {
     color: '#A8A8A8',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#007BFF', // Màu sắc cho chấm dưới mục được chọn
+    backgroundColor: '#007BFF',
     marginTop: 4,
   },
 });
