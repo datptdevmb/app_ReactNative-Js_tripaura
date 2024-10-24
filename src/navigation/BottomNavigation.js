@@ -27,6 +27,7 @@ import Voucher from '../screens/main/stacks/voucher/Voucher'
 import { useSelector } from 'react-redux';
 import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
 import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
+import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 
 
 const Tab = createBottomTabNavigator();

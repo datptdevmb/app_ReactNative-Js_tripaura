@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Modal, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {
   GoogleSignin,

@@ -1,147 +1,43 @@
-import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
+import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
-import { AppContext } from '../../../AppContext';
 import colors from '../../../../constants/colors';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const SettingLoggedScreen = (props) => {
-
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
-    const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const [image, setImage] = useState(null);
-    const dispatch = useDispatch();
-
-    const { user } = useContext(AppContext);
-    console.log('user', user)
-
-    const changeUserStatus = useSelector(state => state.changeUser.changeUserStatus);
+    const {user} =useSelector(state => state.reducer.auth)
+    console.log(user)
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
-    const commonOptions = {
-        mediaType: 'photo',
-        maxWidth: 100,
-        maxHeight: 100,
-    };
-
-    const cameraOptions = {
-        cameraType: 'front',
-        saveToPhotos: true,
-        ...commonOptions,
-    };
-
-    const imageOptions = {
-        selectionLimit: 1,
-        ...commonOptions,
-    };
-    console.log('image', image);
-
-    const openImagePicker = async () => {
-        const response = await launchImageLibrary(imageOptions);
-        if (response?.assets?.[0]?.uri) {
-            console.log('Image URI:', response.assets[0].uri);
-            setImage(response.assets[0].uri);
-            handleUpdate(response.assets[0]);
-        } else {
-            console.log('User cancelled image picker');
-            setImage(null);
-        }
-    };
-
-    const openCamere = async () => {
-        const response = await launchCamera(cameraOptions);
-        if (response?.assets?.[0]?.uri) {
-            console.log('Image URI:', response.assets[0].uri);
-            setImage(response.assets[0].uri);
-            handleUpdate(response.assets[0]);
-        } else if (response.didCancel) {
-            Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
-            setImage(null);
-        } else {
-            console.log('Lỗi không xác định', response);
-            Alert.alert('Lỗi', 'Một lỗi không xác định đã xảy ra khi truy cập camera.');
-        }
-    };
-
-
-    const handleUpdate = async (image) => {
-        const data = new FormData();
-        data.append('file', {
-            uri: image.uri,
-            type: image.type || 'image/jpeg',
-            name: `photo.${image.uri.split('.').pop()}`,
-        });
-        data.append('upload_preset', 'TripAuraAPI');
-        data.append('api_key', '976765598717887');
-    
-        try {
-            const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
-                method: 'POST',
-                body: data,
-            });
-    
-            const result = await response.json();
-            if (response.ok) {
-                console.log('Tải lên thành công:', result);
-                const imageUrl = result.secure_url;
-    
-                const userUpdateData = {
-                    ...user,
-                    avatar: imageUrl,
-                    userId: user._id,
-                };
-                console.log('Tải lên thành công, cập nhật thông tin người dùng:', userUpdateData);
-    
-                await dispatch(ThayDoiThongTin(userUpdateData));
-            } else {
-                console.log('Tải lên không thành công:', result);
-                Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
-            }
-        } catch (error) {
-            console.log('Lỗi khi tải lên hình ảnh:', error);
-            Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
-        }
-    };
-    
-    useEffect(() => {
-        if (changeUserStatus === 'failed') {
-            Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
-        }
-    }, [changeUserStatus]);
-    
-
-
+    function handleMap(){
+        navigation.navigate('MapScreen')
+    }
+    function handleCauhoi(){
+        navigation.navigate('FAQsSrceen')
+    }
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
-                    <TouchableOpacity onPress={openImagePicker}>
-                        <Image
-                            source={image ? { uri: image } : (user && user.avatar ? { uri: user.avatar } : Icons.avatar)}
-                            style={styles.imageAvatar}
-                        />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamere}>
+                    <Image source={Icons.avatar} />
+                    <TouchableOpacity style={styles.icCameraContainer}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-                    <Text style={styles.txtName}>{user && user.fullname ? user.fullname : 'Nguyễn Văn A'}</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('EditProfileScreen')}
-                        style={styles.btnCapNhaHoSo}>
+                    <Text style={styles.txtName}>{user.user.fullname}</Text>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate('EditProfileScreen')}
+                    style={styles.btnCapNhaHoSo}>
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('ProfileScreen')}
-                    style={styles.iconNextContainer}>
+                <TouchableOpacity 
+                onPress={() => navigation.navigate('ProfileScreen')}
+                style={styles.iconNextContainer}>
                     <Image
                         style={styles.iconNext}
                         source={Icons.ic_arrowright} />
@@ -150,7 +46,7 @@ const SettingLoggedScreen = (props) => {
 
             <View style={styles.btnHorizontalContainer}>
                 <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                    <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
@@ -160,7 +56,7 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                    <TouchableOpacity onPress={handleCauhoi} style={styles.btnCauHoiContainer}>
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
@@ -216,9 +112,9 @@ const SettingLoggedScreen = (props) => {
                     <View style={styles.lefticon}>
                         <Switch
                             trackColor={{ false: '#767577', true: '#0572E7' }}
-                            thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
-                            onValueChange={toggleSwitchchedo}
-                            value={isEnabledchdo}
+                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
                         />
                     </View>
                 </View>
@@ -403,10 +299,4 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0
     },
-    imageAvatar: {
-        width: 65,
-        height: 65,
-        borderRadius: 50,
-        resizeMode: 'cover'
-    }
 })

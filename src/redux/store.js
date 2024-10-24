@@ -10,9 +10,13 @@ import changeUserReducer from './slices/ChangeUserSlice';
 import registerReducer from './slices/registerreducers';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
+import authReducur from './slices/auth.slice';
+import imagesReducer from './slices/image.slice';
 
 
 const rootReducer = combineReducers({
+  auth: authReducur,
+  images:imagesReducer,
   tour: tourReducer,
   category: categoryReducer,
   favorites: favoriteReducer,
