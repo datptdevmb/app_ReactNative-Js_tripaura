@@ -3,10 +3,10 @@ import React from 'react'
 import Button from '../../../../components/common/button/Button'
 import Icons from '../../../../constants/Icons';
 
-const SettingScreen = () => {
-
+const SettingScreen = (props) => {
+  const { navigation } = props;
   const nhanDangNhapNe = () => {
-    console.log("Nhan dang nhap ne");
+    navigation.navigate('LoginRegisterScreen');
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+
 import {
   View,
   ScrollView,

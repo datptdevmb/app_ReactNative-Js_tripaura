@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+
 import TourCard from '../../../../components/common/card/CardTour'; // Giả sử bạn đã có component TourCard
 
 const TourCardList = ({tours, onClickItem,selectedFavorite, isLoading,onClickFavorite}) => {
