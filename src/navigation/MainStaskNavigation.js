@@ -50,6 +50,7 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="MapScreen" component={VietnamMap} />
             <Stack.Screen name="Filter" component={DependentDropdown} />
             <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
+            <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
             
 

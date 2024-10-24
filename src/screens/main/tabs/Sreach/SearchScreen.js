@@ -82,7 +82,7 @@ const SearchScreen = ({navigation}) => {
             style={styles.image_clear}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Filter')}>
+        <TouchableOpacity onPress={() => navigation.navigate('FilterScreen')}>
           <Image
             source={require('../../../../assets/images/Filter.png')}
             style={styles.image_filter}
