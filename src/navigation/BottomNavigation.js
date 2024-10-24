@@ -12,6 +12,7 @@ import IcHome from '../assets/icons/bottom_tab/Ic_home';
 import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
 import IcProfile from '../assets/icons/bottom_tab/ic_profile';
 import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
+import PromotionScreen from '../screens/main/tabs/promotion/PromotionScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -105,8 +106,8 @@ const ButtomNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Favourite"
-        component={FavouriteScreenNoItem}
+        name={ROUTES.promotion}
+        component={PromotionScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -118,15 +119,8 @@ const ButtomNavigation = () => {
               height: 90,
               // backgroundColor:colors.primary
             }}>
-              <Image
-                resizeMode='contain'
-                source={require('../assets/icons/HomeIcon.png')}
-                style={{
-                  tintColor: focused ? colors.primary_500 : colors.Grey_800,
-
-                }} />
-              <IcVoucher />
-              <Text>Uu dai</Text>
+              <IcVoucher/>
+              <Text style={{ fontSize: 8 }}>{ROUTES.promotion}</Text>
             </View>
           )
         }}

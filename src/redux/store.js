@@ -6,6 +6,7 @@ import tourReducer from './slices/tour.slice';
 import categoryReducer from './slices/category.slice';
 import provincesReducer from './slices/cityprovince'
 import districtReducer from './slices/district';
+import getvoucherReducer from './slices/vouchersSlice'
 
 // Combine reducers in the store configuration
 const store = configureStore({
@@ -17,7 +18,8 @@ const store = configureStore({
         category: categoryReducer,
         provinces: provincesReducer,
         district: districtReducer,
-            
+        getVoucher: getvoucherReducer,
+
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
