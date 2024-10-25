@@ -1,5 +1,5 @@
 import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useReducer } from 'react'
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import { AppContext } from '../../../AppContext';
@@ -16,7 +16,11 @@ const SettingLoggedScreen = (props) => {
     const dispatch = useDispatch();
 
     const { user: contextUser } = useContext(AppContext);
+    
     const { user: reduxUser } = useSelector(state => state.reducer.auth);
+
+    console.log('User', reduxUser.user);
+
     const changeUserStatus = useSelector(state => state.changeUser);
 
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -85,13 +89,14 @@ const SettingLoggedScreen = (props) => {
                     userId: user._id,
                 };
 
-                const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
+                const updateResult = dispatch(ThayDoiThongTin(userUpdateData));
                 if (updateResult.error) {
                     Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
+                } else {
+                    setImage(imageUrl);
                 }
-            } else {
-                Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
             }
+
         } catch (error) {
             Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
         }

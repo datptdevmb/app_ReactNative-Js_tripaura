@@ -27,10 +27,12 @@ export const ThayDoiThongTin = createAsyncThunk('changeUser', async (data) => {
 export const changeUserSlice = createSlice({
     name: 'changeUser',
     initialState: {
+        user: null, // Thêm trường này
         changeUserData: null,
         changeUserStatus: 'idle',
-        error: null, 
+        error: null,
     },
+
     reducers: {},
     extraReducers: (builder) => {
         builder
@@ -38,13 +40,17 @@ export const changeUserSlice = createSlice({
                 state.changeUserStatus = 'loading';
                 state.error = null;
             })
+        
             .addCase(ThayDoiThongTin.fulfilled, (state, action) => {
-                state.changeUserStatus = 'succeeded'; 
-                state.changeUserData = action.payload;
+                state.changeUserStatus ='succeeded';
+                state.user = action.payload;
+                console.log('Redux user sau khi cập nhật:', state.user); // Log để kiểm tra giá trị
             })
+
+
             .addCase(ThayDoiThongTin.rejected, (state, action) => {
                 state.changeUserStatus = 'failed';
-                state.error = action.error.message; 
+                state.error = action.error.message;
                 console.log(action.error.message);
             });
     },

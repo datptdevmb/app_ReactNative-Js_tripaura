@@ -19,20 +19,20 @@ const EditProfileScreen = ({ navigation }) => {
     const [day, month, year] = dateString.split('/').map(Number);
     return new Date(year, month - 1, day);
   };
-
   const state = useSelector((state) => state);
-  console.log(state); // Kiểm tra xem state có chứa changeUser hay không
-  
-  const { user: contextUser, setUser : setcontextUser} = useContext(AppContext);
-  const { user: reduxUser, setUser: setReduxUser } = useSelector((state) => state.reducer.auth);
-  const { changeUserData, changeUserStatus } = useSelector((state) => state.changeUser);
-
+  const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
+  const { user: reduxUser, setUser: setreduxUser } = useSelector((state) => state.reducer.auth.user);
+  const changeUserData = useSelector((state) => state.changeUser);
+  const changeUserStatus = useSelector((state) => state.changeUser);
   const dispatch = useDispatch();
-  const { provinces } = useSelector((state) => state.provinces);
-  const { districts } = useSelector((state) => state.district);
+  const provinces = useSelector((state) => state.provinces);
+  const districts = useSelector((state) => state.district);
+  const user = contextUser || reduxUser;
+  console.log('user', user);
 
-  const user = contextUser || reduxUser.user;
-  
+
+  const setUser = setContextUser || setreduxUser;
+
   const [email, setEmail] = useState(user?.email || "");
   const [fullname, setFullname] = useState(user?.fullname || "");
   const [phone, setPhone] = useState(user?.phone || "");
@@ -80,18 +80,23 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (changeUserStatus === 'successed') {
-      const { status, message, data } = changeUserData;
-      if (status) {
-        setUser(data);
-      } else {
-        ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
-      }
+    console.log("Change user status:", changeUserStatus); // Log trạng thái thay đổi
+    console.log("Change user data:", changeUserData); // Log dữ liệu người dùng thay đổi
+
+    if (changeUserStatus === 'succeeded') { // Kiểm tra điều kiện đúng
+        const { status, message, data } = changeUserData; // Destructure dữ liệu
+        if (status) {
+            setUser(data); // Cập nhật người dùng
+            console.log("User data updated:", data); // Log dữ liệu người dùng đã cập nhật
+        } else {
+            ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
+        }
     }
-  }, [changeUserData, changeUserStatus, setUser]);
+}, [changeUserData, changeUserStatus, setUser]);
+
 
   useEffect(() => {
-    if (user.address) {
+    if (user && user.address) {
       const addressParts = user.address.split(', ');
       const street = addressParts[0];
       const districtName = addressParts[1];
@@ -105,23 +110,27 @@ const EditProfileScreen = ({ navigation }) => {
       setSelectedDistrict(district || null);
     }
   }, [user, provinces, districts]);
-  useEffect(() => {
-    if (user.gender === "Nam") {
-      setIsMaleSelected(true);
-      setIsFemaleSelected(false);
-    } else if (user.gender === "Nữ") {
-      setIsMaleSelected(false);
-      setIsFemaleSelected(true);
-    }
-  }, [user.gender]);
 
   useEffect(() => {
-    if (user.dateofbirth) {
+    if (user && user.gender) {
+      if (user.gender === "Nam") {
+        setIsMaleSelected(true);
+        setIsFemaleSelected(false);
+      } else if (user.gender === "Nữ") {
+        setIsMaleSelected(false);
+        setIsFemaleSelected(true);
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user && user.dateofbirth) {
       const dateObject = parseDateString(user.dateofbirth);
       setDate(dateObject);
       setFormattedDate(dateObject.toLocaleDateString('en-GB'));
     }
   }, [user]);
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowPicker(Platform.OS === 'ios');
@@ -133,6 +142,16 @@ const EditProfileScreen = ({ navigation }) => {
     const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
     const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
     const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
+    
+    console.log("Updating user information with the following data:", {
+      userId: user._id,
+      fullname,
+      email,
+      phone,
+      gender,
+      dateofbirth: formattedDate,
+      address: addressWithDetails,
+    });
 
     dispatch(ThayDoiThongTin({
       userId: user._id,
@@ -218,12 +237,12 @@ const EditProfileScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <DropdownComponent
+      {/* <DropdownComponent
         onProvinceSelect={handleProvinceSelect}
         onDistrictSelect={handleDistrictSelect}
         selectedProvince={selectedProvince?.code || null}
         selectedDistrict={selectedDistrict?.code || null}
-      />
+      /> */}
       <View style={styles.inputContainer}>
         <Text>Chi tiết</Text>
         <InputComponent
