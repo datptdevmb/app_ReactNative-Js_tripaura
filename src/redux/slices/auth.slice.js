@@ -31,7 +31,7 @@ export const fetchGoogleUser = createAsyncThunk(
 export const checkLoginStatus = createAsyncThunk('auth/checkLoginStatus', async () => {
   const userData = await AsyncStorage.getItem('userId');
   if (userData) {
-    return { isLogin: true, user: JSON.parse(userData) }; // Trả về dữ liệu user nếu có
+    return { isLogin: true, user: JSON.parse(userData) };
   } else {
     return { isLogin: false, user: null }; 
   }
@@ -78,10 +78,10 @@ const authenSlice = createSlice({
       state.err = action.error.message;
     });
 
-    // Xử lý trạng thái khi kiểm tra đăng nhập
+
     builder.addCase(checkLoginStatus.fulfilled, (state, action) => {
       state.isLogin = action.payload.isLogin;
-      state.user = action.payload.user || {};  // Nếu không có user, đặt thành object rỗng
+      state.user = action.payload.user || {}; 
       state.loading = false;
     });
     builder.addCase(checkLoginStatus.pending, state => {

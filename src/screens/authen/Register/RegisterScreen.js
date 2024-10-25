@@ -15,12 +15,9 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
   const { registerData, registerStatus } = useSelector((state) => state.register);
-
   const back = () => {
     navigation.goBack();
   };

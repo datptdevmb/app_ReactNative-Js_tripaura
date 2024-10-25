@@ -17,6 +17,7 @@ import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
 import { ROUTES } from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen'
+import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -41,8 +42,8 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name={ROUTES.login} component={Login} />
             {/* <Stack.Screen name="Detail" component={Detail} /> */}
-            {/* <Stack.Screen name="Voucher" component={Voucher} />
-            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} /> */}
+            {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
+            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
         </Stack.Navigator>
     )
 }

@@ -8,7 +8,9 @@ import imageSliderReducer from './slices/image.slice'
 import favoriteReducer from './slices/favouriteducers'
 import favoriteAdDeleteReducer from './slices/favouriteAddDeleteducers'
 import favouriteDeleteReducer from './slices/favouriteDeleteDucers'
-
+import changeUserReducer from './slices/ChangeUserSlice';
+import provincesReducer from './slices/cityprovince';
+import districtReducer from './slices/district';
 
 const rootReducer = combineReducers({
     tour: tourReducer,
@@ -17,15 +19,16 @@ const rootReducer = combineReducers({
     network: networkReducer,
     images:imageSliderReducer,
     favorites: favoriteReducer,
+    changeUser: changeUserReducer,
+    provinces: provincesReducer,
+    district: districtReducer,
     // favoriteAdDelete: favoriteAdDeleteReducer,
     // favouriteDelete: favouriteDeleteReducer,
 
 });
 
 const store = configureStore({
-  reducer: {
-    reducer: rootReducer,
-  },
+  reducer: rootReducer,
 });
 
 export default store;

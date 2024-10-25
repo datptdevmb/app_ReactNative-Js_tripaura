@@ -2,10 +2,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Button from '../../../../components/common/button/Button'
 
-const SettingScreen = () => {
-
+const SettingScreen = (props) => {
+  const { navigation, route } = props;
   const nhanDangNhapNe = () => {
-    console.log("Nhan dang nhap ne");
+    navigation.native("LoginRegisterScreen")
   }
 
   return (
