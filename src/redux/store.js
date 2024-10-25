@@ -22,13 +22,16 @@ const rootReducer = combineReducers({
     changeUser: changeUserReducer,
     provinces: provincesReducer,
     district: districtReducer,
+    
     // favoriteAdDelete: favoriteAdDeleteReducer,
     // favouriteDelete: favouriteDeleteReducer,
 
 });
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    reducer: rootReducer,
+  },
 });
 
 export default store;

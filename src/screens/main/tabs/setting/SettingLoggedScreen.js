@@ -119,7 +119,7 @@ const SettingLoggedScreen = (props) => {
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamere}>
+                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>

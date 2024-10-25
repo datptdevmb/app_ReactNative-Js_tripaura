@@ -20,9 +20,13 @@ const EditProfileScreen = ({ navigation }) => {
     return new Date(year, month - 1, day);
   };
 
+  const state = useSelector((state) => state);
+  console.log(state); // Kiểm tra xem state có chứa changeUser hay không
+  
   const { user: contextUser, setUser : setcontextUser} = useContext(AppContext);
   const { user: reduxUser, setUser: setReduxUser } = useSelector((state) => state.reducer.auth);
   const { changeUserData, changeUserStatus } = useSelector((state) => state.changeUser);
+
   const dispatch = useDispatch();
   const { provinces } = useSelector((state) => state.provinces);
   const { districts } = useSelector((state) => state.district);

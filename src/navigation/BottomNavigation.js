@@ -74,8 +74,7 @@ function CustomBottom({onPress, children}) {
 }
 
 const ButtomNavigation = () => {
-  const {isLogin} = useSelector(state => state.reducer.auth);
-
+  const { isLogin } = useSelector(state => state.reducer?.auth || {});
   return (
     <Tab.Navigator
       screenOptions={{
