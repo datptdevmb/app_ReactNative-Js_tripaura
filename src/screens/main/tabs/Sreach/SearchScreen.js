@@ -65,10 +65,10 @@ const SearchScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchRow}>
-        <Image
+        {/* <Image
           source={require('../../../../assets/images/back.png')}
           style={styles.image_back}
-        />
+        /> */}
         <TextInput
           style={styles.inputSreach}
           placeholder="Tìm kiếm..."
