@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {TOURS_API, TOURSBYCATEID_API} from '../../constants/api';
+import {POPULAR_TOUR, TOUR_BY_ID, TOURS_API, TOURSBYCATEID_API} from '../../constants/api';
 
 class Tour {
   constructor() {
@@ -25,14 +25,24 @@ class Tour {
     }
   };
 
-  getTourById = async (tourId) =>{
+  getTourById = async tourId => {
     try {
-        const reponse = await axios.post(TOURSBYCATEID_API, {categoryId: cateId});
-        this.tours = reponse.data;
-        return this.tours;
-      } catch (error) {
-        console.log('errrr' + error);
-      }
+      const reponse = await axios.post(TOUR_BY_ID,{tourId});
+      this.tours = reponse.data;
+      return this.tours;
+    } catch (error) {
+      console.log('errrr' + error);
+    }
+  };
+
+  getPopularTours = async ()=>{
+    try {
+      const reponse = await axios.get(POPULAR_TOUR);
+      this.tours = reponse.data;
+      return this.tours;
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

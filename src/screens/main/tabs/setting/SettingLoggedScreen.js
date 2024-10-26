@@ -4,30 +4,30 @@ import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import { AppContext } from '../../../AppContext';
 import colors from '../../../../constants/colors';
+import { useSelector } from 'react-redux';
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
-    const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const { user, setUser } = useContext(AppContext)
+    const { user } = useSelector(state => state.reducer.auth);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
-    
-    console.log('usersetting',user)
+
+    console.log('usersetting', user)
 
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
                     <Image
-                       source={user && user.avatar ? { uri: user.avatar } : Icons.avatar}
+                        source={user && user.avatar ? { uri: user.avatar } : Icons.avatar}
                     />
                     <TouchableOpacity style={styles.icCameraContainer}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-                    <Text style={styles.txtName}>{user && user.fullname}Nguyễn Văn A</Text>
+                    <Text style={styles.txtName}>{user.user.fullname}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>
@@ -111,9 +111,9 @@ const SettingLoggedScreen = (props) => {
                     <View style={styles.lefticon}>
                         <Switch
                             trackColor={{ false: '#767577', true: '#0572E7' }}
-                            thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
+                            // thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
                             onValueChange={toggleSwitchchedo}
-                            value={isEnabledchdo}
+                            // value={isEnabledchdo}
                         />
                     </View>
                 </View>

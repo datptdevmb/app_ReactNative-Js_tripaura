@@ -8,7 +8,6 @@ import Rate from './src/screens/main/tabs/setting/SettingLoggedScreen'
 import DropdownComponent from './src/components/common/dropdown/DropdownComponent.js';
 import PromotionScreen from './src/screens/main/tabs/promotion/VoucherScreen.js';
 
-
 const App = () => {
   return (
     <Provider store={store}>
