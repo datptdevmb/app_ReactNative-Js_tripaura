@@ -31,7 +31,6 @@ const AuthenStackNavigation = () => {
         component={LoginRegisterScreen}
       />
     
-
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotScreen" component={ForgotScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />

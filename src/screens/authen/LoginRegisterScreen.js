@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, Alert, ActivityIndicator, Modal } from 'react-native'; // Thêm Modal
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
@@ -10,13 +10,29 @@ import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGoogleUser } from '../../redux/slices/auth.slice';
+import { AppContext } from '../AppContext';
 
 
-const LoginRegisterScreen = ({ navigation }) => {
+const LoginRegisterScreen = (props) => {
+  const { navigation, route } = props;
   const dispatch = useDispatch();
   const { isLogin } = useSelector(state => state.reducer.auth);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const { setUser, setIsLogin } = useContext(AppContext);
+  const [loginType, setLoginType] = useState('email');
 
+  const loginemail = () => {
+    console.log("Navigating to email login");
+    setLoginType('email');
+    navigation.navigate('Login', { loginType: 'email' });
+  };
+  
+  const loginphone = () => {
+    console.log("Navigating to phone login");
+    setLoginType('phone');
+    navigation.navigate('Login', { loginType: 'phone' });
+  };
+  
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: '425470674648-kruk5stcsfk9gbi4chvoqu00fd02jad0.apps.googleusercontent.com',
@@ -24,7 +40,7 @@ const LoginRegisterScreen = ({ navigation }) => {
   }, []);
 
   const handleLoginWithGoogle = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const { data } = await GoogleSignin.signIn();
@@ -35,7 +51,7 @@ const LoginRegisterScreen = ({ navigation }) => {
       const userRequest = { uid, email, displayName, photoURL };
 
       await dispatch(fetchGoogleUser(userRequest));
-      
+
     } catch (error) {
       handleSignInError(error);
     } finally {
@@ -62,7 +78,7 @@ const LoginRegisterScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isLogin) {
-      navigation.goBack(); 
+      navigation.goBack();
     }
   }, [isLogin, navigation]);
 
@@ -74,12 +90,12 @@ const LoginRegisterScreen = ({ navigation }) => {
         Nhận tài khoản <Text style={{ color: '#0572E7' }}>TripAura</Text> để khám phá tiện ích
       </Text>
 
-     
+
       <Modal
         transparent={true}
         animationType="fade"
         visible={loading}
-        onRequestClose={() => {}}
+        onRequestClose={() => { }}
       >
         <View style={styles.modalBackground}>
           <View style={styles.activityIndicatorWrapper}>
@@ -95,14 +111,15 @@ const LoginRegisterScreen = ({ navigation }) => {
           icon={<Image source={Icons.ic_email} />}
           style={styles.EmailButton}
           labelStyle={styles.EmailLabel}
-          onPressed={() => navigation.navigate('RegisterScreen')}
+          onPressed={loginemail}
+
         />
         <SocialButton
           label=" Số điên thoại"
           icon={<Image source={Icons.ic_phone} />}
           style={styles.PhoneButton}
           labelStyle={styles.PhoneLabel}
-          onPressed={() => console.log(' Số điên thoại')}
+          onPressed={loginphone}
         />
         <SocialButton
           label=" Đăng nhập bằng Facebook"

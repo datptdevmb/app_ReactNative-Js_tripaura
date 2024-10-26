@@ -8,7 +8,8 @@ import imageSliderReducer from './slices/image.slice'
 import favoriteReducer from './slices/favouriteducers'
 import favoriteAdDeleteReducer from './slices/favouriteAddDeleteducers'
 import favouriteDeleteReducer from './slices/favouriteDeleteDucers'
-
+import loginReducer from './slices/loginreducers';
+import registerReducer from './slices/registerreducers';
 
 const rootReducer = combineReducers({
     tour: tourReducer,
@@ -17,6 +18,8 @@ const rootReducer = combineReducers({
     network: networkReducer,
     images:imageSliderReducer,
     favorites: favoriteReducer,
+    login: loginReducer,
+    register: registerReducer,
     // favoriteAdDelete: favoriteAdDeleteReducer,
     // favouriteDelete: favouriteDeleteReducer,
 
