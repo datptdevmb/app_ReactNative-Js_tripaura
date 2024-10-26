@@ -8,8 +8,15 @@ class Category {
 
     getCategories = async ()=>{
         try {
+<<<<<<< HEAD
             const response = await axios.get(CATEGORY_API);
             this.tours = response
+=======
+            // console.log('ddddkk')
+            const response = await axios.get(CATEGORY_API);
+            this.tours = response
+            // console.log(response)
+>>>>>>> 682b4584f05f4553c075764b42725e79185b80e8
             return this.tours;
 
         } catch (error) {

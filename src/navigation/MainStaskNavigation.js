@@ -13,10 +13,12 @@ import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import Detail from '../screens/main/stacks/detail/Detail';
 import ButtomNavigation from './BottomNavigation';
+
 import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
 import { ROUTES } from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen'
+
 
 
 const Tab = createBottomTabNavigator();
@@ -31,6 +33,7 @@ const MainTabNavigation = () => {
 
 
 const MainStaskNavigation = () => {
+
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
@@ -43,6 +46,9 @@ const MainStaskNavigation = () => {
             {/* <Stack.Screen name="Detail" component={Detail} /> */}
             {/* <Stack.Screen name="Voucher" component={Voucher} />
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} /> */}
+
+            <Stack.Screen name="Voucher" component={Voucher} />
+            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
         </Stack.Navigator>
     )
 }
