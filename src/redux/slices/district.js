@@ -5,12 +5,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Tạo hàm fetchDistricts
 export const fetchDistricts = createAsyncThunk(
     'districts/fetchDistricts',
-    async () => {
+    async (provinceId) => {
         const response = await fetch(`https://provinces.open-api.vn/api/d/`);
         if (!response.ok) {
             throw new Error('Failed to fetch districts');
         }
-        return await response.json();
+        const data = await response.json();
+        console.log("Fetched Districts: ", data);
+        return data.districts; 
     }
 );
 

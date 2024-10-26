@@ -6,7 +6,7 @@ import InputComponent from '../../../../components/common/input/InputCompoment';
 import DropdownComponent from '../../../../components/common/dropdown/DropdownComponent';
 import Button from '../../../../components/common/button/Button';
 import stylesGlobal from '../../../../constants/global';
-import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
+import ThayDoiThongTin  from '../../../../redux/slices/ChangeUserSlice';
 import { AppContext } from '../../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import fontsize from '../../../../constants/fontsize';
@@ -14,6 +14,7 @@ import colors from '../../../../constants/colors';
 import Icons from '../../../../constants/Icons';
 import CheckBox from '@react-native-community/checkbox';
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
+import stylesinput from '../../../../components/common/input/inputstyle';
 
 
 const EditProfileScreen = ({ navigation }) => {
@@ -24,45 +25,54 @@ const EditProfileScreen = ({ navigation }) => {
   const state = useSelector((state) => state);
   const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
   const { user: reduxUser, setUser: setreduxUser } = useSelector((state) => state.reducer.auth.user);
-  const changeUserData = useSelector((state) => state.changeUser);
-  const changeUserStatus = useSelector((state) => state.changeUser);
+  const {changeUserData} = useSelector((state) => state.reducer.changeUser);
+  const {changeUserStatus} = useSelector((state) => state.reducer.changeUser);
   const dispatch = useDispatch();
-  const provinces = useSelector((state) => state.provinces);
-  const districts = useSelector((state) => state.district);
+
+  const { provinces } = useSelector((state) => state.reducer.provinces);
+  const { districts } = useSelector((state) => state.reducer.district);
+  
   const user = contextUser || reduxUser;
   const userId = user?._id;
-
-  
   const setUser = setContextUser || setreduxUser;
+
   const [userinfo, setUserinfo] = useState({});
-  const [email, setEmail] = useState(user?.email || "");
-  const [fullname, setFullname] = useState(user?.fullname || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [address, setAddress] = useState(user?.address?.split(', ')[0] || "");
+  const [email, setEmail] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [date, setDate] = useState(user?.dateofbirth ? parseDateString(user.dateofbirth) : new Date());
+  const [date, setDate] = useState(userinfo?.dateofbirth ? parseDateString(userinfo.dateofbirth) : new Date());
   const [isMaleSelected, setIsMaleSelected] = useState(false);
   const [isFemaleSelected, setIsFemaleSelected] = useState(false);
   const [gender, setGender] = useState(null);
   const [showPicker, setShowPicker] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
-  console.log('user', user);
 
   useEffect(() => {
-        console.log("User ID:", userId);
+    if (userinfo) {
+      setEmail(userinfo?.email || "");
+      setFullname(userinfo?.fullname || "");
+      setPhone(userinfo?.phone || "");
+      setAddress(userinfo?.address?.split(', ')[0] || "");
+    }
+  }, [userinfo]);
 
-        dispatch(fetchUserInfo(userId))
-            .then((result) => {
-                console.log("Fetch User Info Result:", result);
-                if (result.payload && result.payload.success) {
-                    setUserinfo(result.payload.data);
-                }
-            })
-            .catch((error) => {
-                console.error("Fetch User Info Error:", error);
-            });
-    }, [dispatch, userId]);
+
+  useEffect(() => {
+    console.log("User ID:", userId);
+    dispatch(fetchUserInfo(userId))
+      .then((result) => {
+        console.log("Fetch User Info Result:", result);
+        if (result.payload && result.payload.success) {
+          setUserinfo(result.payload.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch User Info Error:", error);
+      });
+  }, [dispatch, userId]);
 
 
   const chonnam = () => {
@@ -80,6 +90,7 @@ const EditProfileScreen = ({ navigation }) => {
     ? districts.filter(district => district.province_code === selectedProvince.code)
     : [];
 
+
   const handleProvinceSelect = (provinceCode) => {
     const province = provinces.find(p => p.code === provinceCode);
     if (province) {
@@ -90,8 +101,8 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   const handleDistrictSelect = (districtCode) => {
-    const district = filteredDistricts.find(d => d.code === districtCode);
-    setSelectedDistrict(district);
+    const district = filteredDistricts.find(d => d.name === districtCode);
+    setSelectedDistrict(district || null);
     if (district) {
       setAddress(prev => `${prev}, ${district.name}, ${selectedProvince?.name || "Chưa chọn tỉnh thành"}`);
     }
@@ -99,53 +110,59 @@ const EditProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
 
-    if (changeUserStatus === 'succeeded') { 
-        const { status, message, data } = changeUserData;
-        if (status) {
-            setUser(data); 
-            console.log("User data updated:", data); 
-        } else {
-            ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
-        }
+    if (changeUserStatus === 'succeeded') {
+      const { status, message, data } = changeUserData;
+      if (status) {
+        setUser(data);
+        console.log("User data updated:", data);
+      } else {
+        ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
+      }
     }
-}, [changeUserData, changeUserStatus, setUser]);
+  }, [changeUserData, changeUserStatus, setUser]);
 
 
   useEffect(() => {
-    if (user && user.address) {
-      const addressParts = user.address.split(', ');
+    if (userinfo && userinfo.address) {
+      const addressParts = userinfo.address.split(', ');
       const street = addressParts[0];
       const districtName = addressParts[1];
       const provinceName = addressParts[2];
-
-      const province = provinces.find(p => p.name === provinceName);
-      const district = districts.find(d => d.name === districtName);
-
-      setAddress(street);
-      setSelectedProvince(province || null);
-      setSelectedDistrict(district || null);
+  
+      if (provinces?.length > 0 && districts?.length > 0) {
+        const province = provinces.find(p => p.name === provinceName);
+        const district = districts.find(d => d.name === districtName);
+  
+        setAddress(street);
+        setSelectedProvince(province || null);
+        setSelectedDistrict(district || null);
+      } else {
+        console.warn("Provinces or districts data is not available.");
+      }
     }
-  }, [user, provinces, districts]);
+  }, [userinfo, provinces, districts]);
+  
+
 
   useEffect(() => {
-    if (user && user.gender) {
-      if (user.gender === "Nam") {
+    if (userinfo && userinfo.gender) {
+      if (userinfo.gender === "Nam") {
         setIsMaleSelected(true);
         setIsFemaleSelected(false);
-      } else if (user.gender === "Nữ") {
+      } else if (userinfo.gender === "Nữ") {
         setIsMaleSelected(false);
         setIsFemaleSelected(true);
       }
     }
-  }, [user]);
+  }, [userinfo]);
 
   useEffect(() => {
-    if (user && user.dateofbirth) {
-      const dateObject = parseDateString(user.dateofbirth);
+    if (userinfo && userinfo.dateofbirth) {
+      const dateObject = parseDateString(userinfo.dateofbirth);
       setDate(dateObject);
       setFormattedDate(dateObject.toLocaleDateString('en-GB'));
     }
-  }, [user]);
+  }, [userinfo]);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -158,7 +175,7 @@ const EditProfileScreen = ({ navigation }) => {
     const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
     const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
     const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
-    
+
     dispatch(ThayDoiThongTin({
       userId: user._id,
       fullname,
@@ -180,6 +197,7 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text>Họ và tên</Text>
         <InputComponent
+          style={stylesinput.inputComponent}
           keyboardType={"default"}
           value={fullname}
           onTextChange={setFullname}
@@ -189,6 +207,7 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text>Email</Text>
         <InputComponent
+          style={stylesinput.inputComponent}
           keyboardType={"email-address"}
           value={email}
           onTextChange={setEmail}
@@ -198,6 +217,7 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text>Số điện thoại</Text>
         <InputComponent
+          style={stylesinput.inputComponent}
           keyboardType={"phone-pad"}
           value={phone}
           onTextChange={setPhone}
@@ -243,15 +263,16 @@ const EditProfileScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
-      {/* <DropdownComponent
+      <DropdownComponent
         onProvinceSelect={handleProvinceSelect}
         onDistrictSelect={handleDistrictSelect}
         selectedProvince={selectedProvince?.code || null}
         selectedDistrict={selectedDistrict?.code || null}
-      /> */}
+      />
       <View style={styles.inputContainer}>
         <Text>Chi tiết</Text>
         <InputComponent
+          style={stylesinput.inputComponent}
           value={address}
           onTextChange={setAddress}
           placeholder={`Số nhà, tên đường`}

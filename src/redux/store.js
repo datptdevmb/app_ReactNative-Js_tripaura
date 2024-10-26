@@ -14,20 +14,20 @@ import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
 
 const rootReducer = combineReducers({
-    tour: tourReducer,
-    auth:authenReducer,
-    category:categoryReducer,
-    network: networkReducer,
-    images:imageSliderReducer,
-    favorites: favoriteReducer,
-    changeUser: changeUserReducer,
-    provinces: provincesReducer,
-    district: districtReducer,
-    getUser: getuserReducer,
+  tour: tourReducer,
+  auth: authenReducer,
+  category: categoryReducer,
+  network: networkReducer,
+  images: imageSliderReducer,
+  favorites: favoriteReducer,
+  changeUser: changeUserReducer,
+  provinces: provincesReducer,
+  district: districtReducer,
+  getUser: getuserReducer,
 
-    
-    // favoriteAdDelete: favoriteAdDeleteReducer,
-    // favouriteDelete: favouriteDeleteReducer,
+
+  // favoriteAdDelete: favoriteAdDeleteReducer,
+  // favouriteDelete: favouriteDeleteReducer,
 
 });
 
