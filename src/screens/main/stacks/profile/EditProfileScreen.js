@@ -13,6 +13,8 @@ import fontsize from '../../../../constants/fontsize';
 import colors from '../../../../constants/colors';
 import Icons from '../../../../constants/Icons';
 import CheckBox from '@react-native-community/checkbox';
+import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
+
 
 const EditProfileScreen = ({ navigation }) => {
   const parseDateString = (dateString) => {
@@ -28,11 +30,11 @@ const EditProfileScreen = ({ navigation }) => {
   const provinces = useSelector((state) => state.provinces);
   const districts = useSelector((state) => state.district);
   const user = contextUser || reduxUser;
-  console.log('user', user);
+  const userId = user?._id;
 
-
+  
   const setUser = setContextUser || setreduxUser;
-
+  const [userinfo, setUserinfo] = useState({});
   const [email, setEmail] = useState(user?.email || "");
   const [fullname, setFullname] = useState(user?.fullname || "");
   const [phone, setPhone] = useState(user?.phone || "");
@@ -45,6 +47,23 @@ const EditProfileScreen = ({ navigation }) => {
   const [gender, setGender] = useState(null);
   const [showPicker, setShowPicker] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
+  console.log('user', user);
+
+  useEffect(() => {
+        console.log("User ID:", userId);
+
+        dispatch(fetchUserInfo(userId))
+            .then((result) => {
+                console.log("Fetch User Info Result:", result);
+                if (result.payload && result.payload.success) {
+                    setUserinfo(result.payload.data);
+                }
+            })
+            .catch((error) => {
+                console.error("Fetch User Info Error:", error);
+            });
+    }, [dispatch, userId]);
+
 
   const chonnam = () => {
     setIsMaleSelected(!isMaleSelected);
@@ -57,7 +76,6 @@ const EditProfileScreen = ({ navigation }) => {
     setGender("Nữ");
   };
 
-  console.log('user', date)
   const filteredDistricts = selectedProvince
     ? districts.filter(district => district.province_code === selectedProvince.code)
     : [];
@@ -80,14 +98,12 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log("Change user status:", changeUserStatus); // Log trạng thái thay đổi
-    console.log("Change user data:", changeUserData); // Log dữ liệu người dùng thay đổi
 
-    if (changeUserStatus === 'succeeded') { // Kiểm tra điều kiện đúng
-        const { status, message, data } = changeUserData; // Destructure dữ liệu
+    if (changeUserStatus === 'succeeded') { 
+        const { status, message, data } = changeUserData;
         if (status) {
-            setUser(data); // Cập nhật người dùng
-            console.log("User data updated:", data); // Log dữ liệu người dùng đã cập nhật
+            setUser(data); 
+            console.log("User data updated:", data); 
         } else {
             ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
         }
@@ -143,16 +159,6 @@ const EditProfileScreen = ({ navigation }) => {
     const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
     const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
     
-    console.log("Updating user information with the following data:", {
-      userId: user._id,
-      fullname,
-      email,
-      phone,
-      gender,
-      dateofbirth: formattedDate,
-      address: addressWithDetails,
-    });
-
     dispatch(ThayDoiThongTin({
       userId: user._id,
       fullname,

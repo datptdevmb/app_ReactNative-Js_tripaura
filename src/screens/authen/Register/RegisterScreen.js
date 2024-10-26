@@ -7,7 +7,6 @@ import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { DangKyTaiKhoan } from '../../../api/slice/registerreducers';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
@@ -68,9 +67,7 @@ const RegisterScreen = () => {
 
   const dangkytaikhoan = () => {
     console.log('Attempting to register with:', { email, password });
-    if (validateInputs()) {
-      dispatch(DangKyTaiKhoan({ email, password }));
-    }
+  
   };
 
   return (

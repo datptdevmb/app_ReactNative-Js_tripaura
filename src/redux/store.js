@@ -11,6 +11,7 @@ import favouriteDeleteReducer from './slices/favouriteDeleteDucers'
 import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
+import getuserReducer from './slices/getUserbyID';
 
 const rootReducer = combineReducers({
     tour: tourReducer,
@@ -22,6 +23,8 @@ const rootReducer = combineReducers({
     changeUser: changeUserReducer,
     provinces: provincesReducer,
     district: districtReducer,
+    getUser: getuserReducer,
+
     
     // favoriteAdDelete: favoriteAdDeleteReducer,
     // favouriteDelete: favouriteDeleteReducer,

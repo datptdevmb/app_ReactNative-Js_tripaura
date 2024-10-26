@@ -1,5 +1,5 @@
 import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState, useContext, useEffect, useReducer } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import { AppContext } from '../../../AppContext';
@@ -7,6 +7,7 @@ import colors from '../../../../constants/colors';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
@@ -14,17 +15,33 @@ const SettingLoggedScreen = (props) => {
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
     const [image, setImage] = useState(null);
     const dispatch = useDispatch();
-
+    const [userinfo, setUserinfo] = useState({});
     const { user: contextUser } = useContext(AppContext);
-    
     const { user: reduxUser } = useSelector(state => state.reducer.auth);
-
-    console.log('User', reduxUser.user);
-
     const changeUserStatus = useSelector(state => state.changeUser);
-
+    const user = reduxUser.user || contextUser;
+    
+    console.log('change', user);
+    const userId = user?._id;
+    console.log('userId', userId);
+    
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
+
+    useEffect(() => {
+        console.log("User ID:", userId);
+
+        dispatch(fetchUserInfo(userId))
+            .then((result) => {
+                console.log("Fetch User Info Result:", result);
+                if (result.payload && result.payload.success) {
+                    setUserinfo(result.payload.data);
+                }
+            })
+            .catch((error) => {
+                console.error("Fetch User Info Error:", error);
+            });
+    }, [dispatch, userId]);
 
     const commonOptions = {
         mediaType: 'photo',
@@ -58,7 +75,6 @@ const SettingLoggedScreen = (props) => {
     };
 
     const handleUpdate = async (image) => {
-        const user = contextUser || reduxUser.user;
 
         if (!user) {
             Alert.alert('Lỗi', 'Không tìm thấy thông tin người dùng');
@@ -86,17 +102,16 @@ const SettingLoggedScreen = (props) => {
                 const userUpdateData = {
                     ...user,
                     avatar: imageUrl,
-                    userId: user._id,
+                    userId: userId,
                 };
 
-                const updateResult = dispatch(ThayDoiThongTin(userUpdateData));
+                const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
                 if (updateResult.error) {
                     Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
-                } else {
-                    setImage(imageUrl);
                 }
+            } else {
+                Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
             }
-
         } catch (error) {
             Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
         }
@@ -108,10 +123,16 @@ const SettingLoggedScreen = (props) => {
         }
     }, [changeUserStatus]);
 
-    const userName = contextUser?.fullname || reduxUser?.user.fullname || 'Nguyễn Văn A';
-    const avatarUri = image
-        ? { uri: image }
-        : (contextUser?.avatar || reduxUser?.user.avatar ? { uri: contextUser?.avatar || reduxUser?.user.avatar } : Icons.avatar);
+
+    const userName = userinfo?.fullname || 'Nguyễn Văn A';
+
+    const avatar = image
+        ? { uri: image } : typeof userinfo?.avatar === 'string' && userinfo.avatar.startsWith('http')
+            ? { uri: userinfo.avatar } : Icons.avatar;
+
+    console.log('avatar', avatar);
+    console.log('userinfo', userinfo);
+    console.log('name', userName);
 
     return (
         <View style={stylesglobal.container}>
@@ -119,9 +140,10 @@ const SettingLoggedScreen = (props) => {
                 <View style={styles.avatarContainer}>
                     <TouchableOpacity onPress={openImagePicker}>
                         <Image
-                            source={avatarUri}
+                            source={avatar}
                             style={styles.imageAvatar}
                         />
+
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>

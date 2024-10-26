@@ -65,10 +65,7 @@ const Login = () => {
   };
 
   const dangnhaptaikhoan = () => {
-    console.log('Attempting to login with:', { email, password });
-    if (validateInputs()) {
-      dispatch(DangNhapTaiKhoan({ email, password }));
-    }
+   
   };
 
   return (
