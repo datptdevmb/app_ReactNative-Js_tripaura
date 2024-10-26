@@ -17,7 +17,8 @@ import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
 import { ROUTES } from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen'
-import DependentDropdown from '../screens/main/stacks/Filter/FilterScreen';
+import FiterScreen from '../screens/main/stacks/Filter/FilterScreen';
+import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -41,7 +42,8 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="ImageDetail" component={ImageDetail} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name={ROUTES.login} component={Login} />
-            <Stack.Screen name="FiterScreen" component={DependentDropdown} />
+            <Stack.Screen name="FiterScreen" component={FiterScreen} />
+            <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
             {/* <Stack.Screen name="Voucher" component={Voucher} />
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} /> */}
         </Stack.Navigator>

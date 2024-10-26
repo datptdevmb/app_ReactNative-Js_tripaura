@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './SreachScreenStyle';
-import { useNavigation } from '@react-navigation/native';
 
 // Dữ liệu mẫu
 const DATA = [
@@ -100,6 +99,12 @@ const SearchScreen = (props) => {
         numColumns={2} // Thiết lập số cột
         columnWrapperStyle={styles.row} // Thêm style cho hàng
       />
+
+
+
+
+
+
     </View>
   );
 };

@@ -15,10 +15,10 @@ import { AppContext } from '../../../AppContext';
 const EditProfileScreen = (props) => {
   const { navigation } = props
   const { user, setUser } = useContext(AppContext);
-  const { changeUserData, changeUserStatus } = useSelector((state) => state.changeUser);
+  const { changeUserData, changeUserStatus } = useSelector((state) => state.reducer.changeUser);
   const dispatch = useDispatch();
-  const { provinces } = useSelector((state) => state.provinces);
-  const { districts } = useSelector((state) => state.district);
+  const { provinces } = useSelector((state) => state.reducer.provinces);
+  const { districts } = useSelector((state) => state.reducer.district);
 
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState(user?.phone || "");

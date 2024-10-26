@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -6,11 +6,15 @@ import {
     TouchableOpacity,
     FlatList,
     Image,
+    ToastAndroid
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from './FilterScreenStyle';
+import { useDispatch, useSelector } from 'react-redux';
+import { FilterTour } from '../../../../redux/slices/filterTourSlice';
 
-const DependentDropdown = () => {
+const FilterScreen = (props) => {
+    const { navigation } = props
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedPrice, setSelectedPrice] = useState('');
     const [startDate, setStartDate] = useState(new Date());
@@ -19,7 +23,22 @@ const DependentDropdown = () => {
     const [showEndDatePicker, setShowEndDatePicker] = useState(false);
     const [showRegionPicker, setShowRegionPicker] = useState(false);
     const [showPricePicker, setShowPricePicker] = useState(false);
+    const { filterTourData, filterTourStatus } = useSelector((state) => state.reducer.filterTour);
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (filterTourStatus === 'succeeded') {
+            const { status, message, data } = filterTourData;
+            if (filterTourData.status == "success") {
+
+                // ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);
+                // navigation.goBack();
+            } else {
+                // ToastAndroid.show("Không tìm thấy tour", ToastAndroid.SHORT);
+            }
+        }
+
+    }, [filterTourData, filterTourStatus]);
     const regions = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Quảng Bình', 'Nghệ An'];
     const prices = [
         'Dưới 500 ngàn',
@@ -57,12 +76,19 @@ const DependentDropdown = () => {
     );
 
     const applyFilters = () => {
+
+        dispatch(
+            FilterTour({ startDate: startDate, destination: selectedRegion })
+        )
+        navigation.navigate('ListTourFilter')
         console.log('Áp dụng với:', {
             selectedRegion,
             selectedPrice,
             startDate,
             endDate,
         });
+
+
     };
 
     const clearFilters = () => {
@@ -79,7 +105,7 @@ const DependentDropdown = () => {
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={clearFilters}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Text style={styles.headerText}>Hủy bỏ</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -176,4 +202,4 @@ const DependentDropdown = () => {
     );
 };
 
-export default DependentDropdown;
+export default FilterScreen;
