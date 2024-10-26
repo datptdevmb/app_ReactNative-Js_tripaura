@@ -29,16 +29,10 @@ import Slider from './Slider';
 import PopularToursList from './PopularToursList';
 import {useHomeData} from '../../../../hooks/useHomeData';
 
-function HomeScreen ({navigation}){
+function HomeScreen({navigation}) {
   const dispatch = useDispatch();
 
-  const {
-    categories,
-    tours,
-    popularTours,
-    images,
-    isLoading
-  } = useHomeData();
+  const {categories, tours, popularTours, images, isLoading} = useHomeData();
 
   const [refreshing, setRefreshing] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -63,9 +57,14 @@ function HomeScreen ({navigation}){
     navigation.navigate('Detail', {_id});
   }
 
-  const handelPopular = useCallback(() => {
-    console.log("Popular category selected");
-  }, [/* Các giá trị phụ thuộc */]);
+  const handelPopular = useCallback(
+    () => {
+      console.log('Popular category selected');
+    },
+    [
+      /* Các giá trị phụ thuộc */
+    ],
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -130,11 +129,11 @@ function HomeScreen ({navigation}){
           !isLoading && <Text>Không có dữ liệu</Text>
         )}
         <Text style={styles.heading}>Điểm đến được săn đón</Text>
-        <PopularToursList  onClick = {handelPopular}popularTours={popularTours} />
+        <PopularToursList onClick={handelPopular} popularTours={popularTours} />
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   heading: {

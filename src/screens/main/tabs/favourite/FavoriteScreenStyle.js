@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     fontWeight: '400',
     fontStyle: 'normal',
     lineHeight: 20,
-    color:'#8A8A8A'
+    color: '#8A8A8A',
   },
   title: {
     fontSize: 24,
@@ -39,10 +39,10 @@ export const styles = StyleSheet.create({
   texty: {
     marginTop: 23,
     fontSize: 32,
-    fontWeight:'700',
-    fontStyle:'normal',
-    color:'#212121',
-    lineHeight:48,
+    fontWeight: '700',
+    fontStyle: 'normal',
+    color: '#212121',
+    lineHeight: 48,
     marginStart: 16,
   },
   container: {
@@ -64,13 +64,13 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     margin: 5,
     marginBottom: 5,
-    marginTop: 5,
+    marginTop: 0,
     marginLeft: 20,
     width: 369,
     height: 120,
   },
   image: {
-    marginTop: 144,
+    marginTop: 7,
     marginLeft: 5,
     width: 145,
     height: 104,

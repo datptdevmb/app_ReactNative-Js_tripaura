@@ -5,6 +5,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -18,6 +19,7 @@ import IcLocate from '../../../../assets/icons/Ic_locate';
 import IcClock from '../../../../assets/icons/Ic_clock';
 import IcleftArrow from '../../../../assets/icons/Ic_leftArrow';
 import IcFavorite from '../../../../assets/icons/bottom_tab/Ic_favorite';
+import IcNFavorite from '../../../../assets/icons/bottom_tab/Ic_NtFavorite';
 import ReviewCard from '../../../../components/common/card/ReviewCard';
 import IcCalendar from '../../../../assets/icons/Ic_calendar';
 import {Rating} from 'react-native-ratings';
@@ -27,7 +29,7 @@ import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-
 import {fetchTourById} from '../../../../redux/slices/tour.slice';
 import {useDispatch, useSelector} from 'react-redux';
 import ImageList from './ImageList';
-import { themXoaYeuThichTour } from '../../../../redux/slices/favouriteAddDeleteducers';
+import {themXoaYeuThichTour} from '../../../../redux/slices/favouriteAddDeleteducers';
 
 const review = {
   reviewName: 'datpham',
@@ -55,21 +57,17 @@ const general = [
   },
 ];
 
-const HeaderNavBar = ({title, onPressed, onPressFavorite}) => {
+const HeaderNavBar = ({title, onPressed, isFavorite, onPressFavorite}) => {
   return (
     <TouchableOpacity onPress={onPressed} style={styles.headerN}>
       <View style={styles.IconArrowCon}>
         <IcleftArrow />
       </View>
 
-      <TouchableOpacity style={styles.IconSupportCon}>
-        <IcFavorite />
-      </TouchableOpacity>
-
       <TouchableOpacity
         onPress={onPressFavorite}
         style={styles.IconFavoriteCon}>
-        <IcFavorite />
+        {isFavorite ? <IcNFavorite /> : <IcFavorite />}
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -86,16 +84,25 @@ const TopNavBar = () => {
 };
 
 function Detail({navigation, route}) {
-
+  // trang thái Yêu thích
+  const [isFavorite, setIsFavorite] = useState(false);
+  // kiểm tra có chưa
   const {_id} = route.params;
+
+  const {tourById: tour} = useSelector(state => state.reducer.tour);
+  const tourId = tour[0]?._id;
+  const userData = useSelector(state => state.reducer.auth.user);
+  const userId = userData?.user?._id;
+  // console.log('User ID:', userId);
+  // console.log('Tour ID:', tourId);
+
+  // Lấy user từ Redux state
   const dispatch = useDispatch();
   // const [selected , setSelected] = useState(flase)
-  const {tourById: tour} = useSelector(state => state.reducer.tour);
-  const {user} =useSelector(state => state.reducer.auth);
 
   useEffect(() => {
     dispatch(fetchTourById(_id));
-  }, [dispatch]);
+  }, [_id, dispatch]);
 
   const [selectedInd, setSeletedInd] = useState(0);
   const [selectedAllday, setSelectedAllday] = useState(false);
@@ -106,13 +113,17 @@ function Detail({navigation, route}) {
   }
 
   function handleFavorite() {
-   const userId = user.user._id;
-   const tourId = _id
-    dispatch(themXoaYeuThichTour({ userId, tourId }))
-  }
-
-  function handlePressed() {
-    navigation.navigate('ImageDetail');
+    if (userId && tourId) {
+      const newFavoriteStatus = !isFavorite;
+      setIsFavorite(newFavoriteStatus);
+      dispatch(themXoaYeuThichTour({userId, tourId}));
+      ToastAndroid.show(
+        newFavoriteStatus ? 'Đã thêm vào yêu thích!' : 'Đã bỏ yêu thích!',
+        ToastAndroid.SHORT,
+      );
+    } else {
+      console.warn('Thiếu tourId hoặc userId.');
+    }
   }
 
   function handleClickAllday() {
@@ -132,8 +143,8 @@ function Detail({navigation, route}) {
         <AnimatedScrollView
           HeaderNavbarComponent={
             <HeaderNavBar
+              isFavorite={isFavorite}
               onPressFavorite={handleFavorite}
-              onPressed={handlePressed}
             />
           }
           TopNavBarComponent={<TopNavBar />}

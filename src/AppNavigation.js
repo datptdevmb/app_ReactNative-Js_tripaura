@@ -7,7 +7,6 @@ import TabNavigation from './navigation/MainStaskNavigation';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-
 const AppNavigation = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
