@@ -6,9 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styles } from './SreachScreenStyle';
+import { useDispatch, useSelector } from 'react-redux';
+import { SearchTour } from '../../../../redux/slices/searchTourSlice';
+import CustomListView from '../../../../components/common/listViews/CustomListView';
+import Icons from '../../../../constants/Icons';
 
 // Dữ liệu mẫu
 const DATA = [
@@ -46,10 +51,27 @@ const DATA = [
 const SearchScreen = (props) => {
   const { navigation } = props
   const [searchText, setSearchText] = useState('');
+  const dispatch = useDispatch();
+  const { searchTourData, searchTourStatus } = useSelector((state) => state.reducer.searchTour);
+
+  const onChangeTextSearch = (text) => {
+    setSearchText(text)
+  }
 
   const handleClearText = () => {
     setSearchText(''); // Xóa nội dung trong ô tìm kiếm
   };
+  const onPressItem = () => {
+
+  }
+
+  useEffect(() => {
+    dispatch(SearchTour(searchText))
+    console.log("=============== searchTourData", searchTourData.data);
+
+  }, [searchText])
+
+
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
@@ -59,6 +81,23 @@ const SearchScreen = (props) => {
       <Text style={styles.itemDay}>{item.day}</Text>
     </View>
   );
+
+  const renderItemSearch = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <TouchableOpacity
+        onPress={onPressItem}>
+        {item.images != undefined && <Image source={{ uri: item.images.linkImage[0] }} style={styles.itemImage} />}
+
+        <Text style={styles.itemName} numberOfLines={2}>{item.tourName}</Text>
+        <View style={styles.address}>
+          <Image source={Icons.ic_address} />
+          <Text style={styles.itemDay}>{item.locations.destination}</Text>
+        </View>
+        <Text style={styles.itemPrice}>Giá: {item.details.priceAdult}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
 
   return (
     <View style={styles.container}>
@@ -71,7 +110,7 @@ const SearchScreen = (props) => {
           style={styles.inputSreach}
           placeholder="Tìm kiếm..."
           value={searchText}
-          onChangeText={setSearchText}
+          onChangeText={(text) => onChangeTextSearch(text)}
           clearButtonMode="always" // Chỉ hoạt động trên iOS
         />
         <TouchableOpacity onPress={handleClearText}>
@@ -87,18 +126,37 @@ const SearchScreen = (props) => {
           />
         </TouchableOpacity>
       </View>
-      <Text style={styles.textSreach}>
-        Vui lòng tìm kiếm địa điểm yêu thích của bạn
-      </Text>
-      <Text style={styles.tile}>Có thể bạn cũng thích</Text>
+      <ScrollView>
+        {!searchTourData.data ?
+          <View>
+            <Text style={styles.tile}>Có thể bạn cũng thích</Text>
+            <View style={{ marginTop: 20 }}>
+              <FlatList
+                data={DATA}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                numColumns={2} // Thiết lập số cột
+                columnWrapperStyle={styles.row} // Thêm style cho hàng
+                scrollEnabled={false}
+              />
+            </View>
+          </View>
+          : <View>
+            <Text style={styles.tile}>Có tour</Text>
+            <View style={{ marginTop: 20 }}>
+              <FlatList
+                data={searchTourData.data}
+                renderItem={renderItemSearch}
+                keyExtractor={item => item._id}
+                numColumns={2} // Thiết lập số cột
+                columnWrapperStyle={styles.row} // Thêm style cho hàng
+                scrollEnabled={false}
+              />
+            </View>
+          </View>}
 
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        numColumns={2} // Thiết lập số cột
-        columnWrapperStyle={styles.row} // Thêm style cho hàng
-      />
+
+      </ScrollView>
 
 
 

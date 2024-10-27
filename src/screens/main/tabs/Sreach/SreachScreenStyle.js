@@ -3,6 +3,11 @@ import colors from '../../../../constants/Icons';
 import fontsize from '../../../../constants/fontsize';
 
 export const styles = StyleSheet.create({
+  address: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -95,12 +100,11 @@ export const styles = StyleSheet.create({
   },
   itemDay: {
     height: 16,
-    fontSize: fontsize.xs,
+    fontSize: fontsize.fm,
     color: '#757575',
-    marginTop: 10,
-    marginLeft: 16,
+    marginLeft: 8,
     marginRight: 16,
-    fontWeight: '400',
+    fontWeight: '700',
   },
   row: {
     justifyContent: 'space-between',

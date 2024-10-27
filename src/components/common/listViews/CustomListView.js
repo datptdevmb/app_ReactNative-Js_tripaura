@@ -1,23 +1,27 @@
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
 import fontsize from '../../../constants/fontsize';
+import Icons from '../../../constants/Icons';
 const CustomListView = ({ data, onPressItem }) => {
-
+    
     const renderItem = ({ item }) => (
         <View style={styles.itemContainer}>
             <TouchableOpacity
                 onPress={onPressItem}>
                 { }
                 <Image source={{ uri: item.images.linkImage[0] }} style={styles.itemImage} />
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemPrice}>{item.description}</Text>
-                <Text style={styles.itemDay}>{item.day}</Text>
+                <Text style={styles.itemName} numberOfLines={2}>{item.tourName}</Text>
+                <View style={styles.address}>
+                    <Image source={Icons.ic_address} />
+                    <Text style={styles.itemDay}>{item.locations.destination}</Text>
+                </View>
+                <Text style={styles.itemPrice}>Giá: {item.details.priceAdult}</Text>
             </TouchableOpacity>
         </View>
     );
 
     return (
-        <View>
+        <View style={{ marginBottom: 50 }}>
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -25,7 +29,6 @@ const CustomListView = ({ data, onPressItem }) => {
                 numColumns={2}
                 columnWrapperStyle={styles.row}
             />
-
         </View>
     )
 }
@@ -33,6 +36,11 @@ const CustomListView = ({ data, onPressItem }) => {
 export default CustomListView
 
 const styles = StyleSheet.create({
+    address: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 16
+    },
     itemContainer: {
         width: 160,
         height: 240,
@@ -65,12 +73,10 @@ const styles = StyleSheet.create({
     },
     itemDay: {
         height: 16,
-        fontSize: fontsize.xs,
+        fontSize: fontsize.fm,
         color: '#757575',
-        marginTop: 10,
-        marginLeft: 16,
-        marginRight: 16,
-        fontWeight: '400',
+        marginLeft: 8,
+        fontWeight: '700',
     },
     row: {
         justifyContent: 'space-between',
