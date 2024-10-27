@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,12 +10,17 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {styles} from './FavoriteScreenStyle';
+import IcNFavorite from '../../../../assets/icons/bottom_tab/Ic_NtFavorite';
+import {ToastAndroid} from 'react-native'; // Import ToastAndroid
+
 import {
   LayDanhSachYeuThich,
   themXoaYeuThichTour,
 } from '../../../../redux/slices/favouriteducers';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import {styles} from './FavoriteScreenStyle';
+import {XaoYeuThich} from '../../../../redux/slices/favouriteDeleteDucers';
 
 const FavoriteScreen = ({route}) => {
   const dispatch = useDispatch();
@@ -26,6 +31,14 @@ const FavoriteScreen = ({route}) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.user?._id) {
+        dispatch(LayDanhSachYeuThich(user.user._id));
+      }
+    }, [dispatch, user]),
+  );
+
   useEffect(() => {
     if (user?.user?._id) {
       dispatch(LayDanhSachYeuThich(user.user._id));
@@ -34,19 +47,41 @@ const FavoriteScreen = ({route}) => {
 
   const handleToggleFavorite = selectedTourId => {
     const userId = user.user._id;
-
     if (!selectedTourId) {
       Alert.alert('Thông báo', 'Không tìm thấy tourId');
       return;
     }
-
-    dispatch(themXoaYeuThichTour({userId, tourId: selectedTourId}));
+    Alert.alert(
+      'Xác nhận',
+      'Bạn có chắc chắn muốn xóa địa điểm yêu thích này không?',
+      [
+        {text: '❌ Hủy', style: 'cancel'}, // Nút Hủy với biểu tượng
+        {
+          text: '🗑️ Xóa',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await dispatch(XaoYeuThich({userId, tourId: selectedTourId}));
+              ToastAndroid.show(
+                'Địa điểm đã được xóa khỏi yêu thích.',
+                ToastAndroid.SHORT,
+              );
+              dispatch(LayDanhSachYeuThich(userId));
+            } catch (error) {
+              ToastAndroid.show(
+                'Có lỗi xảy ra khi xóa địa điểm yêu thích.',
+                ToastAndroid.LONG,
+              );
+            }
+          },
+        },
+      ],
+    );
   };
 
   const renderFavoriteItem = ({item}) => {
-    const tourId = item.tourId || ''; // Kiểm tra xem tourId có tồn tại không
+    const tourId = item.tourId || '';
     const tourName = item.tourName || 'Tên tour không có';
-    const tourDescription = item.description || 'Mô tả không có';
     const startDay = item.details?.[0]?.startDay || '';
     const priceAdult = item.details?.[0]?.priceAdult || '';
 
@@ -62,37 +97,46 @@ const FavoriteScreen = ({route}) => {
     );
 
     return (
-      <Swipeable renderRightActions={renderRightActions} overshootRight={false}>
-        <View style={styles.itemContainer}>
+      <View style={styles.itemContainer}>
+        <View>
           {item.images?.[0]?.[0] ? (
             <Image source={{uri: item.images[0][0]}} style={styles.image} />
           ) : (
-            <View style={styles.placeholderImage} />
+            <View style={styles.image} />
           )}
-          <View style={styles.detailsContainer}>
-            <Text style={styles.name}>{tourName}</Text>
-            {startDay && priceAdult && (
-              <View>
-                <Text style={styles.day}>
-                  {new Date(startDay).toLocaleDateString()}
-                </Text>
-                <Text style={styles.price}>
-                  {priceAdult.toLocaleString()} VNĐ
-                </Text>
-              </View>
-            )}
-          </View>
+
+          {/* Đặt icon yêu thích nằm trong ảnh */}
+          <TouchableOpacity
+            style={styles.favoriteIcon}
+            onPress={() => handleToggleFavorite(tourId)}>
+            <IcNFavorite />
+          </TouchableOpacity>
         </View>
-      </Swipeable>
+
+        <View>
+          <Text style={styles.name}>{tourName}</Text>
+
+          {startDay && priceAdult && (
+            <View>
+              <Text style={styles.day}>
+                {new Date(startDay).toLocaleDateString()}
+              </Text>
+              <Text style={styles.price}>
+                {priceAdult.toLocaleString()} VNĐ
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
     );
   };
 
   const onRefresh = () => {
     setRefreshing(true);
     if (user?.user?._id) {
-      dispatch(LayDanhSachYeuThich(user.user._id)).finally(() => {
-        setRefreshing(false);
-      });
+      dispatch(LayDanhSachYeuThich(user.user._id)).finally(() =>
+        setRefreshing(false),
+      );
     } else {
       setRefreshing(false);
     }
@@ -107,12 +151,12 @@ const FavoriteScreen = ({route}) => {
         <FlatList
           data={favoritesData}
           renderItem={renderFavoriteItem}
-          keyExtractor={item => item.tourId || `${Math.random()}`} // Sửa keyExtractor
-          refreshing={refreshing} // Thêm thuộc tính refreshing
-          onRefresh={onRefresh} // Thêm hàm onRefresh
+          keyExtractor={(item, index) => item.tourId || index.toString()}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
         />
       ) : (
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={styles.centeredContainer}>
           <Image
             resizeMode="contain"
             source={require('./../../../../assets/images/Favorite.png')}
@@ -127,76 +171,5 @@ const FavoriteScreen = ({route}) => {
     </View>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 16,
-//     backgroundColor: '#fff',
-//   },
-//   texty: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     marginBottom: 16,
-//   },
-//   itemContainer: {
-//     flexDirection: 'row',
-//     padding: 10,
-//     borderBottomWidth: 1,
-//     borderBottomColor: '#ccc',
-//     alignItems: 'center',
-//   },
-//   detailsContainer: {
-//     flex: 1,
-//     marginLeft: 10,
-//   },
-//   name: {
-//     fontSize: 18,
-//     fontWeight: '500',
-//   },
-//   day: {
-//     fontSize: 14,
-//     color: '#555',
-//   },
-//   price: {
-//     fontSize: 16,
-//     fontWeight: 'bold',
-//     color: '#e91e63',
-//   },
-//   image: {
-//     width: 100,
-//     height: 100,
-//     borderRadius: 8,
-//     marginRight: 10,
-//   },
-//   placeholderImage: {
-//     width: 100,
-//     height: 100,
-//     backgroundColor: '#e0e0e0',
-//     borderRadius: 8,
-//     marginRight: 10,
-//   },
-//   deleteButton: {
-//     backgroundColor: '#ff4d4d',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     width: 40,
-//     height: 40,
-//     borderRadius: 20,
-//     marginLeft: 10,
-//   },
-//   deleteIcon: {
-//     width: 20,
-//     height: 20,
-//   },
-//   textt: {
-//     fontSize: 16,
-//     marginTop: 10,
-//   },
-//   texttt: {
-//     fontSize: 14,
-//     color: '#777',
-//   },
-// });
 
 export default FavoriteScreen;
