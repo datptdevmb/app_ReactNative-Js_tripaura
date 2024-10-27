@@ -17,6 +17,8 @@ const FilterScreen = (props) => {
     const { navigation } = props
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedPrice, setSelectedPrice] = useState('');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [showStartDatePicker, setShowStartDatePicker] = useState(false);
@@ -41,10 +43,10 @@ const FilterScreen = (props) => {
     }, [filterTourData, filterTourStatus]);
     const regions = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Quảng Bình', 'Nghệ An'];
     const prices = [
-        'Dưới 500 ngàn',
-        'Từ 1 - 2 triệu',
-        'Từ 2 - 4 triệu',
-        'Trên 5 triệu',
+        { '_id': 1, 'name': 'Dưới 1 triệu' },
+        { '_id': 2, 'name': 'Từ 1 - 2 triệu' },
+        { '_id': 3, 'name': 'Từ 2 - 4 triệu' },
+        { '_id': 4, 'name': 'Trên 5 triệu' },
     ];
 
     const onChangeStartDate = (event, selectedDate) => {
@@ -75,10 +77,38 @@ const FilterScreen = (props) => {
         </TouchableOpacity>
     );
 
+    const giaTien = (_id) => {
+        if (_id == 1) {
+            setMaxPrice('1000000')
+            console.log(maxPrice);
+            console.log(minPrice);
+
+
+        }
+        if (_id == 2) {
+            setMaxPrice('2000000')
+            setMinPrice('1000000')
+        }
+        if (_id == 3) {
+            setMaxPrice('4000000')
+            setMinPrice('2000000')
+        }
+        if (_id == 4) {
+            setMinPrice('4000000')
+        }
+
+    }
+
     const applyFilters = () => {
 
         dispatch(
-            FilterTour({ startDate: startDate, destination: selectedRegion })
+            FilterTour({
+                destination: selectedRegion,
+                startDate: startDate,
+                destination: selectedRegion,
+                minPrice: minPrice,
+                maxPrice: maxPrice
+            })
         )
         navigation.navigate('ListTourFilter')
         console.log('Áp dụng với:', {
@@ -87,8 +117,6 @@ const FilterScreen = (props) => {
             startDate,
             endDate,
         });
-
-
     };
 
     const clearFilters = () => {
@@ -131,6 +159,7 @@ const FilterScreen = (props) => {
                             onPress={() => {
                                 setSelectedRegion(item);
                                 setShowRegionPicker(false);
+
                             }}>
                             <Text style={styles.optionText}>{item}</Text>
                         </TouchableOpacity>
@@ -162,13 +191,15 @@ const FilterScreen = (props) => {
                         <TouchableOpacity
                             style={styles.option}
                             onPress={() => {
-                                setSelectedPrice(item);
+                                setSelectedPrice(item.name);
+                                giaTien(item._id)
                                 setShowPricePicker(false);
+
                             }}>
-                            <Text style={styles.optionText}>{item}</Text>
+                            <Text style={styles.optionText}>{item.name}</Text>
                         </TouchableOpacity>
                     )}
-                    keyExtractor={item => item}
+                    keyExtractor={item => item._id}
                     style={styles.dropdownList}
                 />
             )}
