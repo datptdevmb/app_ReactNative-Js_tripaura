@@ -6,7 +6,7 @@ import InputComponent from '../../../../components/common/input/InputCompoment';
 import DropdownComponent from '../../../../components/common/dropdown/DropdownComponent';
 import Button from '../../../../components/common/button/Button';
 import stylesGlobal from '../../../../constants/global';
-import ThayDoiThongTin  from '../../../../redux/slices/ChangeUserSlice';
+import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { AppContext } from '../../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import fontsize from '../../../../constants/fontsize';
@@ -25,13 +25,16 @@ const EditProfileScreen = ({ navigation }) => {
   const state = useSelector((state) => state);
   const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
   const { user: reduxUser, setUser: setreduxUser } = useSelector((state) => state.reducer.auth.user);
-  const {changeUserData} = useSelector((state) => state.reducer.changeUser);
-  const {changeUserStatus} = useSelector((state) => state.reducer.changeUser);
+
+  const changeUserData = useSelector((state) => state.reducer.changeUser);
+  const changeUserStatus = useSelector((state) => state.reducer.changeUser);
+
+
   const dispatch = useDispatch();
 
   const { provinces } = useSelector((state) => state.reducer.provinces);
   const { districts } = useSelector((state) => state.reducer.district);
-  
+
   const user = contextUser || reduxUser;
   const userId = user?._id;
   const setUser = setContextUser || setreduxUser;
@@ -51,13 +54,21 @@ const EditProfileScreen = ({ navigation }) => {
   const [formattedDate, setFormattedDate] = useState('');
 
   useEffect(() => {
-    if (userinfo) {
-      setEmail(userinfo?.email || "");
-      setFullname(userinfo?.fullname || "");
-      setPhone(userinfo?.phone || "");
-      setAddress(userinfo?.address?.split(', ')[0] || "");
-    }
-  }, [userinfo]);
+    dispatch(fetchUserInfo(userId))
+      .then((result) => {
+        if (result.payload && result.payload.success) {
+          const data = result.payload.data;
+          setEmail(data.email || '');
+          setFullname(data.fullname || '');
+          setPhone(data.phone || '');
+          setAddress(data.address || '');
+          setGender(data.gender);
+          setFormattedDate(parseDateString(data.dateofbirth).toLocaleDateString('en-GB'));
+        }
+      })
+      .catch((error) => console.error('Fetch User Info Error:', error));
+  }, [dispatch, userId]);
+
 
 
   useEffect(() => {
@@ -85,64 +96,102 @@ const EditProfileScreen = ({ navigation }) => {
     if (isMaleSelected) setIsMaleSelected(false);
     setGender("Nữ");
   };
-
-  const filteredDistricts = selectedProvince
+  const filteredDistricts = selectedProvince && districts
     ? districts.filter(district => district.province_code === selectedProvince.code)
     : [];
+
+  useEffect(() => {
+    console.log("Provinces data:", provinces);
+    console.log("Districts data:", districts);
+  }, [provinces, districts]);
+
+  // Adjust useEffect for address setting with conditional checks
+  useEffect(() => {
+    console.log("User ID:", userId);
+    dispatch(fetchUserInfo(userId))
+      .then((result) => {
+        console.log("Fetch User Info Result:", result);
+        if (result.payload && result.payload.success) {
+          const data = result.payload.data;
+          setUserinfo(data);
+
+          // Log thông tin tỉnh và quận sau khi lấy thông tin người dùng
+          if (data.address) {
+            console.log("Address from User Info:", data.address);
+            const addressParts = data.address.split(', ');
+            if (addressParts.length >= 3) {
+              const street = addressParts[0];
+              const districtName = addressParts[1];
+              const provinceName = addressParts[2];
+
+              console.log("Street:", street);
+              console.log("District Name:", districtName);
+              console.log("Province Name:", provinceName);
+            }
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch User Info Error:", error);
+      });
+  }, [dispatch, userId]);
+
+
+  const onProvinceSelect = (provinceCode) => {
+    const province = provinces.find(p => p.code === provinceCode);
+    if (province) {
+      setSelectedProvince(province);
+      setSelectedDistrict(null); // Reset district khi province thay đổi
+      console.log("Selected Province:", province.name);
+    } else {
+      console.warn("Province không tồn tại với mã code:", provinceCode);
+    }
+  };
+
 
 
   const handleProvinceSelect = (provinceCode) => {
     const province = provinces.find(p => p.code === provinceCode);
     if (province) {
       setSelectedProvince(province);
-      setSelectedDistrict(null);
-      setAddress("");
+      setSelectedDistrict(null); // Reset district when province changes
+      onProvinceSelect(provinceCode); // Gọi callback truyền vào để cập nhật giá trị
     }
   };
 
+
   const handleDistrictSelect = (districtCode) => {
-    const district = filteredDistricts.find(d => d.name === districtCode);
-    setSelectedDistrict(district || null);
+    // Kiểm tra nếu danh sách districts đã được tải
+    if (!districts || districts.length === 0) {
+      console.warn("Danh sách districts chưa được tải.");
+      return;
+    }
+
+    const district = districts.find(d => d.code === districtCode);
+
     if (district) {
-      setAddress(prev => `${prev}, ${district.name}, ${selectedProvince?.name || "Chưa chọn tỉnh thành"}`);
+      setSelectedDistrict(district);
+      console.log("Selected District:", district.name);
+    } else {
+      console.warn("District không tồn tại với mã code:", districtCode);
     }
   };
 
   useEffect(() => {
+    console.log("Current changeUserData:", changeUserData);
+    console.log("Current changeUserStatus:", changeUserStatus);
 
-    if (changeUserStatus === 'succeeded') {
+    if (changeUserStatus === 'succeeded' && changeUserData) {
       const { status, message, data } = changeUserData;
       if (status) {
         setUser(data);
-        console.log("User data updated:", data);
       } else {
         ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
       }
+    } else {
+      console.log("Current changeUserStatus:", changeUserStatus);
     }
   }, [changeUserData, changeUserStatus, setUser]);
-
-
-  useEffect(() => {
-    if (userinfo && userinfo.address) {
-      const addressParts = userinfo.address.split(', ');
-      const street = addressParts[0];
-      const districtName = addressParts[1];
-      const provinceName = addressParts[2];
-  
-      if (provinces?.length > 0 && districts?.length > 0) {
-        const province = provinces.find(p => p.name === provinceName);
-        const district = districts.find(d => d.name === districtName);
-  
-        setAddress(street);
-        setSelectedProvince(province || null);
-        setSelectedDistrict(district || null);
-      } else {
-        console.warn("Provinces or districts data is not available.");
-      }
-    }
-  }, [userinfo, provinces, districts]);
-  
-
 
   useEffect(() => {
     if (userinfo && userinfo.gender) {
@@ -163,29 +212,43 @@ const EditProfileScreen = ({ navigation }) => {
       setFormattedDate(dateObject.toLocaleDateString('en-GB'));
     }
   }, [userinfo]);
-
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowPicker(Platform.OS === 'ios');
     setDate(currentDate);
     setFormattedDate(currentDate.toLocaleDateString('en-GB'));
   };
-
   const thayDoi = () => {
     const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
     const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
     const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
 
-    dispatch(ThayDoiThongTin({
-      userId: user._id,
+    const userData = {
+      userId: userId,
       fullname,
       email,
       phone,
-      gender,
+      gender: gender || "Chưa chọn giới tính",
       dateofbirth: formattedDate,
       address: addressWithDetails,
-    }));
+    };
+    console.log("User Data before dispatch:", userData);
+    ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
+    if (userId && fullname && email && phone) {
+      console.log("Dispatching ThayDoiThongTin with data:", userData);
+      dispatch(ThayDoiThongTin(userData));
+    } else {
+      ToastAndroid.show("Vui lòng nhập đầy đủ thông tin trước khi cập nhật", ToastAndroid.SHORT);
+    }
   };
+
+
+
+
+  console.log("changeUserData:", changeUserData);
+  console.log("changeUserStatus:", changeUserStatus);
+  console.log('userId', userId)
+
 
   return (
     <ScrollView style={[stylesGlobal.container, { paddingBottom: 50 }]}>
@@ -269,6 +332,7 @@ const EditProfileScreen = ({ navigation }) => {
         selectedProvince={selectedProvince?.code || null}
         selectedDistrict={selectedDistrict?.code || null}
       />
+
       <View style={styles.inputContainer}>
         <Text>Chi tiết</Text>
         <InputComponent

@@ -16,22 +16,24 @@ const DropdownComponent = ({ selectedProvince = null, selectedDistrict = null, o
     const districtsLoading = useSelector((state) => state.reducer.district.loading);
     const districtsError = useSelector((state) => state.reducer.district.error);
 
-    // State for selected province and district
     const [selectedProvinceState, setSelectedProvince] = useState(selectedProvince);
     const [selectedDistrictState, setSelectedDistrict] = useState(selectedDistrict);
 
-    // Fetch provinces on component mount
     useEffect(() => {
         dispatch(fetchProvinces());
     }, [dispatch]);
 
     useEffect(() => {
-        if (selectedProvinceState) {
-            dispatch(fetchDistricts(selectedProvinceState));
-        } else {
-            setSelectedDistrict(null); // Reset district if no province is selected
-        }
+        if (selectedProvinceState) dispatch(fetchDistricts(selectedProvinceState));
     }, [selectedProvinceState, dispatch]);
+
+    // Synchronize props with state when selectedProvince prop changes
+    useEffect(() => {
+        if (selectedProvince !== selectedProvinceState) {
+            setSelectedProvince(selectedProvince);
+            setSelectedDistrict(null);  // Reset district only if province actually changes
+        }
+    }, [selectedProvince]);
 
     useEffect(() => {
         if (selectedDistrict !== selectedDistrictState) {
@@ -39,34 +41,26 @@ const DropdownComponent = ({ selectedProvince = null, selectedDistrict = null, o
         }
     }, [selectedDistrict]);
 
-
-
-
-
     const handleProvinceChange = (value) => {
-        setSelectedProvince(value);
-        onProvinceSelect(value); // Notify parent of the change
+        if (value !== selectedProvinceState) {
+            setSelectedProvince(value);
+            setSelectedDistrict(null);  // Reset district when changing province
+            onProvinceSelect(value);
+        }
     };
-
 
     const handleDistrictChange = (value) => {
         setSelectedDistrict(value);
-        onDistrictSelect(value); // Notify parent of the change
-    }
+        onDistrictSelect(value);
+    };
 
     if (provincesLoading || districtsLoading) return <ActivityIndicator size="large" color="#0000ff" />;
-    if (provincesError || districtsError) {
-        Alert.alert("Error", provincesError || districtsError); // Show error if fetching fails
-    }
+    if (provincesError || districtsError) Alert.alert("Lỗi", provincesError || districtsError);
 
     const provinceItems = provinces.map(({ name, code }) => ({ label: name, value: code }));
-    const filteredDistricts = districts.filter(district => district.province_code === selectedProvinceState)
+    const filteredDistricts = districts
+        .filter(district => district.province_code === selectedProvinceState)
         .map(district => ({ label: district.name, value: district.code }));
-
-
-    console.log("Selected Province:", selectedProvinceState);
-    console.log("Selected District:", selectedDistrictState);
-
 
     return (
         <View style={stylesdown.container}>
@@ -82,14 +76,9 @@ const Dropdown = ({ label, selectedValue, onValueChange, items, enabled = true, 
     <View style={[stylesdown.contentchon, style]}>
         <Text style={stylesdown.text}>{label}:</Text>
         <Picker style={stylesdown.picker} selectedValue={selectedValue} onValueChange={onValueChange} enabled={enabled}>
-            <Picker.Item label={`${label.toLowerCase()}`} value={null} />
-            {items.length > 0 ? (
-                items.map(({ label, value }) => <Picker.Item key={value} label={label} value={value} />)
-            ) : (
-                <Picker.Item label="Không có dữ liệu" value={null} />
-            )}
+            <Picker.Item label={`Chọn ${label.toLowerCase()}`} value={null} />
+            {items.map(({ label, value }) => <Picker.Item key={value} label={label} value={value} />)}
         </Picker>
-
     </View>
 );
 

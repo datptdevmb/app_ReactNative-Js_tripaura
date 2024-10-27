@@ -1,33 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Thay đổi thông tin người dùng
-export const ThayDoiThongTin = createAsyncThunk('changeUser', async (data) => {
-    const response = await fetch(
-        'https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/auth/api/updateUser',
-        {
+export const ThayDoiThongTin = createAsyncThunk('changeUser', async (data, { rejectWithValue }) => {
+    try {
+        const response = await fetch('https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/auth/api/updateUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        },
-    );
-    const user = await response.json();
+        });
 
-    if (response.ok) {
-        console.log("============== changeUser =========", user);
-        return user;
+        const user = await response.json();
+
+        if (!response.ok) {
+            return rejectWithValue(user.message || 'Failed');
+        }
+
+        return user; // Đây là payload khi thành công
+    } catch (error) {
+        return rejectWithValue(error.message || 'Network Error');
     }
-
-    console.error('Update user failed:', user);
-    throw new Error(user.message || 'Failed');
 });
 
 
 export const changeUserSlice = createSlice({
     name: 'changeUser',
     initialState: {
-        user: null, // Thêm trường này
+        user: null,
         changeUserData: null,
         changeUserStatus: 'idle',
         error: null,
@@ -40,20 +39,19 @@ export const changeUserSlice = createSlice({
                 state.changeUserStatus = 'loading';
                 state.error = null;
             })
-        
             .addCase(ThayDoiThongTin.fulfilled, (state, action) => {
-                state.changeUserStatus ='succeeded';
+                console.log("Fulfilled action:", action); // Log action
+                state.changeUserStatus = 'succeeded';
                 state.user = action.payload;
-                console.log('Redux user sau khi cập nhật:', state.user); // Log để kiểm tra giá trị
+                state.changeUserData = action.payload;
             })
-
-
             .addCase(ThayDoiThongTin.rejected, (state, action) => {
                 state.changeUserStatus = 'failed';
-                state.error = action.error.message;
-                console.log(action.error.message);
+                state.error = action.payload || action.error.message;
+                console.log("Error message:", action.error.message);
             });
     },
+    
 });
 
 export default changeUserSlice.reducer;

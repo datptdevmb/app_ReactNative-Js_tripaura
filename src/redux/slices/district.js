@@ -1,20 +1,19 @@
-// slices/district.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Tạo hàm fetchDistricts
 export const fetchDistricts = createAsyncThunk(
     'districts/fetchDistricts',
-    async (provinceId) => {
-        const response = await fetch(`https://provinces.open-api.vn/api/d/`);
+    async () => {
+        const response = await fetch('https://provinces.open-api.vn/api/d/');
         if (!response.ok) {
             throw new Error('Failed to fetch districts');
         }
         const data = await response.json();
-        console.log("Fetched Districts: ", data);
-        return data.districts; 
+        console.log("Fetched Data:", data); // Log toàn bộ dữ liệu đã lấy
+        return data; // Trả về toàn bộ dữ liệu
     }
 );
+
+
 
 const districtSlice = createSlice({
     name: 'districts',
@@ -30,8 +29,9 @@ const districtSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchDistricts.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.districts = action.payload;
+                console.log("Fetched Districts:", action.payload); // Log districts được fetch
+                state.status = 'succeeded'; // Cập nhật trạng thái thành công
+                state.districts = action.payload; // Cập nhật vào state
             })
             .addCase(fetchDistricts.rejected, (state, action) => {
                 state.status = 'failed';
@@ -40,4 +40,4 @@ const districtSlice = createSlice({
     },
 });
 
-export default districtSlice.reducer; // Đảm bảo bạn đã xuất khẩu reducer
+export default districtSlice.reducer;
