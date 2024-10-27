@@ -8,7 +8,6 @@ export const fetchProvinces = createAsyncThunk(
       throw new Error('Failed to fetch provinces');
     }
     const data = await response.json();
-    console.log("Fetched Provinces: ", data); 
     return data;
   }
 );
@@ -30,7 +29,6 @@ const provincesSlice = createSlice({
       .addCase(fetchProvinces.fulfilled, (state, action) => {
         state.loading = false;
         state.provinces = action.payload;
-        console.log("Provinces in State after fetch: ", state.provinces);
       })
       .addCase(fetchProvinces.rejected, (state, action) => {
         state.loading = false;
@@ -38,5 +36,5 @@ const provincesSlice = createSlice({
       });
   },
 });
-
+export const selectProvinces = (state) => state.reducer.provinces.provinces;
 export default provincesSlice.reducer;

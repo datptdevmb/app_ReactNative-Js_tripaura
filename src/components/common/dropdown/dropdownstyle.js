@@ -30,9 +30,13 @@ const stylesdown = StyleSheet.create({
         fontSize: FONTSIZE.sm,
         fontWeight: '700',
         fontFamily: 'Lato',
-        color: colors.Gray_800,
+        color: colors.Grey_800,
         marginBottom: 5,
     },
+    dropdown:{
+        marginStart: 5,
+        marginEnd: 5,
+    }
 });
   
   export default stylesdown;

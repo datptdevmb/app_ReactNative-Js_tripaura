@@ -17,15 +17,12 @@ export const fetchUserInfo = createAsyncThunk('user/fetchInfo', async (userId) =
     if (response.ok) {
         return user;
     }
-
-    console.error('Fetch user failed:', user);
     throw new Error(user.message || 'Failed to fetch user information');
 });
 
 export const changeUserSlice = createSlice({
     name: 'user',
     initialState: {
-        user: null, // To hold user data
         changeUserStatus: 'idle',
         error: null,
     },
@@ -43,7 +40,6 @@ export const changeUserSlice = createSlice({
             .addCase(fetchUserInfo.rejected, (state, action) => {
                 state.changeUserStatus = 'failed';
                 state.error = action.error.message;
-                console.error(action.error.message);
             });
     },
 });

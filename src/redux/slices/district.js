@@ -8,7 +8,6 @@ export const fetchDistricts = createAsyncThunk(
             throw new Error('Failed to fetch districts');
         }
         const data = await response.json();
-        console.log("Fetched Data:", data); // Log toàn bộ dữ liệu đã lấy
         return data; // Trả về toàn bộ dữ liệu
     }
 );
@@ -29,7 +28,6 @@ const districtSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchDistricts.fulfilled, (state, action) => {
-                console.log("Fetched Districts:", action.payload); // Log districts được fetch
                 state.status = 'succeeded'; // Cập nhật trạng thái thành công
                 state.districts = action.payload; // Cập nhật vào state
             })
