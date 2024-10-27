@@ -63,11 +63,6 @@ const DropdownComponent = ({ selectedProvince = null, selectedDistrict = null, o
     const filteredDistricts = districts.filter(district => district.province_code === selectedProvinceState)
         .map(district => ({ label: district.name, value: district.code }));
 
-
-    console.log("Selected Province:", selectedProvinceState);
-    console.log("Selected District:", selectedDistrictState);
-
-
     return (
         <View style={stylesdown.container}>
             <View style={stylesdown.containerpicker}>
