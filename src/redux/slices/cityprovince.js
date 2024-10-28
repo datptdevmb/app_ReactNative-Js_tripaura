@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchProvinces = createAsyncThunk(
@@ -12,14 +11,12 @@ export const fetchProvinces = createAsyncThunk(
   }
 );
 
-
 const provincesSlice = createSlice({
   name: 'provinces',
   initialState: {
     provinces: [],
     loading: false,
     status: 'idle',
-
     error: null,
   },
   reducers: {},
@@ -27,25 +24,20 @@ const provincesSlice = createSlice({
     builder
       .addCase(fetchProvinces.pending, (state) => {
         state.loading = true;
-      })
-      .addCase(fetchProvinces.fulfilled, (state, action) => {
-        state.loading = false;
-        state.provinces = action.payload;
-      })
-      .addCase(fetchProvinces.rejected, (state, action) => {
-        state.loading = false;
         state.status = 'loading';
       })
       .addCase(fetchProvinces.fulfilled, (state, action) => {
+        state.loading = false;
         state.status = 'succeeded';
         state.provinces = action.payload;
       })
       .addCase(fetchProvinces.rejected, (state, action) => {
+        state.loading = false;
         state.status = 'failed';
-
         state.error = action.error.message;
       });
   },
 });
-export const selectProvinces = (state) => state.reducer.provinces.provinces;
+
+export const selectProvinces = (state) => state.provinces.provinces;
 export default provincesSlice.reducer;

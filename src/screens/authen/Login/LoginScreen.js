@@ -7,52 +7,14 @@ import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
-import { DangNhapTaiKhoan } from '../../../redux/slices/loginreducers';
 
 const Login = (props) => {
   const { navigation } = props;
-  const { setUser, setIsLogin } = useContext(AppContext);
-  const dispatch = useDispatch();
-  const { loginData, loginStatus } = useSelector((state) => state.login || {});
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  console.log('login', loginData),
-  console.log('loginStatus', loginStatus)
-
-  useEffect(() => {
-    if (loginStatus === 'succeeded') {
-      console.log('loginData.data:', loginData.data); 
-      setUser(loginData.data);
-      setIsLogin(true);
-      console.log('user:', loginData.data);
-      navigation.navigate('MainTabNavigation');
-    }
-  
-    if (loginStatus === 'failed') {
-      ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
-    }
-  }, [loginStatus, loginData, navigation]);
-  
-
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      setEmail('');
-      setPassword('');
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
-
   const back = () => {
     navigation.goBack();
   };
 
-  const dangnhaptaikhoan = () => {
-    dispatch(DangNhapTaiKhoan({ email, password }));
-  };
+
 
   return (
     <View style={stylesglobal.container}>
