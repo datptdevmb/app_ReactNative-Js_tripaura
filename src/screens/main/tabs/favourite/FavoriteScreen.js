@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   FlatList,
@@ -8,42 +7,39 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {styles} from './FavoriteScreenStyle';
-import IcNFavorite from '../../../../assets/icons/bottom_tab/Ic_NtFavorite';
-import {ToastAndroid} from 'react-native'; // Import ToastAndroid
-
-import {
-  LayDanhSachYeuThich,
-  themXoaYeuThichTour,
-} from '../../../../redux/slices/favouriteducers';
+import IcNFavoriteScreen from '../../../../assets/icons/bottom_tab/Ic_FavoriteScreen';
+import {LayDanhSachYeuThich} from '../../../../redux/slices/favouriteducers';
 import {XaoYeuThich} from '../../../../redux/slices/favouriteDeleteDucers';
 
-const FavoriteScreen = ({route}) => {
+const FavoriteScreen = () => {
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.reducer.auth);
   const {favoritesData, favoritesStatus} = useSelector(
     state => state.reducer.favorites,
   );
 
-  const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Kiểm soát loading
 
+  // Tải danh sách yêu thích khi lần đầu vào màn hình
+  const loadFavorites = async () => {
+    if (user?.user?._id) {
+      await dispatch(LayDanhSachYeuThich(user.user._id));
+    }
+    setIsLoading(false); // Ngừng hiển thị loading sau khi tải xong
+  };
+
+  // Chỉ gọi API khi màn hình focus
   useFocusEffect(
     useCallback(() => {
-      if (user?.user?._id) {
-        dispatch(LayDanhSachYeuThich(user.user._id));
-      }
+      loadFavorites();
     }, [dispatch, user]),
   );
-
-  useEffect(() => {
-    if (user?.user?._id) {
-      dispatch(LayDanhSachYeuThich(user.user._id));
-    }
-  }, [dispatch, user]);
 
   const handleToggleFavorite = selectedTourId => {
     const userId = user.user._id;
@@ -55,19 +51,27 @@ const FavoriteScreen = ({route}) => {
       'Xác nhận',
       'Bạn có chắc chắn muốn xóa địa điểm yêu thích này không?',
       [
-        {text: '❌ Hủy', style: 'cancel'}, // Nút Hủy với biểu tượng
+        {text: '❌ Hủy', style: 'cancel'},
         {
           text: '🗑️ Xóa',
           style: 'destructive',
           onPress: async () => {
             try {
+              // Gọi API xóa
               await dispatch(XaoYeuThich({userId, tourId: selectedTourId}));
+
+              // Cập nhật Redux
+              dispatch(LayDanhSachYeuThich(selectedTourId));
+              loadFavorites();
+
+              // Hiển thị thông báo thành công
               ToastAndroid.show(
                 'Địa điểm đã được xóa khỏi yêu thích.',
                 ToastAndroid.SHORT,
               );
-              dispatch(LayDanhSachYeuThich(userId));
             } catch (error) {
+              // Hiển thị thông báo lỗi nếu có
+              console.error('Có lỗi xảy ra khi xóa:', error);
               ToastAndroid.show(
                 'Có lỗi xảy ra khi xóa địa điểm yêu thích.',
                 ToastAndroid.LONG,
@@ -85,17 +89,6 @@ const FavoriteScreen = ({route}) => {
     const startDay = item.details?.[0]?.startDay || '';
     const priceAdult = item.details?.[0]?.priceAdult || '';
 
-    const renderRightActions = () => (
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => handleToggleFavorite(tourId)}>
-        <Image
-          source={require('../../../../assets/icons/bin.png')}
-          style={styles.deleteIcon}
-        />
-      </TouchableOpacity>
-    );
-
     return (
       <View style={styles.itemContainer}>
         <View>
@@ -104,18 +97,17 @@ const FavoriteScreen = ({route}) => {
           ) : (
             <View style={styles.image} />
           )}
-
-          {/* Đặt icon yêu thích nằm trong ảnh */}
           <TouchableOpacity
             style={styles.favoriteIcon}
             onPress={() => handleToggleFavorite(tourId)}>
-            <IcNFavorite />
+            <IcNFavoriteScreen style={styles.tym} />
           </TouchableOpacity>
         </View>
 
         <View>
-          <Text style={styles.name}>{tourName}</Text>
-
+          <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {tourName}
+          </Text>
           {startDay && priceAdult && (
             <View>
               <Text style={styles.day}>
@@ -131,29 +123,17 @@ const FavoriteScreen = ({route}) => {
     );
   };
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    if (user?.user?._id) {
-      dispatch(LayDanhSachYeuThich(user.user._id)).finally(() =>
-        setRefreshing(false),
-      );
-    } else {
-      setRefreshing(false);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.texty}>Yêu thích</Text>
-      {favoritesStatus === 'loading' ? (
+      {isLoading ? ( // Chỉ hiển thị loading lần đầu khi chưa có dữ liệu
         <ActivityIndicator size="large" color="#0000ff" />
       ) : favoritesData?.length > 0 ? (
         <FlatList
           data={favoritesData}
           renderItem={renderFavoriteItem}
           keyExtractor={(item, index) => item.tourId || index.toString()}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
+          contentContainerStyle={{paddingBottom: 100}} // Thêm padding nếu cần
         />
       ) : (
         <View style={styles.centeredContainer}>
