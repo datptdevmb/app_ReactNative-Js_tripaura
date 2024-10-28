@@ -3,6 +3,7 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import EmailIcon from '../../../assets/icons/bottom_tab/Ic_email';
 import FavoriteIcon from '../../../assets/icons/bottom_tab/Ic_favorite';
 import IcLocate from '../../../assets/icons/Ic_locate';
+import formatCurrencyVND from '../../../untils/formatCurrencyVND';
 
 const TourCard = ({tour, onClickFavorite, onClickItem}) => {
   return (
@@ -88,11 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const formatCurrencyVND = amount => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-    minimumFractionDigits: 0, 
-  }).format(amount);
-};
 export default TourCard;

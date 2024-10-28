@@ -21,6 +21,7 @@ import Login from '../screens/authen/LoginRegisterScreen'
 import VietnamMap from '../screens/main/stacks/Map/VietnamMap';
 import DependentDropdown from '../screens/main/stacks/Filter/FilterScreen';
 import FAQsSrceen from '../screens/main/stacks/FAQs/FAQsSrceen';
+import OrderReviewScreen from '../screens/main/stacks/order';
 
 
 
@@ -49,6 +50,7 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="MapScreen" component={VietnamMap} />
             <Stack.Screen name="Filter" component={DependentDropdown} />
             <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
+            <Stack.Screen name="Order" component={OrderReviewScreen} />
             
 
 

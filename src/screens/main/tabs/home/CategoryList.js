@@ -2,7 +2,10 @@ import React from 'react';
 import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
 const CategoryList = ({ categories, selectedIndex, onCatePress }) => {
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item, index }) => {
+    console.log(item._id)
+    console.log(item.name)
+     return(
     <View style={styles.itemCate}>
       <TouchableOpacity onPress={() => onCatePress(item, index)}>
         <Text style={[styles.textCate, selectedIndex === index && styles.selectedItem]}>
@@ -11,7 +14,9 @@ const CategoryList = ({ categories, selectedIndex, onCatePress }) => {
       </TouchableOpacity>
       {selectedIndex === index && <View style={styles.dotStyle}></View>}
     </View>
-  );
+  )
+  }
+ 
 
   return (
     <FlatList
