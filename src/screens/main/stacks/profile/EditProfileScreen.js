@@ -1,38 +1,27 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-import { StyleSheet, Text, View, ToastAndroid, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, ToastAndroid } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderComponent from '../../../../components/common/header/Headercomponet';
 import InputComponent from '../../../../components/common/input/InputCompoment';
 import DropdownComponent from '../../../../components/common/dropdown/DropdownComponent';
 import Button from '../../../../components/common/button/Button';
-import stylesGlobal from '../../../../constants/global';
 import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
+import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 import { AppContext } from '../../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import CheckBox from '@react-native-community/checkbox';
 import fontsize from '../../../../constants/fontsize';
 import colors from '../../../../constants/colors';
 import Icons from '../../../../constants/Icons';
-import CheckBox from '@react-native-community/checkbox';
-import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
+import stylesGlobal from '../../../../constants/global';
 import stylesinput from '../../../../components/common/input/inputstyle';
 
-const EditProfileScreen = ({ navigation }) => {
-  const parseDateString = (dateString) => {
-    const [day, month, year] = dateString.split('/').map(Number);
-    return new Date(year, month - 1, day);
-  };
-
-  const state = useSelector((state) => state);
-  const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
-  const { user: reduxUser } = useSelector((state) => state.reducer.auth.user);
-
-  const changeUserData = useSelector((state) => state.reducer.changeUser);
-  const changeUserStatus = useSelector((state) => state.reducer.changeUser);
-
+const EditProfileScreen = (props) => {
+  const { navigation } = props
+  const { changeUserData, changeUserStatus } = useSelector((state) => state.reducer.changeUser);
   const dispatch = useDispatch();
   const { provinces } = useSelector((state) => state.reducer.provinces);
   const { districts } = useSelector((state) => state.reducer.district);
-
   const user = contextUser || reduxUser;
   const userId = user?._id;
   const setUser = setContextUser || setreduxUser;
@@ -210,6 +199,37 @@ const EditProfileScreen = ({ navigation }) => {
     ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
   };
   console.log('adderss', address)
+
+  const filteredDistricts = selectedProvince
+    ? districts.filter(district => district.province_code === selectedProvince.code)
+    : [];
+
+
+  useEffect(() => {
+    if (changeUserStatus === 'successed') {
+      const { status, message, data } = changeUserData;
+      if (changeUserData.status == true) {
+        setUser(data);
+        // ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);
+        // navigation.goBack();
+      } else {
+        ToastAndroid.show(message || "Cập nhật không thành công", ToastAndroid.SHORT);
+      }
+    }
+    console.log("========== changeData ==========", changeUserData);
+
+  }, [changeUserData, changeUserStatus]);
+
+  const validateInputs = () => {
+    if (!email || !phone || !address || !selectedDistrict || !selectedProvince) {
+      setTextError("Vui lòng điền đầy đủ thông tin!");
+      return false;
+    }
+    setTextError("");
+    return true;
+  };
+
+
   return (
     <ScrollView style={[stylesGlobal.container, { paddingBottom: 50 }]}>
       <HeaderComponent
@@ -230,10 +250,12 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text>Email</Text>
         <InputComponent
-          style={stylesinput.inputComponent}
           keyboardType={"email-address"}
           value={email}
-          onTextChange={setEmail}
+          onTextChange={(text) => {
+            console.log("Email changed:", text);
+            setEmail(text);
+          }}
           placeholder={'Nhập email của bạn'}
         />
       </View>
@@ -264,6 +286,12 @@ const EditProfileScreen = ({ navigation }) => {
             onChange={onChange}
           />
         )}
+      </View>
+      <View style={styles.adressContainer}>
+        <DropdownComponent
+          onProvinceSelect={handleProvinceSelect}
+          onDistrictSelect={handleDistrictSelect}
+        />
       </View>
       <View style={styles.checkboxlabelcontainer}>
         <Text style={styles.label}>Giới tính:</Text>
@@ -297,10 +325,14 @@ const EditProfileScreen = ({ navigation }) => {
         <InputComponent
           style={stylesinput.inputComponent}
           value={address}
-          onTextChange={setAddress}
+          onTextChange={(text) => {
+            console.log("Street changed:", text);
+            setAddress(text);
+          }}
           placeholder={`Số nhà, tên đường`}
         />
       </View>
+      {!!textError && <Text style={styles.textError}>{textError}</Text>}
       <View style={styles.btnCapNhat}>
         <Button label='Cập nhật' onPressed={thayDoi} />
       </View>
@@ -308,22 +340,38 @@ const EditProfileScreen = ({ navigation }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginTop: 10,
+  textError: {
+    color: 'red',
+    textAlign: 'center',
   },
   btnCapNhat: {
-    marginTop: 40,
+    marginTop: 50,
   },
-  inputBirthday: {
-    height: 56,
-    width: '100%',
-    paddingVertical: 0,
-    paddingHorizontal: 10,
-    color: 'rgba(128, 128, 128, 0.90)',
+  adressContainer: {
+    marginTop: 20,
+  },
+  inputPhone: {
+    marginTop: 20,
+  },
+  inputEmail: {
+    marginTop: 35,
+  },
+  selectedInfo: {
+    marginTop: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: colors.Grey_300,
+    borderRadius: 5,
+  },
+  header: {
+    color: colors.Grey_900,
+
     fontFamily: 'Lato',
     fontSize: fontsize.sm,
     fontWeight: '700',
+
     borderRadius: 4,
     borderWidth: 1,
     borderColor: 'rgba(5, 114, 231, 0.05)',
@@ -351,3 +399,4 @@ const styles = StyleSheet.create({
 });
 
 export default EditProfileScreen;
+

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Alert, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,10 +6,13 @@ import { fetchProvinces } from './../../../redux/slices/cityprovince';
 import { fetchDistricts } from './../../../redux/slices/district';
 import stylesdown from './dropdownstyle';
 
-const DropdownComponent = ({ selectedProvince, selectedDistrict, onProvinceSelect, onDistrictSelect }) => {
+const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
     const dispatch = useDispatch();
     const { provinces, loading: provincesLoading, error: provincesError } = useSelector((state) => state.reducer.provinces);
-    const { districts = [], loading: districtsLoading, error: districtsError } = useSelector((state) => state.reducer.district);
+    const { districts, loading: districtsLoading, error: districtsError } = useSelector((state) => state.reducer.district);
+
+    const [selectedProvince, setSelectedProvince] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
 
     useEffect(() => {
         dispatch(fetchProvinces());
@@ -22,11 +25,14 @@ const DropdownComponent = ({ selectedProvince, selectedDistrict, onProvinceSelec
     }, [selectedProvince, dispatch]);
 
     const handleProvinceChange = (value) => {
-        onProvinceSelect(value);
+        setSelectedProvince(value);
+        setSelectedDistrict(null); 
+        onProvinceSelect(value); 
     };
 
     const handleDistrictChange = (value) => {
-        onDistrictSelect(value);
+        setSelectedDistrict(value);
+        onDistrictSelect(value); 
     };
 
     if (provincesLoading || districtsLoading) {
@@ -38,9 +44,9 @@ const DropdownComponent = ({ selectedProvince, selectedDistrict, onProvinceSelec
     }
 
     const provinceItems = provinces.map(({ name, code }) => ({ label: name, value: code }));
-    const filteredDistricts = districts
-        .filter(district => district.province_code === selectedProvince)
-        .map(district => ({ label: district.name, value: district.code }));
+    const districtItems = selectedProvince 
+        ? districts.filter(district => district.province_code === selectedProvince).map(district => ({ label: district.name, value: district.code }))
+        : [];
 
     return (
         <View style={stylesdown.container}>
@@ -49,14 +55,14 @@ const DropdownComponent = ({ selectedProvince, selectedDistrict, onProvinceSelec
                     label="Chọn tỉnh"
                     selectedValue={selectedProvince}
                     onValueChange={handleProvinceChange}
-                    items={provinceItems}
+                    items={provinceItems.length > 0 ? provinceItems : [{ label: 'Không có tỉnh nào', value: null }]}
                     style={stylesdown.dropdown}
                 />
                 <Dropdown
                     label="Chọn huyện"
                     selectedValue={selectedDistrict}
                     onValueChange={handleDistrictChange}
-                    items={filteredDistricts}
+                    items={districtItems.length > 0 ? districtItems : [{ label: 'Không có dữ liệu', value: null }]}
                     enabled={!!selectedProvince}
                     style={stylesdown.dropdown}
                 />
@@ -65,7 +71,7 @@ const DropdownComponent = ({ selectedProvince, selectedDistrict, onProvinceSelec
     );
 };
 
-const Dropdown = ({ label, selectedValue, onValueChange, items, enabled = true, style }) => (
+const Dropdown = ({ label, selectedValue, onValueChange, items, enabled, style }) => (
     <View style={[stylesdown.contentchon, style]}>
         <Text style={stylesdown.text}>{label}:</Text>
         <Picker
@@ -75,11 +81,9 @@ const Dropdown = ({ label, selectedValue, onValueChange, items, enabled = true, 
             enabled={enabled}
         >
             <Picker.Item label={`Chọn ${label.toLowerCase()}`} value={null} />
-            {items.length > 0 ? (
-                items.map(({ label, value }) => <Picker.Item key={value} label={label} value={value} />)
-            ) : (
-                <Picker.Item label="Không có dữ liệu" value={null} />
-            )}
+            {items.map(({ label, value }) => (
+                <Picker.Item key={value} label={label} value={value} />
+            ))}
         </Picker>
     </View>
 );

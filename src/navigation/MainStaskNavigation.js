@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,6 +18,9 @@ import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
 import { ROUTES } from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen'
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
+import FiterScreen from '../screens/main/stacks/Filter/FilterScreen';
+import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -44,6 +47,10 @@ const MainStaskNavigation = () => {
             {/* <Stack.Screen name="Detail" component={Detail} /> */}
             {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
+            <Stack.Screen name="FiterScreen" component={FiterScreen} />
+            <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
+            {/* <Stack.Screen name="Voucher" component={Voucher} />
+            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} /> */}
         </Stack.Navigator>
     )
 }

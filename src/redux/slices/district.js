@@ -14,6 +14,7 @@ export const fetchDistricts = createAsyncThunk(
 
 
 
+
 const districtSlice = createSlice({
     name: 'districts',
     initialState: {
@@ -28,8 +29,9 @@ const districtSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchDistricts.fulfilled, (state, action) => {
-                state.status = 'succeeded'; // Cập nhật trạng thái thành công
-                state.districts = action.payload; // Cập nhật vào state
+
+                state.status = 'succeeded';
+                state.districts = action.payload;
             })
             .addCase(fetchDistricts.rejected, (state, action) => {
                 state.status = 'failed';
@@ -38,4 +40,5 @@ const districtSlice = createSlice({
     },
 });
 
-export default districtSlice.reducer;
+
+export default districtSlice.reducer; // Đảm bảo bạn đã xuất khẩu reducer

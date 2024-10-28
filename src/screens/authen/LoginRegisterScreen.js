@@ -15,7 +15,7 @@ import { fetchGoogleUser } from '../../redux/slices/auth.slice';
 const LoginRegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { isLogin } = useSelector(state => state.reducer.auth);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -24,7 +24,7 @@ const LoginRegisterScreen = ({ navigation }) => {
   }, []);
 
   const handleLoginWithGoogle = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const { data } = await GoogleSignin.signIn();
@@ -35,7 +35,7 @@ const LoginRegisterScreen = ({ navigation }) => {
       const userRequest = { uid, email, displayName, photoURL };
 
       await dispatch(fetchGoogleUser(userRequest));
-      
+
     } catch (error) {
       handleSignInError(error);
     } finally {
@@ -62,7 +62,7 @@ const LoginRegisterScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isLogin) {
-      navigation.goBack(); 
+      navigation.goBack();
     }
   }, [isLogin, navigation]);
 
@@ -74,12 +74,12 @@ const LoginRegisterScreen = ({ navigation }) => {
         Nhận tài khoản <Text style={{ color: '#0572E7' }}>TripAura</Text> để khám phá tiện ích
       </Text>
 
-     
+
       <Modal
         transparent={true}
         animationType="fade"
         visible={loading}
-        onRequestClose={() => {}}
+        onRequestClose={() => { }}
       >
         <View style={styles.modalBackground}>
           <View style={styles.activityIndicatorWrapper}>

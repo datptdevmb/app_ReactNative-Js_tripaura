@@ -1,41 +1,42 @@
-import { Text, TouchableOpacity, View, ToastAndroid } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Text, View, ToastAndroid, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppContext } from '../../AppContext';
 import Header from '../../../components/common/header/Headercomponet';
 import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { DangNhapTaiKhoan } from '../../../api/slice/loginreducers';
+import { DangNhapTaiKhoan } from '../../../redux/slices/loginreducers';
 
-const Login = () => {
-  const navigation = useNavigation();
+const Login = (props) => {
+  const { navigation } = props;
+  const { setUser, setIsLogin } = useContext(AppContext);
   const dispatch = useDispatch();
+  const { loginData, loginStatus } = useSelector((state) => state.login || {});
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loginData, loginStatus } = useSelector((state) => state.login);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    console.log('Login Status:', loginStatus);
-    console.log('Login Data:', loginData);
+  console.log('login', loginData),
+  console.log('loginStatus', loginStatus)
 
-    if (loginStatus === 'succeeded' && loginData.status) {
-      ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
-      setIsLoggedIn(true);
+  useEffect(() => {
+    if (loginStatus === 'succeeded') {
+      console.log('loginData.data:', loginData.data); 
+      setUser(loginData.data);
+      setIsLogin(true);
+      console.log('user:', loginData.data);
       navigation.navigate('MainTabNavigation');
     }
-
+  
     if (loginStatus === 'failed') {
-      if (loginData.code === 400) {
-        ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
-        console.log('Error:', loginData.message);
-      }
+      ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
     }
   }, [loginStatus, loginData, navigation]);
+  
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -49,23 +50,8 @@ const Login = () => {
     navigation.goBack();
   };
 
-  const validateInputs = () => {
-    let valid = true;
-    if (!email) {
-      ToastAndroid.show('Email không được để trống', ToastAndroid.SHORT);
-      valid = false;
-    }
-
-    if (!password) {
-      ToastAndroid.show('Mật khẩu không được để trống', ToastAndroid.SHORT);
-      valid = false;
-    }
-
-    return valid;
-  };
-
   const dangnhaptaikhoan = () => {
-   
+    dispatch(DangNhapTaiKhoan({ email, password }));
   };
 
   return (

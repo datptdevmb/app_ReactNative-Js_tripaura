@@ -6,12 +6,15 @@ import categoryReducer from './slices/category.slice'
 import networkReducer from './slices/network.slice'
 import imageSliderReducer from './slices/image.slice'
 import favoriteReducer from './slices/favouriteducers'
+import filterTourReducer from './slices/filterTourSlice'
+import searchTourReducer from './slices/searchTourSlice'
 import favoriteAdDeleteReducer from './slices/favouriteAddDeleteducers'
 import favouriteDeleteReducer from './slices/favouriteDeleteDucers'
 import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
+
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -24,8 +27,9 @@ const rootReducer = combineReducers({
   provinces: provincesReducer,
   district: districtReducer,
   getUser: getuserReducer,
-
-
+  filterTour: filterTourReducer,
+  searchTour: searchTourReducer,
+  changeUser: changeUserReducer,
   // favoriteAdDelete: favoriteAdDeleteReducer,
   // favouriteDelete: favouriteDeleteReducer,
 

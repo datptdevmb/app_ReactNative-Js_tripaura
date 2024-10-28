@@ -130,14 +130,13 @@ const SettingLoggedScreen = (props) => {
         ? { uri: image } : typeof userinfo?.avatar === 'string' && userinfo.avatar.startsWith('http')
             ? { uri: userinfo.avatar } : Icons.avatar;
 
-    console.log('avatar', avatar);
-    console.log('userinfo', userinfo);
-    console.log('name', userName);
+
 
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
+
                     <TouchableOpacity onPress={openImagePicker}>
                         <Image
                             source={avatar}
@@ -145,13 +144,20 @@ const SettingLoggedScreen = (props) => {
                         />
 
                     </TouchableOpacity>
+                    <Image
+                        source={user && user.avatar ? { uri: user.avatar } : Icons.avatar}
+                    />
+                    <TouchableOpacity style={styles.icCameraContainer}>
 
-                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
+
                     <Text style={styles.txtName}>{userName}</Text>
+
+                    <Text style={styles.txtName}>{user.user.fullname}</Text>
+
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>

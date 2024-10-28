@@ -1,29 +1,36 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const ThayDoiThongTin = createAsyncThunk('changeUser', async (data, { rejectWithValue }) => {
-    try {
-        const response = await fetch('https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/auth/api/updateUser', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+// Tạo hàm ThayDoiThongTin để thực hiện gọi API cập nhật thông tin người dùng
+export const ThayDoiThongTin = createAsyncThunk(
+    'changeUser/ThayDoiThongTin',
+    async (data, { rejectWithValue }) => {
+        try {
+            const response = await fetch(
+                'https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/auth/api/updateUser',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                }
+            );
 
-        const user = await response.json();
+            const user = await response.json();
 
-        if (!response.ok) {
-            return rejectWithValue(user.message || 'Failed');
+            if (!response.ok) {
+                return rejectWithValue(user.message || 'Failed');
+            }
+
+            console.log("============== changeUser =========", user);
+            return user; // Đây là payload khi thành công
+        } catch (error) {
+            return rejectWithValue(error.message || 'Network Error');
         }
-
-        return user; // Đây là payload khi thành công
-    } catch (error) {
-        return rejectWithValue(error.message || 'Network Error');
     }
-});
+);
 
-
-export const changeUserSlice = createSlice({
+const changeUserSlice = createSlice({
     name: 'changeUser',
     initialState: {
         user: null,
@@ -31,7 +38,6 @@ export const changeUserSlice = createSlice({
         changeUserStatus: 'idle',
         error: null,
     },
-
     reducers: {},
     extraReducers: (builder) => {
         builder
@@ -40,10 +46,9 @@ export const changeUserSlice = createSlice({
                 state.error = null;
             })
             .addCase(ThayDoiThongTin.fulfilled, (state, action) => {
-                console.log("Fulfilled action:", action); // Log action
+                console.log("Fulfilled action:", action);
                 state.changeUserStatus = 'succeeded';
                 state.user = action.payload;
-                state.changeUserData = action.payload;
             })
             .addCase(ThayDoiThongTin.rejected, (state, action) => {
                 state.changeUserStatus = 'failed';
@@ -51,7 +56,6 @@ export const changeUserSlice = createSlice({
                 console.log("Error message:", action.error.message);
             });
     },
-    
 });
 
 export default changeUserSlice.reducer;

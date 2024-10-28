@@ -1,3 +1,4 @@
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchProvinces = createAsyncThunk(
@@ -7,8 +8,7 @@ export const fetchProvinces = createAsyncThunk(
     if (!response.ok) {
       throw new Error('Failed to fetch provinces');
     }
-    const data = await response.json();
-    return data;
+    return await response.json();
   }
 );
 
@@ -18,6 +18,8 @@ const provincesSlice = createSlice({
   initialState: {
     provinces: [],
     loading: false,
+    status: 'idle',
+
     error: null,
   },
   reducers: {},
@@ -32,6 +34,15 @@ const provincesSlice = createSlice({
       })
       .addCase(fetchProvinces.rejected, (state, action) => {
         state.loading = false;
+        state.status = 'loading';
+      })
+      .addCase(fetchProvinces.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.provinces = action.payload;
+      })
+      .addCase(fetchProvinces.rejected, (state, action) => {
+        state.status = 'failed';
+
         state.error = action.error.message;
       });
   },
