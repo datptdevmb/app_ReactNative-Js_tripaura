@@ -39,5 +39,4 @@ const provincesSlice = createSlice({
   },
 });
 
-export const selectProvinces = (state) => state.provinces.provinces;
 export default provincesSlice.reducer;

@@ -8,9 +8,9 @@ import stylesdown from './dropdownstyle';
 
 const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
     const dispatch = useDispatch();
-    const { provinces, loading: provincesLoading, error: provincesError } = useSelector((state) => state.reducer.provinces);
-    const { districts, loading: districtsLoading, error: districtsError } = useSelector((state) => state.reducer.district);
-
+    const { provinces } = useSelector((state) => state.reducer.provinces);
+    const { districts } = useSelector((state) => state.reducer.district);
+    
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
 
@@ -25,28 +25,22 @@ const DropdownComponent = ({ onProvinceSelect, onDistrictSelect }) => {
     }, [selectedProvince, dispatch]);
 
     const handleProvinceChange = (value) => {
-        setSelectedProvince(value);
-        setSelectedDistrict(null); 
-        onProvinceSelect(value); 
+        if (value !== selectedProvince) { 
+            setSelectedProvince(value);
+            setSelectedDistrict(null);
+            onProvinceSelect(value);
+        }
     };
 
     const handleDistrictChange = (value) => {
         setSelectedDistrict(value);
-        onDistrictSelect(value); 
+        onDistrictSelect(value);
     };
 
-    if (provincesLoading || districtsLoading) {
-        return <ActivityIndicator size="large" color="#0000ff" />;
-    }
-
-    if (provincesError || districtsError) {
-        Alert.alert("Error", provincesError || districtsError);
-    }
-
     const provinceItems = provinces.map(({ name, code }) => ({ label: name, value: code }));
-    const districtItems = selectedProvince 
-        ? districts.filter(district => district.province_code === selectedProvince).map(district => ({ label: district.name, value: district.code }))
-        : [];
+    const districtItems = districts.filter(district => district.province_code === selectedProvince)
+        .map(district => ({ label: district.name, value: district.code }));
+
 
     return (
         <View style={stylesdown.container}>
@@ -80,7 +74,7 @@ const Dropdown = ({ label, selectedValue, onValueChange, items, enabled, style }
             onValueChange={onValueChange}
             enabled={enabled}
         >
-            <Picker.Item label={`Chọn ${label.toLowerCase()}`} value={null} />
+            <Picker.Item label={`${label.toLowerCase()}`} value={null} />
             {items.map(({ label, value }) => (
                 <Picker.Item key={value} label={label} value={value} />
             ))}
