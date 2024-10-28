@@ -24,14 +24,30 @@ import TicketSelector from './TicketSelector';
 import RefundPolicy from './RefundPolicy';
 import ReviewCard from '../../../../components/common/card/ReviewCard';
 import formatCurrencyVND from '../../../../untils/formatCurrencyVND';
+import ReviewList from './ReviewList';
+const reviews = [
+	{
+	  id: 1,
+	  rating: 5,
+	  date: '09/09/2024',
+	  name:'datpham',
+	  reviewText: 'Một trải nghiệm tuyệt vời đáng để trải nghiệm',
+	  imageUrl: 'https://link-to-avatar-image.com/avatar1.jpg',
+	},
+	{
+	  id: 2,
+	  rating: 4,
+	  date: '15/10/2024',
+	  name:'datpham',
+	  reviewText: 'Chuyến đi thú vị và đáng nhớ!',
+	  imageUrl: 'https://link-to-avatar-image.com/avatar2.jpg',
+	},
+	// Thêm các đánh giá khác ở đây
+  ];
 
 const Detail = ({ navigation, route }) => {
 	const { _id: tourId } = route.params;
 	const dispatch = useDispatch();
-	// const { tourById, loading } = useSelector(state => );
-	// const [adultTickets, setAdultTickets] = useState(0);
-	// const [childTickets, setChildTickets] = useState(0);
-	// const [totalPrice, setTotalPrice] = useState(0);
 
 	const {
 		tourById,
@@ -112,8 +128,7 @@ const Detail = ({ navigation, route }) => {
 							<View style={styles.divider} />
 							<Lable lable="Mô tả chuyến đi" />
 							<Text style={styles.bodytext}>{description}</Text>
-							<Lable style={styles.mrtop_12} lable="Đánh giá chuyến đi" />
-							<ReviewCard />
+							<ReviewList reviews={reviews} />
 						</View>
 						<View style={{ height: 500 }}></View>
 					</View>

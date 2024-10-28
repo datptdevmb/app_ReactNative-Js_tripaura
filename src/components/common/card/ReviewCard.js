@@ -19,8 +19,8 @@ function ReviewCard({ review }) {
                                 source={require('../../../assets/images/avatar.png')}
                                 style={styles.image} />
                             <View style={styles.mr_start_12}>
-                                <Text style={styles.lable}> {review.reviewName}</Text>
-                                <Text style={styles.subLable}>{review.reviewDate}</Text>
+                                <Text style={styles.lable}> {review.name}</Text>
+                                <Text style={styles.subLable}>{review.date}</Text>
                             </View>
                         </View>
 
@@ -30,7 +30,7 @@ function ReviewCard({ review }) {
                             startingValue={5}
                             imageSize={14} />
 
-                        <Text style={styles.bodyText}> {review?.reviewContent} </Text>
+                        <Text style={styles.bodyText}> {review?.reviewText} </Text>
                     </>
                 </View>
             }
