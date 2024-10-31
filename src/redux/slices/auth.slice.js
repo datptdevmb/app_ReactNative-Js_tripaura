@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { register, googleLogin } from '../../sevices/auth/auth.service';
+import { register, googleLogin, updateUser } from '../../sevices/auth/auth.service'; // Đảm bảo bạn có updateUser trong service
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchUser = createAsyncThunk(
@@ -36,6 +36,20 @@ export const checkLoginStatus = createAsyncThunk('auth/checkLoginStatus', async 
     return { isLogin: false, user: null };
   }
 });
+
+// Hành động để cập nhật thông tin người dùng
+export const changeUser = createAsyncThunk(
+  'auth/changeUser',
+  async (userData, thunkApi) => {
+    try {
+      const response = await updateUser(userData); // Gọi hàm updateUser
+      await AsyncStorage.setItem('userId', JSON.stringify(response)); // Cập nhật AsyncStorage
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+);
 
 const initialState = {
   user: {},
@@ -89,6 +103,20 @@ const authenSlice = createSlice({
     builder.addCase(checkLoginStatus.rejected, (state, action) => {
       state.loading = false;
       console.log('Kiểm tra đăng nhập thất bại:', action.error.message);
+      state.err = action.error.message;
+    });
+
+    // Xử lý trạng thái cập nhật thông tin người dùng
+    builder.addCase(changeUser.fulfilled, (state, action) => {
+      state.user = { ...state.user, ...action.payload }; // Cập nhật chỉ những trường cần thiết
+      state.loading = false;
+    });
+    builder.addCase(changeUser.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(changeUser.rejected, (state, action) => {
+      state.loading = false;
+      console.log('Cập nhật thông tin người dùng thất bại:', action.error.message);
       state.err = action.error.message;
     });
   },

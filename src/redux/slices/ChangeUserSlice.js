@@ -48,7 +48,7 @@ const changeUserSlice = createSlice({
             .addCase(ThayDoiThongTin.fulfilled, (state, action) => {
                 console.log("Fulfilled action:", action);
                 state.changeUserStatus = 'succeeded';
-                state.user = action.payload;
+                state.user = action.payload; // Cập nhật thông tin người dùng
             })
             .addCase(ThayDoiThongTin.rejected, (state, action) => {
                 state.changeUserStatus = 'failed';
