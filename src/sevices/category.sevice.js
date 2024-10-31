@@ -10,7 +10,6 @@ class Category {
         try {
             const response = await axios.get(CATEGORY_API);
             this.tours = response
-            // console.log('ddddkk') 
             return this.tours;
 
         } catch (error) {

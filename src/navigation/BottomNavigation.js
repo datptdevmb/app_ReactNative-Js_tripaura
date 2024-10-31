@@ -25,10 +25,7 @@ import FavouriteScreenNoLogin from '../screens/main/tabs/favourite/FavouriteScre
 import Voucher from '../screens/main/stacks/voucher/Voucher'
 import { useSelector } from 'react-redux';
 import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
-
-import Mymap from '../screens/main/tabs/Home/Mymap';
-import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
-
+import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
 
 const Tab = createBottomTabNavigator();
 
@@ -91,33 +88,32 @@ const ButtomNavigation = () => {
         },
       }}>
       <Tab.Screen
-        name={ROUTES.home}
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                borderTopWidth: focused ? 1 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
-                height: 90,
-              }}>
-              <IcHome />
-              <Text style={{fontSize: 8}}>{ROUTES.voucher}</Text>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Favourite"
-        component={Voucher}
-        options={{
-
-  
-          tabBarIcon: ({ focused }) => (
-            <View style={{
+      name={ROUTES.home}
+      component={HomeScreen}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              borderTopWidth: focused ? 1 : 0,
+              borderTopColor: focused ? colors.primary : colors.onPrimary,
+              height: 90,
+            }}>
+            <IcHome />
+            <Text style={{fontSize: 8}}>{ROUTES.voucher}</Text>
+          </View>
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Favourite"
+      component={Voucher}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View
+            style={{
               justifyContent: 'center',
               alignItems: 'center',
               width: '100%',
@@ -126,70 +122,70 @@ const ButtomNavigation = () => {
               height: 90,
               // backgroundColor:colors.primary
             }}>
-              <IcVoucher />
-              <Text>Uu dai</Text>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="yeuthich"
-        component={SearchScreen}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Image
-                resizeMode="contain"
-                source={require('../assets/icons/SearchIcon.png')}
-                style={{
-                  tintColor: colors.onPrimary,
-                }}
-              />
-            </View>
-          ),
-          tabBarButton: props => <CustomBottom {...props} />,
-        }}
-      />
-      <Tab.Screen
-        name="Notification"
-        component={isLogin ? FavoriteScreen : FavouriteScreenNoLogin}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View
+            <IcVoucher />
+            <Text>Uu dai</Text>
+          </View>
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="yeuthich"
+      component={SearchScreen}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+              resizeMode="contain"
+              source={require('../assets/icons/SearchIcon.png')}
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
-                height: 90,
+                tintColor: colors.onPrimary,
+              }}
+            />
+          </View>
+        ),
+        tabBarButton: props => <CustomBottom {...props} />,
+      }}
+    />
+    <Tab.Screen
+      name="Notification"
+      component={isLogin ? FavoriteScreen : FavouriteScreenNoLogin}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              borderTopWidth: focused ? 2 : 0,
+              borderTopColor: focused ? colors.primary : colors.onPrimary,
+              height: 90,
 
-                // backgroundColor:colors.primary
-              }}>
-              <IcFavorite />
-              <Text>{ROUTES.favorite}</Text>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Setting"
-        component={isLogin ? SettingLoggedScreen :SettingScreen}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View
-              style={{
-                justifyContent: 'center',
-                width: '100%',
-                alignItems: 'center',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
-                height: 90,
+              // backgroundColor:colors.primary
+            }}>
+            <IcFavorite />
+            <Text>{ROUTES.favorite}</Text>
+          </View>
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Setting"
+      component={isLogin ? SettingLoggedScreen :SettingScreen}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View
+            style={{
+              justifyContent: 'center',
+              width: '100%',
+              alignItems: 'center',
+              borderTopWidth: focused ? 2 : 0,
+              borderTopColor: focused ? colors.primary : colors.onPrimary,
+              height: 90,
 
-                // backgroundColor:colors.primary
-              }}>
-              <IcProfile />
-              <Text>{ROUTES.settings}</Text>
+              // backgroundColor:colors.primary
+            }}>
+            <IcProfile />
+            <Text>{ROUTES.settings}</Text>
             </View>
           ),
         }}

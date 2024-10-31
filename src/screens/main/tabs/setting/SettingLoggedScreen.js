@@ -140,17 +140,16 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-<<<<<<<<< Temporary merge branch 1
+
                     <Text style={styles.txtName}>{user && user.fullname}Nguyễn Văn A</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>
-=========
+
                     <Text style={styles.txtName}>{user.user.fullname}</Text>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('EditProfileScreen')}
                     style={styles.btnCapNhaHoSo}>
->>>>>>>>> Temporary merge branch 2
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>

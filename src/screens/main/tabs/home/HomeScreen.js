@@ -32,15 +32,13 @@ import {useHomeData} from '../../../../hooks/useHomeData';
 function HomeScreen ({navigation}){
   const dispatch = useDispatch();
 
-
-  const { categories = [], loading } = useSelector((state) => state.category || {});
-  const { tours = [] } = useSelector((state) => state.tour || {});
-
-  useEffect(() => {
-    dispatch(fetchCategory());
-    dispatch(fetchTours('67049d4526be2256863506cc'));
-  }, [dispatch]);
-
+  const {
+    categories,
+    tours,
+    popularTours,
+    images,
+    isLoading
+  } = useHomeData();
 
   const [refreshing, setRefreshing] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
