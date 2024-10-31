@@ -12,12 +12,8 @@ import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
-<<<<<<<<< Temporary merge branch 1
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const { user, setUser } = useContext(AppContext)
-=========
     const { user } = useSelector(state => state.reducer.auth);
->>>>>>>>> Temporary merge branch 2
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
