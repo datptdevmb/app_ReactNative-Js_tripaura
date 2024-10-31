@@ -9,12 +9,10 @@ import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
 
 const Login = (props) => {
-
-
   const { navigation, route } = props;
   const { setUser, setIsLogin } = useContext(AppContext);
   const dispatch = useDispatch();
-  const { loginData, loginStatus } = useSelector((state) => state.login || {});
+  const { loginData, loginStatus } = useSelector((state) => state.reducer.login || {});
 
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');

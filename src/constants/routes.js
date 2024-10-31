@@ -5,5 +5,6 @@ export const ROUTES = {
   settings: 'Settings',
   favorite: 'Favorite',
   login :'Login',
-  detail:'Detail'
+  detail:'Detail',
+  loginScreen: 'LoginScreen',
 };

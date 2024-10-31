@@ -22,6 +22,7 @@ import FiterScreen from '../screens/main/stacks/Filter/FilterScreen';
 import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
 
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -34,7 +35,6 @@ const MainTabNavigation = () => {
 
 
 const MainStaskNavigation = () => {
-
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
@@ -51,9 +51,6 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
             {/* <Stack.Screen name="Voucher" component={Voucher} />
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} /> */}
-
-            <Stack.Screen name="Voucher" component={Voucher} />
-            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />      
         </Stack.Navigator>
     )
 }

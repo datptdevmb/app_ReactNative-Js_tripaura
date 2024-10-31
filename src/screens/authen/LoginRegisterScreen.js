@@ -10,7 +10,6 @@ import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGoogleUser } from '../../redux/slices/auth.slice';
-import { AppContext } from '../AppContext';
 
 
 const LoginRegisterScreen = (props) => {
@@ -19,19 +18,16 @@ const LoginRegisterScreen = (props) => {
   const { isLogin } = useSelector(state => state.reducer.auth);
   const [loading, setLoading] = useState(false);
 
-  const { setUser, setIsLogin } = useContext(AppContext);
-  const [loginType, setLoginType] = useState('email');
+  const [loginType, setLoginType ] = useState('email');
 
   const loginemail = () => {
-    console.log("Navigating to email login");
     setLoginType('email');
-    navigation.navigate('Login', { loginType: 'email' });
+    navigation.navigate('LoginScreen', { loginType: 'email' });
   };
   
   const loginphone = () => {
-    console.log("Navigating to phone login");
     setLoginType('phone');
-    navigation.navigate('Login', { loginType: 'phone' });
+    navigation.navigate('LoginScreen', { loginType: 'phone' });
   };
 
   useEffect(() => {

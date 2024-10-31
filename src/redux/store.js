@@ -15,7 +15,8 @@ import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
-
+import loginReducer from './slices/loginreducers';
+import registerReducer from './slices/registerreducers';
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -31,6 +32,8 @@ const rootReducer = combineReducers({
   filterTour: filterTourReducer,
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
+  login: loginReducer,
+  register: registerReducer,
   // favoriteAdDelete: favoriteAdDeleteReducer,
   // favouriteDelete: favouriteDeleteReducer,
 })
