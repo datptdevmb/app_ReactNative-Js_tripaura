@@ -13,7 +13,18 @@ const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const { user } = useSelector(state => state.reducer.auth);
+    const [image, setImage] = useState(null);
+    const dispatch = useDispatch();
+    const [userinfo, setUserinfo] = useState({});
+    const { user: contextUser } = useContext(AppContext);
+    const { user: reduxUser } = useSelector(state => state.reducer.auth);
+    const changeUserStatus = useSelector(state => state.changeUser);
+    const user = reduxUser.user || contextUser;
+    
+    console.log('change', user);
+    const userId = user?._id;
+    console.log('userId', userId);
+    
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
@@ -140,16 +151,10 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-
-                    <Text style={styles.txtName}>{user && user.fullname}Nguyễn Văn A</Text>
+                    <Text style={styles.txtName}>{userName}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>
-
-                    <Text style={styles.txtName}>{user.user.fullname}</Text>
-                    <TouchableOpacity 
-                    onPress={() => navigation.navigate('EditProfileScreen')}
-                    style={styles.btnCapNhaHoSo}>
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
