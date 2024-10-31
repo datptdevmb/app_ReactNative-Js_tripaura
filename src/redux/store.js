@@ -10,6 +10,7 @@ import filterTourReducer from './slices/filterTourSlice'
 import searchTourReducer from './slices/searchTourSlice'
 import favoriteAdDeleteReducer from './slices/favouriteAddDeleteducers'
 import favouriteDeleteReducer from './slices/favouriteDeleteDucers'
+
 import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
@@ -32,13 +33,13 @@ const rootReducer = combineReducers({
   changeUser: changeUserReducer,
   // favoriteAdDelete: favoriteAdDeleteReducer,
   // favouriteDelete: favouriteDeleteReducer,
-
-});
-
+})
 const store = configureStore({
   reducer: {
     reducer: rootReducer,
-  }
+
+  },
+
 });
 
 export default store;

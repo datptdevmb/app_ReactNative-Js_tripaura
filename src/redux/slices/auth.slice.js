@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { register, googleLogin } from '../../sevices/auth/auth.service';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {register, googleLogin} from '../../sevices/auth/auth.service'; 
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchUser = createAsyncThunk(
@@ -31,9 +32,11 @@ export const fetchGoogleUser = createAsyncThunk(
 export const checkLoginStatus = createAsyncThunk('auth/checkLoginStatus', async () => {
   const userData = await AsyncStorage.getItem('userId');
   if (userData) {
-    return { isLogin: true, user: JSON.parse(userData) }; 
+
+    return { isLogin: true, user: JSON.parse(userData) }; // Trả về dữ liệu user nếu có
   } else {
-    return { isLogin: false, user: null };
+    return { isLogin: false, user: null }; 
+
   }
 });
 
@@ -62,6 +65,7 @@ const authenSlice = createSlice({
       console.log('Đăng ký thất bại:', action.error.message);
       state.err = action.error.message;
     });
+
 
     builder.addCase(fetchGoogleUser.fulfilled, (state, action) => {
       state.user = action.payload;

@@ -20,6 +20,9 @@ const AuthenStackNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
+
       {/* <Stack.Screen
 
         name="TestFavoriteAddDelete"
@@ -30,7 +33,6 @@ const AuthenStackNavigation = () => {
         name="LoginRegisterScreen"
         component={LoginRegisterScreen}
       />
-
 
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotScreen" component={ForgotScreen} />

@@ -12,19 +12,12 @@ import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
+<<<<<<<<< Temporary merge branch 1
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const [image, setImage] = useState(null);
-    const dispatch = useDispatch();
-    const [userinfo, setUserinfo] = useState({});
-    const { user: contextUser } = useContext(AppContext);
-    const { user: reduxUser } = useSelector(state => state.reducer.auth);
-    const changeUserStatus = useSelector(state => state.changeUser);
-    const user = reduxUser.user || contextUser;
-    
-    console.log('change', user);
-    const userId = user?._id;
-    console.log('userId', userId);
-    
+    const { user, setUser } = useContext(AppContext)
+=========
+    const { user } = useSelector(state => state.reducer.auth);
+>>>>>>>>> Temporary merge branch 2
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
@@ -151,10 +144,17 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-                    <Text style={styles.txtName}>{userName}</Text>
+<<<<<<<<< Temporary merge branch 1
+                    <Text style={styles.txtName}>{user && user.fullname}Nguyễn Văn A</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>
+=========
+                    <Text style={styles.txtName}>{user.user.fullname}</Text>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate('EditProfileScreen')}
+                    style={styles.btnCapNhaHoSo}>
+>>>>>>>>> Temporary merge branch 2
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
