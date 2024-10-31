@@ -231,6 +231,7 @@ function Detail({navigation, route}) {
             </View>
             <ReviewCard review={review} />
             <Button
+              onPressed={() => navigation.navigate('Rate')}
               label="Xem them danh gia"
               style={styles.btnReview}
               styleText={styles.textBtnReview}

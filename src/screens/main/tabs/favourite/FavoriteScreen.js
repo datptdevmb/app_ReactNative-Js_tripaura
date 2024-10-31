@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {styles} from './FavoriteScreenStyle';
 import IcNFavoriteScreen from '../../../../assets/icons/bottom_tab/Ic_FavoriteScreen';
 import {LayDanhSachYeuThich} from '../../../../redux/slices/favouriteducers';
@@ -126,7 +125,7 @@ const FavoriteScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.texty}>Yêu thích</Text>
-      {isLoading ? ( // Chỉ hiển thị loading lần đầu khi chưa có dữ liệu
+      {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : favoritesData?.length > 0 ? (
         <FlatList

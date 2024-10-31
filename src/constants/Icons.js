@@ -11,17 +11,19 @@ import ic_cellphone from '../assets/icons/ic_cellphone.png';
 import ic_address from '../assets/icons/ic_address.png';
 import ic_edit from '../assets/icons/ic_edit.png';
 import ic_time from '../assets/icons/ic_time.png';
-import ic_arrowright from '../assets/icons/ic_arrowright.png'
-import ic_map from '../assets/icons/ic_map.png'
-import ic_lock from '../assets/icons/ic_lock.png'
-import ic_orther from '../assets/icons/ic_orther.png'
-import ic_bell from '../assets/icons/ic_bell.png'
-import ic_moon from '../assets/icons/ic_moon.png'
-import ic_earth from '../assets/icons/ic_earth.png'
-import ic_mony from '../assets/icons/ic_mony.png'
-import ic_lockout from '../assets/icons/ic_lockout.png'
-import ic_message from '../assets/icons/ic_message.png'
-import ic_arrowbottom from '../assets/icons/ic_arrowbottom.png'
+import ic_arrowright from '../assets/icons/ic_arrowright.png';
+import ic_map from '../assets/icons/ic_map.png';
+import ic_lock from '../assets/icons/ic_lock.png';
+import ic_orther from '../assets/icons/ic_orther.png';
+import ic_bell from '../assets/icons/ic_bell.png';
+import ic_moon from '../assets/icons/ic_moon.png';
+import ic_earth from '../assets/icons/ic_earth.png';
+import ic_mony from '../assets/icons/ic_mony.png';
+import ic_lockout from '../assets/icons/ic_lockout.png';
+import ic_message from '../assets/icons/ic_message.png';
+import ic_arrowbottom from '../assets/icons/ic_arrowbottom.png';
+import ic_star_empty from '../assets/icons/ic_star_empty.png';
+
 // image
 
 import avatar from '../assets/images/avatar.png';
@@ -38,7 +40,7 @@ const Icons = {
   ic_giftbox: ic_giftbox,
   ic_person: ic_person,
   ic_cellphone: ic_cellphone,
-  ic_address:ic_address,
+  ic_address: ic_address,
   ic_edit: ic_edit,
   ic_time: ic_time,
   ic_star: ic_star,
@@ -53,12 +55,11 @@ const Icons = {
   ic_lockout: ic_lockout,
   ic_message: ic_message,
   ic_arrowbottom: ic_arrowbottom,
+  ic_star_empty: ic_star_empty,
   //image
   avatar: avatar,
   image: image,
   slider: slider,
-  
- 
 };
 
 export default Icons;

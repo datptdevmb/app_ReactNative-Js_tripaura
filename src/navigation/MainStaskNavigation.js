@@ -17,6 +17,7 @@ import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
 import {ROUTES} from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen';
+import Rate from '../screens/main/stacks/rate/Rate';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -29,6 +30,7 @@ const MainStaskNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
+      <Stack.Screen name="Rate" component={Rate} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen name="Ponorama" component={PanoramaViewer} />
