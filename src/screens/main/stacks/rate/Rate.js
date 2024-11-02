@@ -77,41 +77,33 @@ const Rate = () => {
         <Text style={styles.comment}>{item.comment}</Text>
       </ScrollView>
 
-      <FlatList
-        data={item.image}
-        renderItem={({item: imageUrl}) => (
-          <Image
-            source={{uri: imageUrl}}
-            style={styles.reviewImage}
-            onError={() => console.log('Error loading image')}
-          />
-        )}
-        keyExtractor={(imageUrl, index) => index.toString()}
-        horizontal
-        contentContainerStyle={styles.imageListContainer}
-      />
+      {item.image && item.image.length > 0 && (
+        <FlatList
+          data={item.image}
+          renderItem={({item: imageUrl}) => (
+            <Image
+              source={{uri: imageUrl}}
+              style={styles.reviewImage}
+              onError={() => console.log('Error loading image')}
+            />
+          )}
+          keyExtractor={(imageUrl, index) => index.toString()}
+          horizontal
+          contentContainerStyle={styles.imageListContainer}
+        />
+      )}
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Headercomponet leftIcon={Icons.ic_leftarrow} title={'Đánh giá'} />
-      <Text style={styles.text}>Đánh giá chung</Text>
-      <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
-
-      <View style={styles.starContainer}>
-        {mangSoSao.map((star, index) => (
-          <Image
-            key={index}
-            source={star === 'filled' ? Icons.ic_star : Icons.ic_star_empty}
-            style={styles.star}
-          />
-        ))}
+      <View style={styles.containerHeader}>
+        <Headercomponet
+          leftIcon={Icons.ic_leftarrow}
+          title={'Đánh giá'}
+          onPressLeftIcon={() => navigation.goBack()}
+        />
       </View>
-
-      <Text style={styles.reviewCount}>
-        Dựa trên {soNguoiDanhGia} đánh giá{' '}
-      </Text>
 
       {trangThaiDanhGia === 'loading' ? (
         <View style={styles.loadingContainer}>
@@ -126,6 +118,28 @@ const Rate = () => {
           renderItem={renderReviewItem}
           keyExtractor={item => item._id}
           contentContainerStyle={styles.listContainer}
+          ListHeaderComponent={
+            <View>
+              <Text style={styles.text}>Đánh giá chung</Text>
+              <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
+
+              <View style={styles.starContainer}>
+                {mangSoSao.map((star, index) => (
+                  <Image
+                    key={index}
+                    source={
+                      star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
+                    }
+                    style={styles.star}
+                  />
+                ))}
+              </View>
+
+              <Text style={styles.reviewCount}>
+                Dựa trên {soNguoiDanhGia} đánh giá{' '}
+              </Text>
+            </View>
+          }
         />
       )}
     </View>

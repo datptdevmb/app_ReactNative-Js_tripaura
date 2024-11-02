@@ -1,13 +1,14 @@
 import {StyleSheet} from 'react-native';
+import fontsize from '../../../../constants/fontsize';
+import colors from '../../../../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
-    marginTop: 40,
+    backgroundColor: colors.onPrimary,
   },
   text: {
-    fontSize: 32,
+    fontSize: fontsize.xxl,
     lineHeight: 48,
     fontWeight: '700',
     color: '#212121',
@@ -37,16 +38,16 @@ const styles = StyleSheet.create({
   },
   fullname: {
     width: 200,
-    height: 25,
+    height: 23,
     marginBottom: 50,
-    fontSize: 16,
+    fontSize: fontsize.md,
     fontWeight: '700',
     color: '#212121',
   },
   rating: {
     width: 120,
     height: 25,
-    fontSize: 16,
+    fontSize: fontsize.md,
     fontWeight: '600',
     color: '#ff9800',
     top: 25,
@@ -54,14 +55,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   comment: {
-    fontSize: 14,
+    fontSize: fontsize.sm,
     color: '#2E2E2E',
     fontWeight: '400',
     letterSpacing: 0.4,
     marginTop: 4,
   },
   date: {
-    fontSize: 12,
+    fontSize: fontsize.xs,
     marginBottom: 50,
     color: '#757575',
     fontWeight: '400',
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   reviewCount: {
-    fontSize: 20,
+    fontSize: fontsize.lg,
     lineHeight: 27,
     color: '#555',
     textAlign: 'center',
@@ -117,16 +118,20 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 10,
-    fontSize: 16,
+    fontSize: fontsize.md,
     color: '#555',
   },
   noReviewsText: {
-    fontSize: 16,
+    fontSize: fontsize.md,
     color: '#757575',
     textAlign: 'center',
     marginTop: 20,
   },
-  ratingContainer: {},
+  containerHeader: {
+    marginTop: 35,
+    backgroundColor: '#fff',
+    paddingHorizontal: 30,
+  },
 });
 
 export default styles;
