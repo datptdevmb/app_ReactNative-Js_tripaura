@@ -31,10 +31,6 @@ const EditProfileScreen = ({ navigation }) => {
 
 
   const dispatch = useDispatch();
-  const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
-
-  // Chỉ lấy các dữ liệu cần thiết
-  const { user: reduxUser } = useSelector((state) => state.reducer.auth);
   const changeUserData = useSelector((state) => state.reducer.changeUser);
   const changeUserStatus = useSelector((state) => state.reducer.changeUser.status);
   const provinces = useSelector((state) => state.reducer.provinces.provinces);
