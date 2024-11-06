@@ -19,21 +19,38 @@ export const fetchTourById = createAsyncThunk(
   'tour/fetchTourById',
   async ({ tourId }) => {
     try {
-      const tour = await Tour.getTourById(tourId);
-      console.log(tour)
-      const { tourName, description, images, locations, details } = tour[0];
-      const imges = images[0].linkImage;
-      const location = locations[0];
-      const adultPrice = details[0].priceAdult;
-      const childPrice = details[0].priceChildren;
-      
+      // Lấy dữ liệu từ API
+      const response = await Tour.getTourById(tourId);
 
-      return { tourName, description, imges, location, details, adultPrice, childPrice };
+      if (response.status !== 'success') {
+        throw new Error(response.msg || 'Error fetching tour data');
+      }
+
+      // Giả sử API trả về đúng định dạng
+      const tour = response.data[0];
+      const { tourName, description, images, locations, details } = tour;
+     
+      // Chuẩn bị dữ liệu để trả về
+      const imges = images?.linkImage || '';
+      const location = locations.destination;
+      console.log(location)
+      const adultPrice = details[0]?.priceAdult || 0;
+      const childPrice = details[0]?.priceChildren || 0;
+
+      return {
+        tourName,
+        description,
+        imges,
+        location,
+        details,
+        adultPrice,
+        childPrice
+      };
     } catch (error) {
       console.error('Fetch tour by ID failed:', error);
       throw error;
     }
-  },
+  }
 );
 
 export const fetchPopularTour = createAsyncThunk(
@@ -108,7 +125,7 @@ const tourSlice = createSlice({
       .addCase(fetchTourById.pending, state => { state.loading = true; })
       .addCase(fetchTourById.fulfilled, (state, action) => {
         const { adultPrice, childPrice } = action.payload;
-        
+
         state.tourById = action.payload;
         state.adultPrice = adultPrice;
         state.childPrice = childPrice;

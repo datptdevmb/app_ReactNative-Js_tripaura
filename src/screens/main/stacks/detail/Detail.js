@@ -116,12 +116,13 @@ const Detail = ({ navigation, route }) => {
 		navigation.navigate('yeuthich')
 	}
 
+
 	useEffect(() => {
 		const loadData = async () => {
 			try {
 				await Promise.all([
 					dispatch(fetchTourById({ tourId })),
-					// dispatch(KiemTraYeuThich({ userId: user.user._id, tourId }))
+					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId }))
 				]);
 			} catch (err) {
 				console.error('Error fetching data:', err);
@@ -204,7 +205,7 @@ const Detail = ({ navigation, route }) => {
 						<ImageList dataimage={imges} />
 						<View style={styles.tourInfor}>
 							<Text style={styles.tourname}>{tourName}</Text>
-							<LocationInfo location={location?.departure} />
+							<LocationInfo location={location} />
 							<View style={styles.divider} />
 							<Lable lable="Mô tả chuyến đi" />
 							<Text style={styles.bodytext}>{description}</Text>

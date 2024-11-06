@@ -106,10 +106,10 @@ const favoriteSlice = createSlice({
           state.favoritesData = [...state.favoritesData,
           {
             id: data.data?.detailTours[0]._id,
-            image: data.data?.detailTours[0].images[0].linkImage[0] || 'https://tse4.mm.bing.net/th?id=OIP.1zq4a7G007iHUBybiLxrTwAAAA&pid=Api&P=0&h=220',
+            image: data.data?.detailTours[0].images.linkImage[0] || 'https://tse4.mm.bing.net/th?id=OIP.1zq4a7G007iHUBybiLxrTwAAAA&pid=Api&P=0&h=220',
             tourName: data.data?.detailTours[0].tourName || 'Khám Phá trải nghiệm tham quan Phố cổ Hội An',
             price: data.data?.detailTours[0].details[0].priceAdult || 100000,
-            locate: data.data?.detailTours[0].locations[0].destination || 'Nghệ An'
+            locate: data.data?.detailTours[0].locations.destination || 'Nghệ An'
           }
           ]
 
