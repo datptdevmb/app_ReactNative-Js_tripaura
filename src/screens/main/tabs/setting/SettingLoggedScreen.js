@@ -13,35 +13,35 @@ const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState( null);
     const dispatch = useDispatch();
-    const [userinfo, setUserinfo] = useState({});
-    const { user: contextUser } = useContext(AppContext);
-    const { user: reduxUser } = useSelector(state => state.reducer.auth);
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user;
+    console.log('user: ', user);
+    const userId = user.user._id
+
+    console.log('image: ', image);
+    
+    
     const changeUserStatus = useSelector(state => state.changeUser);
-    const user = reduxUser.user || contextUser;
-    
-    console.log('change', user);
-    const userId = user?._id;
-    console.log('userId', userId);
-    
+
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
     useEffect(() => {
-        console.log("User ID:", userId);
+        if (user.user) {
+            const userData = user.user; 
+            const avatar = userData.avatar; 
+            const fullname = userData.fullname; 
+            const email = userData.email; 
+            const userId = userData._id; 
 
-        dispatch(fetchUserInfo(userId))
-            .then((result) => {
-                console.log("Fetch User Info Result:", result);
-                if (result.payload && result.payload.success) {
-                    setUserinfo(result.payload.data);
-                }
-            })
-            .catch((error) => {
-                console.error("Fetch User Info Error:", error);
-            });
-    }, [dispatch, userId]);
+            console.log('Avatar:', avatar);
+            console.log('Fullname:', fullname);
+            console.log('Email:', email);
+            console.log('User ID:', userId);
+        }
+    }, [user]);
 
     const commonOptions = {
         mediaType: 'photo',
@@ -75,12 +75,11 @@ const SettingLoggedScreen = (props) => {
     };
 
     const handleUpdate = async (image) => {
-
         if (!user) {
             Alert.alert('Lỗi', 'Không tìm thấy thông tin người dùng');
             return;
         }
-
+    
         const data = new FormData();
         data.append('file', {
             uri: image.uri,
@@ -89,34 +88,41 @@ const SettingLoggedScreen = (props) => {
         });
         data.append('upload_preset', 'TripAuraAPI');
         data.append('api_key', '976765598717887');
-
+    
         try {
             const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
                 method: 'POST',
                 body: data,
             });
-
+    
             const result = await response.json();
+            console.log("Cloudinary response:", result);
             if (response.ok) {
                 const imageUrl = result.secure_url;
+    
                 const userUpdateData = {
-                    ...user,
-                    avatar: imageUrl,
                     userId: userId,
+                    avatar: imageUrl,
                 };
-
+    
                 const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
                 if (updateResult.error) {
                     Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
+                } else {
+                    Alert.alert('Thành công', 'Cập nhật hình ảnh thành công');
+                    dispatch(fetchUserInfo(userId));
+                    setImage(imageUrl);
                 }
             } else {
                 Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
             }
         } catch (error) {
             Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
+            console.error(error);
         }
     };
-
+    
+    
     useEffect(() => {
         if (changeUserStatus === 'failed') {
             Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
@@ -124,15 +130,15 @@ const SettingLoggedScreen = (props) => {
     }, [changeUserStatus]);
 
 
-    const userName = userinfo?.fullname || 'Nguyễn Văn A';
+    const userName = user?.user.fullname || 'Nguyễn Văn A';
 
     const avatar = image
-        ? { uri: image } : typeof userinfo?.avatar === 'string' && userinfo.avatar.startsWith('http')
-            ? { uri: userinfo.avatar } : Icons.avatar;
+        ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
+            ? { uri: user.user.avatar } : Icons.avatar;
 
     console.log('avatar', avatar);
-    console.log('userinfo', userinfo);
     console.log('name', userName);
+    console.log('userName:', user?.user.fullname);
 
     return (
         <View style={stylesglobal.container}>
