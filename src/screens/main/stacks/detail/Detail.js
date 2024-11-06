@@ -121,7 +121,7 @@ const Detail = ({ navigation, route }) => {
 			try {
 				await Promise.all([
 					dispatch(fetchTourById({ tourId })),
-					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId }))
+					// dispatch(KiemTraYeuThich({ userId: user.user._id, tourId }))
 				]);
 			} catch (err) {
 				console.error('Error fetching data:', err);

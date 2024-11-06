@@ -20,11 +20,13 @@ export const fetchTourById = createAsyncThunk(
   async ({ tourId }) => {
     try {
       const tour = await Tour.getTourById(tourId);
+      console.log(tour)
       const { tourName, description, images, locations, details } = tour[0];
       const imges = images[0].linkImage;
       const location = locations[0];
       const adultPrice = details[0].priceAdult;
       const childPrice = details[0].priceChildren;
+      
 
       return { tourName, description, imges, location, details, adultPrice, childPrice };
     } catch (error) {
@@ -106,6 +108,7 @@ const tourSlice = createSlice({
       .addCase(fetchTourById.pending, state => { state.loading = true; })
       .addCase(fetchTourById.fulfilled, (state, action) => {
         const { adultPrice, childPrice } = action.payload;
+        
         state.tourById = action.payload;
         state.adultPrice = adultPrice;
         state.childPrice = childPrice;
