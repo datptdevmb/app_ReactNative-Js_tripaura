@@ -16,42 +16,38 @@ import FilterScreen from '../main/stacks/Filter/FilterScreen';
 const Stack = createNativeStackNavigator();
 
 const AuthenStackNavigation = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-<<<<<<<<< Temporary merge branch 1
-      {/* You can uncomment the screens as needed */}
-      {/* <Stack.Screen name="TestFavoriteAddDelete" component={TestFavoriteAddDelete} />
+      return (
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+                  {/* You can uncomment the screens as needed */}
+                  {/* <Stack.Screen name="TestFavoriteAddDelete" component={TestFavoriteAddDelete} />
       <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
-      
-      {/* Include this if you want to show Login/Register together */}
-      <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
-      
-      {/* If login goes directly to Main Navigation */}
-=========
-      <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
-      {/* <Stack.Screen
+
+                  {/* Include this if you want to show Login/Register together */}
+                  <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
+
+                  {/* If login goes directly to Main Navigation */}
+                  <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
+                  {/* <Stack.Screen
 
         name="TestFavoriteAddDelete"
         component={TestFavoriteAddDelete}
       /> */}
-      {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
-      <Stack.Screen
-        name="LoginRegisterScreen"
-        component={LoginRegisterScreen}
-      />
+                  {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
+                  <Stack.Screen
+                        name="LoginRegisterScreen"
+                        component={LoginRegisterScreen}
+                  />
 
 
->>>>>>>>> Temporary merge branch 2
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="ForgotScreen" component={ForgotScreen} />
-      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-      <Stack.Screen name="Otp" component={Otp} />
-<<<<<<<<< Temporary merge branch 1
-      <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
-=========
->>>>>>>>> Temporary merge branch 2
-    </Stack.Navigator>
-  );
+
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="ForgotScreen" component={ForgotScreen} />
+                  <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                  <Stack.Screen name="Otp" component={Otp} />
+
+                  <Stack.Screen name="MainTabNavigation" component={MainStaskNavigation} />
+            </Stack.Navigator>
+      );
 };
 
 export default AuthenStackNavigation;
