@@ -48,22 +48,6 @@ const RegisterScreen = (props) => {
     console.log('Trying to register with:', { email, password });
     if (!email || !password) {
       console.warn('Email or password is empty');
-
-    console.log("Login Type: ", loginType);
-    if (loginType === 'email') {
-      if (!email || !password) {
-        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-        return;
-      }
-    } else {
-      if (!phone || !password) {
-        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-        return;
-      }
-    }
-
-    if (password !== confirmPassword) {
-      ToastAndroid.show('Mật khẩu không khớp', ToastAndroid.SHORT);
       return;
     }
     dispatch(DangKyTaiKhoan(loginType === 'email' ? { email, password } : { phone, password }));
@@ -148,6 +132,5 @@ const RegisterScreen = (props) => {
     </View>
   );
 };
-}
 
 export default RegisterScreen;

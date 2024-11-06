@@ -9,10 +9,11 @@ import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
 
 const Login = (props) => {
+
   const { navigation, route } = props;
   const { setUser, setIsLogin } = useContext(AppContext);
   const dispatch = useDispatch();
-  const { loginData, loginStatus } = useSelector((state) => state.reducer.login || {});
+  const { loginData, loginStatus } = useSelector((state) => state.login || {});
 
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -20,16 +21,20 @@ const Login = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const loginType = route.params?.loginType || 'email';
 
+
   useEffect(() => {
     if (loginStatus === 'succeeded') {
       setUser(loginData.data);
       setIsLogin(true);
       navigation.navigate('MainTabNavigation');
     }
+
     if (loginStatus === 'failed') {
       ToastAndroid.show(loginData.message, ToastAndroid.SHORT);
     }
   }, [loginStatus, loginData, navigation]);
+
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -40,11 +45,13 @@ const Login = (props) => {
     }
   }, [isLoggedIn]);
 
+
   const back = () => {
     navigation.goBack();
   };
 
   const dangnhaptaikhoan = () => {
+    // dispatch(DangNhapTaiKhoan({ email, password }));
     if (loginType === 'email') {
       if (!email) {
         ToastAndroid.show('Vui lòng nhập email', ToastAndroid.SHORT);
@@ -60,9 +67,10 @@ const Login = (props) => {
     }
   };
 
+
   const goToRegister = () => {
     navigation.navigate('RegisterScreen', { loginType });
-  };
+  }
 
   return (
     <View style={stylesglobal.container}>
