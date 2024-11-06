@@ -7,9 +7,9 @@ import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
-import { DangNhapTaiKhoan } from '../../../redux/slices/loginreducers';
 
 const Login = (props) => {
+
   const { navigation, route } = props;
   const { setUser, setIsLogin } = useContext(AppContext);
   const dispatch = useDispatch();
@@ -20,17 +20,12 @@ const Login = (props) => {
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const loginType = route.params?.loginType || 'email';
-  console.log(loginType)
 
-  console.log('login', loginData),
-    console.log('loginStatus', loginStatus)
 
   useEffect(() => {
     if (loginStatus === 'succeeded') {
-      console.log('loginData.data:', loginData.data);
       setUser(loginData.data);
       setIsLogin(true);
-      console.log('user:', loginData.data);
       navigation.navigate('MainTabNavigation');
     }
 
@@ -49,6 +44,7 @@ const Login = (props) => {
       setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
+
 
   const back = () => {
     navigation.goBack();
@@ -70,6 +66,7 @@ const Login = (props) => {
       dispatch(DangNhapTaiKhoan({ phone, password }));
     }
   };
+
 
   const goToRegister = () => {
     navigation.navigate('RegisterScreen', { loginType });

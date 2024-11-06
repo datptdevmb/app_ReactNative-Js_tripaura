@@ -1,18 +1,20 @@
-// slices/district.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Tạo hàm fetchDistricts
 export const fetchDistricts = createAsyncThunk(
     'districts/fetchDistricts',
     async () => {
-        const response = await fetch(`https://provinces.open-api.vn/api/d/`);
+
+        const response = await fetch('https://provinces.open-api.vn/api/d/');
         if (!response.ok) {
             throw new Error('Failed to fetch districts');
         }
-        return await response.json();
+        const data = await response.json();
+        return data; // Trả về toàn bộ dữ liệu
     }
 );
+
+
+
 
 const districtSlice = createSlice({
     name: 'districts',
@@ -28,6 +30,7 @@ const districtSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchDistricts.fulfilled, (state, action) => {
+
                 state.status = 'succeeded';
                 state.districts = action.payload;
             })
@@ -37,5 +40,6 @@ const districtSlice = createSlice({
             });
     },
 });
+
 
 export default districtSlice.reducer; // Đảm bảo bạn đã xuất khẩu reducer

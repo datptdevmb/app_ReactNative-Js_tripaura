@@ -3,20 +3,18 @@ import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native
 
 const CategoryList = ({ categories, selectedIndex, onCatePress }) => {
   const renderItem = ({ item, index }) => {
-    console.log(item._id)
-    console.log(item.name)
-     return(
-    <View style={styles.itemCate}>
-      <TouchableOpacity onPress={() => onCatePress(item, index)}>
-        <Text style={[styles.textCate, selectedIndex === index && styles.selectedItem]}>
-          {item.name}
-        </Text>
-      </TouchableOpacity>
-      {selectedIndex === index && <View style={styles.dotStyle}></View>}
-    </View>
-  )
+    return (
+      <View style={styles.itemCate}>
+        <TouchableOpacity onPress={() => onCatePress(item, index)}>
+          <Text style={[styles.textCate, selectedIndex === index && styles.selectedItem]}>
+            {item.name}
+          </Text>
+        </TouchableOpacity>
+        {selectedIndex === index && <View style={styles.dotStyle}></View>}
+      </View>
+    )
   }
- 
+
 
   return (
     <FlatList
@@ -37,11 +35,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   itemCate: {
-    marginRight: 24, 
+    marginRight: 24,
     alignItems: 'center',
   },
   selectedItem: {
-    color: '#007BFF', 
+    color: '#007BFF',
   },
   textCate: {
     color: '#A8A8A8',

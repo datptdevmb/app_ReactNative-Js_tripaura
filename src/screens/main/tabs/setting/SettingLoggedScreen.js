@@ -1,16 +1,143 @@
-import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+
+import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
+
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import colors from '../../../../constants/colors';
-import { useSelector } from 'react-redux';
+
+import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
+import { AppContext } from '../../../AppContext';
+
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
-    const {user} =useSelector(state => state.reducer.auth)
-    console.log(user)
+
+    const [isEnabledchdo, setIsEnabledchedo] = useState(false);
+    const [image, setImage] = useState(null);
+    const dispatch = useDispatch();
+    const [userinfo, setUserinfo] = useState({});
+    const { user: contextUser } = useContext(AppContext);
+    const { user: reduxUser } = useSelector(state => state.reducer.auth);
+    const changeUserStatus = useSelector(state => state.changeUser);
+    const user = reduxUser.user || contextUser;
+    
+    console.log('change', user);
+    const userId = user?._id;
+    console.log('userId', userId);
+    
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
+
+    useEffect(() => {
+        console.log("User ID:", userId);
+
+        dispatch(fetchUserInfo(userId))
+            .then((result) => {
+                console.log("Fetch User Info Result:", result);
+                if (result.payload && result.payload.success) {
+                    setUserinfo(result.payload.data);
+                }
+            })
+            .catch((error) => {
+                console.error("Fetch User Info Error:", error);
+            });
+    }, [dispatch, userId]);
+
+    const commonOptions = {
+        mediaType: 'photo',
+        maxWidth: 100,
+        maxHeight: 100,
+    };
+
+    const handleImageSelection = async (response) => {
+        if (response?.assets?.[0]?.uri) {
+            setImage(response.assets[0].uri);
+            await handleUpdate(response.assets[0]);
+        } else {
+            console.log('User cancelled image picker');
+            setImage(null);
+        }
+    };
+
+    const openImagePicker = async () => {
+        const response = await launchImageLibrary({ selectionLimit: 1, ...commonOptions });
+        await handleImageSelection(response);
+    };
+
+    const openCamera = async () => {
+        const response = await launchCamera({ cameraType: 'front', saveToPhotos: true, ...commonOptions });
+        if (response.didCancel) {
+            Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
+            setImage(null);
+        } else {
+            await handleImageSelection(response);
+        }
+    };
+
+    const handleUpdate = async (image) => {
+
+        if (!user) {
+            Alert.alert('Lỗi', 'Không tìm thấy thông tin người dùng');
+            return;
+        }
+
+        const data = new FormData();
+        data.append('file', {
+            uri: image.uri,
+            type: image.type || 'image/jpeg',
+            name: `photo.${image.uri.split('.').pop()}`,
+        });
+        data.append('upload_preset', 'TripAuraAPI');
+        data.append('api_key', '976765598717887');
+
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
+                method: 'POST',
+                body: data,
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                const imageUrl = result.secure_url;
+                const userUpdateData = {
+                    ...user,
+                    avatar: imageUrl,
+                    userId: userId,
+                };
+
+                const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
+                if (updateResult.error) {
+                    Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
+                }
+            } else {
+                Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
+            }
+        } catch (error) {
+            Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
+        }
+    };
+
+    useEffect(() => {
+        if (changeUserStatus === 'failed') {
+            Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
+        }
+    }, [changeUserStatus]);
+
+
+    const userName = userinfo?.fullname || 'Nguyễn Văn A';
+
+    const avatar = image
+        ? { uri: image } : typeof userinfo?.avatar === 'string' && userinfo.avatar.startsWith('http')
+            ? { uri: userinfo.avatar } : Icons.avatar;
+
+    console.log('avatar', avatar);
+    console.log('userinfo', userinfo);
+    console.log('name', userName);
+
 
     function handleMap(){
         navigation.navigate('MapScreen')
@@ -22,16 +149,26 @@ const SettingLoggedScreen = (props) => {
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
-                    <Image source={Icons.avatar} />
-                    <TouchableOpacity style={styles.icCameraContainer}>
+
+                    <TouchableOpacity onPress={openImagePicker}>
+                        <Image
+                            source={avatar}
+                            style={styles.imageAvatar}
+                        />
+
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-                    <Text style={styles.txtName}>{user.user.fullname}</Text>
-                    <TouchableOpacity 
-                    onPress={() => navigation.navigate('EditProfileScreen')}
-                    style={styles.btnCapNhaHoSo}>
+
+                    <Text style={styles.txtName}>{userName}</Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('EditProfileScreen')}
+                        style={styles.btnCapNhaHoSo}>
+
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
@@ -299,4 +436,10 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0
     },
+    imageAvatar: {
+        width: 65,
+        height: 65,
+        borderRadius: 50,
+        resizeMode: 'cover'
+    }
 })

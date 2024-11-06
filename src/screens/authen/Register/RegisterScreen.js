@@ -16,9 +16,10 @@ const RegisterScreen = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const dispatch = useDispatch();
-
   const { registerData, registerStatus } = useSelector((state) => state.register || {});
 
   const back = () => {
@@ -42,21 +43,11 @@ const RegisterScreen = (props) => {
   }, [registerStatus, registerData, navigation]);
 
   const dangkytaikhoan = () => {
-    console.log("Login Type: ", loginType);
-    if (loginType === 'email') {
-      if (!email || !password) {
-        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-        return;
-      }
-    } else {
-      if (!phone || !password) {
-        ToastAndroid.show('Vui lòng nhập đầy đủ thông tin', ToastAndroid.SHORT);
-        return;
-      }
-    }
 
-    if (password !== confirmPassword) {
-      ToastAndroid.show('Mật khẩu không khớp', ToastAndroid.SHORT);
+
+    console.log('Trying to register with:', { email, password });
+    if (!email || !password) {
+      console.warn('Email or password is empty');
       return;
     }
     dispatch(DangKyTaiKhoan(loginType === 'email' ? { email, password } : { phone, password }));

@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../../../constants/Icons';
 import fontsize from '../../../../constants/fontsize';
 
@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
   },
   headerText: {
@@ -20,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   headerTextLoc: {
     color: '#1f2024',
-    fontSize: 12,
+    fontSize: 24,
     fontWeight: '700',
   },
   dropdownContainer: {

@@ -6,14 +6,15 @@ const TopNav = ({ tourName }) => {
 
     return (
         <View style={styles.navBar}>
-            <IcleftArrow style={styles.IcBack} />
+            {/* <IcleftArrow style={styles.IcBack} /> */}
+            <View style={styles.IcBack}></View>
             <Text style={styles.titleName}>
                 {tourName.length > 25
                     ? tourName.substring(0, 25) + '...'
                     : tourName}
             </Text>
-            <Ic_ouFavorite style={styles.IcFavorite} />
-
+            <View style={styles.IcFavorite}></View>
+           
         </View>
     )
 }
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
     navBar: {
         backgroundColor: '#2196F3',
         width: '100%',
+        position:'absolute',
         flexDirection:'row',
         paddingTop:10,
         height: 100,
@@ -39,6 +41,8 @@ const styles = StyleSheet.create({
 		// left: 70
 	},
     IcFavorite: {
+        width: 18,
+		height: 18,
 		// top: 28,
 		// position: 'absolute',
 		// right: 16

@@ -32,9 +32,10 @@ const stylesdown = StyleSheet.create({
         color: colors.Grey_800,
         marginBottom: 5,
     },
-    dropdown: {
-        marginEnd: 10, 
-    },
+    dropdown:{
+        marginStart: 5,
+        marginEnd: 5,
+    }
 });
   
   export default stylesdown;

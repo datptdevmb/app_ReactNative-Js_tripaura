@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View, ToastAndroid, ScrollView, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderComponent from '../../../../components/common/header/Headercomponet';
@@ -14,7 +13,6 @@ import fontsize from '../../../../constants/fontsize';
 import colors from '../../../../constants/colors';
 import Icons from '../../../../constants/Icons';
 import CheckBox from '@react-native-community/checkbox';
-
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 import stylesinput from '../../../../components/common/input/inputstyle';
 
@@ -24,16 +22,16 @@ const EditProfileScreen = ({ navigation }) => {
     const [day, month, year] = dateString.split('/').map(Number);
     return new Date(year, month - 1, day);
   };
-
-
   const state = useSelector((state) => state);
   const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
-  const { user: reduxUser } = useSelector((state) => state.reducer.auth.user);
+  const { user: reduxUser, setUser: setreduxUser } = useSelector((state) => state.reducer.auth.user);
 
   const changeUserData = useSelector((state) => state.reducer.changeUser);
   const changeUserStatus = useSelector((state) => state.reducer.changeUser);
 
+
   const dispatch = useDispatch();
+
   const { provinces } = useSelector((state) => state.reducer.provinces);
   const { districts } = useSelector((state) => state.reducer.district);
 
@@ -47,7 +45,6 @@ const EditProfileScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
-
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [date, setDate] = useState(userinfo?.dateofbirth ? parseDateString(userinfo.dateofbirth) : new Date());
@@ -57,44 +54,40 @@ const EditProfileScreen = ({ navigation }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
 
-
   useEffect(() => {
-    if (userId) {
-      dispatch(fetchUserInfo(userId))
-        .then((result) => {
-          if (result.payload && result.payload.success) {
-            const data = result.payload.data;
-            console.log("Fetched User Info:", data);
+    dispatch(fetchUserInfo(userId))
+      .then((result) => {
+        if (result.payload && result.payload.success) {
+          const data = result.payload.data;
 
-            setEmail(data.email || '');
-            setFullname(data.fullname || '');
-            setPhone(data.phone || '');
-            setAddress(data.address?.split(',')[0] || '');
-            setGender(data.gender);
-            const dateOfBirth = parseDateString(data.dateofbirth);
-            setDate(dateOfBirth);
-            setFormattedDate(dateOfBirth.toLocaleDateString('en-GB'));
+          console.log('Dữ liệu người dùng:', data); // Log dữ liệu người dùng
 
-            const addressParts = data.address.split(', ');
-            const districtName = addressParts[addressParts.length - 2];
-            const provinceName = addressParts[addressParts.length - 1];
+          setEmail(data.email || '');
+          setFullname(data.fullname || '');
+          setPhone(data.phone || '');
+          setAddress(data.address?.split(',')[0] || '');
+          setGender(data.gender);
+          setFormattedDate(parseDateString(data.dateofbirth).toLocaleDateString('en-GB'));
 
-            console.log('District:', districtName);
-            console.log('Province:', provinceName);
+          // Tách tên tỉnh và huyện từ address
+          const addressParts = data.address.split(', ');
+          const districtName = addressParts[1]?.trim();
+          const provinceName = addressParts[2]?.trim();
+          const userProvince = provinces.find(province => province.name === provinceName);
+          const userDistrict = districts.find(district => district.name === districtName);
+          setSelectedProvince(userProvince);
+          setSelectedDistrict(userDistrict);
 
-            const province = provinces.find(p => p.name === provinceName);
-            const district = districts.find(d => d.name === districtName);
-
-            setSelectedProvince(province || null);
-            setSelectedDistrict(district || null);
-
-            console.log('Selected Province:', province);
-            console.log('Selected District:', district);
-          }
-        })
-        .catch((error) => console.error('Fetch User Info Error:', error));
-    }
+          console.log('Tỉnh đã chọn:', userProvince);
+          console.log('Huyện đã chọn:', userDistrict);
+        } else {
+          console.warn('Không thành công trong việc lấy thông tin người dùng:', result);
+        }
+      })
+      .catch((error) => console.error('Fetch User Info Error:', error));
   }, [dispatch, userId, provinces, districts]);
+
+
 
 
   useEffect(() => {
@@ -102,7 +95,6 @@ const EditProfileScreen = ({ navigation }) => {
       .then((result) => {
         if (result.payload && result.payload.success) {
           setUserinfo(result.payload.data);
-          console.log("User Info Updated:", result.payload.data);
         }
       })
       .catch((error) => {
@@ -110,46 +102,53 @@ const EditProfileScreen = ({ navigation }) => {
       });
   }, [dispatch, userId]);
 
+
   const chonnam = () => {
     setIsMaleSelected(!isMaleSelected);
     if (isFemaleSelected) setIsFemaleSelected(false);
     setGender("Nam");
-    console.log("Gender selected: Nam");
   };
-
   const chonnu = () => {
     setIsFemaleSelected(!isFemaleSelected);
     if (isMaleSelected) setIsMaleSelected(false);
     setGender("Nữ");
-    console.log("Gender selected: Nữ");
   };
+  const filteredDistricts = districts.filter(district => district.province_code === selectedProvince)
+    .map(district => ({ label: district.name, value: district.code }));
 
-  const handleProvinceSelect = useCallback((provinceCode) => {
+    console.log("Huyện lọc được:", filteredDistricts);
+
+
+  const handleProvinceSelect = (provinceCode) => {
     const province = provinces.find(p => p.code === provinceCode);
     if (province) {
       setSelectedProvince(province);
       setSelectedDistrict(null);
-      console.log("Selected Province:", province);
-    }
-}, [provinces]);
-
-
-  const handleDistrictSelect = (districtCode) => {
-    const district = districts.find(d => d.code === districtCode);
-    if (district) {
-      console.log("Previous District:", selectedDistrict);
-      setSelectedDistrict(district);
-      console.log("New Selected District:", district);
+      setAddress(""); // Reset địa chỉ khi tỉnh thay đổi
+      console.log("Đã chọn tỉnh:", province.name);
+    } else {
+      console.warn("Không tìm thấy tỉnh với mã:", provinceCode);
     }
   };
 
+  const handleDistrictSelect = (districtCode) => {
+    const district = filteredDistricts.find(d => d.code === districtCode);
+    console.log("Mã huyện đã chọn:", districtCode);
+    console.log("Huyện lọc được:", filteredDistricts); // Log các huyện đã lọc
+    setSelectedDistrict(district);
+    if (district) {
+        setAddress(prev => `${prev}, ${district.name}, ${selectedProvince?.name || "Chưa chọn tỉnh thành"}`);
+        console.log('Đã chọn huyện:', district.name);
+    } else {
+        console.warn('Không tìm thấy huyện với mã:', districtCode);
+    }
+};
 
 
 
   useEffect(() => {
     if (changeUserStatus === 'succeeded' && changeUserData) {
       const { status, message, data } = changeUserData;
-
       console.log("Trạng thái cập nhật:", status);
       console.log("Thông điệp:", message);
       console.log("Dữ liệu cập nhật:", data);
@@ -165,8 +164,8 @@ const EditProfileScreen = ({ navigation }) => {
     }
   }, [changeUserData, changeUserStatus, setUser]);
 
-  useEffect(() => {
 
+  useEffect(() => {
     if (userinfo && userinfo.gender) {
       if (userinfo.gender === "Nam") {
         setIsMaleSelected(true);
@@ -175,7 +174,6 @@ const EditProfileScreen = ({ navigation }) => {
         setIsMaleSelected(false);
         setIsFemaleSelected(true);
       }
-      console.log("User Gender from Info:", userinfo.gender);
     }
   }, [userinfo]);
 
@@ -184,7 +182,6 @@ const EditProfileScreen = ({ navigation }) => {
       const dateObject = parseDateString(userinfo.dateofbirth);
       setDate(dateObject);
       setFormattedDate(dateObject.toLocaleDateString('en-GB'));
-      console.log("User Date of Birth from Info:", userinfo.dateofbirth);
     }
   }, [userinfo]);
 
@@ -193,18 +190,14 @@ const EditProfileScreen = ({ navigation }) => {
     setShowPicker(Platform.OS === 'ios');
     setDate(currentDate);
     setFormattedDate(currentDate.toLocaleDateString('en-GB'));
-
-    console.log("Date selected:", currentDate);
-
   };
 
   const thayDoi = () => {
     const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
-    console.log(districtName);
+    console.log('districtName', districtName);
+    console.log('provinceName', provinceName);
     const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
-    console.log(provinceName);
     const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
-
 
     const userData = {
       userId: userId,
@@ -220,7 +213,8 @@ const EditProfileScreen = ({ navigation }) => {
     dispatch(ThayDoiThongTin(userData));
     ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
   };
-  console.log('adderss', address)
+
+
   return (
     <ScrollView style={[stylesGlobal.container, { paddingBottom: 50 }]}>
       <HeaderComponent
@@ -231,7 +225,6 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text>Họ và tên</Text>
         <InputComponent
-
           style={stylesinput.inputComponent}
           keyboardType={"default"}
           value={fullname}
@@ -301,15 +294,16 @@ const EditProfileScreen = ({ navigation }) => {
       <DropdownComponent
         onProvinceSelect={handleProvinceSelect}
         onDistrictSelect={handleDistrictSelect}
-
         selectedProvince={selectedProvince ? selectedProvince.code : null}
         selectedDistrict={selectedDistrict ? selectedDistrict.code : null}
-
+        provinces={provinces} // Truyền danh sách tỉnh
+        districts={filteredDistricts} // Truyền danh sách huyện đã lọc
       />
+
+
       <View style={styles.inputContainer}>
         <Text>Chi tiết</Text>
         <InputComponent
-
           style={stylesinput.inputComponent}
           value={address}
           onTextChange={setAddress}

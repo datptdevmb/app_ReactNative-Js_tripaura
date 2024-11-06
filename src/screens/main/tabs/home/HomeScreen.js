@@ -1,5 +1,5 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import React, { useState, useCallback, useEffect } from 'react';
+// import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {
   View,
   ScrollView,
@@ -15,9 +15,9 @@ import colors from '../../../../constants/colors';
 import Swiper from 'react-native-swiper';
 import TourCard from '../../../../components/common/card/CardTour';
 import TourCardVetical from '../../../../components/common/card/TourCardVetical';
-import {data} from '../../../../constants/data';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchCategory} from '../../../../redux/slices/category.slice';
+import { tours, categorys, data } from '../../../../constants/data';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategory } from '../../../../redux/slices/category.slice';
 import {
   fetchPopularTour,
   fetchTours,
@@ -27,11 +27,11 @@ import TourCardList from './TourCartList';
 import CategoryList from './CategoryList';
 import Slider from './Slider';
 import PopularToursList from './PopularToursList';
-import {useHomeData} from '../../../../hooks/useHomeData';
+import { useHomeData } from '../../../../hooks/useHomeData';
 
-function HomeScreen ({navigation}){
+
+function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
-
 
   const {
     categories,
@@ -62,7 +62,7 @@ function HomeScreen ({navigation}){
   };
 
   function handleClickItem(_id) {
-    navigation.navigate('Detail', {_id});
+    navigation.navigate('Detail', { _id });
   }
 
   const handelPopular = useCallback(() => {
@@ -132,7 +132,7 @@ function HomeScreen ({navigation}){
           !isLoading && <Text>Không có dữ liệu</Text>
         )}
         <Text style={styles.heading}>Điểm đến được săn đón</Text>
-        <PopularToursList  onClick = {handelPopular}popularTours={popularTours} />
+        <PopularToursList onClick={handelPopular} popularTours={popularTours} />
       </ScrollView>
     </View>
   );
@@ -254,3 +254,6 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
+
+

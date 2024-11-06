@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Tour from '../../sevices/tour/tour.sevice';
+import { KiemTraYeuThich } from './favouriteducers';
+import { useDispatch } from 'react-redux';
 
 export const fetchTours = createAsyncThunk(
   'tour/fetchToursByCate',
@@ -15,7 +17,7 @@ export const fetchTours = createAsyncThunk(
 
 export const fetchTourById = createAsyncThunk(
   'tour/fetchTourById',
-  async (tourId) => {
+  async ({ tourId }) => {
     try {
       const tour = await Tour.getTourById(tourId);
       const { tourName, description, images, locations, details } = tour[0];
@@ -23,6 +25,7 @@ export const fetchTourById = createAsyncThunk(
       const location = locations[0];
       const adultPrice = details[0].priceAdult;
       const childPrice = details[0].priceChildren;
+
       return { tourName, description, imges, location, details, adultPrice, childPrice };
     } catch (error) {
       console.error('Fetch tour by ID failed:', error);
@@ -85,7 +88,7 @@ const tourSlice = createSlice({
         state.totalPrice = (state.adultTickets * state.adultPrice) + (state.childTickets * state.childPrice);
       }
     },
-    setSelectedDate: (state, action) => { 
+    setSelectedDate: (state, action) => {
       state.selectedDate = action.payload;
     },
   },
