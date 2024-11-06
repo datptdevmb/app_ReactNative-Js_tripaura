@@ -53,6 +53,7 @@ const changeUserSlice = createSlice({
                 state.changeUserStatus = 'succeeded';
                 state.user = action.payload;
 
+
             })
             .addCase(ThayDoiThongTin.rejected, (state, action) => {
                 state.changeUserStatus = 'failed';

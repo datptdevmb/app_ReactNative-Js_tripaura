@@ -12,6 +12,7 @@ const DropdownComponent = ({ selectedProvince: selectedProvinceProp, selectedDis
     const { districts, loading: districtsLoading, error: districtsError } = useSelector((state) => state.reducer.district);
 
 
+
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
 
@@ -35,29 +36,23 @@ const DropdownComponent = ({ selectedProvince: selectedProvinceProp, selectedDis
 
     const handleProvinceChange = (value) => {
 
+
         setSelectedProvince(value);
         setSelectedDistrict(null); 
         onProvinceSelect(value); 
+
     };
 
     const handleDistrictChange = (value) => {
         setSelectedDistrict(value);
-
         onDistrictSelect(value); 
+
     };
 
-    if (provincesLoading || districtsLoading) {
-        return <ActivityIndicator size="large" color="#0000ff" />;
-    }
-
-    if (provincesError || districtsError) {
-        Alert.alert("Error", provincesError || districtsError);
-    }
-
     const provinceItems = provinces.map(({ name, code }) => ({ label: name, value: code }));
-    const districtItems = selectedProvince 
-        ? districts.filter(district => district.province_code === selectedProvince).map(district => ({ label: district.name, value: district.code }))
-        : [];
+    const districtItems = districts.filter(district => district.province_code === selectedProvince)
+        .map(district => ({ label: district.name, value: district.code }));
+
 
     return (
         <View style={stylesdown.container}>
@@ -94,7 +89,7 @@ const Dropdown = ({ label, selectedValue, onValueChange, items, enabled = true, 
             onValueChange={onValueChange}
             enabled={enabled}
         >
-            <Picker.Item label={`Chọn ${label.toLowerCase()}`} value={null} />
+            <Picker.Item label={`${label.toLowerCase()}`} value={null} />
             {items.map(({ label, value }) => (
                 <Picker.Item key={value} label={label} value={value} />
             ))}
