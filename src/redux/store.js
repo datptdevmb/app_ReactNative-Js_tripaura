@@ -35,14 +35,25 @@ const rootReducer = combineReducers({
   login: loginReducer,
   register: registerReducer,
   // favoriteAdDelete: favoriteAdDeleteReducer,
-  // favouriteDelete: favouriteDeleteReducer,
-})
+  // favouriteDelete: favouriteDeleteReducer,x
+
+});
+
+// Configure the store
+
 const store = configureStore({
+
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+
   reducer: {
     reducer: rootReducer,
 
-  },
-
+  }
 });
+
 
 export default store;

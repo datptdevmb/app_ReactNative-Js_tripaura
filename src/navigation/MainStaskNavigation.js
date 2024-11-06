@@ -17,11 +17,13 @@ import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
 import { ROUTES } from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen'
+import VietnamMap from '../screens/main/stacks/Map/VietnamMap';
+import DependentDropdown from '../screens/main/stacks/Filter/FilterScreen';
+import FAQsSrceen from '../screens/main/stacks/FAQs/FAQsSrceen';
+import OrderReviewScreen from '../screens/main/stacks/order';
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
-import FiterScreen from '../screens/main/stacks/Filter/FilterScreen';
+import FilterScreen from '../screens/main/stacks/Filter/FilterScreen';
 import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
-
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -43,14 +45,17 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="Ponorama" component={PanoramaViewer} />
             <Stack.Screen name="ImageDetail" component={ImageDetail} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="MapScreen" component={VietnamMap} />
+            <Stack.Screen name="Filter" component={DependentDropdown} />
+            <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
+            <Stack.Screen name="Order" component={OrderReviewScreen} />
             <Stack.Screen name={ROUTES.login} component={Login} />
             {/* <Stack.Screen name="Detail" component={Detail} /> */}
             {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
-            <Stack.Screen name="FiterScreen" component={FiterScreen} />
+            <Stack.Screen name="FiterScreen" component={FilterScreen} />
             <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
-            {/* <Stack.Screen name="Voucher" component={Voucher} />
-            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} /> */}
+
         </Stack.Navigator>
     )
 }

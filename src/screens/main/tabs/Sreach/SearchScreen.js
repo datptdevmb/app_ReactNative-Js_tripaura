@@ -102,10 +102,10 @@ const SearchScreen = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchRow}>
-        <Image
+        {/* <Image
           source={require('../../../../assets/images/back.png')}
           style={styles.image_back}
-        />
+        /> */}
         <TextInput
           style={styles.inputSreach}
           placeholder="Tìm kiếm..."
@@ -119,6 +119,7 @@ const SearchScreen = (props) => {
             style={styles.image_clear}
           />
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('FiterScreen')}>
           <Image
             source={require('../../../../assets/images/Filter.png')}

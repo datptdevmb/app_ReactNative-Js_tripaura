@@ -6,18 +6,17 @@ const stylesheader = StyleSheet.create({
         height:47,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent:'space-between',
+        paddingHorizontal:16
     },
     sizeIcon: {
         width: 24,
         height: 24,
     },
     text: {
-        flex: 10,
         fontSize: 18,
         fontWeight: '700',
-        textAlign: 'center',
         fontStyle: 'normal',
-        justifyContent: 'center',
         fontFamily: 'Lato',
         lineHeight: 27,
     },

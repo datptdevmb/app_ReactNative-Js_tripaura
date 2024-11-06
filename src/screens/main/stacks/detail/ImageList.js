@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
   },
   itemImage: {
-    width: 91,
+    width: 94,
     height: 72,
     marginEnd: 2,
   },

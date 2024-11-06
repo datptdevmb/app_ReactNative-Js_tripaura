@@ -1,54 +1,83 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Thunk để thêm hoặc xóa tour yêu thích
 export const themXoaYeuThichTour = createAsyncThunk(
-  'favorites/toggle',
-  async ({ userId, tourId }, { dispatch }) => {
-    // Gọi API để thêm hoặc xóa tour yêu thích
-    const response = await fetch(
-      'https://trip-aura-server.vercel.app/favourite/api/favourite',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+  'favorites/toggleFavorite',
+  async ({ userId, tourId }) => {
+    try {
+      const response = await fetch(
+        'https://trip-aura-server.vercel.app/favourite/api/add',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, tourId }),
         },
-        body: JSON.stringify({ userId, tourId }),
-      },
-    );
+      );
 
-    const data = await response.json();
-
-    // Nếu thành công, gọi lại danh sách yêu thích
-    if (data.status === 'success') {
-      // Gọi lại danh sách yêu thích
-      await dispatch(LayDanhSachYeuThich(userId));
-      return { tourId, action: data.action }; // Gửi tourId và hành động (add/remove) về
-    } else {
-      throw new Error('Thao tác không thành công');
+      const data = await response.json();
+      return data
+    } catch (error) {
+      return rejectWithValue('Có lỗi xảy ra');
     }
-  },
+  }
 );
-// Thunk để lấy danh sách yêu thích
+
+
 export const LayDanhSachYeuThich = createAsyncThunk(
   'favorites/getFavorites',
-  async (userId) => {
-    const response = await fetch(
-      `https://trip-aura-server.vercel.app/favourite/api/getFavouriteByUser?userId=${userId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    const data = await response.json();
-    return data;
-  },
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `https://trip-aura-server.vercel.app/favourite/api/getFavouriteByUser?userId=${userId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.status === 'success') {
+
+        return data.data;
+      } else {
+        return rejectWithValue('Không thể lấy danh sách yêu thích');
+      }
+    } catch (error) {
+      return rejectWithValue('Có lỗi xảy ra');
+    }
+  }
 );
+
+// Thunk để kiểm tra trạng thái yêu thích của một tour cụ thể
+export const KiemTraYeuThich = createAsyncThunk(
+  'favorites/checkFavorite',
+  async ({ userId, tourId }) => {
+    try {
+      const response = await fetch(
+        `https://trip-aura-server.vercel.app/favourite/api/checkFavourite?userId=${userId}&tourId=${tourId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return error
+    }
+  }
+);
+
 const initialState = {
   favoritesData: [],
   favoritesStatus: 'idle',
+  isTourFavorited: false,
   error: null,
+  message: '',
 };
 
 const favoriteSlice = createSlice({
@@ -57,36 +86,76 @@ const favoriteSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Xử lý thêm/xóa yêu thích
       .addCase(themXoaYeuThichTour.pending, (state) => {
         state.favoritesStatus = 'loading';
       })
       .addCase(themXoaYeuThichTour.fulfilled, (state, action) => {
-        // Không cần làm gì ở đây vì danh sách đã được cập nhật trong `LayDanhSachYeuThich`
+
+        const data = action.payload
         state.favoritesStatus = 'success';
+        if (data.msg == "Đã xóa khỏi mục yêu thích") {
+          state.message = "Đã xóa khỏi mục yêu thích"
+          state.isTourFavorited = false;
+          const tourId = data.data.detailTours[0]._id;
+          state.favoritesData = state.favoritesData.filter(item => item.id !== tourId);
+
+        }
+        if (data.msg == "Thêm vào mục yêu thích thành công") {
+          state.isTourFavorited = true;
+          state.message = "Đã thêm vào mục yêu thích"
+          state.favoritesData = [...state.favoritesData,
+          {
+            id: data.data?.detailTours[0]._id,
+            image: data.data?.detailTours[0].images[0].linkImage[0] || 'https://tse4.mm.bing.net/th?id=OIP.1zq4a7G007iHUBybiLxrTwAAAA&pid=Api&P=0&h=220',
+            tourName: data.data?.detailTours[0].tourName || 'Khám Phá trải nghiệm tham quan Phố cổ Hội An',
+            price: data.data?.detailTours[0].details[0].priceAdult || 100000,
+            locate: data.data?.detailTours[0].locations[0].destination || 'Nghệ An'
+          }
+          ]
+
+        }
       })
       .addCase(themXoaYeuThichTour.rejected, (state, action) => {
         state.favoritesStatus = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
       })
-      // Xử lý lấy danh sách yêu thích
+
       .addCase(LayDanhSachYeuThich.pending, (state) => {
         state.favoritesStatus = 'loading';
       })
       .addCase(LayDanhSachYeuThich.fulfilled, (state, action) => {
-        if (action.payload.status === 'success') {
-          state.favoritesStatus = 'success';
-          state.favoritesData = action.payload.data; // Cập nhật danh sách yêu thích
-        } else {
-          state.favoritesStatus = 'failed';
-        }
+        state.favoritesStatus = 'success';
+        console.log(action.payload)
+
+        state.favoritesData = action.payload.map(item => (
+          {
+            id: item.tourId,
+            image: item?.images[0] || 'https://tse4.mm.bing.net/th?id=OIP.1zq4a7G007iHUBybiLxrTwAAAA&pid=Api&P=0&h=220',
+            tourName: item?.tourName || 'Khám Phá trải nghiệm tham quan Phố cổ Hội An',
+            price: item?.details[0]?.priceAdult || 100000,
+            locate: item?.locations?.destination || 'Nghệ An'
+          }
+        ));
       })
       .addCase(LayDanhSachYeuThich.rejected, (state, action) => {
         state.favoritesStatus = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
+      })
+
+
+      .addCase(KiemTraYeuThich.pending, (state) => {
+        state.favoritesStatus = 'loading';
+      })
+      .addCase(KiemTraYeuThich.fulfilled, (state, action) => {
+        state.favoritesStatus = 'success';
+        console.log(action.payload.data)
+        state.isTourFavorited = action.payload.data;
+      })
+      .addCase(KiemTraYeuThich.rejected, (state, action) => {
+        state.favoritesStatus = 'failed';
+        state.error = action.payload || action.error.message;
       });
   },
 });
 
 export default favoriteSlice.reducer;
-

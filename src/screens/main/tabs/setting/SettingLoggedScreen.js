@@ -1,17 +1,21 @@
+
 import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
+
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
-import { AppContext } from '../../../AppContext';
 import colors from '../../../../constants/colors';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
 import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
+import { AppContext } from '../../../AppContext';
+
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
+
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
     const [image, setImage] = useState( null);
     const dispatch = useDispatch();
@@ -140,10 +144,18 @@ const SettingLoggedScreen = (props) => {
     console.log('name', userName);
     console.log('userName:', user?.user.fullname);
 
+
+    function handleMap(){
+        navigation.navigate('MapScreen')
+    }
+    function handleCauhoi(){
+        navigation.navigate('FAQsSrceen')
+    }
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
+
                     <TouchableOpacity onPress={openImagePicker}>
                         <Image
                             source={avatar}
@@ -157,16 +169,18 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
+
                     <Text style={styles.txtName}>{userName}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>
+
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('ProfileScreen')}
-                    style={styles.iconNextContainer}>
+                <TouchableOpacity 
+                onPress={() => navigation.navigate('ProfileScreen')}
+                style={styles.iconNextContainer}>
                     <Image
                         style={styles.iconNext}
                         source={Icons.ic_arrowright} />
@@ -175,7 +189,7 @@ const SettingLoggedScreen = (props) => {
 
             <View style={styles.btnHorizontalContainer}>
                 <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                    <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
@@ -185,7 +199,7 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                    <TouchableOpacity onPress={handleCauhoi} style={styles.btnCauHoiContainer}>
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}
@@ -241,9 +255,9 @@ const SettingLoggedScreen = (props) => {
                     <View style={styles.lefticon}>
                         <Switch
                             trackColor={{ false: '#767577', true: '#0572E7' }}
-                            thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
-                            onValueChange={toggleSwitchchedo}
-                            value={isEnabledchdo}
+                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
                         />
                     </View>
                 </View>

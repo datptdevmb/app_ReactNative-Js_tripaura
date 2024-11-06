@@ -18,6 +18,7 @@ const RegisterScreen = (props) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
   const dispatch = useDispatch();
   const { registerData, registerStatus } = useSelector((state) => state.register || {});
 

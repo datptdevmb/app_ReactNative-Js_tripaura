@@ -1,4 +1,7 @@
-import React, { useEffect, useState, useCallback, useContext, useReducer } from 'react';
+
+
+import React, { useEffect, useState, useContext, useCallback } from 'react';
+
 import { StyleSheet, Text, View, ToastAndroid, ScrollView, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderComponent from '../../../../components/common/header/Headercomponet';
@@ -13,18 +16,21 @@ import fontsize from '../../../../constants/fontsize';
 import colors from '../../../../constants/colors';
 import Icons from '../../../../constants/Icons';
 import CheckBox from '@react-native-community/checkbox';
+
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 import stylesinput from '../../../../components/common/input/inputstyle';
+
 
 const EditProfileScreen = ({ navigation }) => {
 
 
+  const state = useSelector((state) => state);
+  const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
+  const { user: reduxUser } = useSelector((state) => state.reducer.auth.user);
+
+
 
   const dispatch = useDispatch();
-  const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
-
-  // Chỉ lấy các dữ liệu cần thiết
-  const { user: reduxUser } = useSelector((state) => state.reducer.auth);
   const changeUserData = useSelector((state) => state.reducer.changeUser);
   const changeUserStatus = useSelector((state) => state.reducer.changeUser.status);
   const provinces = useSelector((state) => state.reducer.provinces.provinces);
@@ -40,6 +46,7 @@ const EditProfileScreen = ({ navigation }) => {
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [date, setDate] = useState(new Date());
@@ -55,6 +62,7 @@ const EditProfileScreen = ({ navigation }) => {
     const [day, month, year] = dateString.split('/');
     return new Date(year, month - 1, day);
   };
+
 
 
   useEffect(() => {
@@ -107,8 +115,14 @@ const EditProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (changeUserStatus === 'succeeded' && changeUserData) {
-      if (changeUserData.status) {
-        setUser(changeUserData.data);
+      const { status, message, data } = changeUserData;
+
+      console.log("Trạng thái cập nhật:", status);
+      console.log("Thông điệp:", message);
+      console.log("Dữ liệu cập nhật:", data);
+
+      if (status) {
+        setUser(data);
         ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
       } else {
         ToastAndroid.show(changeUserData.message || "Cập nhật không thành công", ToastAndroid.SHORT);
@@ -117,7 +131,18 @@ const EditProfileScreen = ({ navigation }) => {
   }, [changeUserData, changeUserStatus, setUser]);
 
   useEffect(() => {
-    if (userinfo.gender) handleGenderSelection(userinfo.gender);
+
+    if (userinfo && userinfo.gender) {
+      if (userinfo.gender === "Nam") {
+        setIsMaleSelected(true);
+        setIsFemaleSelected(false);
+      } else if (userinfo.gender === "Nữ") {
+        setIsMaleSelected(false);
+        setIsFemaleSelected(true);
+      }
+      console.log("User Gender from Info:", userinfo.gender);
+    }
+
   }, [userinfo]);
 
   useEffect(() => {
@@ -131,18 +156,19 @@ const EditProfileScreen = ({ navigation }) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowPicker(Platform.OS === 'ios');
-    
-    // Cập nhật chỉ khi currentDate là một Date hợp lệ
-    if (currentDate instanceof Date && !isNaN(currentDate)) {
-      setDate(currentDate);
-      setFormattedDate(currentDate.toLocaleDateString('en-GB')); // Cập nhật formattedDate
-    }
+    setDate(currentDate);
+    setFormattedDate(currentDate.toLocaleDateString('en-GB'));
+
+    console.log("Date selected:", currentDate);
+
+
   };
   
   const thayDoi = () => {
     const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
     const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
     const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
+
 
     const userData = {
       userId,
@@ -168,6 +194,7 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text>Họ và tên</Text>
         <InputComponent
+
           style={stylesinput.inputComponent}
           keyboardType={"default"}
           value={fullname}
@@ -235,10 +262,15 @@ const EditProfileScreen = ({ navigation }) => {
       <DropdownComponent
         onProvinceSelect={handleProvinceSelect}
         onDistrictSelect={handleDistrictSelect}
+        selectedProvince={selectedProvince ? selectedProvince.code : null}
+        selectedDistrict={selectedDistrict ? selectedDistrict.code : null}
+
+
       />
       <View style={styles.inputContainer}>
         <Text>Chi tiết</Text>
         <InputComponent
+
           style={stylesinput.inputComponent}
           value={address}
           onTextChange={setAddress}
