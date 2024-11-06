@@ -10,13 +10,12 @@ import filterTourReducer from './slices/filterTourSlice'
 import searchTourReducer from './slices/searchTourSlice'
 import favoriteAdDeleteReducer from './slices/favouriteAddDeleteducers'
 import favouriteDeleteReducer from './slices/favouriteDeleteDucers'
-
 import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
-import loginReducer from './slices/loginreducers';
-import registerReducer from './slices/registerreducers';
+import paymentReducer from './slices/paymentSlice'; 
+
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -32,10 +31,10 @@ const rootReducer = combineReducers({
   filterTour: filterTourReducer,
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
-  login: loginReducer,
-  register: registerReducer,
+  payment: paymentReducer,
   // favoriteAdDelete: favoriteAdDeleteReducer,
-  // favouriteDelete: favouriteDeleteReducer,x
+  // favouriteDelete: favouriteDeleteReducer,
+
 
 });
 
