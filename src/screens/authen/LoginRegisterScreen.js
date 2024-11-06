@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View, Image, Alert, ActivityIndicator, Modal } from 'react-native'; // Thêm Modal
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
@@ -15,23 +15,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchGoogleUser } from '../../redux/slices/auth.slice';
 
 
-const LoginRegisterScreen = (props) => {
-  const { navigation, route } = props;
+const LoginRegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { isLogin } = useSelector(state => state.reducer.auth);
   const [loading, setLoading] = useState(false);
 
-  const [loginType, setLoginType ] = useState('email');
-
-  const loginemail = () => {
-    setLoginType('email');
-    navigation.navigate('LoginScreen', { loginType: 'email' });
-  };
-  
-  const loginphone = () => {
-    setLoginType('phone');
-    navigation.navigate('LoginScreen', { loginType: 'phone' });
-  };
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -112,15 +100,14 @@ const LoginRegisterScreen = (props) => {
           icon={<Image source={Icons.ic_email} />}
           style={styles.EmailButton}
           labelStyle={styles.EmailLabel}
-          onPressed={loginemail}
-
+          onPressed={() => navigation.navigate('RegisterScreen')}
         />
         <SocialButton
           label=" Số điên thoại"
           icon={<Image source={Icons.ic_phone} />}
           style={styles.PhoneButton}
           labelStyle={styles.PhoneLabel}
-          onPressed={loginphone}
+          onPressed={() => console.log(' Số điên thoại')}
         />
         <SocialButton
           label=" Đăng nhập bằng Facebook"
