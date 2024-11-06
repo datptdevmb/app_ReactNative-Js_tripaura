@@ -18,149 +18,205 @@ import IcLocate from '../../../../assets/icons/Ic_locate';
 import IcClock from '../../../../assets/icons/Ic_clock';
 import IcleftArrow from '../../../../assets/icons/Ic_leftArrow';
 import IcFavorite from '../../../../assets/icons/bottom_tab/Ic_favorite';
-import ReviewCard from '../../../../components/common/card/ReviewCard';
-import IcCalendar from '../../../../assets/icons/Ic_calendar';
-import {Rating} from 'react-native-ratings';
-import IcBelow from '../../../../assets/icons/Ic_belowArrow';
-import Accordion from '../../../../components/common/accordion/accordion';
-import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-view';
-import {fetchTourById} from '../../../../redux/slices/tour.slice';
-import {useDispatch, useSelector} from 'react-redux';
-import ImageList from './ImageList';
-import { themXoaYeuThichTour } from '../../../../redux/slices/favouriteAddDeleteducers';
+import { KiemTraYeuThich, themXoaYeuThichTour } from '../../../../redux/slices/favouriteducers';
+import Toast from '../../../../components/common/toast/Toast';
+import { ROUTES } from '../../../../constants/routes';
+const reviews = [
+	{
+		id: 1,
+		rating: 5,
+		date: '09/09/2024',
+		name: 'datpham',
+		reviewText: 'Một trải nghiệm tuyệt vời đáng để trải nghiệm',
+		imageUrl: 'https://link-to-avatar-image.com/avatar1.jpg',
+	},
+	{
+		id: 2,
+		rating: 4,
+		date: '15/10/2024',
+		name: 'datpham',
+		reviewText: 'Chuyến đi thú vị và đáng nhớ!',
+		imageUrl: 'https://link-to-avatar-image.com/avatar2.jpg',
+	},
 
-const review = {
-  reviewName: 'datpham',
-  reviewDate: '05/10/2024',
-  reviewContent: 'Một trải nghiệm tuyệt vời đáng để trải nghiệm',
-};
-
-const generalTerms = [
-  {
-    subTitle: 'Xác nhận',
-    content: [
-      'Hệ thống xác nhận ngay tức thời nếu không nhận được email phản hồi của hệ thống hãy liên hệ với chúng tôi',
-    ],
-  },
-  {
-    subTitle: 'Chính sách hủy',
-    content: ['Hoàn tiền nếu hủy trước khi tour khởi hành tối thiểu 48h'],
-  },
-];
-const general = [
-  {
-    content: [
-      'Vui lòng tự bảo quản tài sản cá nhân chúng tôi khi chịu trách nhiệm về sự việcMọi thất mất vui lòng liên hệ + 84353944291',
-    ],
-  },
 ];
 
-const HeaderNavBar = ({title, onPressed, onPressFavorite}) => {
-  return (
-    <TouchableOpacity onPress={onPressed} style={styles.headerN}>
-      <View style={styles.IconArrowCon}>
-        <IcleftArrow />
-      </View>
+const Detail = ({ navigation, route }) => {
+	const { _id: tourId } = route.params;
+	const dispatch = useDispatch();
 
-      <TouchableOpacity style={styles.IconSupportCon}>
-        <IcFavorite />
-      </TouchableOpacity>
+	const {
+		tourById,
+		adultTickets,
+		childTickets,
+		totalPrice,
+		loading,
+		selectedDate,
+	} = useSelector((state) => state.reducer.tour);
 
-      <TouchableOpacity
-        onPress={onPressFavorite}
-        style={styles.IconFavoriteCon}>
-        <IcFavorite />
-      </TouchableOpacity>
-    </TouchableOpacity>
-  );
-};
+	const { isTourFavorited, favoritesStatus, message } = useSelector((state) => state.reducer.favorites)
+	const { user } = useSelector((state) => state.reducer.auth);
+	const [showToast, setShowToast] = useState(false);
 
-const TopNavBar = () => {
-  return (
-    <View style={styles.navBar}>
-      <IcleftArrow style={styles.navBar_Back} />
-      {/* <IcFavorite style={styles.navBar_Favorite} />
-      <IcFavorite style={styles.navBar_Support} /> */}
-    </View>
-  );
-};
 
-function Detail({navigation, route}) {
+	const {
+		imges,
+		tourName,
+		description,
+		location,
+		details,
+	} = tourById;
 
-  const {_id} = route.params;
-  const dispatch = useDispatch();
-  // const [selected , setSelected] = useState(flase)
-  const {tourById: tour} = useSelector(state => state.reducer.tour);
-  const {user} =useSelector(state => state.reducer.auth);
+	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+	const translateY = useRef(new Animated.Value(500)).current;
 
-  useEffect(() => {
-    dispatch(fetchTourById(_id));
-  }, [dispatch]);
+	const handleIncreaseAdult = () => dispatch(increaseAdultTicket());
+	const handleIncreaseChild = () => dispatch(increaseChildTicket());
+	const handleDecreaseAdult = () => dispatch(decreaseAdultTicket());
+	const handleDecreaseChild = () => dispatch(decreaseChildTicket());
+	const handleBack = () => navigation.goBack();
 
-  const [selectedInd, setSeletedInd] = useState(0);
-  const [selectedAllday, setSelectedAllday] = useState(false);
 
-  function handleItemDayPress(index) {
-    setSeletedInd(index);
-    setSelectedAllday(false);
-  }
+	const handleFavorite = () => {
+		dispatch(themXoaYeuThichTour(
+			{
+				userId: user.user._id,
+				tourId
+			}
+		))
 
-  function handleFavorite() {
-   const userId = user.user._id;
-   const tourId = _id
-    dispatch(themXoaYeuThichTour({ userId, tourId }))
-  }
+		if (favoritesStatus === 'success') {
+			setShowToast(true);
+			setTimeout(() => setShowToast(false), 3000);
+		}
+	}
 
-  function handlePressed() {
-    navigation.navigate('ImageDetail');
-  }
+	const handelNavigateToOrder = () => {
+		if (!selectedDate) {
+			console.log('vui lòng chọn ngày')
+			return
+		}
+		if (adultTickets === 0 && childTickets === 0) {
+			console.log('vui lòng chọn số lượng vé')
+			return
+		}
+		navigation.navigate('Order')
+	}
 
-  function handleClickAllday() {
-    setSeletedInd(null);
-    setSelectedAllday(true);
-  }
+	const handleNavigateToFavorite = () => {
+		navigation.navigate('yeuthich')
+	}
 
-  return (
-    <View style={styles.container}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle={'dark-content'}
-      />
+	useEffect(() => {
+		const loadData = async () => {
+			try {
+				await Promise.all([
+					dispatch(fetchTourById({ tourId })),
+					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId }))
+				]);
+			} catch (err) {
+				console.error('Error fetching data:', err);
+			}
+		};
+		loadData();
+	}, [dispatch]);
 
-      {tour && tour[0] && tour[0].images ? (
-        <AnimatedScrollView
-          HeaderNavbarComponent={
-            <HeaderNavBar
-              onPressFavorite={handleFavorite}
-              onPressed={handlePressed}
-            />
-          }
-          TopNavBarComponent={<TopNavBar />}
-          topBarHeight={120}
-          headerImage={tour && {uri: tour[0].images[0].linkImage[0]}}>
-          <ImageList dataimage={tour[0].images[0].linkImage} />
 
-          <View style={styles.contentContaienr}>
-            <Text style={styles.tourname}>{tour[0].tourName}</Text>
 
-            <View style={[styles.mr_top, styles.flex_row]}>
-              <View style={[styles.flex_row, styles.ctVetical]}>
-                <View style={styles.IclocateContainer}>
-                  <IcLocate />
-                </View>
-                <Text style={styles.text}>
-                  {tour[0].locations[0].destination}
-                </Text>
-              </View>
+	const toggleBottomSheet = () => {
+		setBottomSheetVisible(!bottomSheetVisible);
+		Animated.timing(translateY, {
+			toValue: bottomSheetVisible ? 500 : 0,
+			duration: 300,
+			useNativeDriver: true,
+		}).start();
+	};
 
-              <View style={[styles.flex_row, styles.ctVetical, styles.mr_s_24]}>
-                <View style={styles.IclocateContainer}>
-                  <IcClock />
-                </View>
-                <Text style={styles.text}>{tourdetail.day}</Text>
-              </View>
-            </View>
+	return (
+		<View style={styles.container}>
+			{showToast && favoritesStatus === 'success'&&(
+				<Toast
+					onPress={handleNavigateToFavorite}
+					message={message}
+				/>
+			)}
+			<TouchableOpacity
+				onPress={handleBack}
+				style={styles.btnBack}>
+				<IcleftArrow />
+			</TouchableOpacity>
+
+			<TouchableOpacity
+				onPress={handleFavorite}
+				style={styles.btnFavorite}>
+				{
+					!isTourFavorited
+						? <Ic_ouFavorite />
+						: <IcFavorite color={'white'} />
+				}
+			</TouchableOpacity>
+
+			<AnimatedScrollView
+				TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
+				headerImage={!loading && imges
+					? { uri: imges[0] }
+					: { uri: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg' }}
+				imageStyle={{
+					height: 243,
+				}}
+			>
+				<View
+					style={{
+						position: 'absolute',
+						height: 243,
+						top: 0,
+						zIndex: 1,
+						left: 0,
+						right: 0,
+						bottom: 0,
+						backgroundColor: 'rgba(0, 0, 0, 0.3)',
+					}}
+				/>
+
+				<StatusBar translucent backgroundColor="transparent" />
+				{loading && (
+					<View style={styles.animatedHeaderLoading}>
+						<LottieView
+							source={require('../../../../assets/lottile/loading.json')}
+							autoPlay
+							loop
+							style={styles.lottieAnimation}
+						/>
+					</View>
+				)}
+
+				{!loading && (
+					<View>
+						<ImageList dataimage={imges} />
+						<View style={styles.tourInfor}>
+							<Text style={styles.tourname}>{tourName}</Text>
+							<LocationInfo location={location?.departure} />
+							<View style={styles.divider} />
+							<Lable lable="Mô tả chuyến đi" />
+							<Text style={styles.bodytext}>{description}</Text>
+							<ReviewList reviews={reviews} />
+						</View>
+						<View style={{ height: 500 }}></View>
+					</View>
+				)}
+			</AnimatedScrollView>
+
+			{/* Button Bottom */}
+			<View style={styles.btnContainer}>
+				<View style={styles.price}>
+					<Text style={styles.textprice}>Giá chỉ từ</Text>
+					<Text style={styles.total}>700.000 VNĐ</Text>
+				</View>
+				<Button
+					style={styles.btn}
+					label="Mua Ngay"
+					onPress={toggleBottomSheet} />
+			</View>
 
             <View style={styles.indicator}></View>
 
