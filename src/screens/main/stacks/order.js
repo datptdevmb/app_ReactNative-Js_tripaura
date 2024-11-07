@@ -1,5 +1,5 @@
-// OrderReviewScreen.js
-import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import React, { useState } from 'react';
+import { ScrollView, StatusBar, StyleSheet, Text, View, Alert } from "react-native";
 import Header from "../../../components/common/header/Header";
 import TourInfo from "./TourInfor";
 import DepartureInfo from "./DepartureInfo";
@@ -8,9 +8,7 @@ import { useSelector } from "react-redux";
 import Button from "../../../components/common/button/Button";
 import formatCurrencyVND from "../../../untils/formatCurrencyVND";
 
-
-const OrderReviewScreen = ({ navigation }) => {
-
+const OrderReviewScreen = ({ navigation, route }) => {
     const {
         tourById,
         adultTickets,
@@ -18,13 +16,46 @@ const OrderReviewScreen = ({ navigation }) => {
         totalPrice,
         selectedDate,
     } = useSelector((state) => state.reducer.tour);
-
-
+    
+    const image = tourById.imges ? tourById.imges[0] : null; 
+    
     const { tourName } = tourById;
+
+    const [contactInfo, setContactInfo] = useState({
+        name: "",
+        email: "",
+        phone: "",
+    });
 
     const handleBack = () => {
         navigation.goBack();
-    }
+    };
+
+    const handelNavigateToPayment = () => {
+        const { name, email, phone } = contactInfo;
+
+        // Kiểm tra nếu bất kỳ trường nào trống
+        if (!name || !email || !phone) {
+            Alert.alert(
+                "Thông báo",
+                "Thông tin liên hệ là bắt buộc. Vui lòng điền đầy đủ.",
+                [{ text: "OK" }]
+            );
+            return;
+        }
+
+        // Nếu đầy đủ thông tin, điều hướng đến màn hình thanh toán
+        navigation.navigate("Payment", {
+            tourName,
+            selectedDate,
+            adultTickets,
+            childTickets,
+            totalPrice,
+            image,
+            contactInfo,
+        });
+    };
+
     return (
         <View style={styles.container}>
             <StatusBar translucent={false} barStyle="dark-content" backgroundColor="#FFF" />
@@ -33,7 +64,6 @@ const OrderReviewScreen = ({ navigation }) => {
                 onBackPress={handleBack} />
             <ScrollView>
                 <View style={styles.content}>
-
                     <TourInfo
                         tourName={tourName}
                         date={selectedDate}
@@ -42,8 +72,7 @@ const OrderReviewScreen = ({ navigation }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
-                    <ContactInfo />
-
+                    <ContactInfo setContactInfo={setContactInfo} />
                 </View>
             </ScrollView>
             <View style={styles.buttonBottom}>
@@ -57,10 +86,10 @@ const OrderReviewScreen = ({ navigation }) => {
                 </View>
                 <Button
                     style={styles.btn}
-                    label="Mua ngay" />
+                    label="Mua ngay"
+                    onPress={handelNavigateToPayment} />
             </View>
         </View>
-
     );
 };
 
@@ -71,27 +100,25 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         fontStyle: 'normal',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     caption: {
         fontSize: 11,
-        fontStyle: 'italic'
+        fontStyle: 'italic',
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     textPrice: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#DA712F'
+        color: '#DA712F',
     },
     content: {
-        paddingBottom: 120
+        paddingBottom: 120,
     },
-    buttonBottom:
-    {
-
+    buttonBottom: {
         width: '100%',
         position: "absolute",
         backgroundColor: 'white',
