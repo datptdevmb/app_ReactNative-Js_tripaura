@@ -15,7 +15,7 @@ import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
 import paymentReducer from './slices/paymentSlice'; 
-
+import bookingReducer from './slices/booking.slice'; 
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -32,6 +32,7 @@ const rootReducer = combineReducers({
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
   payment: paymentReducer,
+  booking: bookingReducer,
   // favoriteAdDelete: favoriteAdDeleteReducer,
   // favouriteDelete: favouriteDeleteReducer,
 

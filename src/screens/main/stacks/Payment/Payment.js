@@ -4,7 +4,7 @@ import Header from '../../../../components/common/header/Header';
 import stylesglobal from '../../../../constants/global';
 import Button from '../../../../components/common/button/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { createPayment } from '../../../../redux/slices/paymentSlice';
+import { clearPaymentData, createPayment } from '../../../../redux/slices/paymentSlice';
 
 const Payment = ({ navigation, route }) => {
     const paymentStatus = useSelector((state) => state.reducer.payment.status);
@@ -28,8 +28,7 @@ const Payment = ({ navigation, route }) => {
         const fullname = contactInfo.name;
         const phone = contactInfo.phone;
         const email = contactInfo.email;
-        console.log('fullname',fullname);
-        
+        console.log('fullname',fullname);      
 
         if (!amount || !description || !orderId || !fullname || !phone || !email) {
             Alert.alert('Lỗi', 'Thông tin thanh toán không đầy đủ. Vui lòng kiểm tra lại.');
@@ -38,22 +37,26 @@ const Payment = ({ navigation, route }) => {
 
         dispatch(createPayment({ amount, orderId, description, fullname, phone, email }));
     };
-
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
             console.log('Truyền thành công:', paymentInfo);
             Alert.alert('Thành công', 'Liên kết thanh toán đã được tạo thành công.');
-
+    
             if (paymentInfo.paymentLink) {
                 navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink });
             }
-
+    
+            // Xóa dữ liệu sau khi truyền thành công
+            dispatch(clearPaymentData());  // Reset dữ liệu payment
         } else if (paymentStatus === 'failed') {
             console.log('Truyền thất bại:', paymentError);
             Alert.alert('Thất bại', `Không thể tạo liên kết thanh toán: ${paymentError || 'Lỗi không xác định.'}`);
+    
+            // Xóa dữ liệu sau khi gặp lỗi
+            dispatch(clearPaymentData());  // Reset dữ liệu payment
         }
-    }, [paymentStatus, paymentInfo, paymentError]);
-
+    }, [paymentStatus, paymentInfo, paymentError, dispatch]);
+    
     return (
         <View style={styles.container}>
             <Header title={'Thanh toán'} onBackPress={handleBack} />

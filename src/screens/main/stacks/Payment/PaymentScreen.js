@@ -35,11 +35,7 @@ const PaymentScreen = ({ route }) => {
         domStorageEnabled={true}
         onNavigationStateChange={handleNavigationChange}
         onError={() => {
-          Toast.show({
-            type: 'error',
-            text1: 'Lỗi kết nối!',
-            text2: 'Không thể tải trang thanh toán.',
-          });
+          Alert.alert('Thất bại', 'Lỗi Thanh toán');
         }}
       />
       <Toast />

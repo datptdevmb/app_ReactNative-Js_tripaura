@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 
-const DepartureDateSelector = ({ data, selectedDate, onSelectDate }) => {
+const DepartureDateSelector = ({ data, selectedDate, onSelectDate}) => {
   const [showAll, setShowAll] = useState(false);
 
   const handleShowAll = () => {
     setShowAll(true);
   };
+  const [optionId, setOptionId] = useState()
 
   const renderDateItem = ({ item }) => {
     const startDate = new Date(item.startDay);
-    const formattedDate = `${startDate.getDate()}/${startDate.getMonth() + 1}`; // Format ngày/tháng
+    const formattedDate = `${startDate.getDate()}/${startDate.getMonth() + 1}`;
 
     return (
       <TouchableOpacity
@@ -18,7 +19,10 @@ const DepartureDateSelector = ({ data, selectedDate, onSelectDate }) => {
           styles.dateItem,
           selectedDate === item.startDay && styles.selectedDateItem,
         ]}
-        onPress={() => onSelectDate(item.startDay)}  // Gọi hàm onSelectDate từ component cha
+        onPress={() => {
+          onSelectDate(item.startDay, item._id); 
+          setOptionId(item._id);
+        }}
       >
         <Text
           style={[
@@ -31,6 +35,9 @@ const DepartureDateSelector = ({ data, selectedDate, onSelectDate }) => {
       </TouchableOpacity>
     );
   };
+
+  console.log("optionId",optionId);
+  
 
   return (
     <View style={styles.container}>
