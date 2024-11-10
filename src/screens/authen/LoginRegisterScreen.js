@@ -1,13 +1,16 @@
+
 import { StyleSheet, Text, View, Image, Alert, ActivityIndicator, Modal } from 'react-native'; // Thêm Modal
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+
 import auth from '@react-native-firebase/auth';
 import { styles } from './LoginRegisterScreenStyle';
 import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
 import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGoogleUser } from '../../redux/slices/auth.slice';
 
@@ -15,7 +18,8 @@ import { fetchGoogleUser } from '../../redux/slices/auth.slice';
 const LoginRegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { isLogin } = useSelector(state => state.reducer.auth);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -24,7 +28,7 @@ const LoginRegisterScreen = ({ navigation }) => {
   }, []);
 
   const handleLoginWithGoogle = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const { data } = await GoogleSignin.signIn();
@@ -35,7 +39,7 @@ const LoginRegisterScreen = ({ navigation }) => {
       const userRequest = { uid, email, displayName, photoURL };
 
       await dispatch(fetchGoogleUser(userRequest));
-      
+
     } catch (error) {
       handleSignInError(error);
     } finally {
@@ -62,7 +66,7 @@ const LoginRegisterScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isLogin) {
-      navigation.goBack(); 
+      navigation.goBack();
     }
   }, [isLogin, navigation]);
 
@@ -71,15 +75,16 @@ const LoginRegisterScreen = ({ navigation }) => {
       <Header style={styles.Header} leftIcon={Icons.ic_leftarrow} />
       <Text style={stylesglobal.textheader}>Đăng nhập / Đăng ký</Text>
       <Text style={stylesglobal.textauth_description}>
+
         Nhận tài khoản <Text style={{ color: '#0572E7' }}>TripAura</Text> để khám phá tiện ích
       </Text>
 
-     
+
       <Modal
         transparent={true}
         animationType="fade"
         visible={loading}
-        onRequestClose={() => {}}
+        onRequestClose={() => { }}
       >
         <View style={styles.modalBackground}>
           <View style={styles.activityIndicatorWrapper}>

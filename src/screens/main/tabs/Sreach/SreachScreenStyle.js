@@ -1,16 +1,22 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../../../constants/Icons';
 import fontsize from '../../../../constants/fontsize';
 
 export const styles = StyleSheet.create({
+  address: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 16
   },
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    justifyContent: 'space-between'
   },
   title: {
     fontSize: 24,
@@ -20,17 +26,15 @@ export const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginTop: 10,
-    marginLeft: 10,
     padding: 1,
   },
   image_filter: {
     width: 30,
     height: 30,
     marginTop: 10,
-    marginLeft: 15,
   },
   inputSreach: {
-    width: 296,
+    width: 280,
     height: 44,
     backgroundColor: '#F8F9FE',
     borderRadius: 24,
@@ -45,7 +49,7 @@ export const styles = StyleSheet.create({
     width: 10,
     height: 10,
     color: 'black',
-    marginLeft: -25,
+    marginLeft: -32,
     marginTop: 10,
   },
   textSreach: {
@@ -58,32 +62,26 @@ export const styles = StyleSheet.create({
     marginTop: 73,
   },
   tile: {
-    width: 175,
     height: 20,
     fontSize: 16,
     fontWeight: '700',
     color: '#1d192b',
     marginTop: 58,
-    marginLeft: 15,
   },
   itemContainer: {
-    width: 166,
-    height: 239,
-    flex: 1,
+    width: 160,
+    height: 240,
     backgroundColor: '#F8F9FE',
     borderRadius: 10,
-    marginTop: 16,
-    marginLeft: 16,
-    marginRight: 16,
+    marginBottom: 20
   },
   itemImage: {
-    width: 180.5,
+    width: 160,
     height: 120,
     borderTopLeftRadius: 10, // Bo góc trên bên trái
     borderTopRightRadius: 10, // Bo góc trên bên phải
   },
   itemName: {
-    width: 133.5,
     height: 40,
     fontSize: fontsize.sm,
     color: '#4D4D4D',
@@ -101,14 +99,12 @@ export const styles = StyleSheet.create({
     marginRight: 16,
   },
   itemDay: {
-    width: 133.5,
     height: 16,
-    fontSize: fontsize.xs,
+    fontSize: fontsize.fm,
     color: '#757575',
-    marginTop: 10,
-    marginLeft: 16,
+    marginLeft: 8,
     marginRight: 16,
-    fontWeight: '400',
+    fontWeight: '700',
   },
   row: {
     justifyContent: 'space-between',

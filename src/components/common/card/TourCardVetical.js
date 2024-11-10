@@ -5,6 +5,7 @@ import Button from '../button/Button';
 import colors from '../../../constants/colors';
 import IcLocate from '../../../assets/icons/Ic_locate';
 
+
 function TourCardVetical({tour , onClick}) {
 
   return (

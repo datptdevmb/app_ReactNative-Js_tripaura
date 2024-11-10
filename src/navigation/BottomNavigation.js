@@ -26,6 +26,9 @@ import Voucher from '../screens/main/stacks/voucher/Voucher'
 import { useSelector } from 'react-redux';
 import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
 import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
+import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
+
+
 
 const Tab = createBottomTabNavigator();
 
@@ -74,8 +77,7 @@ function CustomBottom({onPress, children}) {
 }
 
 const ButtomNavigation = () => {
-  const {isLogin} = useSelector(state => state.reducer.auth);
-
+  const { isLogin } = useSelector(state => state.reducer?.auth || {});
   return (
     <Tab.Navigator
       screenOptions={{
@@ -112,6 +114,7 @@ const ButtomNavigation = () => {
         name="Favourite"
         component={Voucher}
         options={{
+
           tabBarIcon: ({focused}) => (
             <View
               style={{
@@ -163,7 +166,7 @@ const ButtomNavigation = () => {
 
                 // backgroundColor:colors.primary
               }}>
-              <IcFavorite />
+              <IcFavorite color={"grey"} />
               <Text>{ROUTES.favorite}</Text>
             </View>
           ),

@@ -23,43 +23,53 @@ import ic_lockout from '../assets/icons/ic_lockout.png';
 import ic_message from '../assets/icons/ic_message.png';
 import ic_arrowbottom from '../assets/icons/ic_arrowbottom.png';
 import ic_star_empty from '../assets/icons/ic_star_empty.png';
+import ic_helpcenter from '../assets/icons/ic_helpcenter.png';
+import ic_instagram from '../assets/icons/ic_instagram.png';
+import ic_twitter from '../assets/icons/ic_twitter.png';
+import ic_website from '../assets/icons/ic_website.png';
+import icon_fb from '../assets/icons/icon_fb.png';
 
 // image
-
 import avatar from '../assets/images/avatar.png';
 import image from '../assets/images/image.png';
 import slider from '../assets/images/slider1.png';
 
 const Icons = {
-  ic_email: ic_email,
+  ic_email,
   ic_leftarrow: lefticon,
-  ic_phone: ic_phone,
-  ic_facebook: ic_facebook,
-  ic_google: ic_google,
-  ic_camera: ic_camera,
-  ic_giftbox: ic_giftbox,
-  ic_person: ic_person,
-  ic_cellphone: ic_cellphone,
-  ic_address: ic_address,
-  ic_edit: ic_edit,
-  ic_time: ic_time,
-  ic_star: ic_star,
-  ic_arrowright: ic_arrowright,
-  ic_map: ic_map,
-  ic_lock: ic_lock,
-  ic_orther: ic_orther,
-  ic_bell: ic_bell,
-  ic_moon: ic_moon,
-  ic_earth: ic_earth,
-  ic_mony: ic_mony,
-  ic_lockout: ic_lockout,
-  ic_message: ic_message,
-  ic_arrowbottom: ic_arrowbottom,
-  ic_star_empty: ic_star_empty,
-  //image
-  avatar: avatar,
-  image: image,
-  slider: slider,
+  ic_phone,
+  ic_facebook,
+  ic_google,
+  ic_camera,
+  ic_giftbox,
+  ic_person,
+  ic_cellphone,
+  ic_address,
+  ic_edit,
+  ic_time,
+  ic_star,
+  ic_arrowright,
+  ic_map,
+  ic_lock,
+  ic_orther,
+  ic_bell,
+  ic_moon,
+  ic_earth,
+  ic_mony,
+  ic_lockout,
+  ic_message,
+  ic_arrowbottom,
+  ic_star_empty,
+  ic_helpcenter,
+  ic_instagram,
+  ic_twitter,
+  ic_website,
+  icon_fb,
+
+  // images
+  avatar,
+  image,
+  slider,
 };
 
 export default Icons;

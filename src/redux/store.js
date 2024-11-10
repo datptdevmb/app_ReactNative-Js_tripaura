@@ -5,9 +5,17 @@ import categoryReducer from './slices/category.slice';
 import networkReducer from './slices/network.slice';
 import imageSliderReducer from './slices/image.slice';
 import favoriteReducer from './slices/favouriteducers';
+import filterTourReducer from './slices/filterTourSlice';
+import searchTourReducer from './slices/searchTourSlice';
 import favoriteAdDeleteReducer from './slices/favouriteAddDeleteducers';
 import favouriteDeleteReducer from './slices/favouriteDeleteDucers';
-import reviewTourducers from './slices/reviewTourducers';
+import changeUserReducer from './slices/ChangeUserSlice';
+import provincesReducer from './slices/cityprovince';
+import districtReducer from './slices/district';
+import getuserReducer from './slices/getUserbyID';
+import paymentReducer from './slices/paymentSlice';
+import bookingReducer from './slices/booking.slice';
+import reviewTourducers from './slices/reviewTourducers'
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -17,11 +25,28 @@ const rootReducer = combineReducers({
   images: imageSliderReducer,
   favorites: favoriteReducer,
   review: reviewTourducers,
-    // favoriteAdDelete: favoriteAdDeleteReducer,
+  changeUser: changeUserReducer,
+  provinces: provincesReducer,
+  district: districtReducer,
+  getUser: getuserReducer,
+  filterTour: filterTourReducer,
+  searchTour: searchTourReducer,
+  changeUser: changeUserReducer,
+  payment: paymentReducer,
+  booking: bookingReducer,
+  // favoriteAdDelete: favoriteAdDeleteReducer,
   // favouriteDelete: favouriteDeleteReducer,
 });
 
+// Configure the store
+
 const store = configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+
   reducer: {
     reducer: rootReducer,
   },
