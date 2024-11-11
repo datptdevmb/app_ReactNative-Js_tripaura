@@ -9,13 +9,10 @@ import {
     ToastAndroid
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { styles } from './FilterScreenStyle';
 import { useDispatch, useSelector } from 'react-redux';
-import { FilterTour } from '../../../../redux/slices/filterTourSlice';
+import { FilterTour } from '../../../redux/slices/filterTourSlice';
 
-const FilterScreen = ({ props, route, navigation, searchText }) => {
-    
-
+const ModalFilter = ({ searchText,onPressAply }) => {
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedPrice, setSelectedPrice] = useState('');
     const [minPrice, setMinPrice] = useState('');
@@ -62,8 +59,8 @@ const FilterScreen = ({ props, route, navigation, searchText }) => {
             <Image
                 source={
                     isOpen
-                        ? require('../../../../assets/images/down.png')
-                        : require('../../../../assets/images/up.png')
+                        ? require('../../../assets/images/down.png')
+                        : require('../../../assets/images/up.png')
                 }
                 style={styles.icon}
             />
@@ -92,9 +89,6 @@ const FilterScreen = ({ props, route, navigation, searchText }) => {
 
     }
 
-    const applyFilters = () => {
-        navigation.goBack()
-    };
 
     const clearFilters = () => {
         setSelectedRegion('');
@@ -108,20 +102,6 @@ const FilterScreen = ({ props, route, navigation, searchText }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Text style={styles.headerText}>Hủy bỏ</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        // logic
-                    }}>
-                    <Text style={styles.headerTextLoc}>Lọc</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={clearFilters}>
-                    <Text style={styles.headerText}>Xóa tất cả</Text>
-                </TouchableOpacity>
-            </View>
 
             {renderDropdown(selectedRegion || 'Khu Vực', showRegionPicker, () =>
                 setShowRegionPicker(prev => !prev),
@@ -187,12 +167,91 @@ const FilterScreen = ({ props, route, navigation, searchText }) => {
 
 
             <View style={styles.containerbuttonFilter}>
-                <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-                    <Text style={styles.applyButtonText}>Áp Dụng {filterTourData.data.length} kết quả</Text>
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => { clearFilters() }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', textDecorationLine: 'underline', color: 'black' }}>Xóa</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.applyButton} onPress={onPressAply}>
+                        <Text style={styles.applyButtonText}>Áp Dụng {filterTourData.data.length} kết quả</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     );
-};
+}
 
-export default FilterScreen;
+export default ModalFilter
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    headerText: {
+        color: '#006FFD',
+        fontSize: 12,
+        fontWeight: '600',
+    },
+    headerTextLoc: {
+        color: '#1f2024',
+        fontSize: 24,
+        fontWeight: '700',
+    },
+    dropdownContainer: {
+        height: 50,
+        borderColor: '#007bff',
+        borderWidth: 1,
+        borderRadius: 8,
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        backgroundColor: '#fff',
+        marginBottom: 10,
+        elevation: 2,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    dropdownText: {
+        fontSize: 16,
+        color: '#555',
+        flex: 1,
+    },
+    dropdownList: {
+        maxHeight: 150,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        elevation: 2,
+        marginBottom: 20,
+    },
+    option: {
+        padding: 10,
+    },
+    optionText: {
+        fontSize: 16,
+        color: '#333',
+    },
+    applyButton: {
+        backgroundColor: '#006FFD',
+        padding: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    applyButtonText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    icon: {
+        width: 16,
+        height: 16,
+    },
+    containerbuttonFilter: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+})

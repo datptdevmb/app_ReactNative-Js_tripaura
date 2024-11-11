@@ -3,6 +3,9 @@ import colors from '../../../../constants/Icons';
 import fontsize from '../../../../constants/fontsize';
 
 export const styles = StyleSheet.create({
+  viewMargin: {
+    height: 80
+  },
   address: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,7 +52,7 @@ export const styles = StyleSheet.create({
     width: 10,
     height: 10,
     color: 'black',
-    marginLeft: -32,
+    marginLeft: -44,
     marginTop: 10,
   },
   textSreach: {
@@ -69,14 +72,13 @@ export const styles = StyleSheet.create({
     marginTop: 58,
   },
   itemContainer: {
-    width: 160,
     height: 240,
     backgroundColor: '#F8F9FE',
     borderRadius: 10,
     marginBottom: 20
   },
   itemImage: {
-    width: 160,
+    width: '100%',
     height: 120,
     borderTopLeftRadius: 10, // Bo góc trên bên trái
     borderTopRightRadius: 10, // Bo góc trên bên phải
