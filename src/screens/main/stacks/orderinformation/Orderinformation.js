@@ -9,26 +9,25 @@ const OrderInformation = ({ route }) => {
   const dispatch = useDispatch();
   const { bookingId } = route.params;
   
-  // Khởi tạo state loading
+
   const [loading, setLoading] = useState(true);
 
-  // Lấy dữ liệu booking từ redux
+
   const bookingData = useSelector((state) => state.reducer.booking);
 
   useEffect(() => {
     if (bookingId) {
-      dispatch(fetchBookingById(bookingId));  // Gọi API lấy dữ liệu booking
+      dispatch(fetchBookingById(bookingId));  
     }
   }, [dispatch, bookingId]);
 
   useEffect(() => {
     if (bookingData.bookingData) {
-      setLoading(false);  // Khi có dữ liệu, đổi trạng thái loading
+      setLoading(false); 
     }
   }, [bookingData]);
 
   if (loading) {
-    // Nếu đang tải, hiển thị ActivityIndicator
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#2980B9" />
@@ -36,7 +35,6 @@ const OrderInformation = ({ route }) => {
     );
   }
 
-  // Nếu không có dữ liệu booking
   if (!bookingData || !bookingData.bookingData) {
     return <Text style={styles.errorText}>Không có dữ liệu đặt tour</Text>;
   }
