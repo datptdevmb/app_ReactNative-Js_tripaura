@@ -24,7 +24,7 @@ const OrderReviewScreen = ({ navigation, route }) => {
 
     console.log('tourById', tourById);
     console.log('selectedDate', selectedDate);
-    const { detailId, adultPrice,childPrice, } = route.params;
+    const { detailId, adultPrice, childPrice, } = route.params;
     console.log('detailId', detailId);
     const voucherId = null;
 
@@ -65,17 +65,26 @@ const OrderReviewScreen = ({ navigation, route }) => {
         };
     
         try {
-            console.log('Đang gửi booking data:', bookingData); 
+            console.log('Đang gửi booking data:', bookingData);
             const response = await dispatch(fetchBooking(bookingData)).unwrap();
-            console.log('Phản hồi từ fetchBooking:', response); 
-            handelNavigateToPayment(); 
+            console.log('Phản hồi từ fetchBooking:', response);
+    
+            if (response.code === 200 && response.data && response.data._id) {
+                console.log('Lấy được bookingId:', response.data._id);
+                handelNavigateToPayment(response.data._id); // Truyền `_id` làm `bookingId`
+            } else {
+                console.log('Không thể lấy được bookingId. Phản hồi từ server:', response);
+                Alert.alert("Lỗi", "Không thể lấy được bookingId.");
+            }
         } catch (error) {
-            console.log('Lỗi khi gọi fetchBooking:', error); 
+            console.log('Lỗi khi gọi fetchBooking:', error);
+            Alert.alert("Lỗi", "Đã xảy ra lỗi khi gọi API đặt booking.");
         }
     };
     
 
-    const handelNavigateToPayment = () => {
+
+    const handelNavigateToPayment = (bookingId) => {
         const { name, email, phone } = contactInfo;
         if (!name || !email || !phone) {
             Alert.alert(
@@ -94,6 +103,7 @@ const OrderReviewScreen = ({ navigation, route }) => {
             childPrice,
             image,
             contactInfo,
+            bookingId 
         });
     };
 

@@ -10,9 +10,11 @@ const Payment = ({ navigation, route }) => {
     const paymentStatus = useSelector((state) => state.reducer.payment.status);
     const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
     const paymentError = useSelector((state) => state.reducer.payment.error);
-    const { tourName, selectedDate, adultTickets, childTickets, totalPrice, contactInfo, image } = route.params;
+    const { tourName, selectedDate, adultTickets, childTickets, totalPrice, contactInfo, image,bookingId } = route.params;
     const dispatch = useDispatch();
 
+    console.log('bookingid',bookingId);
+    
     const handleBack = () => {
         navigation.goBack();
     };
@@ -35,7 +37,7 @@ const Payment = ({ navigation, route }) => {
             return;
         }
 
-        dispatch(createPayment({ amount, orderId, description, fullname, phone, email }));
+        dispatch(createPayment({ amount, orderId, description, fullname, phone, email,bookingId  }));
     };
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
@@ -43,7 +45,7 @@ const Payment = ({ navigation, route }) => {
             Alert.alert('Thành công', 'Liên kết thanh toán đã được tạo thành công.');
     
             if (paymentInfo.paymentLink) {
-                navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink });
+                navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink , bookingId: bookingId});
             }
     
             // Xóa dữ liệu sau khi truyền thành công
@@ -55,7 +57,7 @@ const Payment = ({ navigation, route }) => {
             // Xóa dữ liệu sau khi gặp lỗi
             dispatch(clearPaymentData());  // Reset dữ liệu payment
         }
-    }, [paymentStatus, paymentInfo, paymentError, dispatch]);
+    }, [paymentStatus, paymentInfo, paymentError, dispatch,bookingId]);
     
     return (
         <View style={styles.container}>
