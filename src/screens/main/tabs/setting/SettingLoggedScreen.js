@@ -151,6 +151,9 @@ const SettingLoggedScreen = (props) => {
     function handleCauhoi(){
         navigation.navigate('FAQsSrceen')
     }
+    function handlePurchase(){
+        navigation.navigate('Purchasehistory')
+    }
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
@@ -219,7 +222,7 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                    <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
                         <View style={styles.imageTroGiupContainer}>
                             <Image
                                 style={styles.imageTroGiup}

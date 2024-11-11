@@ -82,8 +82,6 @@ const OrderReviewScreen = ({ navigation, route }) => {
         }
     };
     
-
-
     const handelNavigateToPayment = (bookingId) => {
         const { name, email, phone } = contactInfo;
         if (!name || !email || !phone) {

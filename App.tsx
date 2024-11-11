@@ -4,13 +4,13 @@ import store from './src/redux/store.js';
 import { AppProvider } from './src/screens/AppContext';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './src/AppNavigation';
-import Orderinformation from './src/screens/main/stacks/orderinformation/Orderinformation.js'
+import Purchasehistory from './src/screens/main/stacks/purchasehistory/Purchasehistory.js';
 
 const App = () => {
   return (
     <Provider store={store}>
       <AppProvider>
-        <Orderinformation />
+        <AppNavigation />
       </AppProvider>
     </Provider>
   );

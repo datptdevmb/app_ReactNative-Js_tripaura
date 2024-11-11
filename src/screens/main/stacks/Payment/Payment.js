@@ -42,20 +42,14 @@ const Payment = ({ navigation, route }) => {
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
             console.log('Truyền thành công:', paymentInfo);
-            Alert.alert('Thành công', 'Liên kết thanh toán đã được tạo thành công.');
-    
             if (paymentInfo.paymentLink) {
                 navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink , bookingId: bookingId});
             }
-    
-            // Xóa dữ liệu sau khi truyền thành công
-            dispatch(clearPaymentData());  // Reset dữ liệu payment
+            dispatch(clearPaymentData());  
         } else if (paymentStatus === 'failed') {
             console.log('Truyền thất bại:', paymentError);
             Alert.alert('Thất bại', `Không thể tạo liên kết thanh toán: ${paymentError || 'Lỗi không xác định.'}`);
-    
-            // Xóa dữ liệu sau khi gặp lỗi
-            dispatch(clearPaymentData());  // Reset dữ liệu payment
+            dispatch(clearPaymentData());
         }
     }, [paymentStatus, paymentInfo, paymentError, dispatch,bookingId]);
     
