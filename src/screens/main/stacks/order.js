@@ -1,16 +1,23 @@
 // OrderReviewScreen.js
-import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules } from "react-native";
+const { ZaloPayModule } = NativeModules;
 import Header from "../../../components/common/header/Header";
 import TourInfo from "./TourInfor";
 import DepartureInfo from "./DepartureInfo";
 import ContactInfo from "./ContactInfo";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../components/common/button/Button";
 import formatCurrencyVND from "../../../untils/formatCurrencyVND";
+import Paymethod from "./Paymethod";
+import { useCallback, useEffect, useState } from "react";
+import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
+import SelecVoucher from "./selecVoucher";
+import { string } from "prop-types";
 
 
 const OrderReviewScreen = ({ navigation }) => {
 
+    const dispatch = useDispatch();
     const {
         tourById,
         adultTickets,
@@ -18,9 +25,36 @@ const OrderReviewScreen = ({ navigation }) => {
         totalPrice,
         selectedDate,
     } = useSelector((state) => state.reducer.tour);
-
-
     const { tourName } = tourById;
+
+    const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
+    const { user } = useSelector((state) => state.reducer.auth);
+    const userId = user?.user?._id;
+
+    const [selectedMethod, setSelectedMethod] = useState(null);
+
+
+    useEffect(() => {
+        dispatch(LayDanhSachVoucher(userId));
+    }, [userId]);
+
+    const handleVoucher = useCallback(() => {
+        navigation.navigate('ListVoucherScreen')
+    })
+
+    const handlePuchase = useCallback(() => {
+        const totalPriceString = totalPrice.toString();
+        if(!selectedMethod) return
+        if(selectedMethod == 1){
+            ZaloPayModule.createOrder(totalPriceString);
+        }
+        if(selectedMethod == 2){
+           console.log('payos')
+        }
+       
+    })
+
+
 
     const handleBack = () => {
         navigation.goBack();
@@ -33,7 +67,6 @@ const OrderReviewScreen = ({ navigation }) => {
                 onBackPress={handleBack} />
             <ScrollView>
                 <View style={styles.content}>
-
                     <TourInfo
                         tourName={tourName}
                         date={selectedDate}
@@ -42,7 +75,12 @@ const OrderReviewScreen = ({ navigation }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
-                    <ContactInfo />
+                    {/* <ContactInfo /> */}
+                    <SelecVoucher
+                        onPress={handleVoucher} />
+                    <Paymethod
+                        selectedMethod={selectedMethod}
+                        setSelectedMethod={setSelectedMethod} />
 
                 </View>
             </ScrollView>
@@ -56,6 +94,7 @@ const OrderReviewScreen = ({ navigation }) => {
                         style={styles.textPrice}>{formatCurrencyVND(totalPrice)}</Text>
                 </View>
                 <Button
+                    onPressed={handlePuchase}
                     style={styles.btn}
                     label="Mua ngay" />
             </View>
@@ -87,7 +126,7 @@ const styles = StyleSheet.create({
         color: '#DA712F'
     },
     content: {
-        paddingBottom: 120
+        paddingBottom: 300
     },
     buttonBottom:
     {
