@@ -17,7 +17,7 @@ const SettingLoggedScreen = (props) => {
     const [isEnabled, setIsEnabled] = useState(false);
 
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const [image, setImage] = useState( null);
+    const [image, setImage] = useState(null);
     const dispatch = useDispatch();
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
@@ -25,8 +25,8 @@ const SettingLoggedScreen = (props) => {
     const userId = user.user._id
 
     console.log('image: ', image);
-    
-    
+
+
     const changeUserStatus = useSelector(state => state.changeUser);
 
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -34,11 +34,11 @@ const SettingLoggedScreen = (props) => {
 
     useEffect(() => {
         if (user.user) {
-            const userData = user.user; 
-            const avatar = userData.avatar; 
-            const fullname = userData.fullname; 
-            const email = userData.email; 
-            const userId = userData._id; 
+            const userData = user.user;
+            const avatar = userData.avatar;
+            const fullname = userData.fullname;
+            const email = userData.email;
+            const userId = userData._id;
 
             console.log('Avatar:', avatar);
             console.log('Fullname:', fullname);
@@ -83,7 +83,7 @@ const SettingLoggedScreen = (props) => {
             Alert.alert('Lỗi', 'Không tìm thấy thông tin người dùng');
             return;
         }
-    
+
         const data = new FormData();
         data.append('file', {
             uri: image.uri,
@@ -92,23 +92,23 @@ const SettingLoggedScreen = (props) => {
         });
         data.append('upload_preset', 'TripAuraAPI');
         data.append('api_key', '976765598717887');
-    
+
         try {
             const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
                 method: 'POST',
                 body: data,
             });
-    
+
             const result = await response.json();
             console.log("Cloudinary response:", result);
             if (response.ok) {
                 const imageUrl = result.secure_url;
-    
+
                 const userUpdateData = {
                     userId: userId,
                     avatar: imageUrl,
                 };
-    
+
                 const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
                 if (updateResult.error) {
                     Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
@@ -125,8 +125,8 @@ const SettingLoggedScreen = (props) => {
             console.error(error);
         }
     };
-    
-    
+
+
     useEffect(() => {
         if (changeUserStatus === 'failed') {
             Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
@@ -145,13 +145,13 @@ const SettingLoggedScreen = (props) => {
     console.log('userName:', user?.user.fullname);
 
 
-    function handleMap(){
+    function handleMap() {
         navigation.navigate('MapScreen')
     }
-    function handleCauhoi(){
+    function handleCauhoi() {
         navigation.navigate('FAQsSrceen')
     }
-    function handlePurchase(){
+    function handlePurchase() {
         navigation.navigate('Purchasehistory')
     }
     return (
@@ -181,9 +181,9 @@ const SettingLoggedScreen = (props) => {
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity 
-                onPress={() => navigation.navigate('ProfileScreen')}
-                style={styles.iconNextContainer}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('ProfileScreen')}
+                    style={styles.iconNextContainer}>
                     <Image
                         style={styles.iconNext}
                         source={Icons.ic_arrowright} />
@@ -191,6 +191,16 @@ const SettingLoggedScreen = (props) => {
             </View>
 
             <View style={styles.btnHorizontalContainer}>
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_orther} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Tour</Text>
+                    </TouchableOpacity>
+                </View>
                 <View >
                     <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
                         <View style={styles.imageTroGiupContainer}>
@@ -221,16 +231,7 @@ const SettingLoggedScreen = (props) => {
                         <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
                     </TouchableOpacity>
                 </View>
-                <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
-                        <View style={styles.imageTroGiupContainer}>
-                            <Image
-                                style={styles.imageTroGiup}
-                                source={Icons.ic_orther} />
-                        </View>
-                        <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
-                    </TouchableOpacity>
-                </View>
+
             </View>
 
             <View style={styles.underline} />
@@ -321,8 +322,8 @@ export default SettingLoggedScreen
 
 const styles = StyleSheet.create({
     btnNext: {
-        width: 12,
-        height: 24,
+        width: 16,
+        height: 16,
         marginLeft: 10
     },
     lefticon: {

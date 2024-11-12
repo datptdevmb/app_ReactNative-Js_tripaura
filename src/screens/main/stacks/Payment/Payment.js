@@ -20,7 +20,7 @@ const Payment = ({ navigation, route }) => {
     };
 
     const zalopay = () => {
-        // Hàm xử lý thanh toán qua Zalo Pay
+       
     };
 
     const payos = () => {

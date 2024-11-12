@@ -80,8 +80,8 @@ export const styles = StyleSheet.create({
   itemImage: {
     width: '100%',
     height: 120,
-    borderTopLeftRadius: 10, // Bo góc trên bên trái
-    borderTopRightRadius: 10, // Bo góc trên bên phải
+    borderTopLeftRadius: 10, 
+    borderTopRightRadius: 10,
   },
   itemName: {
     height: 40,

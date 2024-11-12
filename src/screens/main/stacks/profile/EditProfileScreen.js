@@ -1,7 +1,4 @@
-
-
-import React, { useEffect, useState, useContext, useCallback } from 'react';
-
+import React, { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, Text, View, ToastAndroid, ScrollView, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderComponent from '../../../../components/common/header/Headercomponet';
@@ -10,48 +7,35 @@ import DropdownComponent from '../../../../components/common/dropdown/DropdownCo
 import Button from '../../../../components/common/button/Button';
 import stylesGlobal from '../../../../constants/global';
 import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
-import { AppContext } from '../../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import fontsize from '../../../../constants/fontsize';
 import colors from '../../../../constants/colors';
 import Icons from '../../../../constants/Icons';
 import CheckBox from '@react-native-community/checkbox';
-
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 import stylesinput from '../../../../components/common/input/inputstyle';
 
-
 const EditProfileScreen = ({ navigation }) => {
-
-
-  const state = useSelector((state) => state);
-  const { user: contextUser, setUser: setContextUser } = useContext(AppContext);
-  const { user: reduxUser } = useSelector((state) => state.reducer.auth.user);
-
-
-
-  const dispatch = useDispatch();
+  const reduxUser = useSelector((state) => state.reducer.auth.user);
   const changeUserData = useSelector((state) => state.reducer.changeUser);
   const changeUserStatus = useSelector((state) => state.reducer.changeUser.status);
   const provinces = useSelector((state) => state.reducer.provinces.provinces);
   const districts = useSelector((state) => state.reducer.district.districts);
 
-  const user = contextUser || reduxUser.user;
+  const dispatch = useDispatch();
+  const userId = reduxUser.user?._id;
 
-  const userId = user?._id;
-  const setUser = setContextUser;
+  console.log('userId', userId);
+  
 
-  const [userinfo, setUserinfo] = useState({});
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [date, setDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState("");
-
   const [isMaleSelected, setIsMaleSelected] = useState(false);
   const [isFemaleSelected, setIsFemaleSelected] = useState(false);
   const [gender, setGender] = useState(null);
@@ -63,40 +47,32 @@ const EditProfileScreen = ({ navigation }) => {
     return new Date(year, month - 1, day);
   };
 
-
-
   useEffect(() => {
     if (userId) {
       dispatch(fetchUserInfo(userId)).then((result) => {
         if (result.payload?.success) {
           const data = result.payload.data;
-          setUserinfo(data);
           setEmail(data.email || '');
           setFullname(data.fullname || '');
           setPhone(data.phone || '');
           setAddress(data.address?.split(',')[0] || '');
           setGender(data.gender);
+          if (data.gender === "Nam") setIsMaleSelected(true);
+          else if (data.gender === "Nữ") setIsFemaleSelected(true);
+
           const dateOfBirth = parseDateString(data.dateofbirth);
           if (dateOfBirth) {
-            setDate(dateOfBirth); // Chỉ đặt nếu có ngày sinh
+            setDate(dateOfBirth);
             setFormattedDate(dateOfBirth.toLocaleDateString('en-GB'));
           }
         }
-      }).catch(console.error);
+      });
     }
   }, [dispatch, userId]);
 
-
-
-  console.log('userRedecer', reduxUser);
-  console.log('user', user);
-  console.log('userId', userId);
-  console.log('userinfo', userinfo);
-
-
   const handleGenderSelection = (selectedGender) => {
-    setIsMaleSelected(selectedGender === 'Nam');
-    setIsFemaleSelected(selectedGender === 'Nữ');
+    setIsMaleSelected(selectedGender === "Nam");
+    setIsFemaleSelected(selectedGender === "Nữ");
     setGender(selectedGender);
   };
 
@@ -104,7 +80,7 @@ const EditProfileScreen = ({ navigation }) => {
     const province = provinces.find(p => p.code === provinceCode);
     if (province) {
       setSelectedProvince(province);
-      setSelectedDistrict(null); // Đặt lại huyện khi thay đổi tỉnh
+      setSelectedDistrict(null);
     }
   }, [provinces]);
 
@@ -115,61 +91,23 @@ const EditProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (changeUserStatus === 'succeeded' && changeUserData) {
-      const { status, message, data } = changeUserData;
-
-      console.log("Trạng thái cập nhật:", status);
-      console.log("Thông điệp:", message);
-      console.log("Dữ liệu cập nhật:", data);
-
-      if (status) {
-        setUser(data);
-        ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show(changeUserData.message || "Cập nhật không thành công", ToastAndroid.SHORT);
-      }
+      const { status, message } = changeUserData;
+      ToastAndroid.show(status ? "Cập nhật thành công" : (message || "Cập nhật không thành công"), ToastAndroid.SHORT);
     }
-  }, [changeUserData, changeUserStatus, setUser]);
-
-  useEffect(() => {
-
-    if (userinfo && userinfo.gender) {
-      if (userinfo.gender === "Nam") {
-        setIsMaleSelected(true);
-        setIsFemaleSelected(false);
-      } else if (userinfo.gender === "Nữ") {
-        setIsMaleSelected(false);
-        setIsFemaleSelected(true);
-      }
-      console.log("User Gender from Info:", userinfo.gender);
-    }
-
-  }, [userinfo]);
-
-  useEffect(() => {
-    if (userinfo.dateofbirth) {
-      const dateObject = parseDateString(userinfo.dateofbirth);
-      setDate(dateObject);
-      setFormattedDate(dateObject.toLocaleDateString('en-GB'));
-    }
-  }, [userinfo]);
+  }, [changeUserData, changeUserStatus]);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowPicker(Platform.OS === 'ios');
+    setShowPicker(false);
     setDate(currentDate);
     setFormattedDate(currentDate.toLocaleDateString('en-GB'));
-
-    console.log("Date selected:", currentDate);
-
-
   };
-  
+
   const thayDoi = () => {
     const districtName = selectedDistrict?.name || "Chưa chọn quận huyện";
     const provinceName = selectedProvince?.name || "Chưa chọn tỉnh thành";
     const addressWithDetails = `${address}, ${districtName}, ${provinceName}`;
-
-
+    
     const userData = {
       userId,
       fullname,
@@ -179,9 +117,8 @@ const EditProfileScreen = ({ navigation }) => {
       dateofbirth: formattedDate,
       address: addressWithDetails,
     };
-
+    
     dispatch(ThayDoiThongTin(userData));
-    ToastAndroid.show("Cập nhật thành công", ToastAndroid.SHORT);
   };
 
   return (
@@ -194,7 +131,6 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text>Họ và tên</Text>
         <InputComponent
-
           style={stylesinput.inputComponent}
           keyboardType={"default"}
           value={fullname}
@@ -228,7 +164,6 @@ const EditProfileScreen = ({ navigation }) => {
           placeholder="Ngày sinh"
           style={styles.inputBirthday}
           value={formattedDate}
-          onChangeText={setDate}
           onFocus={() => setShowPicker(true)}
         />
         {showPicker && (
@@ -264,13 +199,10 @@ const EditProfileScreen = ({ navigation }) => {
         onDistrictSelect={handleDistrictSelect}
         selectedProvince={selectedProvince ? selectedProvince.code : null}
         selectedDistrict={selectedDistrict ? selectedDistrict.code : null}
-
-
       />
       <View style={styles.inputContainer}>
         <Text>Chi tiết</Text>
         <InputComponent
-
           style={stylesinput.inputComponent}
           value={address}
           onTextChange={setAddress}
@@ -284,21 +216,13 @@ const EditProfileScreen = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginTop: 10,
-  },
-  btnCapNhat: {
-    marginTop: 40,
-  },
+  inputContainer: { marginTop: 10 },
+  btnCapNhat: { marginTop: 40 },
   inputBirthday: {
     height: 56,
-    width: '100%',
-    paddingVertical: 0,
     paddingHorizontal: 10,
     color: 'rgba(128, 128, 128, 0.90)',
-    fontFamily: 'Lato',
     fontSize: fontsize.sm,
     fontWeight: '700',
     borderRadius: 4,
@@ -306,25 +230,9 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(5, 114, 231, 0.05)',
     backgroundColor: colors.Grey_0,
   },
-  checkboxlabelcontainer: {
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  label: {
-    marginLeft: 8,
-    fontSize: 16,
-  },
-  containercheckbox: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 16,
-  }
+  checkboxlabelcontainer: { flexDirection: 'row', alignItems: 'center' },
+  checkboxContainer: { flexDirection: 'row', alignItems: 'center' },
+  label: { marginLeft: 8, fontSize: 16 },
 });
 
 export default EditProfileScreen;

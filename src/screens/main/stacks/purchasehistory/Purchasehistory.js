@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
@@ -7,13 +7,22 @@ import { fetchBookingsByUserId } from '../../../../redux/slices/booking.slice';
 
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
-    const {bookings}= useSelector((state) => state.reducer.booking);
-    const userId = "6722eff7499a61ac0eaa21e0";
+    const { bookings } = useSelector((state) => state.reducer.booking);
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user;
+    console.log('user: ', user);
+    const userId = user.user._id
+    console.log('userId: ', userId);
+
     useEffect(() => {
         if (userId) {
             dispatch(fetchBookingsByUserId(userId));
         }
     }, [dispatch, userId]);
+
+    const onBackPress = function () {
+        navigation.goBack();
+    }
 
 
 
@@ -29,7 +38,6 @@ const Purchasehistory = ({ navigation }) => {
             <TouchableOpacity onPress={handlePress}>
                 <View style={styles.card}>
                     <Image style={styles.image} source={{ uri: image || Icons.image }} />
-
                     <View>
                         <Text style={styles.dateText}>Ngày: {item.createAt ? new Date(item.createAt).toLocaleDateString() : 'N/A'}</Text>
                         <Text style={styles.tourText}>Tour: {item.tourName}</Text>
@@ -42,17 +50,20 @@ const Purchasehistory = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Header title={"Lịch sử mua hàng"} />
-            <View style={{ padding: 15 }}>
+        <ScrollView style={styles.container}
+
+        >
+            <Header onBackPress={onBackPress} title={"Lịch sử mua hàng"} />
+            <View style={{ padding: 16 }}>
                 <FlatList
                     data={bookings}
                     renderItem={renderItem}
                     keyExtractor={(item) => item._id}
                     contentContainerStyle={styles.listContainer}
+                    scrollEnabled={false}
                 />
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -63,9 +74,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f5f5f5',
     },
-    listContainer: {
-        paddingBottom: 20,
-    },
+
     card: {
         backgroundColor: '#fff',
         marginBottom: 12,
@@ -100,10 +109,11 @@ const styles = StyleSheet.create({
         marginTop: 8,
     },
     image: {
-        width: 100,
-        height: 150,
+        width: 90,
+        height: 130,
         borderTopLeftRadius: 8,
         borderBottomLeftRadius: 8,
         marginEnd: 10,
+        resizeMode: 'cover',
     }
 });

@@ -5,10 +5,10 @@ import { fetchBookingById } from '../../../../redux/slices/booking.slice';
 import Icons from '../../../../constants/Icons';
 import Header from '../../../../components/common/header/Header';
 
-const OrderInformation = ({ route }) => {
+const OrderInformation = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { bookingId } = route.params;
-  
+
 
   const [loading, setLoading] = useState(true);
 
@@ -17,13 +17,13 @@ const OrderInformation = ({ route }) => {
 
   useEffect(() => {
     if (bookingId) {
-      dispatch(fetchBookingById(bookingId));  
+      dispatch(fetchBookingById(bookingId));
     }
   }, [dispatch, bookingId]);
 
   useEffect(() => {
     if (bookingData.bookingData) {
-      setLoading(false); 
+      setLoading(false);
     }
   }, [bookingData]);
 
@@ -46,11 +46,17 @@ const OrderInformation = ({ route }) => {
     day: '2-digit',
   });
 
+  const onBackPress = function () {
+    navigation.navigate('MainTabNavigation')
+  }
+
   const image = booking.linkImage ? booking.linkImage[0] : null;
 
   return (
     <ScrollView style={styles.container}>
-      <Header title="Chi tiết thanh toán" />
+      <Header
+        onBackPress={onBackPress}
+        title="Chi tiết thanh toán" />
       <View style={styles.containerformation}>
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Thông tin khách hàng</Text>
