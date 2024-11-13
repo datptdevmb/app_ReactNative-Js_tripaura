@@ -18,16 +18,15 @@ const Rate = ({route, navigation}) => {
     state => state.reducer.review.reviewsStatus,
   );
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (tourId) {
       dispatch(LayDanhSachDanhGia(tourId));
     }
-    return () => setIsLoading(false); // Reset loading on component unmount
+    return () => setIsLoading(false);
   }, [dispatch, tourId]);
 
-  // Calculate average rating
   const tinhTrungBinhSoSao = danhGia => {
     if (!Array.isArray(danhGia) || danhGia.length === 0) return 0;
     const tongSoSao = danhGia.reduce(

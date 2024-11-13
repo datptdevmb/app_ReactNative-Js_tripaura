@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   reviewItem: {
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
+    padding: 12,
     marginBottom: 12,
     elevation: 1,
   },
