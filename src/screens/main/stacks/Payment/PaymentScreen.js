@@ -54,9 +54,7 @@ const PaymentScreen = ({ route }) => {
       console.log('Navigation detected cancel URL');
       Alert.alert('Thất bại', 'Đã hủy thanh toán.');
       updateBookingStatus('cancel');
-      setTimeout(() => {
-        navigation.navigate('OrderInformation', { bookingId });  
-      }, 0);
+      navigation.navigate('MainTabNavigation');
     }
   };
 

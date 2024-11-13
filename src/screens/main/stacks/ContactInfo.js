@@ -4,23 +4,7 @@ import InputComponent from '../../../components/common/input/InputCompoment';
 import Lable from '../../../components/common/labelText';
 import Button from '../../../components/common/button/Button';
 
-const ContactInfo = ({ setContactInfo }) => {
-    const [contactInfo, setContactInfoState] = useState({
-        name: '',
-        email: '',
-        phone: ''
-    });
-
-    const handleChange = (field, value) => {
-        setContactInfoState((prevInfo) => ({
-            ...prevInfo,
-            [field]: value,
-        }));
-        setContactInfo({
-            ...contactInfo,
-            [field]: value,
-        });
-    };
+const ContactInfo = () => {
 
     return (
         <View style={styles.container}>
@@ -28,17 +12,14 @@ const ContactInfo = ({ setContactInfo }) => {
             <Lable lable={'Thông tin liên lạc'} />
             <InputComponent
                 style={styles.input}
-                value={contactInfo.name}
                 placeholder={'Họ và Tên'}
                 onChangeText={(text) => handleChange("name", text)} />
             <InputComponent
                 style={styles.input}
-                value={contactInfo.email}
                 placeholder={'Địa chỉ Email'}
                 onChangeText={(text) => handleChange("email", text)} />
             <InputComponent
                 style={styles.input}
-                value={contactInfo.phone}
                 placeholder={'Số điện thoại'}
                 onChangeText={(text) => handleChange("phone", text)} />
             <Button

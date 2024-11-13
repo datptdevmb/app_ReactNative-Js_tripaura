@@ -18,10 +18,6 @@ const OrderReviewScreen = ({ navigation, route }) => {
         selectedDate,
     } = useSelector((state) => state.reducer.tour);
 
-
-
-
-
     console.log('tourById', tourById);
     console.log('selectedDate', selectedDate);
     const { detailId, adultPrice, childPrice, } = route.params;
@@ -38,16 +34,8 @@ const OrderReviewScreen = ({ navigation, route }) => {
     const userId = user.user._id
     console.log('userId: ', userId);
 
-
     const image = tourById.imges ? tourById.imges[0] : null;
-
     const { tourName } = tourById;
-
-    const [contactInfo, setContactInfo] = useState({
-        name: "",
-        email: "",
-        phone: "",
-    });
 
     const handleBack = () => {
         navigation.goBack();
@@ -63,15 +51,13 @@ const OrderReviewScreen = ({ navigation, route }) => {
             priceAdult: adultPrice,
             priceChildren: childPrice,
         };
-    
         try {
             console.log('Đang gửi booking data:', bookingData);
             const response = await dispatch(fetchBooking(bookingData)).unwrap();
             console.log('Phản hồi từ fetchBooking:', response);
-    
             if (response.code === 200 && response.data && response.data._id) {
                 console.log('Lấy được bookingId:', response.data._id);
-                handelNavigateToPayment(response.data._id); // Truyền `_id` làm `bookingId`
+                handelNavigateToPayment(response.data._id);
             } else {
                 console.log('Không thể lấy được bookingId. Phản hồi từ server:', response);
                 Alert.alert("Lỗi", "Không thể lấy được bookingId.");
@@ -83,15 +69,6 @@ const OrderReviewScreen = ({ navigation, route }) => {
     };
     
     const handelNavigateToPayment = (bookingId) => {
-        const { name, email, phone } = contactInfo;
-        if (!name || !email || !phone) {
-            Alert.alert(
-                "Thông báo",
-                "Thông tin liên hệ là bắt buộc. Vui lòng điền đầy đủ.",
-                [{ text: "OK" }]
-            );
-            return;
-        }
         navigation.navigate("Payment", {
             tourName,
             selectedDate,
@@ -100,8 +77,7 @@ const OrderReviewScreen = ({ navigation, route }) => {
             totalPrice,
             childPrice,
             image,
-            contactInfo,
-            bookingId 
+            bookingId,
         });
     };
 
@@ -121,7 +97,7 @@ const OrderReviewScreen = ({ navigation, route }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
-                    <ContactInfo setContactInfo={setContactInfo} />
+                    <ContactInfo/>
                 </View>
             </ScrollView>
             <View style={styles.buttonBottom}>

@@ -1,58 +1,103 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import Header from '../../../../components/common/header/Header';
 import stylesglobal from '../../../../constants/global';
 import Button from '../../../../components/common/button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearPaymentData, createPayment } from '../../../../redux/slices/paymentSlice';
+import { fetchBookingById } from '../../../../redux/slices/booking.slice';
 
 const Payment = ({ navigation, route }) => {
+    const { bookingId } = route.params;
+    const dispatch = useDispatch();
+
+    // Redux states
     const paymentStatus = useSelector((state) => state.reducer.payment.status);
     const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
     const paymentError = useSelector((state) => state.reducer.payment.error);
-    const { tourName, selectedDate, adultTickets, childTickets, totalPrice, contactInfo, image,bookingId } = route.params;
-    const dispatch = useDispatch();
+    const bookingData = useSelector((state) => state.reducer.booking.bookingData);
 
-    console.log('bookingid',bookingId);
-    
+    const [tourName, setTourName] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
+    const [numAdult, setNumAdult] = useState(0);
+    const [numChildren, setNumChildren] = useState(0);
+    const [priceAdult, setPriceAdult] = useState(0);
+    const [priceChildren, setPriceChildren] = useState(0);
+    const [fullname, setFullname] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [image, setImage] = useState('');
+
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        }).format(amount);
+    };
+
+    useEffect(() => {
+        if (bookingId) {
+            dispatch(fetchBookingById(bookingId));
+        }
+    }, [dispatch, bookingId]);
+
+    useEffect(() => {
+        if (bookingData?.data) {
+            const booking = bookingData.data;
+            setTourName(booking.tourName);
+            setSelectedDate(booking.selectedDate);
+            setNumAdult(booking.numAdult);
+            setNumChildren(booking.numChildren);
+            setPriceAdult(booking.priceAdult);
+            setPriceChildren(booking.priceChildren);
+            setFullname(booking.fullname);
+            setPhone(booking.phone);
+            setEmail(booking.email);
+            setImage(booking.linkImage ? booking.linkImage[0] : '');
+            const calculatedTotalPrice = (booking.numAdult * booking.priceAdult) + (booking.numChildren * booking.priceChildren);
+            setTotalPrice(calculatedTotalPrice);
+        }
+    }, [bookingData]);
+
+    useEffect(() => {
+        if (paymentStatus === 'succeeded') {
+            if (paymentInfo.paymentLink) {
+                navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink, bookingId });
+            }
+            dispatch(clearPaymentData());
+        } else if (paymentStatus === 'failed') {
+            dispatch(clearPaymentData());
+        }
+    }, [paymentStatus, paymentInfo, dispatch, bookingId]);
+
     const handleBack = () => {
         navigation.goBack();
     };
 
     const zalopay = () => {
-       
+        // Implement ZaloPay payment here
     };
 
     const payos = () => {
-        const amount = totalPrice;
-        const description = tourName;
         const orderId = Math.floor(100000 + Math.random() * 900000);
-        const fullname = contactInfo.name;
-        const phone = contactInfo.phone;
-        const email = contactInfo.email;
-        console.log('fullname',fullname);      
 
-        if (!amount || !description || !orderId || !fullname || !phone || !email) {
+        if (!totalPrice || !tourName || !orderId || !fullname || !phone || !email) {
             Alert.alert('Lỗi', 'Thông tin thanh toán không đầy đủ. Vui lòng kiểm tra lại.');
             return;
         }
 
-        dispatch(createPayment({ amount, orderId, description, fullname, phone, email,bookingId  }));
+        dispatch(createPayment({
+            amount: totalPrice,
+            orderId,
+            description: tourName,
+            fullname,
+            phone,
+            email,
+            bookingId
+        }));
     };
-    useEffect(() => {
-        if (paymentStatus === 'succeeded') {
-            console.log('Truyền thành công:', paymentInfo);
-            if (paymentInfo.paymentLink) {
-                navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink , bookingId: bookingId});
-            }
-            dispatch(clearPaymentData());  
-        } else if (paymentStatus === 'failed') {
-            console.log('Truyền thất bại:', paymentError);
-            Alert.alert('Thất bại', `Không thể tạo liên kết thanh toán: ${paymentError || 'Lỗi không xác định.'}`);
-            dispatch(clearPaymentData());
-        }
-    }, [paymentStatus, paymentInfo, paymentError, dispatch,bookingId]);
-    
+
     return (
         <View style={styles.container}>
             <Header title={'Thanh toán'} onBackPress={handleBack} />
@@ -63,31 +108,32 @@ const Payment = ({ navigation, route }) => {
                         style={styles.image}
                     />
                     <View style={styles.infoContainer}>
-                        <Text style={styles.textTourName}>Tên tour: {tourName} </Text>
-                        <Text style={styles.textDate}>Ngày khởi hành: {selectedDate} </Text>
+                        <Text style={styles.textTourName}>Tên tour: {tourName}</Text>
+                        <Text style={styles.textDate}>Ngày khởi hành: {selectedDate}</Text>
                         <Text style={styles.textContactInfo}>Thông tin liên hệ</Text>
-                        <Text style={styles.label}>Name: {contactInfo.name}</Text>
-                        <Text style={styles.label}>Email: {contactInfo.email}</Text>
-                        <Text style={styles.label}>Phone: {contactInfo.phone}</Text>
+                        <Text style={styles.label}>Name: {fullname}</Text>
+                        <Text style={styles.label}>Email: {email}</Text>
+                        <Text style={styles.label}>Phone: {phone}</Text>
                     </View>
                 </View>
+
                 <View style={styles.horizontalLine} />
 
                 <View>
                     <Text style={styles.textTransactionInformation}>Thông tin giao dịch</Text>
                     <View>
-                        <Text style={styles.transaction}>Vé người lớn : {adultTickets}</Text>
-                        <Text style={styles.transaction}>Vé trẻ em : {childTickets}</Text>
+                        <Text style={styles.transaction}>Vé người lớn: {numAdult}</Text>
+                        <Text style={styles.transaction}>Vé trẻ em: {numChildren}</Text>
                         <View style={styles.horizontalLine} />
-                        <Text style={styles.transactionthanhtoan}>Tổng tiền thanh toán: {totalPrice}đ</Text>
+                        <Text style={styles.transactionthanhtoan}>Tổng tiền thanh toán: {formatCurrency(totalPrice)}</Text>
                     </View>
                 </View>
 
                 <View style={styles.containerpayment}>
                     <Text style={styles.textTotalPrice}>Phương thức thanh toán</Text>
                     <View style={styles.paymentMethods}>
-                        <Button label="Thanh toán qua zalo pay" onPressed={zalopay} style={{ marginTop: 29 }} />
-                        <Button label='Thanh toán payos' style={{ marginTop: 15 }} onPressed={payos} />
+                        <Button label="Thanh toán qua ZaloPay" onPressed={zalopay} style={{ marginTop: 29 }} />
+                        <Button label="Thanh toán Payos" style={{ marginTop: 15 }} onPressed={payos} />
                     </View>
                 </View>
             </View>
@@ -109,7 +155,8 @@ const styles = StyleSheet.create({
     textTransactionInformation: { textAlign: 'center', fontSize: 18, fontWeight: 'bold', marginTop: 10 },
     transaction: { fontSize: 16, marginBottom: 5 },
     transactionthanhtoan: { fontSize: 16, fontWeight: 'bold', marginTop: 10, marginBottom: 5, textAlign: 'right', color: 'red' },
-    containerpayment: { backgroundColor: '#F8F9FE', borderRadius: 10, marginTop: 50 }
+    containerpayment: { backgroundColor: '#F8F9FE', borderRadius: 10, marginTop: 50 },
+    paymentMethods: { marginTop: 15 }
 });
 
 export default Payment;

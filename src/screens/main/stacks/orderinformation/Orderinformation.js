@@ -14,6 +14,8 @@ const OrderInformation = ({ route, navigation }) => {
 
 
   const bookingData = useSelector((state) => state.reducer.booking);
+  console.log('Redux Booking Data:', bookingData);
+  
 
   useEffect(() => {
     if (bookingId) {
@@ -22,7 +24,7 @@ const OrderInformation = ({ route, navigation }) => {
   }, [dispatch, bookingId]);
 
   useEffect(() => {
-    if (bookingData.bookingData) {
+    if (bookingData?.bookingData?.data) {
       setLoading(false);
     }
   }, [bookingData]);
@@ -38,8 +40,9 @@ const OrderInformation = ({ route, navigation }) => {
   if (!bookingData || !bookingData.bookingData) {
     return <Text style={styles.errorText}>Không có dữ liệu đặt tour</Text>;
   }
+  const booking = bookingData?.bookingData?.data;
 
-  const booking = bookingData.bookingData;
+  console.log('booking', booking);
   const formattedDate = new Date(booking.createAt).toLocaleDateString('vi-VN', {
     year: 'numeric',
     month: '2-digit',
@@ -50,7 +53,13 @@ const OrderInformation = ({ route, navigation }) => {
     navigation.navigate('MainTabNavigation')
   }
 
-  const image = booking.linkImage ? booking.linkImage[0] : null;
+  const image = booking?.linkImage?.[0];  
+  console.log('First Image URL:', image);
+
+  console.log('fullname', booking?.fullname);
+  console.log('email', booking?.email);
+  console.log('phone', booking?.phone);
+  console.log('tourName', booking?.tourName);
 
   return (
     <ScrollView style={styles.container}>
@@ -68,7 +77,7 @@ const OrderInformation = ({ route, navigation }) => {
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Chi tiết đơn hàng</Text>
           <Text style={styles.infoText}>Tour: <Text style={styles.highlight}>{booking.tourName || 'N/A'}</Text></Text>
-          <Image source={{ uri: image || Icons.image }} style={styles.image} />
+          <Image source={{ uri: image }} style={styles.image} />
           <Text style={styles.infoText}>Số lượng người lớn: <Text style={styles.highlight}>{booking.numAdult || 0}</Text></Text>
           <Text style={styles.infoText}>Số lượng trẻ em: <Text style={styles.highlight}>{booking.numChildren || 0}</Text></Text>
           <Text style={styles.infoText}>Ngày đặt: <Text style={styles.highlight}>{formattedDate || 'N/A'}</Text></Text>
