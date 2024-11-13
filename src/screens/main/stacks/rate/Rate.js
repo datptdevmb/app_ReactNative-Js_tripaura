@@ -1,22 +1,15 @@
-import React, {useEffect} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  Image,
-  ScrollView,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, Image, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Headercomponet from '../../../../components/common/header/Headercomponet';
 import Icons from '../../../../constants/Icons';
 import {LayDanhSachDanhGia} from '../../../../redux/slices/reviewTourducers';
+import {Skeleton} from 'moti/skeleton';
 import styles from './RateStyle';
 
-const Rate = () => {
+const Rate = ({route, navigation}) => {
   const dispatch = useDispatch();
-  const {tourById: tour} = useSelector(state => state.reducer.tour);
-  const tourId = tour[0]?._id;
+  const {tourId} = route.params;
 
   const danhSachDanhGia = useSelector(
     state => state.reducer.review.reviewsData,
@@ -25,10 +18,13 @@ const Rate = () => {
     state => state.reducer.review.reviewsStatus,
   );
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (tourId) {
       dispatch(LayDanhSachDanhGia(tourId));
     }
+    return () => setIsLoading(false); // Reset loading on component unmount
   }, [dispatch, tourId]);
 
   // Calculate average rating
@@ -44,7 +40,7 @@ const Rate = () => {
   const trungBinhSoSao = tinhTrungBinhSoSao(danhSachDanhGia);
   const soNguoiDanhGia = danhSachDanhGia.length;
 
-  // Create an array of stars for the average rating
+  // Generate stars array for average rating
   const taoMangSoSao = trungBinh => {
     const soSaoToiDa = Math.floor(trungBinh);
     const soSaoBiTat = trungBinh % 1 !== 0 ? 1 : 0; // If there's a decimal part, add one disabled star
@@ -53,7 +49,6 @@ const Rate = () => {
       ...Array.from({length: soSaoBiTat}, () => 'disabled'),
     ];
   };
-
   const mangSoSao = taoMangSoSao(trungBinhSoSao);
 
   const renderReviewItem = ({item}) => (
@@ -95,6 +90,85 @@ const Rate = () => {
     </View>
   );
 
+  const loading = () => (
+    <View style={styles.loadcontainer}>
+      <Skeleton
+        colorMode="light"
+        height={48}
+        width={220}
+        borderRadius={50}
+        marginTop={10}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+      <Text style={styles.text}></Text>
+      <Skeleton
+        colorMode="light"
+        height={77}
+        width={99}
+        borderRadius={50}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+      <Text style={styles.text}></Text>
+      <Skeleton
+        colorMode="light"
+        width={122}
+        height={24}
+        borderRadius={8}
+        marginVertical={10}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+      <Text style={styles.text}></Text>
+
+      <Skeleton
+        colorMode="light"
+        width={159}
+        height={27}
+        borderRadius={8}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+      <Text style={styles.text}></Text>
+      <Text style={styles.text}></Text>
+
+      <Skeleton
+        colorMode="light"
+        width={348}
+        height={180}
+        borderRadius={8}
+        marginVertical={10}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+      <Text style={styles.text}></Text>
+      <Text style={styles.text}></Text>
+
+      <Skeleton
+        colorMode="light"
+        width={348}
+        height={180}
+        borderRadius={8}
+        marginVertical={10}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+      <Text style={styles.text}></Text>
+      <Text style={styles.text}></Text>
+
+      <Skeleton
+        colorMode="light"
+        width={348}
+        height={180}
+        borderRadius={8}
+        marginVertical={10}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
@@ -105,11 +179,8 @@ const Rate = () => {
         />
       </View>
 
-      {trangThaiDanhGia === 'loading' ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Đang tải đánh giá...</Text>
-        </View>
+      {isLoading || trangThaiDanhGia === 'loading' ? (
+        loading()
       ) : danhSachDanhGia.length === 0 ? (
         <Text style={styles.noReviewsText}>Chưa có đánh giá nào.</Text>
       ) : (
@@ -136,7 +207,7 @@ const Rate = () => {
               </View>
 
               <Text style={styles.reviewCount}>
-                Dựa trên {soNguoiDanhGia} đánh giá{' '}
+                Dựa trên {soNguoiDanhGia} đánh giá
               </Text>
             </View>
           }

@@ -26,6 +26,7 @@ import FilterScreen from '../screens/main/stacks/Filter/FilterScreen';
 import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
 import Payment from '../screens/main/stacks/Payment/Payment';
 import PaymentScreen from '../screens/main/stacks/Payment/PaymentScreen';
+import Rate from '../screens/main/stacks/rate/Rate';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -40,6 +41,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
+      <Stack.Screen name="Rate" component={Rate} />
       <Stack.Screen name="Ponorama" component={PanoramaViewer} />
       <Stack.Screen name="ImageDetail" component={ImageDetail} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />

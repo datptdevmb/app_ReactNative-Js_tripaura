@@ -35,7 +35,6 @@ const CardFavorite = ({item, onToggleFavorite}) => {
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    padding: 10,
     marginVertical: 8,
     // backgroundColor: '#fff',
     // borderRadius: 12,
@@ -88,10 +87,8 @@ const styles = StyleSheet.create({
   },
   favoriteIcon: {
     position: 'absolute',
-    left: 80,
-    top: 14,
-    width: 24,
-    height: 24,
+    left: 70,
+    top: 5,
   },
 });
 

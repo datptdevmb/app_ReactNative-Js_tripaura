@@ -5,7 +5,7 @@ import { Rating } from 'react-native-ratings';
 import Lable from '../../../../components/common/labelText';
 import Button from '../../../../components/common/button/Button';
 
-const ReviewList = ({ reviews, onSeeMore }) => {
+const ReviewList = ({ reviews, onSeeMore, tourId }) => {
     return (
         <View>
             <Lable style={styles.lable} lable={'Đánh giá chuyến đi'} />
@@ -14,7 +14,6 @@ const ReviewList = ({ reviews, onSeeMore }) => {
                     <Text style={styles.rating}>5</Text>
                     <Text style={styles.text}>/5</Text>
                 </View>
-
                 <Rating
                     style={styles.starRating}
                     ratingCount={5}
@@ -23,7 +22,6 @@ const ReviewList = ({ reviews, onSeeMore }) => {
                 />
                 <Text style={styles.totalReviews}>10 đánh giá</Text>
             </View>
-
 
             <FlatList
                 horizontal={true}
@@ -40,7 +38,9 @@ const ReviewList = ({ reviews, onSeeMore }) => {
             <Button
                 style={styles.btn}
                 styleText={styles.textBtn}
-                label='Xem thêm đánh giá' />
+                label='Xem thêm đánh giá'
+                onPress={() => onSeeMore(tourId)}
+            />
         </View>
     );
 };

@@ -156,8 +156,8 @@ const Detail = ({navigation, route}) => {
     }).start();
   };
 
-  const gotoReview = () => {
-    navigation.navigate('Rate', {Rate});
+  const navigateToRate = tourId => {
+    navigation.navigate('Rate', {tourId});
   };
 
   return (
@@ -219,7 +219,11 @@ const Detail = ({navigation, route}) => {
               <View style={styles.divider} />
               <Lable lable="Mô tả chuyến đi" />
               <Text style={styles.bodytext}>{description}</Text>
-              <ReviewList reviews={reviews} />
+              <ReviewList
+                reviews={reviews}
+                onSeeMore={navigateToRate}
+                tourId={tourId}
+              />
             </View>
             <View style={{height: 500}}></View>
           </View>
