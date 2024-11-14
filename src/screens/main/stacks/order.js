@@ -21,20 +21,19 @@ const OrderReviewScreen = ({ navigation }) => {
     const { tourName } = tourById;
 
     console.log('tour name: ' + tourName);
-    
+
     const paymentStatus = useSelector((state) => state.reducer.payment.status);
 
     console.log('paymentStatus', paymentStatus);
-    
+
     const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
     console.log('paymentInfo', paymentInfo);
-    
+
     const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
 
     const detailId = tourById.details?.[0]?._id;
     const adultPrice = tourById.details?.[0]?.priceAdult;
     const childPrice = tourById.details?.[0]?.priceChildren;
-    const [bookingId, setBookingId] = useState(null); 
 
     console.log('detailId:', detailId);
     console.log('adultPrice:', adultPrice);
@@ -44,15 +43,13 @@ const OrderReviewScreen = ({ navigation }) => {
     const email = 'nguyenminhnhutt@gmail.com'
     const phone = '0912345678'
 
-    const voucherId = null; 
-    const user = '6722efb9de1698583c9d13ef'; 
+    const voucherId = null;
+    const user = '6722efb9de1698583c9d13ef';
     const userId = user;
     console.log('userId: ', userId);
 
     const [selectedMethod, setSelectedMethod] = useState(null);
 
-    console.log('bookingid',bookingId);
-    
 
     useEffect(() => {
         dispatch(LayDanhSachVoucher(userId));
@@ -68,23 +65,18 @@ const OrderReviewScreen = ({ navigation }) => {
             console.log('No payment method selected');
             return;
         }
-    
+
         console.log('Selected method:', selectedMethod);
-    
+
         if (selectedMethod === 1) {
-            const bookingId = await handleSaveBooking();
-            if (bookingId) {
-                console.log('Calling ZaloPayModule.createOrder');
-                ZaloPayModule.createOrder(totalPriceString, bookingId);
-            }
+            ZaloPayModule.createOrder(totalPriceString, bookingId);
         }
         if (selectedMethod === 2) {
             console.log('Selected Pay on Site');
-            handleSaveBooking();
-            payos();  
+            payos();
         }
     }, [selectedMethod, totalPrice]);
-    
+
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
             if (paymentInfo.paymentLink && bookingId) {
@@ -99,43 +91,8 @@ const OrderReviewScreen = ({ navigation }) => {
             dispatch(clearPaymentData());
         }
     }, [paymentStatus, paymentInfo, bookingId, dispatch]);
-    
-    const handleSaveBooking = async () => {
-        if (!detailId || !userId) {
-            Alert.alert("Lỗi", "Thông tin không đầy đủ để tạo booking.");
-            return null;
-        }
-    
-        const bookingData = {
-            detailId,
-            userId,
-            voucherId: voucherId || null,
-            numAdult: adultTickets,
-            numChildren: childTickets,
-            priceAdult: adultPrice,
-            priceChildren: childPrice,
-        };
-    
-        try {
-            console.log('Đang gửi booking data:', bookingData);
-            const response = await dispatch(fetchBooking(bookingData)).unwrap();
-            console.log('Phản hồi từ fetchBooking:', response);
-    
-            if (response.code === 200 && response.data && response.data._id) {
-                console.log('Lấy được bookingId:', response.data._id);
-                setBookingId(response.data._id);
-                return response.data._id;
-            } else {
-                console.log('Không thể lấy được bookingId. Phản hồi từ server:', response);
-                Alert.alert("Lỗi", "Không thể lấy được bookingId.");
-                return null;
-            }
-        } catch (error) {
-            console.log('Lỗi khi gọi fetchBooking:', error);
-            Alert.alert("Lỗi", "Đã xảy ra lỗi khi gọi API đặt booking.");
-            return null;
-        }
-    };
+
+
 
     const payos = () => {
         console.log('payos function called');
@@ -145,7 +102,7 @@ const OrderReviewScreen = ({ navigation }) => {
             Alert.alert('Lỗi', 'Thông tin thanh toán không đầy đủ. Vui lòng kiểm tra lại.');
             return;
         }
-    
+
         console.log('Dispatching createPayment action');
         dispatch(createPayment({
             amount: totalPrice,

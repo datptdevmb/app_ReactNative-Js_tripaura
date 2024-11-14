@@ -10,7 +10,6 @@ const OrderInformation = ({ route, navigation }) => {
   const { bookingId } = route.params;
   const [loading, setLoading] = useState(true);
 
-
   const bookingData = useSelector((state) => state.reducer.booking);
   console.log('Redux Booking Data:', bookingData);
 
