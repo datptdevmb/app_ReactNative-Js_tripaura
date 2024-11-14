@@ -18,21 +18,22 @@ const OrderReviewScreen = ({ navigation, route }) => {
         selectedDate,
     } = useSelector((state) => state.reducer.tour);
 
-    console.log('tourById', tourById);
-    console.log('selectedDate', selectedDate);
-    const { detailId, adultPrice, childPrice, } = route.params;
-    console.log('detailId', detailId);
-    const voucherId = null;
-
-    console.log('adultPrice', adultPrice);
-    console.log('childPrice', childPrice);
 
     const dispatch = useDispatch();
-    const userReducer = useSelector(state => state.reducer.auth);
-    const user = userReducer.user;
-    console.log('user: ', user);
-    const userId = user.user._id
-    console.log('userId: ', userId);
+
+    const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
+    const { user } = useSelector((state) => state.reducer.auth);
+    const userId = user?.user?._id;
+
+    const [selectedMethod, setSelectedMethod] = useState(null);
+
+
+    useEffect(() => {
+        dispatch(LayDanhSachVoucher(userId));
+    }, [userId]);
+
+
+    const { detailId, adultPrice, childPrice, } = route.params;
 
     const image = tourById.imges ? tourById.imges[0] : null;
     const { tourName } = tourById;
@@ -51,10 +52,12 @@ const OrderReviewScreen = ({ navigation, route }) => {
             priceAdult: adultPrice,
             priceChildren: childPrice,
         };
+
         try {
             console.log('Đang gửi booking data:', bookingData);
             const response = await dispatch(fetchBooking(bookingData)).unwrap();
             console.log('Phản hồi từ fetchBooking:', response);
+
             if (response.code === 200 && response.data && response.data._id) {
                 console.log('Lấy được bookingId:', response.data._id);
                 handelNavigateToPayment(response.data._id);
@@ -67,7 +70,7 @@ const OrderReviewScreen = ({ navigation, route }) => {
             Alert.alert("Lỗi", "Đã xảy ra lỗi khi gọi API đặt booking.");
         }
     };
-    
+
     const handelNavigateToPayment = (bookingId) => {
         navigation.navigate("Payment", {
             tourName,
@@ -77,7 +80,9 @@ const OrderReviewScreen = ({ navigation, route }) => {
             totalPrice,
             childPrice,
             image,
-            bookingId,
+            contactInfo,
+            bookingId
+
         });
     };
 
@@ -97,7 +102,9 @@ const OrderReviewScreen = ({ navigation, route }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
-                    <ContactInfo/>
+
+                    <ContactInfo setContactInfo={setContactInfo} />
+
                 </View>
             </ScrollView>
             <View style={styles.buttonBottom}>
