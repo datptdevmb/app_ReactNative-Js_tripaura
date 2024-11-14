@@ -12,7 +12,7 @@ import Paymethod from "./Paymethod";
 import { useCallback, useEffect, useState } from "react";
 import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
 import SelecVoucher from "./selecVoucher";
-import { string } from "prop-types";
+
 
 
 const OrderReviewScreen = ({ navigation }) => {
