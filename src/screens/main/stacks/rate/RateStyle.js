@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
+  textRate: {
     fontSize: fontsize.xxl,
     lineHeight: 48,
     fontWeight: '700',

@@ -78,4 +78,7 @@ export const styles = StyleSheet.create({
   centeredContainer: {
     flex: 1,
   },
+  listContainer: {
+    paddingBottom: 20,
+  },
 });

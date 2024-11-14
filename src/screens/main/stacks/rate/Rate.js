@@ -28,26 +28,61 @@ const Rate = ({route, navigation}) => {
   }, [dispatch, tourId]);
 
   const tinhTrungBinhSoSao = danhGia => {
-    if (!Array.isArray(danhGia) || danhGia.length === 0) return 0;
-    const tongSoSao = danhGia.reduce(
-      (tong, item) => tong + (item.rating || 0),
-      0,
-    );
-    return (tongSoSao / danhGia.length).toFixed(1); // Round to one decimal place
+    // Kiểm tra nếu danhGia không phải là mảng hoặc mảng rỗng, trả về 0
+    if (!Array.isArray(danhGia) || danhGia.length === 0) {
+      return 0;
+    }
+
+    let tongSoSao = 0; // Biến để lưu tổng số sao
+    let soDanhGia = danhGia.length; // Số lượng đánh giá
+    console.log('soDanhGia:', soDanhGia);
+
+    // Duyệt qua từng đánh giá và cộng điểm rating vào tongSoSao
+    for (let i = 0; i < soDanhGia; i++) {
+      // Kiểm tra nếu có rating, nếu không thì thêm 0
+      tongSoSao += danhGia[i].rating || 0;
+    }
+    console.log('tongSoSao:', tongSoSao);
+
+    // Tính trung bình bằng cách chia tổng số sao cho số lượng đánh giá
+    let trungBinhSoSao = tongSoSao / soDanhGia;
+    console.log('trungBinhSoSao', trungBinhSoSao);
+
+    // Làm tròn trung bình số sao tới 1 chữ số sau dấu phẩy
+    return trungBinhSoSao.toFixed(1);
   };
 
   const trungBinhSoSao = tinhTrungBinhSoSao(danhSachDanhGia);
   const soNguoiDanhGia = danhSachDanhGia.length;
 
-  // Generate stars array for average rating
   const taoMangSoSao = trungBinh => {
+    // Tính số sao đã đầy (số sao tròn)
     const soSaoToiDa = Math.floor(trungBinh);
-    const soSaoBiTat = trungBinh % 1 !== 0 ? 1 : 0; // If there's a decimal part, add one disabled star
-    return [
-      ...Array.from({length: soSaoToiDa}, () => 'filled'),
-      ...Array.from({length: soSaoBiTat}, () => 'disabled'),
-    ];
+    console.log('soSaoToiDa',soSaoToiDa);
+    
+    
+    // Kiểm tra nếu có phần thập phân, thì thêm một sao bị tắt (disabled)
+    // phép chia lấy phần dư)
+    const soSaoBiTat = trungBinh % 1 !== 0 ? 1 : 0;
+    console.log('soSaoBiTat',soSaoBiTat);
+
+    // Tạo mảng sao, gồm sao đầy và sao bị tắt
+    const mangSoSao = [];
+    console.log('mangSoSao',mangSoSao);
+
+    // Thêm các sao đầy
+    for (let i = 0; i < soSaoToiDa; i++) {
+      mangSoSao.push('filled');
+    }
+  
+    // Thêm sao bị tắt nếu có phần thập phân
+    if (soSaoBiTat === 1) {
+      mangSoSao.push('disabled');
+    }
+  
+    return mangSoSao;
   };
+
   const mangSoSao = taoMangSoSao(trungBinhSoSao);
 
   const renderReviewItem = ({item}) => (
@@ -190,7 +225,7 @@ const Rate = ({route, navigation}) => {
           contentContainerStyle={styles.listContainer}
           ListHeaderComponent={
             <View>
-              <Text style={styles.text}>Đánh giá chung</Text>
+              <Text style={styles.textRate}>Đánh giá chung</Text>
               <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
 
               <View style={styles.starContainer}>
