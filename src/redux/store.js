@@ -15,6 +15,10 @@ import getuserReducer from './slices/getUserbyID';
 import voucherReducer from './slices/vouchersSlice'
 
 
+import paymentReducer from './slices/paymentSlice'; 
+import bookingReducer from './slices/booking.slice'; 
+
+
 const rootReducer = combineReducers({
   tour: tourReducer,
   auth: authenReducer,
@@ -29,7 +33,14 @@ const rootReducer = combineReducers({
   filterTour: filterTourReducer,
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
-  vouchers : voucherReducer
+
+  vouchers : voucherReducer,
+
+  payment: paymentReducer,
+  booking: bookingReducer,
+  // favoriteAdDelete: favoriteAdDeleteReducer,
+  // favouriteDelete: favouriteDeleteReducer,
+
 
 
 });

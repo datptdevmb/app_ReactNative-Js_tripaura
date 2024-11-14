@@ -24,7 +24,14 @@ import OrderReviewScreen from '../screens/main/stacks/order';
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 import FilterScreen from '../screens/main/stacks/Filter/FilterScreen';
 import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
+
 import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
+
+
+import Payment from '../screens/main/stacks/Payment/Payment';
+import PaymentScreen from '../screens/main/stacks/Payment/PaymentScreen';
+import OrderInformation from '../screens/main/stacks/orderinformation/Orderinformation';
+import Purchasehistory from '../screens/main/stacks/purchasehistory/Purchasehistory';
 
 
 
@@ -61,6 +68,11 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
             <Stack.Screen name="FiterScreen" component={FilterScreen} />
             <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
+            <Stack.Screen name="Payment" component={Payment} />
+            <Stack.Screen name='PaymentScreen' component={PaymentScreen}/>
+            <Stack.Screen name='OrderInformation' component={OrderInformation}/>
+            <Stack.Screen name='Purchasehistory' component={Purchasehistory}/>
+
 
         </Stack.Navigator>
     )

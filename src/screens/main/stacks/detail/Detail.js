@@ -55,15 +55,23 @@ const reviews = [
 const Detail = ({ navigation, route }) => {
 	const { _id: tourId } = route.params;
 	const dispatch = useDispatch();
+	const [detailId, setDetailId] = useState(null); 
 
 	const {
 		tourById,
 		adultTickets,
 		childTickets,
 		totalPrice,
+		adultPrice,
+		childPrice,
 		loading,
 		selectedDate,
 	} = useSelector((state) => state.reducer.tour);
+
+	console.log('adultPrice',adultPrice);
+	console.log('childPrice',childPrice);
+	
+
 
 	const { isTourFavorited, favoritesStatus, message } = useSelector((state) => state.reducer.favorites)
 	const { user } = useSelector((state) => state.reducer.auth);
@@ -77,6 +85,8 @@ const Detail = ({ navigation, route }) => {
 		location,
 		details,
 	} = tourById;
+
+	
 
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
@@ -109,8 +119,12 @@ const Detail = ({ navigation, route }) => {
 		if (adultTickets === 0 && childTickets === 0) {
 			console.log('vui lòng chọn số lượng vé')
 			return
-		}
-		navigation.navigate('Order')
+		}	
+		navigation.navigate('Order', {
+			detailId,
+            adultPrice,
+            childPrice,
+		});
 	}
 
 	const handleNavigateToFavorite = () => {
@@ -135,6 +149,8 @@ const Detail = ({ navigation, route }) => {
 		loadData();
 	}, [dispatch]);
 
+	console.log('detail',detailId);
+	
 
 
 	const toggleBottomSheet = () => {
@@ -248,7 +264,7 @@ const Detail = ({ navigation, route }) => {
 							</TouchableOpacity>
 							<Text style={styles.tourname}>{tourName}</Text>
 							<DepartureDateSelector
-								onSelectDate={(date) => dispatch(setSelectedDate(date))}
+								onSelectDate={(date,id) => {dispatch(setSelectedDate(date)),setDetailId(id)}}
 								selectedDate={selectedDate}
 								data={details} />
 
