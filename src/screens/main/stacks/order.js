@@ -1,5 +1,5 @@
 // OrderReviewScreen.js
-import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 import Header from "../../../components/common/header/Header";
 import TourInfo from "./TourInfor";
 import DepartureInfo from "./DepartureInfo";
@@ -7,6 +7,9 @@ import ContactInfo from "./ContactInfo";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../components/common/button/Button";
 import formatCurrencyVND from "../../../untils/formatCurrencyVND";
+import { useCallback, useEffect, useState } from "react";
+import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
+import { fetchBooking } from "../../../redux/slices/booking.slice";
 
 
 const OrderReviewScreen = ({ navigation }) => {
@@ -28,14 +31,15 @@ const OrderReviewScreen = ({ navigation }) => {
     console.log('childPrice:', childPrice);
     const voucherId = null;
     const dispatch = useDispatch();
-    const userReducer = useSelector(state => state.reducer.auth);
-    console.log('userReducer:', userReducer);
+    // const userReducer = useSelector(state => state.reducer.auth);
+    // console.log('userReducer:', userReducer);
     
-    const user = userReducer.user;
-    console.log('user: ', user);
-    const userId = user.user._id
-    console.log('userId: ', userId);
+    // const user = userReducer.user;
 
+    const user = '6722efb9de1698583c9d13ef';  
+    const userId = user;  
+    console.log('userId: ', userId);
+    
     const image = tourById.imges ? tourById.imges[0] : null;
     const { tourName } = tourById;
 
@@ -108,7 +112,6 @@ const OrderReviewScreen = ({ navigation }) => {
             totalPrice,
             childPrice,
             image,
-            contactInfo,
             bookingId
 
         });
