@@ -11,7 +11,11 @@ const InputComponent = ({
   placeholderTextColor,
   keyboardType,
   style,
-  ...props
+  onFocus,
+  editable,
+  ...otherProps
+
+
 }) => {
   const [text, setText] = useState(value);
   const [hide, setHide] = useState(hidePassword);
@@ -38,10 +42,13 @@ const InputComponent = ({
         keyboardType={keyboardType || 'default'}
         onChangeText={handleTextChange}
         value={text}
+        onFocus={onFocus}
+        editable={editable}
         placeholderTextColor={placeholderTextColor || colors.Grey_400}
         secureTextEntry={hide}
         style={[stylesinput.inputComponent, style]}
-        {...props}
+        {...otherProps}
+
       />
     </View>
   );

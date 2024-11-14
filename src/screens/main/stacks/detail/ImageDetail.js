@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         width: '100%',
-        height: 243
+        height: 50
     },
     btnCon: {
         position: "absolute",

@@ -14,6 +14,8 @@ import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
+import paymentReducer from './slices/paymentSlice'; 
+import bookingReducer from './slices/booking.slice'; 
 import getVoucherReducer from './slices/vouchersSlice'
 
 
@@ -31,16 +33,30 @@ const rootReducer = combineReducers({
   filterTour: filterTourReducer,
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
+  payment: paymentReducer,
+  booking: bookingReducer,
   getVoucher: getVoucherReducer
   // favoriteAdDelete: favoriteAdDeleteReducer,
   // favouriteDelete: favouriteDeleteReducer,
 
+
 });
 
+// Configure the store
+
 const store = configureStore({
+
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+
   reducer: {
     reducer: rootReducer,
+
   }
 });
+
 
 export default store;

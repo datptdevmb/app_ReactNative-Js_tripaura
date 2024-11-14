@@ -1,7 +1,7 @@
-import * as React from "react"
-import Svg, { Path } from "react-native-svg"
+import * as React from "react";
+import Svg, { Path } from "react-native-svg";
 
-function IcleftArrow(props) {
+function IcleftArrow({ style, color = "white", ...props }) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,14 +9,15 @@ function IcleftArrow(props) {
       height={24}
       viewBox="0 0 16 16"
       fill="none"
-      {...props}
+      style={style}
+      {...props} 
     >
       <Path
         d="M3.828 7H16v2H3.828l5.364 5.364-1.414 1.414L0 8 7.778.222l1.414 1.414L3.828 7z"
-        fill="#A8A8A8"
+        fill={color} 
       />
     </Svg>
-  )
+  );
 }
 
-export default IcleftArrow
+export default IcleftArrow;

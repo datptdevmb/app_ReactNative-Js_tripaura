@@ -10,7 +10,7 @@ import { AppContext } from '../../../AppContext';
 const ProfileScreen = (props) => {
   const { navigation } = props;
   const { user, setUser } = useContext(AppContext)
-
+  const [image, setImage] = useState(null);
 
   const nhanBack = () => {
     navigation.goBack()
@@ -25,10 +25,10 @@ const ProfileScreen = (props) => {
       />
       <View style={styles.avatarContainer}>
         <View style={styles.imageAvatar}>
-          {
-            !user.avatar ? <Image source={Icons.avatar} /> :
-              <Image source={{ uri: user.avatar }} />
-          }
+          <Image
+            source={image ? { uri: image } : (user && user.avatar ? { uri: user.avatar } : Icons.avatar)}
+            style={styles.imageAvatar}
+          />
           <TouchableOpacity style={styles.icCameraContainer}>
             <Image source={Icons.ic_camera} />
           </TouchableOpacity>
@@ -177,7 +177,8 @@ const styles = StyleSheet.create({
   imageAvatar: {
     width: 65,
     height: 65,
-    borderRadius: 50
+    borderRadius: 50,
+    resizeMode: 'cover'
   },
   header: {
     color: colors.primary_500,

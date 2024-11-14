@@ -1,9 +1,10 @@
 export const ROUTES = {
-  home: 'Trang chu',
-  voucher: 'Voucher',
-  profile: 'Profile',
-  settings: 'Settings',
-  favorite: 'Favorite',
+  home: 'Trang chủ',
+  voucher: 'Ưu đãi',
+  profile: 'Tôi',
+  settings: 'Cài đặt',
+  favorite: 'Yêu thích',
   login :'Login',
-  detail:'Detail'
+  detail:'Detail',
+  loginScreen: 'LoginScreen',
 };

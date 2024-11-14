@@ -21,7 +21,7 @@ const DepartureInfo = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 2,
+        marginTop: 10,
         paddingVertical: 10,
         paddingHorizontal: 16,
         backgroundColor: 'white'

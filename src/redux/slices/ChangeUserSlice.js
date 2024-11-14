@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+
 // Tạo hàm ThayDoiThongTin để thực hiện gọi API cập nhật thông tin người dùng
 export const ThayDoiThongTin = createAsyncThunk(
     'changeUser/ThayDoiThongTin',
@@ -31,6 +32,7 @@ export const ThayDoiThongTin = createAsyncThunk(
 );
 
 const changeUserSlice = createSlice({
+
     name: 'changeUser',
     initialState: {
         user: null,
@@ -46,9 +48,12 @@ const changeUserSlice = createSlice({
                 state.error = null;
             })
             .addCase(ThayDoiThongTin.fulfilled, (state, action) => {
+
                 console.log("Fulfilled action:", action);
                 state.changeUserStatus = 'succeeded';
-                state.user = action.payload; // Cập nhật thông tin người dùng
+                state.user = action.payload;
+
+
             })
             .addCase(ThayDoiThongTin.rejected, (state, action) => {
                 state.changeUserStatus = 'failed';

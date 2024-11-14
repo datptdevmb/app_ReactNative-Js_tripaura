@@ -26,7 +26,10 @@ import Voucher from '../screens/main/stacks/voucher/Voucher'
 import { useSelector } from 'react-redux';
 import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
 import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
+import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import ChonVoucher from '../screens/main/stacks/voucher/ChonVoucher';
+
+
 
 const Tab = createBottomTabNavigator();
 
@@ -103,7 +106,7 @@ const ButtomNavigation = () => {
                 height: 90,
               }}>
               <IcHome />
-              <Text style={{ fontSize: 8 }}>{ROUTES.voucher}</Text>
+              <Text style={{fontSize: 12}}>{ROUTES.home}</Text>
             </View>
           ),
         }}
@@ -112,19 +115,20 @@ const ButtomNavigation = () => {
         name="Favourite"
         component={ChonVoucher}
         options={{
-          tabBarIcon: ({ focused }) => (
+
+          tabBarIcon: ({focused}) => (
             <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
                 borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
+                borderTopColor: focused ? colors.onPrimary : colors.onPrimary,
                 height: 90,
                 // backgroundColor:colors.primary
               }}>
               <IcVoucher />
-              <Text>Uu dai</Text>
+              <Text style={{fontSize: 12}}>Uu dai</Text>
             </View>
           ),
         }}
@@ -163,8 +167,8 @@ const ButtomNavigation = () => {
 
                 // backgroundColor:colors.primary
               }}>
-              <IcFavorite />
-              <Text>{ROUTES.favorite}</Text>
+              <IcFavorite color={"grey"} />
+              <Text  style={{fontSize: 12}}>{ROUTES.favorite}</Text>
             </View>
           ),
         }}
@@ -186,7 +190,7 @@ const ButtomNavigation = () => {
                 // backgroundColor:colors.primary
               }}>
               <IcProfile />
-              <Text>{ROUTES.settings}</Text>
+              <Text  style={{fontSize: 12}} >{ROUTES.settings}</Text>
             </View>
           ),
         }}

@@ -1,5 +1,7 @@
+
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { register, googleLogin } from '../../sevices/auth/auth.service';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchUser = createAsyncThunk(
@@ -20,7 +22,6 @@ export const fetchGoogleUser = createAsyncThunk(
     try {
       const response = await googleLogin(googleUserData);
       await AsyncStorage.setItem('userId', JSON.stringify(response));
-      console.log('Thông tin người dùng đã được lưu vào AsyncStorage');
       return response;
     } catch (error) {
       throw error;
@@ -31,6 +32,7 @@ export const fetchGoogleUser = createAsyncThunk(
 export const checkLoginStatus = createAsyncThunk('auth/checkLoginStatus', async () => {
   const userData = await AsyncStorage.getItem('userId');
   if (userData) {
+
     return { isLogin: true, user: JSON.parse(userData) }; 
   } else {
     return { isLogin: false, user: null };
@@ -59,7 +61,6 @@ const authenSlice = createSlice({
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
       state.loading = false;
-      console.log('Đăng ký thất bại:', action.error.message);
       state.err = action.error.message;
     });
 

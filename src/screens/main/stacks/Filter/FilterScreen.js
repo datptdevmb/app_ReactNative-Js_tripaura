@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -196,3 +197,4 @@ const FilterScreen = ({ props, route, navigation, searchText }) => {
 };
 
 export default FilterScreen;
+
