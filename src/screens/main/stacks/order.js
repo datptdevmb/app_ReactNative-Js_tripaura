@@ -14,24 +14,31 @@ import { useCallback, useEffect, useState } from "react";
 import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
 import SelecVoucher from "./selecVoucher";
 
-const OrderReviewScreen = ({navigation}) => {
+const OrderReviewScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const {tourById, adultTickets, childTickets, totalPrice, selectedDate} =
+  const { tourById, adultTickets, childTickets, totalPrice, selectedDate } =
     useSelector(state => state.reducer.tour);
-  const {tourName} = tourById;
+  const { tourName } = tourById;
 
-  const {getVoucherData} = useSelector(state => state.reducer.vouchers);
-  const {user} = useSelector(state => state.reducer.auth);
+  const { getVoucherData } = useSelector(state => state.reducer.vouchers);
+  const { user } = useSelector(state => state.reducer.auth);
   const userId = user?.user?._id;
 
   const [selectedMethod, setSelectedMethod] = useState(null);
+
+  const { discount } = route.params
+
+  const { voucherId } = route.params
+  console.log("=================== discount", discount);
+  console.log("=================== voucherId", voucherId);
+
 
   useEffect(() => {
     dispatch(LayDanhSachVoucher(userId));
   }, [userId]);
 
   const handleVoucher = useCallback(() => {
-    navigation.navigate('ListVoucherScreen');
+    navigation.navigate('ListVoucherScreen', { totalPrice: totalPrice });
   });
 
   const handlePuchase = useCallback(() => {
@@ -67,7 +74,8 @@ const OrderReviewScreen = ({navigation}) => {
           />
           <DepartureInfo />
           {/* <ContactInfo /> */}
-          <SelecVoucher onPress={handleVoucher} />
+          <SelecVoucher onPress={handleVoucher}
+            discount={discount} />
           <Paymethod
             selectedMethod={selectedMethod}
             setSelectedMethod={setSelectedMethod}
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 20,
     shadowColor: 'red',
-    shadowOffset: {width: 0, height: -4},
+    shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
     elevation: 5,
