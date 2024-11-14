@@ -5,8 +5,11 @@ import {
 	View,
 	Animated,
 	TouchableOpacity,
-	ToastAndroid
+	NativeModules,
+	useWindowDimensions
 } from 'react-native';
+
+const { ZaloPayModule } = NativeModules;
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatedScrollView } from '@kanelloc/react-native-animated-header-scroll-view';
@@ -30,6 +33,7 @@ import IcFavorite from '../../../../assets/icons/bottom_tab/Ic_favorite';
 import { KiemTraYeuThich, themXoaYeuThichTour } from '../../../../redux/slices/favouriteducers';
 import Toast from '../../../../components/common/toast/Toast';
 import { ROUTES } from '../../../../constants/routes';
+import RenderHtml from 'react-native-render-html';
 const reviews = [
 	{
 		id: 1,
@@ -51,6 +55,8 @@ const reviews = [
 ];
 
 const Detail = ({ navigation, route }) => {
+	const { width } = useWindowDimensions();
+
 	const { _id: tourId } = route.params;
 	const dispatch = useDispatch();
 	const [detailId, setDetailId] = useState(null); 
@@ -103,7 +109,6 @@ const Detail = ({ navigation, route }) => {
 				tourId
 			}
 		))
-
 		if (favoritesStatus === 'success') {
 			setShowToast(true);
 			setTimeout(() => setShowToast(false), 3000);
@@ -130,6 +135,13 @@ const Detail = ({ navigation, route }) => {
 		navigation.navigate('yeuthich')
 	}
 
+	const handleDetailImage = () => {
+		navigation.navigate('ImageDetail')
+	}
+
+	const handleSeemore =()=>{
+		navigation.navigate('Rate')
+	}
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -160,7 +172,7 @@ const Detail = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			{showToast && favoritesStatus === 'success'&&(
+			{showToast && favoritesStatus === 'success' && (
 				<Toast
 					onPress={handleNavigateToFavorite}
 					message={message}
@@ -191,7 +203,8 @@ const Detail = ({ navigation, route }) => {
 					height: 243,
 				}}
 			>
-				<View
+				<TouchableOpacity
+					onPress={handleDetailImage}
 					style={{
 						position: 'absolute',
 						height: 243,
@@ -223,10 +236,16 @@ const Detail = ({ navigation, route }) => {
 							<Text style={styles.tourname}>{tourName}</Text>
 							<LocationInfo location={location} />
 							<View style={styles.divider} />
-							<Lable lable="Mô tả chuyến đi" />
-							<Text style={styles.bodytext}>{description}</Text>
-							<ReviewList reviews={reviews} />
+							{/* <Lable lable="Mô tả chuyến đi" /> */}
+							{/* <Text style={styles.bodytext}>{description}</Text> */}
+							<RenderHtml
+								contentWidth={width}
+								source={{ html: description }}
+							/>
+
+							<ReviewList onSeeMore={handleSeemore} reviews={reviews} />
 						</View>
+						
 						<View style={{ height: 500 }}></View>
 					</View>
 				)}

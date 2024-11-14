@@ -24,10 +24,15 @@ import OrderReviewScreen from '../screens/main/stacks/order';
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 import FilterScreen from '../screens/main/stacks/Filter/FilterScreen';
 import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
+
 import Payment from '../screens/main/stacks/Payment/Payment';
 import PaymentScreen from '../screens/main/stacks/Payment/PaymentScreen';
 import OrderInformation from '../screens/main/stacks/orderinformation/Orderinformation';
 import Purchasehistory from '../screens/main/stacks/purchasehistory/Purchasehistory';
+
+import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
+import Rate from '../screens/main/stacks/rate/Rate';
+
 
 
 
@@ -58,7 +63,8 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
             <Stack.Screen name="Order" component={OrderReviewScreen} />
             <Stack.Screen name={ROUTES.login} component={Login} />
-            {/* <Stack.Screen name="Detail" component={Detail} /> */}
+            {/* <Stack.Screen name={ROUTES.login} component={Login} /> */}
+            <Stack.Screen name="Rate" component={Rate} />
             {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
             <Stack.Screen name="FiterScreen" component={FilterScreen} />
