@@ -7,6 +7,7 @@ export const AppProvider = (props) => {
     const [user, setUser] = useState(null);
 
     return (        
+
         <AppContext.Provider
             value={{
                 isLogin, setIsLogin,

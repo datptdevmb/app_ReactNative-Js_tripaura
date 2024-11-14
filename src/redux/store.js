@@ -12,7 +12,8 @@ import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
-import voucherReducer from './slices/vouchersSlice'
+import voucherReducer from './slices/vouchersSlice';
+import reviews from './slices/reviewTourducers'
 
 
 const rootReducer = combineReducers({
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
   filterTour: filterTourReducer,
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
-  vouchers : voucherReducer
+  vouchers : voucherReducer,
+  reviews:voucherReducer
 
 
 });

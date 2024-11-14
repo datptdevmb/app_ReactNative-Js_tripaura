@@ -1,5 +1,5 @@
 // OrderReviewScreen.js
-import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules, useWindowDimensions } from "react-native";
 const { ZaloPayModule } = NativeModules;
 import Header from "../../../components/common/header/Header";
 import TourInfo from "./TourInfor";
@@ -16,7 +16,7 @@ import SelecVoucher from "./selecVoucher";
 
 
 const OrderReviewScreen = ({ navigation }) => {
-
+    const { width } = useWindowDimensions();
     const dispatch = useDispatch();
     const {
         tourById,
@@ -44,14 +44,14 @@ const OrderReviewScreen = ({ navigation }) => {
 
     const handlePuchase = useCallback(() => {
         const totalPriceString = totalPrice.toString();
-        if(!selectedMethod) return
-        if(selectedMethod == 1){
+        if (!selectedMethod) return
+        if (selectedMethod == 1) {
             ZaloPayModule.createOrder(totalPriceString);
         }
-        if(selectedMethod == 2){
-           console.log('payos')
+        if (selectedMethod == 2) {
+            console.log('payos')
         }
-       
+
     })
 
 

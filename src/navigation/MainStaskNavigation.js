@@ -25,6 +25,7 @@ import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
 import FilterScreen from '../screens/main/stacks/Filter/FilterScreen';
 import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
 import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
+import Rate from '../screens/main/stacks/rate/Rate';
 
 
 
@@ -56,7 +57,8 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
             <Stack.Screen name="Order" component={OrderReviewScreen} />
             <Stack.Screen name={ROUTES.login} component={Login} />
-            <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
+            {/* <Stack.Screen name={ROUTES.login} component={Login} /> */}
+            <Stack.Screen name="Rate" component={Rate} />
             {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
             <Stack.Screen name="FiterScreen" component={FilterScreen} />
