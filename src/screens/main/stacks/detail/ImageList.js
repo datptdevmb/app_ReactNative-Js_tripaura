@@ -1,17 +1,21 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import { View, Image, StyleSheet, ScrollView } from 'react-native';
 
 
-const ImageList = ({dataimage}) => {
+const ImageList = ({ dataimage }) => {
   return (
-    <View style={styles.containerItemImage}>
-      {dataimage &&
-        dataimage.map((item, index) => (
-          <View key={index}>
-            <Image style={styles.itemImage} source={{uri: item}} />
-          </View>
-        ))}
-    </View>
+    <ScrollView
+    horizontal>
+      <View style={styles.containerItemImage}>
+        {dataimage &&
+          dataimage.map((item, index) => (
+            <View key={index}>
+              <Image style={styles.itemImage} source={{ uri: item }} />
+            </View>
+          ))}
+      </View>
+    </ScrollView>
+
   );
 };
 

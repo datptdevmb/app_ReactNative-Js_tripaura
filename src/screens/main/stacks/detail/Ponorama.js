@@ -20,7 +20,7 @@ const PanoramaViewer = () => {
       <script>
         pannellum.viewer('panorama', {
           "type": "equirectangular",
-          "panorama": "https://tse1.mm.bing.net/th?id=OIP.vhilRnxKdn5f9WRuPDJrhwHaDt&pid=Api&P=0&h=220",
+          "panorama": "https://tse2.mm.bing.net/th?id=OIP.fvpWBNwMtY8a8uR6whk59QHaEt&pid=Api&P=0&h=220",
           "autoLoad": true,
           "autoRotate": 0, // Không tự động quay
         });
@@ -30,10 +30,10 @@ const PanoramaViewer = () => {
   `;
 
   return (
-    <WebView 
-      originWhitelist={['*']} 
-      source={{ html: htmlContent }} 
-      style={{ flex: 1 }} 
+    <WebView
+      originWhitelist={['*']}
+      source={{ html: htmlContent }}
+      style={{ flex: 1 }}
     />
   );
 };

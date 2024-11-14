@@ -38,10 +38,6 @@ const MainTabNavigation = () => {
 const MainStaskNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen
-        name="LoginRegisterScreen"
-        component={LoginRegisterScreen}
-      />
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
@@ -57,7 +53,10 @@ const MainStaskNavigation = () => {
       <Stack.Screen name={ROUTES.login} component={Login} />
       {/* <Stack.Screen name="Detail" component={Detail} /> */}
       {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
-
+      <Stack.Screen
+        name="LoginRegisterScreen"
+        component={LoginRegisterScreen}
+      />
       <Stack.Screen name="FiterScreen" component={FilterScreen} />
       <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
       <Stack.Screen name="Payment" component={Payment} />
