@@ -9,11 +9,9 @@ import colors from '../../../../constants/colors';
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
     const { bookings } = useSelector((state) => state.reducer.booking);
-    // const userReducer = useSelector(state => state.reducer.auth);
-    // const user = userReducer.user;
-    // const userId = user.user._id;
-
-    const userId = '6722efb9de1698583c9d13ef'
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user;
+    const userId = user.user._id;
 
     const [selectedStatus, setSelectedStatus] = useState(0);
 
@@ -35,7 +33,6 @@ const Purchasehistory = ({ navigation }) => {
             : null; 
         console.log('item', item);
     
-        // Đảm bảo rằng bạn lấy đúng tourName từ tourInfo
         const {
             numAdult,
             numChildren,

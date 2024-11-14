@@ -35,18 +35,13 @@ const OrderReviewScreen = ({ navigation }) => {
     const adultPrice = tourById.details?.[0]?.priceAdult;
     const childPrice = tourById.details?.[0]?.priceChildren;
 
-    console.log('detailId:', detailId);
-    console.log('adultPrice:', adultPrice);
-    console.log('childPrice:', childPrice);
-
-    const fullname = 'Nguyễn Minh Nhựt'
-    const email = 'nguyenminhnhutt@gmail.com'
-    const phone = '0912345678'
 
     const voucherId = null;
-    const user = '6722efb9de1698583c9d13ef';
-    const userId = user;
-    console.log('userId: ', userId);
+
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user;
+    console.log('user: ', user);
+    const userId = user.user._id
 
     const [selectedMethod, setSelectedMethod] = useState(null);
 
@@ -93,7 +88,14 @@ const OrderReviewScreen = ({ navigation }) => {
     }, [paymentStatus, paymentInfo, bookingId, dispatch]);
 
 
+    const fullname = user.fullname
+    const phone = user.phone
+    const email = user.email
 
+    console.log('fullname: ' + fullname);
+    console.log('phone:'+ phone);
+    console.log('email:'+ email);
+    
     const payos = () => {
         console.log('payos function called');
         const orderId = Math.floor(100000 + Math.random() * 900000);
