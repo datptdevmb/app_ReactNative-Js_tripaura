@@ -1,147 +1,144 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, Alert, ToastAndroid, FlatList} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { LayDanhSachYeuThich, themXoaYeuThichTour } from '../../../../redux/slices/favouriteducers';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import CardFavorite from '../../../../components/common/card/CardFavorite';
+  LayDanhSachYeuThich,
+  themXoaYeuThichTour,
+} from '../../../../redux/slices/favouriteducers';
 import FavoriteList from './FavoriteList';
-import LottieView from 'lottie-react-native';
-import Toast from '../../../../components/common/toast/Toast';
+import {Skeleton} from 'moti/skeleton';
 
-
-
-const FavoriteScreen = ({ route }) => {
+const FavoriteScreen = ({route}) => {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.reducer.auth);
-  const { favoritesData, favoritesStatus } = useSelector(state => state.reducer.favorites);
+  const {user} = useSelector(state => state.reducer.auth);
+  const {favoritesData, favoritesStatus} = useSelector(
+    state => state.reducer.favorites,
+  );
 
+  const renderSkeletonItem = () => (
+    <View style={styles.skeletonCard}>
+      <Skeleton
+        colorMode="light"
+        width={100}
+        height={100}
+        radius={8}
+        color="#e0e0e0"
+        highlightColor="#f0f0f0"
+      />
+      <View style={styles.skeletonContent}>
+        <Skeleton
+          colorMode="light"
+          width={160}
+          height={20}
+          radius={4}
+          style={styles.skeletonTitle}
+          color="#e0e0e0"
+          highlightColor="#f0f0f0"
+        />
+        <View style={styles.skeletonLocation}>
+          <Skeleton
+            colorMode="light"
+            width={12}
+            height={12}
+            radius={6}
+            color="#e0e0e0"
+            highlightColor="#f0f0f0"
+          />
+          <Skeleton
+            colorMode="light"
+            width={100}
+            height={12}
+            radius={4}
+            style={{marginLeft: 6}}
+            color="#e0e0e0"
+            highlightColor="#f0f0f0"
+          />
+        </View>
+        <View style={styles.skeletonRating}>
+          <Skeleton
+            colorMode="light"
+            width={12}
+            height={12}
+            radius={6}
+            color="#e0e0e0"
+            highlightColor="#f0f0f0"
+          />
+          <Skeleton
+            colorMode="light"
+            width={100}
+            height={12}
+            radius={4}
+            style={{marginLeft: 6}}
+            color="#e0e0e0"
+            highlightColor="#f0f0f0"
+          />
+        </View>
+        <View style={styles.skeletonRating}>
+          <Skeleton
+            colorMode="light"
+            width={12}
+            height={12}
+            radius={6}
+            color="#e0e0e0"
+            highlightColor="#f0f0f0"
+          />
+          <Skeleton
+            colorMode="light"
+            width={100}
+            height={12}
+            radius={4}
+            style={{marginLeft: 6}}
+            color="#e0e0e0"
+            highlightColor="#f0f0f0"
+          />
+        </View>
+      </View>
+    </View>
+  );
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user?.user?._id) {
       dispatch(LayDanhSachYeuThich(user.user._id));
-      console.log(favoritesData)
+      console.log(favoritesData);
     }
   }, [dispatch, user]);
 
-  const handleToggleFavorite = selectedTourId => {
-    const userId = user.user._id;
+  const handleToggleFavorite = tourId => {
+    const userId = user?.user?._id;
 
-    if (!selectedTourId) {
-      Alert.alert('Thông báo', 'Không tìm thấy tourId');
+    if (!userId || !tourId) {
+      Alert.alert('Thông báo', 'Không tìm thấy userId hoặc tourId');
       return;
     }
-    dispatch(themXoaYeuThichTour({ userId, tourId: selectedTourId }))
-  };
 
+    ToastAndroid.show('Hủy bỏ yêu thích thành công', ToastAndroid.SHORT);
+    dispatch(themXoaYeuThichTour({userId, tourId}));
+  };
 
   return (
     <View style={styles.container}>
-      <FavoriteList
-        data={favoritesData} />
-     
-    </View >
+      {favoritesStatus === 'loading' ? (
+        <FlatList
+          data={Array(5).fill(0)}
+          renderItem={renderSkeletonItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <FavoriteList
+          data={favoritesData}
+          onToggleFavorite={handleToggleFavorite}
+        />
+      )}
+    </View>
   );
 };
-
 const styles = StyleSheet.create({
-  toast: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 340,
-    height: 60,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    shadowOffset: {
-      width: 0,
-      height: 3
-    },
-    shadowColor: 'black',
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  iconToast: {
-    width: 48,
-    height: 48,
-  },
-  btnXem: {
-    marginStart: 30
-  },
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
-  },
-  texty: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    alignItems: 'center',
-  },
-  detailsContainer: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: '500',
-  },
-  day: {
-    fontSize: 14,
-    color: '#555',
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#e91e63',
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-    marginRight: 10,
-  },
-  placeholderImage: {
-    width: 100,
-    height: 100,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 8,
-    marginRight: 10,
-  },
-  deleteButton: {
-    backgroundColor: '#ff4d4d',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginLeft: 10,
-  },
-  deleteIcon: {
-    width: 20,
-    height: 20,
-  },
-  textt: {
-    fontSize: 16,
-    marginTop: 10,
-  },
-  texttt: {
-    fontSize: 14,
-    color: '#777',
+    backgroundColor: '#f8f9fa',
   },
 });
 
