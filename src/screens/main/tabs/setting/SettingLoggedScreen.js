@@ -1,5 +1,5 @@
 
-import { Alert, Image, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 
 import stylesglobal from '../../../../constants/global';
@@ -22,9 +22,9 @@ const SettingLoggedScreen = (props) => {
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     console.log('user: ', user);
-    // const userId = user.user._id
+    const userId = user.user._id
 
-    // console.log('image: ', image);
+    console.log('image: ', image);
 
 
     const changeUserStatus = useSelector(state => state.changeUser);
@@ -32,20 +32,20 @@ const SettingLoggedScreen = (props) => {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
-    // useEffect(() => {
-    //     if (user.user) {
-    //         const userData = user.user;
-    //         const avatar = userData.avatar;
-    //         const fullname = userData.fullname;
-    //         const email = userData.email;
-    //         const userId = userData._id;
+    useEffect(() => {
+        if (user.user) {
+            const userData = user.user;
+            const avatar = userData.avatar;
+            const fullname = userData.fullname;
+            const email = userData.email;
+            const userId = userData._id;
 
-    //         console.log('Avatar:', avatar);
-    //         console.log('Fullname:', fullname);
-    //         console.log('Email:', email);
-    //         console.log('User ID:', userId);
-    //     }
-    // }, [user]);
+            console.log('Avatar:', avatar);
+            console.log('Fullname:', fullname);
+            console.log('Email:', email);
+            console.log('User ID:', userId);
+        }
+    }, [user]);
 
     const commonOptions = {
         mediaType: 'photo',
@@ -134,15 +134,15 @@ const SettingLoggedScreen = (props) => {
     }, [changeUserStatus]);
 
 
-    // const userName = user?.user.fullname || 'Nguyễn Văn A';
+    const userName = user?.user.fullname || 'Nguyễn Văn A';
 
-    // const avatar = image
-    //     ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
-    //         ? { uri: user.user.avatar } : Icons.avatar;
+    const avatar = image
+        ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
+            ? { uri: user.user.avatar } : Icons.avatar;
 
-    // console.log('avatar', avatar);
-    // console.log('name', userName);
-    // console.log('userName:', user?.user.fullname);
+    console.log('avatar', avatar);
+    console.log('name', userName);
+    console.log('userName:', user?.user.fullname);
 
 
     function handleMap() {
@@ -156,170 +156,164 @@ const SettingLoggedScreen = (props) => {
     }
     return (
         <View style={stylesglobal.container}>
-            <ScrollView>
-                <View style={styles.headerContainer}>
-                    <View style={styles.avatarContainer}>
+            <View style={styles.headerContainer}>
+                <View style={styles.avatarContainer}>
 
-                        <TouchableOpacity onPress={openImagePicker}>
-                            {/* <Image
+                    <TouchableOpacity onPress={openImagePicker}>
+                        <Image
                             source={avatar}
                             style={styles.imageAvatar}
-                        /> */}
+                        />
 
-                        </TouchableOpacity>
+                    </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
-                            <Image source={Icons.ic_camera} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.txtNameContainer}>
+                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
+                        <Image source={Icons.ic_camera} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.txtNameContainer}>
 
-                        <Text style={styles.txtName}>aaa</Text>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('EditProfileScreen')}
-                            style={styles.btnCapNhaHoSo}>
-
-                            <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Text style={styles.txtName}>{userName}</Text>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('ProfileScreen')}
-                        style={styles.iconNextContainer}>
-                        <Image
-                            style={styles.iconNext}
-                            source={Icons.ic_arrowright} />
+                        onPress={() => navigation.navigate('EditProfileScreen')}
+                        style={styles.btnCapNhaHoSo}>
+
+                        <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('ProfileScreen')}
+                    style={styles.iconNextContainer}>
+                    <Image
+                        style={styles.iconNext}
+                        source={Icons.ic_arrowright} />
+                </TouchableOpacity>
+            </View>
 
-                <View style={styles.underline} />
-
-
-                <View style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 16, elevation: 5, marginTop: 20 }}>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_orther} />
-                            </View>
-                        </TouchableOpacity>
+            <View style={styles.btnHorizontalContainer}>
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_orther} />
+                        </View>
                         <Text style={styles.txtTroGiup}>Tour</Text>
-                    </View>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_map} />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
-                    </View>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity onPress={handleCauhoi} style={styles.btnCauHoiContainer}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_message} />
-                            </View>
-
-                        </TouchableOpacity>
-                        <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
-                    </View>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity style={styles.btnCauHoiContainer}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_lock} />
-                            </View>
-
-                        </TouchableOpacity>
-                        <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
-                    </View>
-                </View>
-
-                <View style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 16, elevation: 5, marginTop: 20 }}>
-                    <View style={styles.thongBaoContainer}>
-                        <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn}
-                                source={Icons.ic_bell} />
-                            <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
-                            <View style={styles.lefticon}>
-                                <Switch
-                                    trackColor={{ false: '#767577', true: '#0572E7' }}
-                                    thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
-                                    onValueChange={toggleSwitch}
-                                    value={isEnabled}
-                                />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.SangToiContainer}>
-                        <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn}
-                                source={Icons.ic_moon} />
-                            <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
-                            <View style={styles.lefticon}>
-                                <Switch
-                                    trackColor={{ false: '#767577', true: '#0572E7' }}
-                                    thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
-                                    onValueChange={toggleSwitch}
-                                    value={isEnabled}
-                                />
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={styles.language}>
-                        <TouchableOpacity>
-                            <View style={styles.btnContainer}>
-                                <Image style={styles.imageBtn}
-                                    source={Icons.ic_earth} />
-                                <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
-                                <View style={styles.lefticon}>
-                                    <Text>VN</Text>
-                                    <Image style={styles.btnNext}
-                                        source={Icons.ic_arrowbottom} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-
-                    </View>
-                    <View style={styles.language}>
-                        <TouchableOpacity>
-                            <View style={styles.btnContainer}>
-                                <Image style={styles.imageBtn}
-                                    source={Icons.ic_mony} />
-                                <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
-                                <View style={styles.lefticon}>
-                                    <Text>VND</Text>
-                                    <Image style={styles.btnNext}
-                                        source={Icons.ic_arrowbottom} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-
-                    </View>
-
-                </View>
-                <View style={styles.underline} />
-
-                <View style={styles.language}>
-                    <TouchableOpacity onPress={() => navigation.navigate('LoginRegisterScreen')} >
-                        <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn}
-                                source={Icons.ic_lockout} />
-                            <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
-                            <View style={styles.lefticon}>
-                                <Image style={styles.btnNext}
-                                    source={Icons.ic_arrowright} />
-                            </View>
-                        </View>
                     </TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 20 }} />
-            </ScrollView>
+                <View >
+                    <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_map} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
+                    </TouchableOpacity>
+                </View>
+                <View >
+                    <TouchableOpacity onPress={handleCauhoi} style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_message} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
+                    </TouchableOpacity>
+                </View>
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_lock} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+
+            <View style={styles.underline} />
+
+            <View style={styles.thongBaoContainer}>
+                <View style={styles.btnContainer}>
+                    <Image style={styles.imageBtn}
+                        source={Icons.ic_bell} />
+                    <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
+                    <View style={styles.lefticon}>
+                        <Switch
+                            trackColor={{ false: '#767577', true: '#0572E7' }}
+                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
+                        />
+                    </View>
+                </View>
+            </View>
+            <View style={styles.SangToiContainer}>
+                <View style={styles.btnContainer}>
+                    <Image style={styles.imageBtn}
+                        source={Icons.ic_moon} />
+                    <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
+                    <View style={styles.lefticon}>
+                        <Switch
+                            trackColor={{ false: '#767577', true: '#0572E7' }}
+                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
+                        />
+                    </View>
+                </View>
+            </View>
+
+            <View style={styles.language}>
+                <TouchableOpacity>
+                    <View style={styles.btnContainer}>
+                        <Image style={styles.imageBtn}
+                            source={Icons.ic_earth} />
+                        <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
+                        <View style={styles.lefticon}>
+                            <Text>VN</Text>
+                            <Image style={styles.btnNext}
+                                source={Icons.ic_arrowbottom} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+            <View style={styles.language}>
+                <TouchableOpacity>
+                    <View style={styles.btnContainer}>
+                        <Image style={styles.imageBtn}
+                            source={Icons.ic_mony} />
+                        <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
+                        <View style={styles.lefticon}>
+                            <Text>VND</Text>
+                            <Image style={styles.btnNext}
+                                source={Icons.ic_arrowbottom} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+
+            <View style={styles.underline} />
+
+            <View style={styles.language}>
+                <TouchableOpacity onPress={() => navigation.navigate('LoginRegisterScreen')} >
+                    <View style={styles.btnContainer}>
+                        <Image style={styles.imageBtn}
+                            source={Icons.ic_lockout} />
+                        <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
+                        <View style={styles.lefticon}>
+                            <Image style={styles.btnNext}
+                                source={Icons.ic_arrowright} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
         </View>
     )
 }
@@ -327,11 +321,6 @@ const SettingLoggedScreen = (props) => {
 export default SettingLoggedScreen
 
 const styles = StyleSheet.create({
-    itemrow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 10
-    },
     btnNext: {
         width: 16,
         height: 16,
@@ -347,7 +336,7 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     thongBaoContainer: {
-        marginTop: 0
+        marginTop: 34
     },
     txtDieuKhoan: {
         width: 230,
