@@ -28,6 +28,7 @@ import Payment from '../screens/main/stacks/Payment/Payment';
 import PaymentScreen from '../screens/main/stacks/Payment/PaymentScreen';
 import OrderInformation from '../screens/main/stacks/orderinformation/Orderinformation';
 import Purchasehistory from '../screens/main/stacks/purchasehistory/Purchasehistory';
+import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
 
 
 
@@ -58,7 +59,7 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
             <Stack.Screen name="Order" component={OrderReviewScreen} />
             <Stack.Screen name={ROUTES.login} component={Login} />
-            {/* <Stack.Screen name="Detail" component={Detail} /> */}
+            <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
             {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
             <Stack.Screen name="FiterScreen" component={FilterScreen} />

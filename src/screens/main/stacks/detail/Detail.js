@@ -5,8 +5,10 @@ import {
 	View,
 	Animated,
 	TouchableOpacity,
-	ToastAndroid
+	NativeModules
 } from 'react-native';
+
+const { ZaloPayModule } = NativeModules;
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatedScrollView } from '@kanelloc/react-native-animated-header-scroll-view';
@@ -103,7 +105,6 @@ const Detail = ({ navigation, route }) => {
 				tourId
 			}
 		))
-
 		if (favoritesStatus === 'success') {
 			setShowToast(true);
 			setTimeout(() => setShowToast(false), 3000);
@@ -130,6 +131,9 @@ const Detail = ({ navigation, route }) => {
 		navigation.navigate('yeuthich')
 	}
 
+	const handleDetailImage =()=>{
+		navigation.navigate('ImageDetail')
+	}
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -160,7 +164,7 @@ const Detail = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			{showToast && favoritesStatus === 'success'&&(
+			{showToast && favoritesStatus === 'success' && (
 				<Toast
 					onPress={handleNavigateToFavorite}
 					message={message}
@@ -191,7 +195,8 @@ const Detail = ({ navigation, route }) => {
 					height: 243,
 				}}
 			>
-				<View
+				<TouchableOpacity
+					onPress={handleDetailImage}
 					style={{
 						position: 'absolute',
 						height: 243,
