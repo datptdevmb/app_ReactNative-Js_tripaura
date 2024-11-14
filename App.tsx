@@ -10,7 +10,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <AppProvider>
-        <AppNavigation />
+        <Purchasehistory navigation={undefined} />
       </AppProvider>
     </Provider>
   );
