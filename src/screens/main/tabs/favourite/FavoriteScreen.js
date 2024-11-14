@@ -39,14 +39,16 @@ const FavoriteScreen = ({ route }) => {
       Alert.alert('Thông báo', 'Không tìm thấy tourId');
       return;
     }
-    dispatch(themXoaYeuThichTour({ userId, tourId: selectedTourId }))
+    dispatch(themXoaYeuThichTour({ userId, tourId: selectedTourId }));
   };
 
 
   return (
     <View style={styles.container}>
       <FavoriteList
-        data={favoritesData} />
+        data={favoritesData}
+        onToggleFavorite={handleToggleFavorite}
+        />
      
     </View >
   );
