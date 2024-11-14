@@ -1,24 +1,22 @@
-
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import authenReducer from "./slices/auth.slice";
-import tourReducer from "./slices/tour.slice";
-import categoryReducer from './slices/category.slice'
-import networkReducer from './slices/network.slice'
-import imageSliderReducer from './slices/image.slice'
-import favoriteReducer from './slices/favouriteducers'
-import filterTourReducer from './slices/filterTourSlice'
-import searchTourReducer from './slices/searchTourSlice'
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import authenReducer from './slices/auth.slice';
+import tourReducer from './slices/tour.slice';
+import categoryReducer from './slices/category.slice';
+import networkReducer from './slices/network.slice';
+import imageSliderReducer from './slices/image.slice';
+import favoriteReducer from './slices/favouriteducers';
+import filterTourReducer from './slices/filterTourSlice';
+import searchTourReducer from './slices/searchTourSlice';
 import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
 
-import paymentReducer from './slices/paymentSlice'; 
-import bookingReducer from './slices/booking.slice'; 
+import paymentReducer from './slices/paymentSlice';
+import bookingReducer from './slices/booking.slice';
 
 import voucherReducer from './slices/vouchersSlice';
-import reviews from './slices/reviewTourducers'
-
+import reviewReducer from './slices/reviewTourducers';
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -36,29 +34,22 @@ const rootReducer = combineReducers({
   changeUser: changeUserReducer,
   payment: paymentReducer,
   booking: bookingReducer,
-
-  vouchers : voucherReducer,
-  reviews:voucherReducer
-
-
-
+  vouchers: voucherReducer,
+  reviews: reviewReducer,
 });
 
 // Configure the store
 
 const store = configureStore({
-
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
 
   reducer: {
     reducer: rootReducer,
-
-  }
+  },
 });
-
 
 export default store;

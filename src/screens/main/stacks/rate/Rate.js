@@ -1,22 +1,15 @@
-import React, {useEffect} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  Image,
-  ScrollView,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, Image, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Headercomponet from '../../../../components/common/header/Headercomponet';
 import Icons from '../../../../constants/Icons';
 import {LayDanhSachDanhGia} from '../../../../redux/slices/reviewTourducers';
+import {Skeleton} from 'moti/skeleton';
 import styles from './RateStyle';
 
-const Rate = () => {
+const Rate = ({route, navigation}) => {
   const dispatch = useDispatch();
-  const {tourById: tour} = useSelector(state => state.reducer.tour);
-  const tourId = tour[0]?._id;
+  const {tourId} = route.params;
 
   const danhSachDanhGia = useSelector(
     state => state.reducer.reviews.reviewsData,
@@ -25,33 +18,69 @@ const Rate = () => {
     state => state.reducer.reviews.reviewsStatus,
   );
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (tourId) {
       dispatch(LayDanhSachDanhGia(tourId));
+      console.log('dispatch', dispatch);
     }
+    return () => setIsLoading(false);
   }, [dispatch, tourId]);
 
-  // Calculate average rating
   const tinhTrungBinhSoSao = danhGia => {
-    if (!Array.isArray(danhGia) || danhGia.length === 0) return 0;
-    const tongSoSao = danhGia.reduce(
-      (tong, item) => tong + (item.rating || 0),
-      0,
-    );
-    return (tongSoSao / danhGia.length).toFixed(1); // Round to one decimal place
+    // Kiểm tra nếu danhGia không phải là mảng hoặc mảng rỗng, trả về 0
+    if (!Array.isArray(danhGia) || danhGia.length === 0) {
+      return 0;
+    }
+
+    let tongSoSao = 0; // Biến để lưu tổng số sao
+    let soDanhGia = danhGia.length; // Số lượng đánh giá
+    console.log('soDanhGia:', soDanhGia);
+
+    // Duyệt qua từng đánh giá và cộng điểm rating vào tongSoSao
+    for (let i = 0; i < soDanhGia; i++) {
+      // Kiểm tra nếu có rating, nếu không thì thêm 0
+      tongSoSao += danhGia[i].rating || 0;
+    }
+    console.log('tongSoSao:', tongSoSao);
+
+    // Tính trung bình bằng cách chia tổng số sao cho số lượng đánh giá
+    let trungBinhSoSao = tongSoSao / soDanhGia;
+    console.log('trungBinhSoSao', trungBinhSoSao);
+
+    // Làm tròn trung bình số sao tới 1 chữ số sau dấu phẩy
+    return trungBinhSoSao.toFixed(1);
   };
 
   const trungBinhSoSao = tinhTrungBinhSoSao(danhSachDanhGia);
   const soNguoiDanhGia = danhSachDanhGia.length;
 
-  // Create an array of stars for the average rating
   const taoMangSoSao = trungBinh => {
+    // Tính số sao đã đầy (số sao tròn)
     const soSaoToiDa = Math.floor(trungBinh);
-    const soSaoBiTat = trungBinh % 1 !== 0 ? 1 : 0; // If there's a decimal part, add one disabled star
-    return [
-      ...Array.from({length: soSaoToiDa}, () => 'filled'),
-      ...Array.from({length: soSaoBiTat}, () => 'disabled'),
-    ];
+    console.log('soSaoToiDa', soSaoToiDa);
+
+    // Kiểm tra nếu có phần thập phân, thì thêm một sao bị tắt (disabled)
+    // phép chia lấy phần dư)
+    const soSaoBiTat = trungBinh % 1 !== 0 ? 1 : 0;
+    console.log('soSaoBiTat', soSaoBiTat);
+
+    // Tạo mảng sao, gồm sao đầy và sao bị tắt
+    const mangSoSao = [];
+    console.log('mangSoSao', mangSoSao);
+
+    // Thêm các sao đầy
+    for (let i = 0; i < soSaoToiDa; i++) {
+      mangSoSao.push('filled');
+    }
+
+    // Thêm sao bị tắt nếu có phần thập phân
+    if (soSaoBiTat === 1) {
+      mangSoSao.push('disabled');
+    }
+
+    return mangSoSao;
   };
 
   const mangSoSao = taoMangSoSao(trungBinhSoSao);
@@ -105,43 +134,34 @@ const Rate = () => {
         />
       </View>
 
-      {trangThaiDanhGia === 'loading' ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Đang tải đánh giá...</Text>
-        </View>
-      ) : danhSachDanhGia.length === 0 ? (
-        <Text style={styles.noReviewsText}>Chưa có đánh giá nào.</Text>
-      ) : (
-        <FlatList
-          data={danhSachDanhGia}
-          renderItem={renderReviewItem}
-          keyExtractor={item => item._id}
-          contentContainerStyle={styles.listContainer}
-          ListHeaderComponent={
-            <View>
-              <Text style={styles.text}>Đánh giá chung</Text>
-              <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
+      <FlatList
+        data={danhSachDanhGia}
+        renderItem={renderReviewItem}
+        keyExtractor={item => item._id}
+        contentContainerStyle={styles.listContainer}
+        ListHeaderComponent={
+          <View>
+            <Text style={styles.textRate}>Đánh giá chung</Text>
+            <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
 
-              <View style={styles.starContainer}>
-                {mangSoSao.map((star, index) => (
-                  <Image
-                    key={index}
-                    source={
-                      star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
-                    }
-                    style={styles.star}
-                  />
-                ))}
-              </View>
-
-              <Text style={styles.reviewCount}>
-                Dựa trên {soNguoiDanhGia} đánh giá{' '}
-              </Text>
+            <View style={styles.starContainer}>
+              {mangSoSao.map((star, index) => (
+                <Image
+                  key={index}
+                  source={
+                    star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
+                  }
+                  style={styles.star}
+                />
+              ))}
             </View>
-          }
-        />
-      )}
+
+            <Text style={styles.reviewCount}>
+              Dựa trên {soNguoiDanhGia} đánh giá
+            </Text>
+          </View>
+        }
+      />
     </View>
   );
 };

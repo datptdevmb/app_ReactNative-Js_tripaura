@@ -132,6 +132,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 30,
   },
+  textRate: {
+    fontSize: 40,
+    textAlign: 'center',
+    color: '#212121',
+    fontWeight: 'bold',
+  },
 });
 
 export default styles;
