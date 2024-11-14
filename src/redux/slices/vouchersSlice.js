@@ -5,7 +5,7 @@ export const LayDanhSachVoucher = createAsyncThunk('getVoucher', async data => {
     // console.log("==============data==============",data);
 
     const response = await fetch(
-        `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/voucher/api/getVoucher?userId=${data}`,
+        `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/coupon/api/getByUserId?userId=${data}`,
         {
             method: 'GET',
             headers: {
@@ -13,11 +13,11 @@ export const LayDanhSachVoucher = createAsyncThunk('getVoucher', async data => {
             },
         },
     );
-    const user = await response.json();
+    const vouchers = await response.json();
     if (response.ok) {
-        // console.log("=======================", user);
+        console.log("=======================", vouchers);
 
-        return user;
+        return vouchers;
     }
     throw new Error('Failed');
 });

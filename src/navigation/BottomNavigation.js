@@ -5,15 +5,15 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, { useEffect, useState } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import HomeScreen from '../screens/main/tabs/home/HomeScreen';
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
 import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScreen';
-import {ROUTES} from '../constants/routes';
+import { ROUTES } from '../constants/routes';
 import colors from '../constants/colors';
 import SlideChangeText from '../components/common/slide/SlideChangeText';
 import IcHome from '../assets/icons/bottom_tab/Ic_home';
@@ -26,10 +26,11 @@ import Voucher from '../screens/main/stacks/voucher/Voucher'
 import { useSelector } from 'react-redux';
 import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
 import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
+import ChonVoucher from '../screens/main/stacks/voucher/ChonVoucher';
 
 const Tab = createBottomTabNavigator();
 
-function CustomBottom({onPress, children}) {
+function CustomBottom({ onPress, children }) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -91,7 +92,7 @@ const ButtomNavigation = () => {
         name={ROUTES.home}
         component={HomeScreen}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               style={{
                 justifyContent: 'center',
@@ -102,16 +103,16 @@ const ButtomNavigation = () => {
                 height: 90,
               }}>
               <IcHome />
-              <Text style={{fontSize: 8}}>{ROUTES.voucher}</Text>
+              <Text style={{ fontSize: 8 }}>{ROUTES.voucher}</Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
         name="Favourite"
-        component={Voucher}
+        component={ChonVoucher}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               style={{
                 justifyContent: 'center',
@@ -132,8 +133,8 @@ const ButtomNavigation = () => {
         name="yeuthich"
         component={SearchScreen}
         options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          tabBarIcon: ({ focused }) => (
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Image
                 resizeMode="contain"
                 source={require('../assets/icons/SearchIcon.png')}
@@ -150,7 +151,7 @@ const ButtomNavigation = () => {
         name="Notification"
         component={isLogin ? FavoriteScreen : FavouriteScreenNoLogin}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               style={{
                 justifyContent: 'center',
@@ -170,9 +171,9 @@ const ButtomNavigation = () => {
       />
       <Tab.Screen
         name="Setting"
-        component={isLogin ? SettingLoggedScreen :SettingScreen}
+        component={isLogin ? SettingLoggedScreen : SettingScreen}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               style={{
                 justifyContent: 'center',
