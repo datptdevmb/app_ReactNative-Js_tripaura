@@ -19,17 +19,18 @@ const OrderReviewScreen = ({ navigation }) => {
         selectedDate,
     } = useSelector((state) => state.reducer.tour);
 
-    console.log('tourById', tourById);
-    console.log('selectedDate', selectedDate);
-    const { detailId, adultPrice, childPrice, } = route.params;
-    console.log('detailId', detailId);
+    const detailId = tourById.details?.[0]?._id; 
+    const adultPrice = tourById.details?.[0]?.priceAdult; 
+    const childPrice = tourById.details?.[0]?.priceChildren;
+    
+    console.log('detailId:', detailId);
+    console.log('adultPrice:', adultPrice);
+    console.log('childPrice:', childPrice);
     const voucherId = null;
-
-    console.log('adultPrice', adultPrice);
-    console.log('childPrice', childPrice);
-
     const dispatch = useDispatch();
     const userReducer = useSelector(state => state.reducer.auth);
+    console.log('userReducer:', userReducer);
+    
     const user = userReducer.user;
     console.log('user: ', user);
     const userId = user.user._id
@@ -39,8 +40,6 @@ const OrderReviewScreen = ({ navigation }) => {
     const { tourName } = tourById;
 
     const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
-    const { user } = useSelector((state) => state.reducer.auth);
-    const userId = user?.user?._id;
 
     const [selectedMethod, setSelectedMethod] = useState(null);
 
