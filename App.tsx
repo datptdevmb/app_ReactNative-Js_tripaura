@@ -6,12 +6,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './src/AppNavigation';
 import Purchasehistory from './src/screens/main/stacks/purchasehistory/Purchasehistory.js';
 import SettingLoggedScreen from './src/screens/main/tabs/setting/SettingLoggedScreen.js';
+import ListVoucherScreen from './src/screens/main/stacks/ListVoucherScreen.js';
 
 const App = () => {
   return (
     <Provider store={store}>
       <AppProvider>
-        <SettingLoggedScreen/>
+        <AppNavigation></AppNavigation>
       </AppProvider>
 
     </Provider>

@@ -38,6 +38,7 @@ const ReviewList = ({ reviews, onSeeMore }) => {
             />
 
             <Button
+                onPressed={onSeeMore}
                 style={styles.btn}
                 styleText={styles.textBtn}
                 label='Xem thêm đánh giá' />
@@ -56,8 +57,8 @@ const styles = StyleSheet.create({
         marginTop: 12,
     },
     btn: {
-        height:44,
-        marginTop:20,
+        height: 44,
+        marginTop: 20,
         backgroundColor: 'white',
         borderWidth: 0.8,
         borderColor: 'black'

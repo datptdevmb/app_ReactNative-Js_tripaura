@@ -1,83 +1,146 @@
-import React, { useEffect } from "react";
-import { FlatList, Text, View, StyleSheet } from "react-native";
-import Header from "../../../components/common/header/Header";
-import { useSelector, useDispatch } from "react-redux";
-import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ToastAndroid } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import Headercomponet from '../../../components/common/header/Headercomponet';
+import { useDispatch, useSelector } from 'react-redux';
+import { LayDanhSachVoucher } from '../../../redux/slices/vouchersSlice';
+import { data } from '../../../../constants/data';
+import fontsize from '../../../constants/fontsize';
 
-const ListVoucherScreen = ({ navigation }) => {
-    const dispatch = useDispatch();
-    const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
-    const { user } = useSelector((state) => state.reducer.auth);
-    const userId = user?.user?._id;
+const ChonVoucher = ({ navigation, route }) => {
+    const { totalPrice } = route.params
+    console.log("============price", totalPrice);
+    const [btn, setbtn] = useState(false)
+    const dispatch = useDispatch()
+    const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.vouchers);
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user
+
+    // console.log(user.user._id);
 
     useEffect(() => {
-        // Fetch vouchers when the component mounts
-        if (userId) {
-            dispatch(LayDanhSachVoucher(userId));
+        // dispatch(LayDanhSachVoucher(user.user._id))
+        dispatch(LayDanhSachVoucher('6709c68681507ec7a47b03cc'))
+    }, [])
+    // console.log("====== data", getVoucherData.data);
+
+
+    const onPressItem = (discount, voucherId) => {
+        if (totalPrice > discount) {
+            navigation.navigate('Order', { discount: discount, voucherId: voucherId })
+        } else {
+            ToastAndroid.show('không đủ điều kiên', ToastAndroid.SHORT)
         }
-    }, [userId, dispatch]);
+    }
 
-    const handleBack = () => {
-        navigation.goBack();
+    const formatCurrencyVND = amount => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0,
+        }).format(amount);
     };
-    console.log(getVoucherData)
 
-    // Render each voucher item
-    const renderVoucherItem = ({ item }) => {
-        return (
-            <View style={styles.voucherItem}>
-                <Text style={styles.voucherTitle}>{item.name}</Text>
-                <Text>{item.description}</Text>
-                <Text style={styles.voucherValue}>{`Giảm giá: ${item.discount}%`}</Text>
-            </View>
-        );
-    };
+    const renderItemSearch = ({ item }) => (
+        <View style={styles.itemContainer}>
+            <TouchableOpacity
+                onPress={() => onPressItem(item.discount, item._id)}
+                disabled={totalPrice < item.condition}>
+                <View></View>
+                <ImageBackground source={require('./../../../assets/images/backgroudVoucher.png')} resizeMode='cover' style={{ padding: 10 }} >
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{
+                            width: 100, height: 100, marginLeft: 32, justifyContent: 'center'
+                        }}>
+                            <Text style={styles.textTitle}>Trip Aura</Text>
+                        </View>
+                        <View>
+                            <Text style={styles.itemName} >{item.description}</Text>
+
+                            <Text style={styles.itemPrice}>Tối đa: {formatCurrencyVND(item.discount)} </Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+            </TouchableOpacity>
+
+        </View>
+    );
+
+
 
     return (
         <View style={styles.container}>
-            <Header onBackPress={handleBack} title={"Khuyến mãi hiện có"} />
-            {getVoucherData? (
-                <FlatList
-                    data={getVoucherData}
-                    renderItem={renderVoucherItem}
-                    keyExtractor={(item) => item.id.toString()}
-                />
-            ) : (
-                <View style={styles.noVouchers}>
-                    <Text style={styles.noVouchersText}>Không có khuyến mãi hiện có</Text>
-                </View>
-            )}
+            <Headercomponet
+                leftIcon={require('./../../../assets/images/close.png')}
+                onPressLeftIcon={() => { navigation.goBack() }}
+                title={"Chọn Voucher"} />
+
+            <FlatList
+                data={getVoucherData.data}
+                keyExtractor={item => item._id}
+                renderItem={renderItemSearch}
+
+            />
         </View>
-    );
-};
+    )
+}
+
+export default ChonVoucher
 
 const styles = StyleSheet.create({
+    textTitleDisable: {
+        width: 38,
+        color: '#0572E7',
+        textAlign: 'center',
+        fontSize: fontsize.sm,
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
+    },
+    textTitle: {
+        width: 38,
+        color: '#0572E7',
+        textAlign: 'center',
+        fontSize: fontsize.sm,
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
+    },
+    itemContainer: {
+
+        marginBottom: 20,
+    },
+    itemImage: {
+        width: '100%',
+        height: 120,
+        borderTopLeftRadius: 10, // Bo góc trên bên trái
+        borderTopRightRadius: 10, // Bo góc trên bên phải
+    },
+    itemName: {
+        height: 40,
+        width: 160,
+        fontSize: fontsize.sm,
+        color: '#4D4D4D',
+        fontWeight: 'bold',
+        marginTop: 16,
+        marginLeft: 16,
+        marginRight: 16,
+        fontWeight: '700',
+    },
+    itemPrice: {
+        fontSize: fontsize.sm,
+        color: 'black',
+        fontWeight: '700',
+        marginLeft: 16,
+        marginRight: 16,
+    },
+    itemDay: {
+        height: 16,
+        fontSize: fontsize.fm,
+        color: '#757575',
+        marginLeft: 8,
+        marginRight: 16,
+        fontWeight: '700',
+    },
     container: {
         flex: 1,
-    },
-    voucherItem: {
-        padding: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
-    },
-    voucherTitle: {
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-    voucherValue: {
-        fontSize: 14,
-        color: "#DA712F",
-        marginTop: 5,
-    },
-    noVouchers: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    noVouchersText: {
-        fontSize: 16,
-        color: "#999",
-    },
-});
-
-export default ListVoucherScreen;
+        padding: 16
+    }
+})
