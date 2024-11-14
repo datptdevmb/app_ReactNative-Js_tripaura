@@ -8,14 +8,12 @@ import Header from '../../../../components/common/header/Header';
 const OrderInformation = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { bookingId } = route.params;
-
-
   const [loading, setLoading] = useState(true);
 
 
   const bookingData = useSelector((state) => state.reducer.booking);
   console.log('Redux Booking Data:', bookingData);
-  
+
 
   useEffect(() => {
     if (bookingId) {
@@ -49,17 +47,21 @@ const OrderInformation = ({ route, navigation }) => {
     day: '2-digit',
   });
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(amount);
+  };
+
+
   const onBackPress = function () {
     navigation.navigate('MainTabNavigation')
   }
 
-  const image = booking?.linkImage?.[0];  
-  console.log('First Image URL:', image);
-
-  console.log('fullname', booking?.fullname);
-  console.log('email', booking?.email);
-  console.log('phone', booking?.phone);
-  console.log('tourName', booking?.tourName);
+  const image = booking?.tourImages?.[0]?.linkImage?.[0];
+  const totalCost = (booking?.numAdult * booking?.priceAdult) + (booking?.numChildren * booking?.priceChildren);
+  console.log('Total cost:', totalCost);
 
   return (
     <ScrollView style={styles.container}>
@@ -69,20 +71,28 @@ const OrderInformation = ({ route, navigation }) => {
       <View style={styles.containerformation}>
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Thông tin khách hàng</Text>
-          <Text style={styles.infoText}>Tên khách hàng: <Text style={styles.highlight}>{booking.fullname || 'N/A'}</Text></Text>
-          <Text style={styles.infoText}>Email: <Text style={styles.highlight}>{booking.email || 'N/A'}</Text></Text>
-          <Text style={styles.infoText}>Số điện thoại: <Text style={styles.highlight}>{booking.phone || 'Không có'}</Text></Text>
+          <Text style={styles.infoText}>Tên khách hàng: <Text style={styles.highlight}>{booking?.userInfo?.fullname || 'N/A'}</Text></Text>
+          <Text style={styles.infoText}>Email: <Text style={styles.highlight}>{booking?.userInfo?.email || 'N/A'}</Text></Text>
+          <Text style={styles.infoText}>Số điện thoại: <Text style={styles.highlight}>{booking?.userInfo?.phone || 'Không có'}</Text></Text>
         </View>
 
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Chi tiết đơn hàng</Text>
-          <Text style={styles.infoText}>Tour: <Text style={styles.highlight}>{booking.tourName || 'N/A'}</Text></Text>
+          <Text style={styles.infoText}>Tour: <Text style={styles.highlight}>{booking?.tourInfo?.tourName || 'N/A'}</Text></Text>
           <Image source={{ uri: image }} style={styles.image} />
+          <Text style={styles.infoText}>Chi tiết tour: <Text style={styles.highlight}>{booking?.tourInfo?.description || 'N/A'}</Text></Text>
           <Text style={styles.infoText}>Số lượng người lớn: <Text style={styles.highlight}>{booking.numAdult || 0}</Text></Text>
           <Text style={styles.infoText}>Số lượng trẻ em: <Text style={styles.highlight}>{booking.numChildren || 0}</Text></Text>
           <Text style={styles.infoText}>Ngày đặt: <Text style={styles.highlight}>{formattedDate || 'N/A'}</Text></Text>
-          <Text style={styles.infoText}>Giá tour người lớn: <Text style={styles.highlight}>{booking.priceAdult || 'N/A'}</Text></Text>
-          <Text style={styles.infoText}>Giá tour trẻ em: <Text style={styles.highlight}>{booking.priceChildren || 'N/A'}</Text></Text>
+          <Text style={styles.infoText}>
+            Giá tour người lớn: <Text style={styles.highlight}>{formatCurrency(booking?.priceAdult) || 'N/A'}</Text>
+          </Text>
+          <Text style={styles.infoText}>
+            Giá tour trẻ em: <Text style={styles.highlight}>{formatCurrency(booking?.priceChildren) || 'N/A'}</Text>
+          </Text>
+          <Text style={styles.infoText}>
+            Tổng tiền <Text style={styles.highlight}>{formatCurrency(totalCost) || 'N/A'}</Text>
+          </Text>
         </View>
 
         <View style={styles.card}>
