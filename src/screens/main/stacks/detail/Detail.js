@@ -40,7 +40,6 @@ import {
 } from '../../../../redux/slices/favouriteducers';
 import Toast from '../../../../components/common/toast/Toast';
 import {ROUTES} from '../../../../constants/routes';
-import Rate from '../rate/Rate';
 
 const reviews = [
   {
@@ -156,9 +155,6 @@ const Detail = ({navigation, route}) => {
     }).start();
   };
 
-  const navigateToRate = tourId => {
-    navigation.navigate('Rate', {tourId});
-  };
 
   return (
     <View style={styles.container}>
@@ -219,11 +215,7 @@ const Detail = ({navigation, route}) => {
               <View style={styles.divider} />
               <Lable lable="Mô tả chuyến đi" />
               <Text style={styles.bodytext}>{description}</Text>
-              <ReviewList
-                reviews={reviews}
-                onSeeMore={navigateToRate}
-                tourId={tourId}
-              />
+              <ReviewList reviews={reviews} />
             </View>
             <View style={{height: 500}}></View>
           </View>

@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import colors from '../../../../constants/colors';
@@ -161,6 +164,13 @@ const SettingLoggedScreen = props => {
   console.log('name', userName);
   console.log('userName:', user?.user.fullname);
 
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('userId');
+
+    navigation.replace('LoginRegisterScreen');
+  };
+
   function handleMap() {
     navigation.navigate('MapScreen');
   }
@@ -174,6 +184,7 @@ const SettingLoggedScreen = props => {
           <TouchableOpacity onPress={openImagePicker}>
             <Image source={avatar} style={styles.imageAvatar} />
           </TouchableOpacity>
+
 
           <TouchableOpacity
             style={styles.icCameraContainer}
@@ -292,11 +303,12 @@ const SettingLoggedScreen = props => {
       </View>
 
       <View style={styles.underline} />
+
+
       <View style={styles.language}>
         <View style={styles.btnContainer}>
           <Image style={styles.imageBtn} source={Icons.ic_lockout} />
-          <TouchableOpacity
-            onPress={() => navigation.navigate('LoginRegisterScreen')}>
+          <TouchableOpacity onPress={handleLogout}>
             <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
           </TouchableOpacity>
           <View style={styles.lefticon}>

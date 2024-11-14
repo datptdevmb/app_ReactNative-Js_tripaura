@@ -70,16 +70,19 @@ const Rate = ({route, navigation}) => {
     const mangSoSao = [];
     console.log('mangSoSao',mangSoSao);
 
+
     // Thêm các sao đầy
     for (let i = 0; i < soSaoToiDa; i++) {
       mangSoSao.push('filled');
     }
-  
+
+
     // Thêm sao bị tắt nếu có phần thập phân
     if (soSaoBiTat === 1) {
       mangSoSao.push('disabled');
     }
-  
+
+
     return mangSoSao;
   };
 

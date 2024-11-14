@@ -8,7 +8,8 @@ import IcFavorite from '../../../assets/icons/bottom_tab/Ic_favorite';
 const CardFavorite = ({item, onToggleFavorite}) => {
   return (
     <View style={styles.card}>
-      <Image source={{uri: item.image}} style={styles.image} />
+
+      <Image source={{uri: item?.image || 'default_image_url'}} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>
           {item?.tourName}
@@ -19,7 +20,8 @@ const CardFavorite = ({item, onToggleFavorite}) => {
         </View>
         <View style={styles.ratingContainer}>
           <Rating imageSize={12} startingValue={1} ratingCount={1} />
-          <Text>{item?.rating} (100+ đánh giá)</Text>
+
+          <Text>{item?.rating || 0} (100+ đánh giá)</Text>
         </View>
         <Text style={styles.price}> {formatCurrencyVND(item?.price)}</Text>
       </View>
@@ -37,12 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 8,
     backgroundColor: '#f8f9fa',
-    // borderRadius: 12,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 4,
-    // elevation: 3,
+
   },
   image: {
     width: 100,
