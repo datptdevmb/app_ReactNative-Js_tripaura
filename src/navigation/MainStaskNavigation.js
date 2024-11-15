@@ -64,6 +64,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
+      <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
     </Stack.Navigator>
   );
 };
