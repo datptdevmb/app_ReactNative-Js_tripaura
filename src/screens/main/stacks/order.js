@@ -33,6 +33,8 @@ const OrderReviewScreen = ({ route }) => {
 
     const { discount } = route.params
     const { voucherId } = route.params
+
+    let finalPrice = totalPrice - discount || 0
     console.log("=================== discount", discount);
     console.log("=================== voucherId", voucherId);
 
@@ -77,7 +79,6 @@ const OrderReviewScreen = ({ route }) => {
             console.log('Already have bookingId, no need to create a new one');
             return;
         }
-
         const bookingData = {
             detailId,
             userId,
@@ -127,7 +128,6 @@ const OrderReviewScreen = ({ route }) => {
             Alert.alert('Error', 'Incomplete payment information. Please check again.');
             return;
         }
-
         dispatch(createPayment({
             amount: totalPrice,
             orderId,
@@ -171,7 +171,7 @@ const OrderReviewScreen = ({ route }) => {
                         <Text style={styles.text}>Tổng giá tiền</Text>
                         <Text style={styles.caption}>Đã bao gồm phí</Text>
                     </View>
-                    <Text style={styles.textPrice}>{formatCurrencyVND(totalPrice)}</Text>
+                    <Text style={styles.textPrice}>{formatCurrencyVND(finalPrice)}</Text>
                 </View>
                 <Button onPressed={handlePurchase} style={styles.btn} label="Mua ngay" />
             </View>

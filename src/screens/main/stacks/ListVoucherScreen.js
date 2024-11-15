@@ -15,11 +15,14 @@ const ChonVoucher = ({ navigation, route }) => {
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user
 
-    // console.log(user.user._id);
+    console.log('user:', user);
+    
+
+    console.log(user.user._id);
 
     useEffect(() => {
-        // dispatch(LayDanhSachVoucher(user.user._id))
-        dispatch(LayDanhSachVoucher('6709c68681507ec7a47b03cc'))
+        dispatch(LayDanhSachVoucher(user.user._id))
+        // dispatch(LayDanhSachVoucher('6709c68681507ec7a47b03cc'))
     }, [])
     // console.log("====== data", getVoucherData.data);
 
