@@ -4,7 +4,7 @@ import IcVoucher from "../../../assets/icons/bottom_tab/Ic_voucher";
 
 
 const SelecVoucher = ({
-    onPress
+    onPress, discount,
 }
 ) => {
 

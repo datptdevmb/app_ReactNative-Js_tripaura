@@ -16,12 +16,12 @@ import { fetchBooking } from "../../../redux/slices/booking.slice";
 import { clearPaymentData, createPayment } from "../../../redux/slices/paymentSlice";
 
 const OrderReviewScreen = ({ route }) => {
-    const navigation = useNavigation(); 
+    const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { bookingId: routeBookingId } = route.params; 
+    const { bookingId: routeBookingId } = route.params;
     const { tourById, adultTickets, childTickets, totalPrice, selectedDate } = useSelector((state) => state.reducer.tour);
     const { tourName } = tourById;
-    const [bookingId, setBookingId] = useState(routeBookingId); 
+    const [bookingId, setBookingId] = useState(routeBookingId);
 
     const paymentStatus = useSelector((state) => state.reducer.payment.status);
     const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
@@ -35,7 +35,7 @@ const OrderReviewScreen = ({ route }) => {
     const { voucherId } = route.params
     console.log("=================== discount", discount);
     console.log("=================== voucherId", voucherId);
-  
+
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
@@ -48,8 +48,8 @@ const OrderReviewScreen = ({ route }) => {
 
     const handleVoucher = useCallback(() => {
         navigation.navigate('ListVoucherScreen', { totalPrice: totalPrice });
-      });
-    
+    });
+
 
     const handlePurchase = useCallback(async () => {
         const totalPriceString = totalPrice.toString();
@@ -57,9 +57,9 @@ const OrderReviewScreen = ({ route }) => {
             console.log('No payment method selected');
             return;
         }
-    
+
         if (selectedMethod === 1) {
-            if (!bookingId) {  
+            if (!bookingId) {
                 const booking = await handleSaveBooking();
                 if (booking) {
                     ZaloPayModule.createOrder(totalPriceString, bookingId);
@@ -77,7 +77,7 @@ const OrderReviewScreen = ({ route }) => {
             console.log('Already have bookingId, no need to create a new one');
             return;
         }
-    
+
         const bookingData = {
             detailId,
             userId,
@@ -87,11 +87,11 @@ const OrderReviewScreen = ({ route }) => {
             priceAdult: adultPrice,
             priceChildren: childPrice,
         };
-    
+
         try {
             console.log('Sending booking data:', bookingData);
             const response = await dispatch(fetchBooking(bookingData)).unwrap();
-    
+
             if (response.code === 200 && response.data && response.data._id) {
                 setBookingId(response.data._id);
                 handelNavigateToPayment(response.data._id);
@@ -157,7 +157,8 @@ const OrderReviewScreen = ({ route }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
-                    <SelecVoucher onPress={handleVoucher} />
+                    <SelecVoucher onPress={handleVoucher}
+                        discount={discount} />
                     <Paymethod
                         selectedMethod={selectedMethod}
                         setSelectedMethod={setSelectedMethod}
