@@ -31,7 +31,11 @@ const OrderReviewScreen = ({ route }) => {
     const adultPrice = tourById.details?.[0]?.priceAdult;
     const childPrice = tourById.details?.[0]?.priceChildren;
 
-    const voucherId = null;
+    const { discount } = route.params
+    const { voucherId } = route.params
+    console.log("=================== discount", discount);
+    console.log("=================== voucherId", voucherId);
+  
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
@@ -43,8 +47,9 @@ const OrderReviewScreen = ({ route }) => {
     }, [userId]);
 
     const handleVoucher = useCallback(() => {
-        navigation.navigate('ListVoucherScreen');
-    }, [navigation]);
+        navigation.navigate('ListVoucherScreen', { totalPrice: totalPrice });
+      });
+    
 
     const handlePurchase = useCallback(async () => {
         const totalPriceString = totalPrice.toString();
