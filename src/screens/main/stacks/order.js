@@ -1,5 +1,5 @@
-// OrderReviewScreen.js
 import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules, Alert } from "react-native";
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 const { ZaloPayModule } = NativeModules;
 import Header from "../../../components/common/header/Header";
 import TourInfo from "./TourInfor";
@@ -15,36 +15,28 @@ import SelecVoucher from "./selecVoucher";
 import { fetchBooking } from "../../../redux/slices/booking.slice";
 import { clearPaymentData, createPayment } from "../../../redux/slices/paymentSlice";
 
-const OrderReviewScreen = ({ navigation }) => {
+const OrderReviewScreen = ({ route }) => {
+    const navigation = useNavigation(); 
     const dispatch = useDispatch();
+    const { bookingId: routeBookingId } = route.params; 
     const { tourById, adultTickets, childTickets, totalPrice, selectedDate } = useSelector((state) => state.reducer.tour);
     const { tourName } = tourById;
-    const [bookingId, setBookingId] = useState(null);
-    console.log('tour name: ' + tourName);
+    const [bookingId, setBookingId] = useState(routeBookingId); 
 
     const paymentStatus = useSelector((state) => state.reducer.payment.status);
-
-    console.log('paymentStatus', paymentStatus);
-
     const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
-    console.log('paymentInfo', paymentInfo);
 
     const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
-
     const detailId = tourById.details?.[0]?._id;
     const adultPrice = tourById.details?.[0]?.priceAdult;
     const childPrice = tourById.details?.[0]?.priceChildren;
 
-
     const voucherId = null;
-
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
-    console.log('user: ', user);
-    const userId = user.user._id
-    console.log('userId: ', userId);
-    const [selectedMethod, setSelectedMethod] = useState(null);
+    const userId = user.user._id;
 
+    const [selectedMethod, setSelectedMethod] = useState(null);
 
     useEffect(() => {
         dispatch(LayDanhSachVoucher(userId));
@@ -60,54 +52,77 @@ const OrderReviewScreen = ({ navigation }) => {
             console.log('No payment method selected');
             return;
         }
-
-        console.log('Selected method:', selectedMethod);
-
+    
         if (selectedMethod === 1) {
-            
-            ZaloPayModule.createOrder(totalPriceString, bookingId);
+            if (!bookingId) {  
+                const booking = await handleSaveBooking();
+                if (booking) {
+                    ZaloPayModule.createOrder(totalPriceString, bookingId);
+                }
+            }
         }
         if (selectedMethod === 2) {
-            console.log('Selected Pay on Site');
-
+            handleSaveBooking();
             payos();
         }
-    }, [selectedMethod, totalPrice]);
+    }, [selectedMethod, totalPrice, bookingId]);
+
+    const handleSaveBooking = async () => {
+        if (bookingId) {
+            console.log('Already have bookingId, no need to create a new one');
+            return;
+        }
+    
+        const bookingData = {
+            detailId,
+            userId,
+            voucherId: voucherId || null,
+            numAdult: adultTickets,
+            numChildren: childTickets,
+            priceAdult: adultPrice,
+            priceChildren: childPrice,
+        };
+    
+        try {
+            console.log('Sending booking data:', bookingData);
+            const response = await dispatch(fetchBooking(bookingData)).unwrap();
+    
+            if (response.code === 200 && response.data && response.data._id) {
+                setBookingId(response.data._id);
+                handelNavigateToPayment(response.data._id);
+            } else {
+                console.log('Could not fetch bookingId');
+            }
+        } catch (error) {
+            console.log('Error calling fetchBooking:', error);
+        }
+    };
 
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
             if (paymentInfo.paymentLink && bookingId) {
-                console.log('Navigating to PaymentScreen with bookingId:', bookingId);
                 navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink, bookingId });
             } else {
                 console.warn("Payment succeeded, but bookingId or paymentLink is missing");
             }
             dispatch(clearPaymentData());
         } else if (paymentStatus === 'failed') {
-            console.log('Payment failed');
             dispatch(clearPaymentData());
         }
     }, [paymentStatus, paymentInfo, bookingId, dispatch]);
 
+    const fullname = user.user.fullname;
+    const phone = user.user.phone;
+    const email = user.user.email;
 
-    const fullname = user.user.fullname
-    const phone = user.user.phone
-    const email =user.user.email 
-
-    console.log('fullname: ' + fullname);
-    console.log('phone:'+ phone);
-    console.log('email:'+ email);
-    
     const payos = () => {
-        console.log('payos function called');
         const orderId = Math.floor(100000 + Math.random() * 900000);
         const shortenedTourName = tourName.slice(0, 20);
         if (!totalPrice || !tourName || !orderId || !fullname || !phone || !email) {
-            Alert.alert('Lỗi', 'Thông tin thanh toán không đầy đủ. Vui lòng kiểm tra lại.');
+            Alert.alert('Error', 'Incomplete payment information. Please check again.');
             return;
         }
 
-        console.log('Dispatching createPayment action');
         dispatch(createPayment({
             amount: totalPrice,
             orderId,
@@ -137,7 +152,6 @@ const OrderReviewScreen = ({ navigation }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
-                    {/* <ContactInfo /> */}
                     <SelecVoucher onPress={handleVoucher} />
                     <Paymethod
                         selectedMethod={selectedMethod}
@@ -165,7 +179,6 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 14,
-        fontStyle: 'normal',
         fontWeight: 'bold',
     },
     caption: {
@@ -187,19 +200,13 @@ const styles = StyleSheet.create({
     buttonBottom: {
         width: '100%',
         position: "absolute",
-        backgroundColor: 'white',
+        backgroundColor: "#fff",
         bottom: 0,
-        paddingHorizontal: 16,
-        paddingVertical: 20,
-        shadowColor: 'red',
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.25,
-        shadowRadius: 10,
-        elevation: 5,
+        padding: 20,
     },
     btn: {
-        height: 44,
-        marginTop: 10,
+        width: '100%',
+        marginTop: 15,
     },
 });
 

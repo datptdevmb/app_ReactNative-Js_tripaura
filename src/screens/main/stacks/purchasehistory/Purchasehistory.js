@@ -69,10 +69,8 @@ const Purchasehistory = ({ navigation }) => {
         };
     
         const handlePaymentPress = () => {
-
-    
             console.log('tourname', tourName);
-            navigation.navigate('Payment', {
+            navigation.navigate('Order', {
                 bookingId: item._id
             });
         };
