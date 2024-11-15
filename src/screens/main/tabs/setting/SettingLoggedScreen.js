@@ -154,6 +154,7 @@ const SettingLoggedScreen = (props) => {
     function handlePurchase() {
         navigation.navigate('Purchasehistory')
     }
+
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
@@ -232,6 +233,17 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
 
+
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_orther} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <View style={styles.underline} />

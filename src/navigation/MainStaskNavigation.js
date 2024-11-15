@@ -39,6 +39,7 @@ const MainTabNavigation = () => {
 };
 
 const MainStaskNavigation = () => {
+
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
@@ -67,5 +68,9 @@ const MainStaskNavigation = () => {
     </Stack.Navigator>
   );
 };
+
+
+
+
 
 export default MainStaskNavigation;
