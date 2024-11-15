@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const createPayment = createAsyncThunk('payment/createPaymentLink', async (paymentData) => {
+    console.log('Requesting payment creation...');
     const response = await fetch('https://trip-aura-server.vercel.app/payment/create-payment-link', {
         method: 'POST',
         headers: {
@@ -9,17 +10,23 @@ export const createPayment = createAsyncThunk('payment/createPaymentLink', async
         body: JSON.stringify(paymentData),
     });
 
-    // Log the status and full response for troubleshooting
-    console.log('API response status:', response.status);
+    console.log('API response status:', response.status);  // Kiểm tra status trả về
     const responseData = await response.json();
-    console.log('API response data:', responseData);
+    console.log('API response data:', responseData);  // Log dữ liệu trả về từ server
 
     if (!response.ok) {
+        console.error('Failed to create payment link:', responseData.message || 'Unknown error');
         throw new Error(responseData.message || 'Failed to create payment');
+    }
+
+    if (!responseData.paymentLink) {
+        console.error('No payment link provided');
+        throw new Error('Payment link not provided');
     }
 
     return responseData;
 });
+
 
 
 const paymentSlice = createSlice({
@@ -49,7 +56,8 @@ const paymentSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
             });
-    },
+    }
+    
 });
 
 export const { clearPaymentData } = paymentSlice.actions;
