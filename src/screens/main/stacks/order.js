@@ -1,5 +1,5 @@
 // OrderReviewScreen.js
-import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules, Alert } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules } from "react-native";
 const { ZaloPayModule } = NativeModules;
 import Header from "../../../components/common/header/Header";
 import TourInfo from "./TourInfor";
@@ -12,36 +12,33 @@ import Paymethod from "./Paymethod";
 import { useCallback, useEffect, useState } from "react";
 import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
 import SelecVoucher from "./selecVoucher";
-import { fetchBooking } from "../../../redux/slices/booking.slice";
-import { clearPaymentData, createPayment } from "../../../redux/slices/paymentSlice";
+import { string } from "prop-types";
+
 
 const OrderReviewScreen = ({ navigation }) => {
+
     const dispatch = useDispatch();
-    const { tourById, adultTickets, childTickets, totalPrice, selectedDate } = useSelector((state) => state.reducer.tour);
-    const { tourName } = tourById;
+=========
+import { fetchBooking } from '../../../redux/slices/booking.slice';
 
-    console.log('tour name: ' + tourName);
+const OrderReviewScreen = ({ navigation, route }) => {
+>>>>>>>>> Temporary merge branch 2
+    const {
+        tourById,
+        adultTickets,
+        childTickets,
+        totalPrice,
+        selectedDate,
+    } = useSelector((state) => state.reducer.tour);
+<<<<<<<<< Temporary merge branch 1
+=========
 
-    const paymentStatus = useSelector((state) => state.reducer.payment.status);
 
-    console.log('paymentStatus', paymentStatus);
-
-    const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
-    console.log('paymentInfo', paymentInfo);
+    const dispatch = useDispatch();
 
     const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
-
-    const detailId = tourById.details?.[0]?._id;
-    const adultPrice = tourById.details?.[0]?.priceAdult;
-    const childPrice = tourById.details?.[0]?.priceChildren;
-
-
-    const voucherId = null;
-
-    const userReducer = useSelector(state => state.reducer.auth);
-    const user = userReducer.user;
-    console.log('user: ', user);
-    const userId = user.user._id
+    const { user } = useSelector((state) => state.reducer.auth);
+    const userId = user?.user?._id;
 
     const [selectedMethod, setSelectedMethod] = useState(null);
 
@@ -50,81 +47,102 @@ const OrderReviewScreen = ({ navigation }) => {
         dispatch(LayDanhSachVoucher(userId));
     }, [userId]);
 
+
+    const { detailId, adultPrice, childPrice, } = route.params;
+
+    const image = tourById.imges ? tourById.imges[0] : null;
+>>>>>>>>> Temporary merge branch 2
+    const { tourName } = tourById;
+
+    const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
+    const { user } = useSelector((state) => state.reducer.auth);
+    const userId = user?.user?._id;
+
+  const [selectedMethod, setSelectedMethod] = useState(null);
+
+  const { discount } = route.params
+
+  const { voucherId } = route.params
+  console.log("=================== discount", discount);
+  console.log("=================== voucherId", voucherId);
+
+
+  useEffect(() => {
+    dispatch(LayDanhSachVoucher(userId));
+  }, [userId]);
+
     const handleVoucher = useCallback(() => {
-        navigation.navigate('ListVoucherScreen');
-    }, [navigation]);
+        navigation.navigate('ListVoucherScreen')
+    })
 
-    const handlePurchase = useCallback(async () => {
+    const handlePuchase = useCallback(() => {
         const totalPriceString = totalPrice.toString();
-        if (!selectedMethod) {
-            console.log('No payment method selected');
-            return;
+        if(!selectedMethod) return
+        if(selectedMethod == 1){
+            ZaloPayModule.createOrder(totalPriceString);
         }
-
-        console.log('Selected method:', selectedMethod);
-
-        if (selectedMethod === 1) {
-            ZaloPayModule.createOrder(totalPriceString, bookingId);
+        if(selectedMethod == 2){
+           console.log('payos')
         }
-        if (selectedMethod === 2) {
-            console.log('Selected Pay on Site');
-            payos();
-        }
-    }, [selectedMethod, totalPrice]);
-
-    useEffect(() => {
-        if (paymentStatus === 'succeeded') {
-            if (paymentInfo.paymentLink && bookingId) {
-                console.log('Navigating to PaymentScreen with bookingId:', bookingId);
-                navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink, bookingId });
-            } else {
-                console.warn("Payment succeeded, but bookingId or paymentLink is missing");
-            }
-            dispatch(clearPaymentData());
-        } else if (paymentStatus === 'failed') {
-            console.log('Payment failed');
-            dispatch(clearPaymentData());
-        }
-    }, [paymentStatus, paymentInfo, bookingId, dispatch]);
+       
+    })
 
 
-    const fullname = user.fullname
-    const phone = user.phone
-    const email = user.email
-
-    console.log('fullname: ' + fullname);
-    console.log('phone:'+ phone);
-    console.log('email:'+ email);
-    
-    const payos = () => {
-        console.log('payos function called');
-        const orderId = Math.floor(100000 + Math.random() * 900000);
-        const shortenedTourName = tourName.slice(0, 20);
-        if (!totalPrice || !tourName || !orderId || !fullname || !phone || !email) {
-            Alert.alert('Lỗi', 'Thông tin thanh toán không đầy đủ. Vui lòng kiểm tra lại.');
-            return;
-        }
-
-        console.log('Dispatching createPayment action');
-        dispatch(createPayment({
-            amount: totalPrice,
-            orderId,
-            description: shortenedTourName,
-            fullname,
-            phone,
-            email,
-            bookingId
-        }));
-    };
 
     const handleBack = () => {
         navigation.goBack();
     };
 
+    const handleSaveBooking = async () => {
+        const bookingData = {
+            detailId,
+            userId,
+            voucherId: voucherId || null,
+            numAdult: adultTickets,
+            numChildren: childTickets,
+            priceAdult: adultPrice,
+            priceChildren: childPrice,
+        };
+
+        try {
+            console.log('Đang gửi booking data:', bookingData);
+            const response = await dispatch(fetchBooking(bookingData)).unwrap();
+            console.log('Phản hồi từ fetchBooking:', response);
+
+            if (response.code === 200 && response.data && response.data._id) {
+                console.log('Lấy được bookingId:', response.data._id);
+                handelNavigateToPayment(response.data._id);
+            } else {
+                console.log('Không thể lấy được bookingId. Phản hồi từ server:', response);
+                Alert.alert("Lỗi", "Không thể lấy được bookingId.");
+            }
+        } catch (error) {
+            console.log('Lỗi khi gọi fetchBooking:', error);
+            Alert.alert("Lỗi", "Đã xảy ra lỗi khi gọi API đặt booking.");
+        }
+    };
+
+    const handelNavigateToPayment = (bookingId) => {
+        navigation.navigate("Payment", {
+            tourName,
+            selectedDate,
+            adultTickets,
+            childTickets,
+            totalPrice,
+            childPrice,
+            image,
+            contactInfo,
+            bookingId
+
+        });
+    };
+
     return (
         <View style={styles.container}>
             <StatusBar translucent={false} barStyle="dark-content" backgroundColor="#FFF" />
-            <Header title={'Hoàn tất hóa đơn'} onBackPress={handleBack} />
+            <Header
+                title={'Hoàn tất hóa đơn'}
+                onBackPress={handleBack} />
             <ScrollView>
                 <View style={styles.content}>
                     <TourInfo
@@ -135,23 +153,34 @@ const OrderReviewScreen = ({ navigation }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
+<<<<<<<<< Temporary merge branch 1
                     {/* <ContactInfo /> */}
-                    <SelecVoucher onPress={handleVoucher} />
+                    <SelecVoucher
+                        onPress={handleVoucher} />
                     <Paymethod
                         selectedMethod={selectedMethod}
-                        setSelectedMethod={setSelectedMethod}
-                    />
+                        setSelectedMethod={setSelectedMethod} />
+=========
+
+                    <ContactInfo setContactInfo={setContactInfo} />
+>>>>>>>>> Temporary merge branch 2
+
                 </View>
             </ScrollView>
             <View style={styles.buttonBottom}>
                 <View style={styles.row}>
                     <View>
                         <Text style={styles.text}>Tổng giá tiền</Text>
-                        <Text style={styles.caption}>Đã bao gồm phí</Text>
+                        <Text style={styles.caption}>Đã bao gồm phí </Text>
                     </View>
-                    <Text style={styles.textPrice}>{formatCurrencyVND(totalPrice)}</Text>
+                    <Text
+                        style={styles.textPrice}>{formatCurrencyVND(totalPrice)}</Text>
                 </View>
-                <Button onPressed={handlePurchase} style={styles.btn} label="Mua ngay" />
+                <Button
+                    onPressed={handlePuchase}
+                    style={styles.btn}
+                    label="Mua ngay"
+                    onPress={handleSaveBooking} />
             </View>
         </View>
     );
@@ -180,7 +209,11 @@ const styles = StyleSheet.create({
         color: '#DA712F',
     },
     content: {
-        paddingBottom: 300,
+<<<<<<<<< Temporary merge branch 1
+        paddingBottom: 300
+=========
+        paddingBottom: 120,
+>>>>>>>>> Temporary merge branch 2
     },
     buttonBottom: {
         width: '100%',
@@ -198,7 +231,7 @@ const styles = StyleSheet.create({
     btn: {
         height: 44,
         marginTop: 10,
-    },
+    }
 });
 
 export default OrderReviewScreen;
