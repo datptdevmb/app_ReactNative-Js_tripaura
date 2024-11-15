@@ -14,9 +14,6 @@ import getuserReducer from './slices/getUserbyID';
 import paymentReducer from './slices/paymentSlice'; 
 import bookingReducer from './slices/booking.slice'; 
 import voucherReducer from './slices/vouchersSlice';
-import paymentReducer from './slices/paymentSlice';
-import bookingReducer from './slices/booking.slice';
-import voucherReducer from './slices/vouchersSlice';
 import reviewReducer from './slices/reviewTourducers';
 
 const rootReducer = combineReducers({
