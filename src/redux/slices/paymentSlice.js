@@ -8,7 +8,11 @@ export const createPayment = createAsyncThunk('payment/createPaymentLink', async
         },
         body: JSON.stringify(paymentData),
     });
+
+    // Log the status and full response for troubleshooting
+    console.log('API response status:', response.status);
     const responseData = await response.json();
+    console.log('API response data:', responseData);
 
     if (!response.ok) {
         throw new Error(responseData.message || 'Failed to create payment');
@@ -16,6 +20,7 @@ export const createPayment = createAsyncThunk('payment/createPaymentLink', async
 
     return responseData;
 });
+
 
 const paymentSlice = createSlice({
     name: 'payment',

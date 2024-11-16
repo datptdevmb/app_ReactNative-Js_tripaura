@@ -11,10 +11,8 @@ import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
-
-import paymentReducer from './slices/paymentSlice';
-import bookingReducer from './slices/booking.slice';
-
+import paymentReducer from './slices/paymentSlice'; 
+import bookingReducer from './slices/booking.slice'; 
 import voucherReducer from './slices/vouchersSlice';
 import reviewReducer from './slices/reviewTourducers';
 
@@ -34,6 +32,8 @@ const rootReducer = combineReducers({
   changeUser: changeUserReducer,
   payment: paymentReducer,
   booking: bookingReducer,
+  // favoriteAdDelete: favoriteAdDeleteReducer,
+  // favouriteDelete: favouriteDeleteReducer,
   vouchers: voucherReducer,
   reviews: reviewReducer,
 });

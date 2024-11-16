@@ -21,45 +21,68 @@ const Purchasehistory = ({ navigation }) => {
         }
     }, [dispatch, userId]);
 
+
+
     const onBackPress = () => {
         navigation.goBack();
     };
 
     const renderItem = ({ item }) => {
-        const image = item.linkImage ? item.linkImage[0] : null;
+        const image = item.tourImages && item.tourImages.length > 0 && item.tourImages[0].linkImage && item.tourImages[0].linkImage.length > 0 
+            ? item.tourImages[0].linkImage[0] 
+            : null; 
+        console.log('item', item);
+    
+        const {
+            numAdult,
+            numChildren,
+            priceAdult,
+            priceChildren,
+            status,
+            createAt,
+            _id: bookingId,
+            userInfo: { fullname, phone, email },
+            tourInfo,
+        } = item;
 
-        const { tourName, selectedDate, numAdult, numChildren, priceAdult, priceChildren, fullname, phone, email } = item;
-        const totalCost = (item.numAdult * item.priceAdult) + (item.numChildren * item.priceChildren);
-
-        console.log('fullname: ' + fullname);
-        console.log('phone: '+ phone);
-        console.log('email: '+ email);
+        console.log('priceChildren', priceChildren);
+        console.log('priceAdults', priceAdult);
         
+        
+        
+        const tourName = tourInfo ? tourInfo.tourName : 'Không có tên tour';
+        const totalCost = (numAdult * priceAdult) + (numChildren * priceChildren);
+        console.log('Total cost:', totalCost);
+        
+    
+        console.log('fullname:', fullname);
+        console.log('phone:', phone);
+        console.log('email:', email);
+        console.log('tourName:', tourName);
+        console.log('totalCost:', totalCost);
+        console.log('image:', image); 
+    
         const handlePress = () => {
             if (item.status !== 2 && item.status !== 1) {
                 navigation.navigate('OrderInformation', { bookingId: item._id });
             }
         };
-
+    
         const handlePaymentPress = () => {
 
-            const totalPrice = (numAdult * priceAdult) + (numChildren * priceChildren);
-            const childPrice = numChildren * priceChildren;
-
+    
             console.log('tourname', tourName);
-
-
             navigation.navigate('Payment', {
                 bookingId: item._id
             });
         };
-
+    
         if (item.status !== selectedStatus) {
             return null;
         }
-
+    
         const statusText = item.status === 0 ? 'Đã thanh toán' : item.status === 1 ? 'Chưa thanh toán' : 'Đã hủy';
-
+    
         return (
             <TouchableOpacity onPress={handlePress}>
                 <View style={styles.card}>
@@ -89,6 +112,7 @@ const Purchasehistory = ({ navigation }) => {
             </TouchableOpacity>
         );
     };
+    
 
     return (
         <ScrollView style={styles.container}>

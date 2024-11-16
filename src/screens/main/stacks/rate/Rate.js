@@ -88,11 +88,7 @@ const Rate = ({route, navigation}) => {
   const renderReviewItem = ({item}) => (
     <View style={styles.reviewItem}>
       <View style={styles.userInfo}>
-        <Image
-          source={{uri: item.avatar}}
-          style={styles.avatar}
-          onError={() => console.log('Error loading avatar')}
-        />
+        <Image source={{uri: item.avatar || null}} style={styles.avatar} />
         <View style={styles.userNameContainer}>
           <Text style={styles.fullname}>{item.fullname}</Text>
           <Text style={styles.rating}>Đánh giá: {item.rating} ⭐</Text>
@@ -111,7 +107,7 @@ const Rate = ({route, navigation}) => {
           data={item.image}
           renderItem={({item: imageUrl}) => (
             <Image
-              source={{uri: imageUrl}}
+              source={{uri: imageUrl || null}}
               style={styles.reviewImage}
               onError={() => console.log('Error loading image')}
             />
@@ -149,7 +145,7 @@ const Rate = ({route, navigation}) => {
                 <Image
                   key={index}
                   source={
-                    star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
+                    star === 'filled' ? Icons.ic_star : Icons.ic_star_emty
                   }
                   style={styles.star}
                 />
