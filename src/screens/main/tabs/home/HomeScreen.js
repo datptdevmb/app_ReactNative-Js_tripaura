@@ -91,7 +91,7 @@ function HomeScreen({ navigation }) {
             accessibilityElementsHidden={false}
             accessible={false}
             refreshing={refreshing}
-            progressBackgroundColor={colors.Gray_0}
+            progressBackgroundColor={colors.Grey_0}
             onRefresh={onRefresh}
             style={styles.refreshControl}></RefreshControl>
         }>
