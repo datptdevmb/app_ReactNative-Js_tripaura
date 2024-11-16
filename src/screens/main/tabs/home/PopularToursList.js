@@ -1,34 +1,44 @@
 import React, { memo } from 'react';
-import {StyleSheet, View} from 'react-native';
-import TourCardVetical from '../../../../components/common/card/TourCardVetical';
+import { StyleSheet, View, FlatList } from 'react-native';
+import TourCard from '../../../../components/common/card/CardTour';
 
-const PopularToursList = ({popularTours ,onClick}) => {
-  console.log('rrrrr')
-  return (
-    <View style={styles.cardVeticalC}>
-      {popularTours &&
-        popularTours.map((item, index) => {
-            return(
-                <View key={index} style={styles.cardVetical}>
-                <TourCardVetical onClick={() =>onClick} tour={item} />
-              </View>
-            )
-        })}
+const PopularToursList = ({ popularTours, onClick }) => {
+  const renderItem = ({ item, index }) => (
+    <View style={styles.cardContainer}>
+      <TourCard
+        key={index}
+        tour={item}
+        onClickItem={onClick}
+        onClickFavorite={() => onClickFavorite(item, index)}
+      />
     </View>
+  );
+
+  return (
+    <FlatList
+      data={popularTours}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      numColumns={2} // Chia thành hai cột
+      columnWrapperStyle={styles.columnWrapper} 
+      contentContainerStyle={styles.container}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  cardVeticalC: {
-    width: '100%',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexWrap: 'nowrap',
+  container: {
     paddingTop: 26,
+  
   },
-  cardVetical: {
-    width: '100%',
-    marginTop: 8,
+  columnWrapper: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-start', // Giúp các item không bị ép cùng chiều cao
+  },
+  cardContainer: {
+    flex: 1,
+    margin: 8,
+    alignSelf: 'flex-start', 
   },
 });
 

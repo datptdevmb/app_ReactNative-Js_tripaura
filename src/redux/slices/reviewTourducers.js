@@ -3,7 +3,6 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 // Thunk để lấy danh sách đánh giá của người dùng
 export const LayDanhSachDanhGia = createAsyncThunk(
   'reviews/getReviewsByTourId',
-
   async tourId => {
     const response = await fetch(
       `https://trip-aura-server.vercel.app/review/api/getByTourId`,
@@ -12,11 +11,11 @@ export const LayDanhSachDanhGia = createAsyncThunk(
         headers: {
           'Content-Type': 'application/json',
         },
-
-        body: JSON.stringify({tourId}), // Truyền tourId trong body thay vì query string
+        body: JSON.stringify({tourId}),
       },
     );
     const data = await response.json();
+    console.log('data', data);
     return data;
   },
 );

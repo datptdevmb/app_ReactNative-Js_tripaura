@@ -129,8 +129,9 @@ function HomeScreen({navigation}) {
           !isLoading && <Text>Không có dữ liệu</Text>
         )}
         <Text style={styles.heading}>Điểm đến được săn đón</Text>
-        <PopularToursList onClick={handelPopular} popularTours={popularTours} />
+        <PopularToursList onClick={handelPopular} popularTours={tours} />
       </ScrollView>
+      <View style={{ height: 120 }} />
     </View>
   );
 }

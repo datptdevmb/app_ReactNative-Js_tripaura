@@ -8,27 +8,23 @@ import IcFavorite from '../../../assets/icons/bottom_tab/Ic_favorite';
 const CardFavorite = ({item, onToggleFavorite}) => {
   return (
     <View style={styles.card}>
-
-      <Image source={{uri: item?.image || 'default_image_url'}} style={styles.image} />
+      <Image source={{uri: item.image}} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>
-          {item?.tourName}
+          {item.tourName}
         </Text>
         <View style={styles.locationContainer}>
           <IcLocate />
-          <Text style={styles.location}>{item?.locate}</Text>
+          <Text style={styles.location}>{item.locate}</Text>
         </View>
         <View style={styles.ratingContainer}>
           <Rating imageSize={12} startingValue={1} ratingCount={1} />
-
-          <Text>{item?.rating || 0} (100+ đánh giá)</Text>
+          <Text>{item.rating} (100+ đánh giá)</Text>
         </View>
-        <Text style={styles.price}> {formatCurrencyVND(item?.price)}</Text>
+        <Text style={styles.price}>{formatCurrencyVND(item.price)}</Text>
       </View>
-      <TouchableOpacity
-        onPress={() => onToggleFavorite(item?.id || item?.tourId)}
-        style={styles.favoriteIcon}>
-        <IcFavorite color={'#F47352'} />
+      <TouchableOpacity onPress={onToggleFavorite} style={styles.favoriteIcon}>
+        <IcFavorite color="#F47352" />
       </TouchableOpacity>
     </View>
   );
@@ -37,9 +33,8 @@ const CardFavorite = ({item, onToggleFavorite}) => {
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
+    padding: 10,
     marginVertical: 8,
-    backgroundColor: '#f8f9fa',
-
   },
   image: {
     width: 100,
@@ -70,12 +65,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 4,
   },
-  rating: {
-    width: 5,
-    height: 5,
-    color: '#888',
-    marginLeft: 4,
-  },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -84,8 +73,10 @@ const styles = StyleSheet.create({
   },
   favoriteIcon: {
     position: 'absolute',
-    left: 70,
-    top: 5,
+    left: 80,
+    top: 14,
+    width: 24,
+    height: 24,
   },
 });
 

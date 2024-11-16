@@ -12,10 +12,10 @@ const Rate = ({route, navigation}) => {
   const {tourId} = route.params;
 
   const danhSachDanhGia = useSelector(
-    state => state.reducer.review.reviewsData,
+    state => state.reducer.reviews.reviewsData,
   );
   const trangThaiDanhGia = useSelector(
-    state => state.reducer.review.reviewsStatus,
+    state => state.reducer.reviews.reviewsStatus,
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +23,7 @@ const Rate = ({route, navigation}) => {
   useEffect(() => {
     if (tourId) {
       dispatch(LayDanhSachDanhGia(tourId));
+      console.log('dispatch', dispatch);
     }
     return () => setIsLoading(false);
   }, [dispatch, tourId]);
@@ -58,30 +59,26 @@ const Rate = ({route, navigation}) => {
   const taoMangSoSao = trungBinh => {
     // Tính số sao đã đầy (số sao tròn)
     const soSaoToiDa = Math.floor(trungBinh);
-    console.log('soSaoToiDa',soSaoToiDa);
-    
-    
+    console.log('soSaoToiDa', soSaoToiDa);
+
     // Kiểm tra nếu có phần thập phân, thì thêm một sao bị tắt (disabled)
     // phép chia lấy phần dư)
     const soSaoBiTat = trungBinh % 1 !== 0 ? 1 : 0;
-    console.log('soSaoBiTat',soSaoBiTat);
+    console.log('soSaoBiTat', soSaoBiTat);
 
     // Tạo mảng sao, gồm sao đầy và sao bị tắt
     const mangSoSao = [];
-    console.log('mangSoSao',mangSoSao);
-
+    console.log('mangSoSao', mangSoSao);
 
     // Thêm các sao đầy
     for (let i = 0; i < soSaoToiDa; i++) {
       mangSoSao.push('filled');
     }
 
-
     // Thêm sao bị tắt nếu có phần thập phân
     if (soSaoBiTat === 1) {
       mangSoSao.push('disabled');
     }
-
 
     return mangSoSao;
   };
@@ -127,85 +124,6 @@ const Rate = ({route, navigation}) => {
     </View>
   );
 
-  const loading = () => (
-    <View style={styles.loadcontainer}>
-      <Skeleton
-        colorMode="light"
-        height={48}
-        width={220}
-        borderRadius={50}
-        marginTop={10}
-        color="#e0e0e0"
-        highlightColor="#f0f0f0"
-      />
-      <Text style={styles.text}></Text>
-      <Skeleton
-        colorMode="light"
-        height={77}
-        width={99}
-        borderRadius={50}
-        color="#e0e0e0"
-        highlightColor="#f0f0f0"
-      />
-      <Text style={styles.text}></Text>
-      <Skeleton
-        colorMode="light"
-        width={122}
-        height={24}
-        borderRadius={8}
-        marginVertical={10}
-        color="#e0e0e0"
-        highlightColor="#f0f0f0"
-      />
-      <Text style={styles.text}></Text>
-
-      <Skeleton
-        colorMode="light"
-        width={159}
-        height={27}
-        borderRadius={8}
-        color="#e0e0e0"
-        highlightColor="#f0f0f0"
-      />
-      <Text style={styles.text}></Text>
-      <Text style={styles.text}></Text>
-
-      <Skeleton
-        colorMode="light"
-        width={348}
-        height={180}
-        borderRadius={8}
-        marginVertical={10}
-        color="#e0e0e0"
-        highlightColor="#f0f0f0"
-      />
-      <Text style={styles.text}></Text>
-      <Text style={styles.text}></Text>
-
-      <Skeleton
-        colorMode="light"
-        width={348}
-        height={180}
-        borderRadius={8}
-        marginVertical={10}
-        color="#e0e0e0"
-        highlightColor="#f0f0f0"
-      />
-      <Text style={styles.text}></Text>
-      <Text style={styles.text}></Text>
-
-      <Skeleton
-        colorMode="light"
-        width={348}
-        height={180}
-        borderRadius={8}
-        marginVertical={10}
-        color="#e0e0e0"
-        highlightColor="#f0f0f0"
-      />
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
@@ -216,40 +134,34 @@ const Rate = ({route, navigation}) => {
         />
       </View>
 
-      {isLoading || trangThaiDanhGia === 'loading' ? (
-        loading()
-      ) : danhSachDanhGia.length === 0 ? (
-        <Text style={styles.noReviewsText}>Chưa có đánh giá nào.</Text>
-      ) : (
-        <FlatList
-          data={danhSachDanhGia}
-          renderItem={renderReviewItem}
-          keyExtractor={item => item._id}
-          contentContainerStyle={styles.listContainer}
-          ListHeaderComponent={
-            <View>
-              <Text style={styles.textRate}>Đánh giá chung</Text>
-              <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
+      <FlatList
+        data={danhSachDanhGia}
+        renderItem={renderReviewItem}
+        keyExtractor={item => item._id}
+        contentContainerStyle={styles.listContainer}
+        ListHeaderComponent={
+          <View>
+            <Text style={styles.textRate}>Đánh giá chung</Text>
+            <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
 
-              <View style={styles.starContainer}>
-                {mangSoSao.map((star, index) => (
-                  <Image
-                    key={index}
-                    source={
-                      star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
-                    }
-                    style={styles.star}
-                  />
-                ))}
-              </View>
-
-              <Text style={styles.reviewCount}>
-                Dựa trên {soNguoiDanhGia} đánh giá
-              </Text>
+            <View style={styles.starContainer}>
+              {mangSoSao.map((star, index) => (
+                <Image
+                  key={index}
+                  source={
+                    star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
+                  }
+                  style={styles.star}
+                />
+              ))}
             </View>
-          }
-        />
-      )}
+
+            <Text style={styles.reviewCount}>
+              Dựa trên {soNguoiDanhGia} đánh giá
+            </Text>
+          </View>
+        }
+      />
     </View>
   );
 };

@@ -5,8 +5,12 @@ import {
   View,
   Animated,
   TouchableOpacity,
-  ToastAndroid,
+  NativeModules,
+  useWindowDimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
+
+const {ZaloPayModule} = NativeModules;
 
 import {useEffect, useRef, useState} from 'react';
 import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-view';
@@ -40,7 +44,7 @@ import {
 } from '../../../../redux/slices/favouriteducers';
 import Toast from '../../../../components/common/toast/Toast';
 import {ROUTES} from '../../../../constants/routes';
-
+import RenderHtml from 'react-native-render-html';
 const reviews = [
   {
     id: 1,
@@ -61,6 +65,8 @@ const reviews = [
 ];
 
 const Detail = ({navigation, route}) => {
+  const {width} = useWindowDimensions();
+
   const {_id: tourId} = route.params;
   const dispatch = useDispatch();
   const [detailId, setDetailId] = useState(null);
@@ -103,7 +109,6 @@ const Detail = ({navigation, route}) => {
         tourId,
       }),
     );
-
     if (favoritesStatus === 'success') {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
@@ -127,7 +132,15 @@ const Detail = ({navigation, route}) => {
   };
 
   const handleNavigateToFavorite = () => {
-    navigation.navigate('yeuthich');
+    navigation.navigate('FavoriteScreen');
+  };
+
+  const handleDetailImage = () => {
+    navigation.navigate('ImageDetail');
+  };
+
+  const handleNavigateToRate = () => {
+    navigation.navigate('Rate', {tourId: tourId});
   };
 
   useEffect(() => {
@@ -155,7 +168,6 @@ const Detail = ({navigation, route}) => {
     }).start();
   };
 
-
   return (
     <View style={styles.container}>
       {showToast && favoritesStatus === 'success' && (
@@ -180,8 +192,10 @@ const Detail = ({navigation, route}) => {
         }
         imageStyle={{
           height: 243,
-        }}>
-        <View
+        }}
+        showsVerticalScrollIndicator={false}>
+        <TouchableOpacity
+          onPress={handleDetailImage}
           style={{
             position: 'absolute',
             height: 243,
@@ -213,10 +227,13 @@ const Detail = ({navigation, route}) => {
               <Text style={styles.tourname}>{tourName}</Text>
               <LocationInfo location={location} />
               <View style={styles.divider} />
-              <Lable lable="Mô tả chuyến đi" />
-              <Text style={styles.bodytext}>{description}</Text>
-              <ReviewList reviews={reviews} />
+              {/* <Lable lable="Mô tả chuyến đi" /> */}
+              {/* <Text style={styles.bodytext}>{description}</Text> */}
+              <RenderHtml contentWidth={width} source={{html: description}} />
+
+              <ReviewList onSeeMore={handleNavigateToRate} reviews={reviews} />
             </View>
+
             <View style={{height: 500}}></View>
           </View>
         )}
@@ -237,50 +254,51 @@ const Detail = ({navigation, route}) => {
 
       {/* Backdrop và Bottom Sheet */}
       {bottomSheetVisible && (
-        <TouchableOpacity style={styles.backdrop}>
-          <Animated.View
-            style={[styles.bottomSheet, {transform: [{translateY}]}]}>
-            <View style={styles.InforContainer}>
-              <TouchableOpacity>
-                <Ic_x onPress={toggleBottomSheet} />
-              </TouchableOpacity>
-              <Text style={styles.tourname}>{tourName}</Text>
-              <DepartureDateSelector
-                onSelectDate={(date, id) => {
-                  dispatch(setSelectedDate(date)), setDetailId(id);
-                }}
-                selectedDate={selectedDate}
-                data={details}
-              />
-
-              <TicketSelector
-                onIncreaseAdult={handleIncreaseAdult}
-                onIncreaseChild={handleIncreaseChild}
-                onDecreaseAdult={handleDecreaseAdult}
-                onDecreaseChild={handleDecreaseChild}
-                adultPrice={details[0].priceAdult}
-                childPrice={details[0].priceChildren}
-                childTickets={childTickets}
-                adultTickets={adultTickets}
-              />
-              <RefundPolicy />
-            </View>
-
-            <View style={styles.btnContainer}>
-              <View style={styles.price}>
-                <Text style={styles.textprice}>Giá chỉ từ</Text>
-                <Text style={styles.total}>
-                  {formatCurrencyVND(totalPrice)}
-                </Text>
+        <TouchableWithoutFeedback onPress={() => {}}>
+          <View style={styles.backdrop}>
+            <Animated.View
+              style={[styles.bottomSheet, {transform: [{translateY}]}]}>
+              <View style={styles.InforContainer}>
+                <TouchableOpacity>
+                  <Ic_x onPress={toggleBottomSheet} />
+                </TouchableOpacity>
+                <Text style={styles.tourname}>{tourName}</Text>
+                <DepartureDateSelector
+                  onSelectDate={(date, id) => {
+                    dispatch(setSelectedDate(date)), setDetailId(id);
+                  }}
+                  selectedDate={selectedDate}
+                  data={details}
+                />
+                <TicketSelector
+                  onIncreaseAdult={handleIncreaseAdult}
+                  onIncreaseChild={handleIncreaseChild}
+                  onDecreaseAdult={handleDecreaseAdult}
+                  onDecreaseChild={handleDecreaseChild}
+                  adultPrice={details[0].priceAdult}
+                  childPrice={details[0].priceChildren}
+                  childTickets={childTickets}
+                  adultTickets={adultTickets}
+                />
+                <RefundPolicy />
               </View>
-              <Button
-                style={styles.btn}
-                label="Mua Ngay"
-                onPress={handelNavigateToOrder}
-              />
-            </View>
-          </Animated.View>
-        </TouchableOpacity>
+
+              <View style={styles.btnContainer}>
+                <View style={styles.price}>
+                  <Text style={styles.textprice}>Giá chỉ từ</Text>
+                  <Text style={styles.total}>
+                    {formatCurrencyVND(totalPrice)}
+                  </Text>
+                </View>
+                <Button
+                  style={styles.btn}
+                  label="Mua Ngay"
+                  onPress={handelNavigateToOrder}
+                />
+              </View>
+            </Animated.View>
+          </View>
+        </TouchableWithoutFeedback>
       )}
     </View>
   );

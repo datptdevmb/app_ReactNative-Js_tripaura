@@ -7,11 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.onPrimary,
   },
-  loadcontainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textRate: {
+  text: {
     fontSize: fontsize.xxl,
     lineHeight: 48,
     fontWeight: '700',
@@ -116,8 +112,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
   },
   loadingText: {
     marginTop: 10,
@@ -135,10 +132,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 30,
   },
-  text: {
-    height: 5,
+  textRate: {
+    fontSize: 40,
+    textAlign: 'center',
+    color: '#212121',
+    fontWeight: 'bold',
   },
 });
-
 
 export default styles;

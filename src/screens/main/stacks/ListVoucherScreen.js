@@ -1,83 +1,116 @@
-import React, { useEffect } from "react";
-import { FlatList, Text, View, StyleSheet } from "react-native";
-import Header from "../../../components/common/header/Header";
-import { useSelector, useDispatch } from "react-redux";
-import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
+// import { FlatList, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+// import React, { useEffect, useState } from 'react'
+// import Headercomponet from '../../../components/common/header/Headercomponet';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { LayDanhSachVoucher } from '../../../redux/slices/vouchersSlice';
 
-const ListVoucherScreen = ({ navigation }) => {
-    const dispatch = useDispatch();
-    const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
-    const { user } = useSelector((state) => state.reducer.auth);
-    const userId = user?.user?._id;
 
-    useEffect(() => {
-        // Fetch vouchers when the component mounts
-        if (userId) {
-            dispatch(LayDanhSachVoucher(userId));
-        }
-    }, [userId, dispatch]);
+// const ListVoucherScreen = () => {
 
-    const handleBack = () => {
-        navigation.goBack();
-    };
-    console.log(getVoucherData)
+//     const dispatch = useDispatch()
+//     const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.getVoucher);
+//     const userReducer = useSelector(state => state.reducer.auth);
+//     const user = userReducer.user
 
-    // Render each voucher item
-    const renderVoucherItem = ({ item }) => {
-        return (
-            <View style={styles.voucherItem}>
-                <Text style={styles.voucherTitle}>{item.name}</Text>
-                <Text>{item.description}</Text>
-                <Text style={styles.voucherValue}>{`Giảm giá: ${item.discount}%`}</Text>
-            </View>
-        );
-    };
+//     console.log(user.user._id);
 
-    return (
-        <View style={styles.container}>
-            <Header onBackPress={handleBack} title={"Khuyến mãi hiện có"} />
-            {getVoucherData? (
-                <FlatList
-                    data={getVoucherData}
-                    renderItem={renderVoucherItem}
-                    keyExtractor={(item) => item.id.toString()}
-                />
-            ) : (
-                <View style={styles.noVouchers}>
-                    <Text style={styles.noVouchersText}>Không có khuyến mãi hiện có</Text>
-                </View>
-            )}
-        </View>
-    );
-};
+//     useEffect(() => {
+//         dispatch(LayDanhSachVoucher(user.user._id))
+//     }, [])
+//     console.log("====== data", getVoucherData.data);
+//     const formatCurrencyVND = amount => {
+//         return new Intl.NumberFormat('vi-VN', {
+//             style: 'currency',
+//             currency: 'VND',
+//             minimumFractionDigits: 0,
+//         }).format(amount);
+//     };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    voucherItem: {
-        padding: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
-    },
-    voucherTitle: {
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-    voucherValue: {
-        fontSize: 14,
-        color: "#DA712F",
-        marginTop: 5,
-    },
-    noVouchers: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    noVouchersText: {
-        fontSize: 16,
-        color: "#999",
-    },
-});
+//     const renderItemSearch = ({ item }) => (
+//         <View style={styles.itemContainer}>
+//             <TouchableOpacity
+//                 onPress={() => onPressItem(item.voucherId._id)}>
 
-export default ListVoucherScreen;
+//                 <View style={{ flexDirection: 'row' }}>
+//                     <View>
+//                         <Image style={{
+//                             width: 100, height: 100, borderTopLeftRadius: 10, borderBottomLeftRadius: 10
+//                         }} source={require('../../../../assets/images/imgVoucher.webp')} />
+//                     </View>
+//                     <View>
+//                         <Text style={styles.itemName} >{item.voucherId.description}</Text>
+
+//                         <Text style={styles.itemPrice}>Tối đa: {formatCurrencyVND(item.voucherId.discount)} </Text>
+//                     </View>
+
+//                 </View>
+
+//             </TouchableOpacity>
+//         </View>
+//     );
+
+
+
+//     return (
+//         <View style={styles.container}>
+//             <Headercomponet
+//                 leftIcon={require('../../../../assets/images/close.png')}
+//                 onPressLeftIcon={() => { }}
+//                 title={"Chọn Voucher"} />
+
+//             <FlatList
+//                 data={getVoucherData.data}
+//                 keyExtractor={item => item._id}
+//                 renderItem={renderItemSearch}
+
+//             />
+//         </View>
+//     )
+// }
+
+// export default ListVoucherScreen
+
+// const styles = StyleSheet.create({
+//     itemContainer: {
+//         height: 100,
+//         backgroundColor: '#F8F9FE',
+//         borderRadius: 10,
+//         marginBottom: 20
+//     },
+//     itemImage: {
+//         width: '100%',
+//         height: 120,
+//         borderTopLeftRadius: 10, // Bo góc trên bên trái
+//         borderTopRightRadius: 10, // Bo góc trên bên phải
+//     },
+//     itemName: {
+//         height: 40,
+//         width: 220,
+//         fontSize: fontsize.sm,
+//         color: '#4D4D4D',
+//         fontWeight: 'bold',
+//         marginTop: 16,
+//         marginLeft: 16,
+//         marginRight: 16,
+//         fontWeight: '700',
+//     },
+//     itemPrice: {
+//         fontSize: fontsize.sm,
+//         color: 'black',
+//         fontWeight: '700',
+//         marginLeft: 16,
+//         marginRight: 16,
+//     },
+//     itemDay: {
+//         height: 16,
+//         fontSize: fontsize.fm,
+//         color: '#757575',
+//         marginLeft: 8,
+//         marginRight: 16,
+//         fontWeight: '700',
+//     },
+//     container: {
+//         flex: 1,
+//         padding: 16
+//     }
+// })

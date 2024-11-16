@@ -14,6 +14,7 @@ const ReviewList = ({reviews, onSeeMore, tourId}) => {
           <Text style={styles.rating}>5</Text>
           <Text style={styles.text}>/5</Text>
         </View>
+
         <Rating
           style={styles.starRating}
           ratingCount={5}
@@ -36,10 +37,10 @@ const ReviewList = ({reviews, onSeeMore, tourId}) => {
       />
 
       <Button
+        onPress={() => onSeeMore(tourId)}
         style={styles.btn}
         styleText={styles.textBtn}
         label="Xem thêm đánh giá"
-        onPress={() => onSeeMore(tourId)}
       />
     </View>
   );

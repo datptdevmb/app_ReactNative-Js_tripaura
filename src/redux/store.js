@@ -11,8 +11,10 @@ import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
+import paymentReducer from './slices/paymentSlice'; 
+import bookingReducer from './slices/booking.slice'; 
 import voucherReducer from './slices/vouchersSlice';
-import reviewTour from './slices/reviewTourducers';
+import reviewReducer from './slices/reviewTourducers';
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -28,8 +30,12 @@ const rootReducer = combineReducers({
   filterTour: filterTourReducer,
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
+  payment: paymentReducer,
+  booking: bookingReducer,
+  // favoriteAdDelete: favoriteAdDeleteReducer,
+  // favouriteDelete: favouriteDeleteReducer,
   vouchers: voucherReducer,
-  review: reviewTour,
+  reviews: reviewReducer,
 });
 
 // Configure the store
