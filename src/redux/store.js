@@ -31,7 +31,7 @@ const rootReducer = combineReducers({
   searchTour: searchTourReducer,
   changeUser: changeUserReducer,
   payment: paymentReducer,
-  bookings: bookingReducer,
+  booking: bookingReducer,
   // favoriteAdDelete: favoriteAdDeleteReducer,
   // favouriteDelete: favouriteDeleteReducer,
   vouchers: voucherReducer,

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
+import { fetchBookingById } from '../../../../redux/slices/booking.slice';
 
 
 const OrderInformation = ({ route, navigation }) => {
@@ -56,6 +57,7 @@ const OrderInformation = ({ route, navigation }) => {
   const image = booking?.tourImages?.[0]?.linkImage?.[0];
   const totalCost = (booking?.numAdult * booking?.priceAdult) + (booking?.numChildren * booking?.priceChildren);
   console.log('Total cost:', totalCost);
+  const statusText = booking.status === 0 ? 'Đã thanh toán' : booking.status === 1 ? 'Chưa thanh toán' : 'Đã hủy';
 
   return (
     <ScrollView style={styles.container}>
@@ -93,7 +95,7 @@ const OrderInformation = ({ route, navigation }) => {
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Thông tin thanh toán</Text>
           <Text style={styles.infoText}>Phương thức thanh toán: <Text style={styles.highlight}>Thanh toán qua ngân hàng</Text></Text>
-          <Text style={[styles.infoText, styles.statusText]}>Tình trạng: <Text style={styles.highlight}>{booking.status === 1 ? 'Chưa thanh toán' : booking.status === 0 ? 'Đã thanh toán' : 'N/A'}</Text></Text>
+          <Text style={[styles.infoText, styles.statusText]}>Tình trạng: <Text style={styles.highlight}>{statusText}</Text></Text>
         </View>
       </View>
     </ScrollView>
