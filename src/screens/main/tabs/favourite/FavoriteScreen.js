@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { LayDanhSachYeuThich, themXoaYeuThichTour } from '../../../../redux/slices/favouriteducers';
@@ -44,13 +45,14 @@ const FavoriteScreen = ({ route }) => {
 
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}
+      showsVerticalScrollIndicator={false}>
       <FavoriteList
         data={favoritesData}
         onToggleFavorite={handleToggleFavorite}
-        />
-     
-    </View >
+      />
+      <View style={{ height: 120 }} />
+    </ScrollView >
   );
 };
 

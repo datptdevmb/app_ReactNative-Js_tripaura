@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   NativeModules,
   useWindowDimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
-const {ZaloPayModule} = NativeModules;
+const { ZaloPayModule } = NativeModules;
 
-import {useEffect, useRef, useState} from 'react';
-import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-view';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatedScrollView } from '@kanelloc/react-native-animated-header-scroll-view';
 import {
   decreaseAdultTicket,
   decreaseChildTicket,
@@ -21,7 +22,7 @@ import {
   increaseChildTicket,
   setSelectedDate,
 } from '../../../../redux/slices/tour.slice';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ImageList from './ImageList';
 import LocationInfo from './LocationInfo';
 import Lable from '../../../../components/common/labelText';
@@ -42,7 +43,7 @@ import {
   themXoaYeuThichTour,
 } from '../../../../redux/slices/favouriteducers';
 import Toast from '../../../../components/common/toast/Toast';
-import {ROUTES} from '../../../../constants/routes';
+import { ROUTES } from '../../../../constants/routes';
 import RenderHtml from 'react-native-render-html';
 const reviews = [
   {
@@ -63,10 +64,10 @@ const reviews = [
   },
 ];
 
-const Detail = ({navigation, route}) => {
-  const {width} = useWindowDimensions();
+const Detail = ({ navigation, route }) => {
+  const { width } = useWindowDimensions();
 
-  const {_id: tourId} = route.params;
+  const { _id: tourId } = route.params;
   const dispatch = useDispatch();
   const [detailId, setDetailId] = useState(null);
 
@@ -84,13 +85,13 @@ const Detail = ({navigation, route}) => {
   console.log('adultPrice', adultPrice);
   console.log('childPrice', childPrice);
 
-  const {isTourFavorited, favoritesStatus, message} = useSelector(
+  const { isTourFavorited, favoritesStatus, message } = useSelector(
     state => state.reducer.favorites,
   );
-  const {user} = useSelector(state => state.reducer.auth);
+  const { user } = useSelector(state => state.reducer.auth);
   const [showToast, setShowToast] = useState(false);
 
-  const {imges, tourName, description, location, details} = tourById;
+  const { imges, tourName, description, location, details } = tourById;
 
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const translateY = useRef(new Animated.Value(500)).current;
@@ -139,15 +140,15 @@ const Detail = ({navigation, route}) => {
   };
 
   const handleNavigateToRate = () => {
-    navigation.navigate('Rate', {tourId: tourId});
+    navigation.navigate('Rate', { tourId: tourId });
   };
 
   useEffect(() => {
     const loadData = async () => {
       try {
         await Promise.all([
-          dispatch(fetchTourById({tourId})),
-          dispatch(KiemTraYeuThich({userId: user.user._id, tourId})),
+          dispatch(fetchTourById({ tourId })),
+          dispatch(KiemTraYeuThich({ userId: user.user._id, tourId })),
         ]);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -184,14 +185,17 @@ const Detail = ({navigation, route}) => {
         TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
         headerImage={
           !loading && imges
-            ? {uri: imges[0]}
+            ? { uri: imges[0] }
             : {
-                uri: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
-              }
+              uri: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
+            }
         }
         imageStyle={{
           height: 243,
-        }}>
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+
         <TouchableOpacity
           onPress={handleDetailImage}
           style={{
@@ -227,14 +231,15 @@ const Detail = ({navigation, route}) => {
               <View style={styles.divider} />
               {/* <Lable lable="Mô tả chuyến đi" /> */}
               {/* <Text style={styles.bodytext}>{description}</Text> */}
-              <RenderHtml contentWidth={width} source={{html: description}} />
+              <RenderHtml contentWidth={width} source={{ html: description }} />
 
               <ReviewList onSeeMore={handleNavigateToRate} reviews={reviews} />
             </View>
 
-            <View style={{height: 500}}></View>
+            <View style={{ height: 500 }}></View>
           </View>
         )}
+
       </AnimatedScrollView>
 
       {/* Button Bottom */}
@@ -252,51 +257,53 @@ const Detail = ({navigation, route}) => {
 
       {/* Backdrop và Bottom Sheet */}
       {bottomSheetVisible && (
-        <TouchableOpacity style={styles.backdrop}>
-          <Animated.View
-            style={[styles.bottomSheet, {transform: [{translateY}]}]}>
-            <View style={styles.InforContainer}>
-              <TouchableOpacity>
-                <Ic_x onPress={toggleBottomSheet} />
-              </TouchableOpacity>
-              <Text style={styles.tourname}>{tourName}</Text>
-              <DepartureDateSelector
-                onSelectDate={(date, id) => {
-                  dispatch(setSelectedDate(date)), setDetailId(id);
-                }}
-                selectedDate={selectedDate}
-                data={details}
-              />
-
-              <TicketSelector
-                onIncreaseAdult={handleIncreaseAdult}
-                onIncreaseChild={handleIncreaseChild}
-                onDecreaseAdult={handleDecreaseAdult}
-                onDecreaseChild={handleDecreaseChild}
-                adultPrice={details[0].priceAdult}
-                childPrice={details[0].priceChildren}
-                childTickets={childTickets}
-                adultTickets={adultTickets}
-              />
-              <RefundPolicy />
-            </View>
-
-            <View style={styles.btnContainer}>
-              <View style={styles.price}>
-                <Text style={styles.textprice}>Giá chỉ từ</Text>
-                <Text style={styles.total}>
-                  {formatCurrencyVND(totalPrice)}
-                </Text>
+        <TouchableWithoutFeedback onPress={() => { }}>
+          <View style={styles.backdrop}>
+            <Animated.View
+              style={[styles.bottomSheet, { transform: [{ translateY }] }]}>
+              <View style={styles.InforContainer}>
+                <TouchableOpacity>
+                  <Ic_x onPress={toggleBottomSheet} />
+                </TouchableOpacity>
+                <Text style={styles.tourname}>{tourName}</Text>
+                <DepartureDateSelector
+                  onSelectDate={(date, id) => {
+                    dispatch(setSelectedDate(date)), setDetailId(id);
+                  }}
+                  selectedDate={selectedDate}
+                  data={details}
+                />
+                <TicketSelector
+                  onIncreaseAdult={handleIncreaseAdult}
+                  onIncreaseChild={handleIncreaseChild}
+                  onDecreaseAdult={handleDecreaseAdult}
+                  onDecreaseChild={handleDecreaseChild}
+                  adultPrice={details[0].priceAdult}
+                  childPrice={details[0].priceChildren}
+                  childTickets={childTickets}
+                  adultTickets={adultTickets}
+                />
+                <RefundPolicy />
               </View>
-              <Button
-                style={styles.btn}
-                label="Mua Ngay"
-                onPress={handelNavigateToOrder}
-              />
-            </View>
-          </Animated.View>
-        </TouchableOpacity>
+
+              <View style={styles.btnContainer}>
+                <View style={styles.price}>
+                  <Text style={styles.textprice}>Giá chỉ từ</Text>
+                  <Text style={styles.total}>
+                    {formatCurrencyVND(totalPrice)}
+                  </Text>
+                </View>
+                <Button
+                  style={styles.btn}
+                  label="Mua Ngay"
+                  onPress={handelNavigateToOrder}
+                />
+              </View>
+            </Animated.View>
+          </View>
+        </TouchableWithoutFeedback>
       )}
+
     </View>
   );
 };
@@ -369,7 +376,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'white',
     shadowColor: 'black',
-    shadowOffset: {width: 0, height: -1},
+    shadowOffset: { width: 0, height: -1 },
     shadowOpacity: 0.25,
     shadowRadius: 1,
     elevation: 30,
@@ -383,7 +390,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: -2},
+    shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 5,

@@ -16,7 +16,6 @@ const TourCardList = ({
         {isLoading ? (
           <SkeletonPlaceholder>
             <View style={styles.skeletonContainer}>
-              {/* Thêm khung giả cho tour */}
               {[...Array(5)].map((_, index) => (
                 <View key={index} style={styles.skeletonTourCard} />
               ))}

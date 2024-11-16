@@ -25,7 +25,7 @@ const VoucherScreen = (props) => {
   useEffect(() => {
     dispatch(LayDanhSachVoucher('6709c68681507ec7a47b03cc'))
     // console.log("============ data ==========", getVoucherData.data);
-    
+
   }, [dispatch])
 
   const nhanDungNgay = () => {
@@ -34,16 +34,17 @@ const VoucherScreen = (props) => {
 
   const nhanNhan = () => {
 
-  }   
+  }
 
   if (getVoucherData.data) {
     var data = getVoucherData.data.map(voucher => voucher._id)
-    
+
   }
-  
+
 
   return (
-    <ScrollView style={stylesglobal.container}>
+    <ScrollView style={stylesglobal.container}
+      showsVerticalScrollIndicator={false}>
       <Headercomponet
         leftIcon={Icons.ic_leftarrow}
         title={"Ưu đãi"}
@@ -69,6 +70,7 @@ const VoucherScreen = (props) => {
           key={placename.id}
         />
       </View>
+      <View style={{ height: 120 }} />
     </ScrollView>
   );
 };

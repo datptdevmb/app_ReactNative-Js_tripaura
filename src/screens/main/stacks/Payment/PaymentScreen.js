@@ -21,12 +21,22 @@ const PaymentScreen = ({ route }) => {
         },
         body: JSON.stringify({ status }),
       });
-      const data = await response.json();
-      if (data.code === 200) {
-        console.log('Thành công');
 
+      console.log('Response from server:', response);
+
+      const data = await response.json();
+      console.log('Parsed response data:', data);
+
+      if (data.code === 200) {
+        Toast.show({
+          type: 'success',
+          text1: 'Cập nhật booking thành công',
+        });
       } else {
-        console.error('Thất bại');
+        Toast.show({
+          type: 'error',
+          text1: 'Cập nhật thất bại',
+        });
       }
     } catch (error) {
       console.error('Error updating booking status:', error);
@@ -41,20 +51,20 @@ const PaymentScreen = ({ route }) => {
     const { url } = navState;
 
     console.log('Current URL:', url);
+
     if (url.includes('/payment/success')) {
       console.log('Navigation detected success URL');
       Alert.alert('Thành công', 'Bạn đã thanh toán thành công');
 
       updateBookingStatus('success');
 
-      setTimeout(() => {
-        navigation.navigate('OrderInformation', { bookingId });
-      }, 0);
+      setTimeout(() => navigation.navigate('MainTabNavigation'), 1000);
     } else if (url.includes('/payment/cancel')) {
       console.log('Navigation detected cancel URL');
       Alert.alert('Thất bại', 'Đã hủy thanh toán.');
       updateBookingStatus('cancel');
-      navigation.navigate('MainTabNavigation');
+      navigation.navigate('MainTabNavigation');y
+      setTimeout(() => navigation.navigate('MainTabNavigation'), 1000);
     }
   };
 

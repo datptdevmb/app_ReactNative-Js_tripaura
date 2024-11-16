@@ -72,6 +72,9 @@ const OrderReviewScreen = ({ navigation }) => {
         }
     }, [selectedMethod, totalPrice]);
 
+    console.log('booking:', bookingId);
+    
+
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
             if (paymentInfo.paymentLink && bookingId) {
