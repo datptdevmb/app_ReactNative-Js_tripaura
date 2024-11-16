@@ -63,7 +63,7 @@ const PaymentScreen = ({ route }) => {
       console.log('Navigation detected cancel URL');
       Alert.alert('Thất bại', 'Đã hủy thanh toán.');
       updateBookingStatus('cancel');
-      navigation.navigate('MainTabNavigation');y
+      navigation.navigate('MainTabNavigation');
       setTimeout(() => navigation.navigate('MainTabNavigation'), 1000);
     }
   };

@@ -16,7 +16,7 @@ const ChonVoucher = ({ navigation, route }) => {
     const user = userReducer.user
 
     console.log('user:', user);
-    
+
 
     console.log(user.user._id);
 
@@ -81,8 +81,9 @@ const ChonVoucher = ({ navigation, route }) => {
                 data={getVoucherData.data}
                 keyExtractor={item => item._id}
                 renderItem={renderItemSearch}
-
+                scrollEnabled={false}
             />
+
         </View>
     )
 }

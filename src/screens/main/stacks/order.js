@@ -34,7 +34,14 @@ const OrderReviewScreen = ({ route }) => {
     const { discount } = route.params
     const { voucherId } = route.params
 
-    let finalPrice = totalPrice - discount || 0
+    let finalPrice = (totalPrice && discount) ? totalPrice - discount : totalPrice;
+
+
+    console.log('Total Price:', totalPrice);
+    console.log('Discount:', discount);
+
+    console.log('finalPrice', finalPrice);
+
     console.log("=================== discount", discount);
     console.log("=================== voucherId", voucherId);
 

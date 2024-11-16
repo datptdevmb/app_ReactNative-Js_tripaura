@@ -8,10 +8,13 @@ import colors from '../../../../constants/colors';
 
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { bookings } = useSelector((state) => state.reducer.booking);
+    const { bookings } = useSelector((state) => state.reducer.bookings);
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
+
+    console.log('userId: ' + userId);
+    
 
     const [selectedStatus, setSelectedStatus] = useState(0);
 
