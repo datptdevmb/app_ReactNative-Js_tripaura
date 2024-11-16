@@ -123,7 +123,8 @@ const SearchScreen = (props) => {
           />
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <ScrollView 
+        showsVerticalScrollIndicator={false}>
         <View>
           {filterTourData.data && <Text style={styles.tile}>{filterTourData.data.length} kết quả</Text>}
           <View style={{ marginTop: 20 }}>
@@ -170,6 +171,7 @@ const SearchScreen = (props) => {
           </View>
 
         </Modal>
+        <View style={{ height: 90 }} />
       </ScrollView>
     </View>
   );

@@ -134,7 +134,7 @@ function HomeScreen({ navigation }) {
         <Text style={styles.heading}>Điểm đến được săn đón</Text>
         <PopularToursList onClick={handelPopular} popularTours={tours} />
       </ScrollView>
-      
+      <View style={{ height: 120 }} />
     </View>
   );
 };

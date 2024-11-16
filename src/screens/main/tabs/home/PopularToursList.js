@@ -20,7 +20,7 @@ const PopularToursList = ({ popularTours, onClick }) => {
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}
       numColumns={2} 
-      columnWrapperStyle={styles.columnWrapper} // Cho phép item có chiều cao khác nhau
+      columnWrapperStyle={styles.columnWrapper} 
       contentContainerStyle={styles.container}
     />
   );

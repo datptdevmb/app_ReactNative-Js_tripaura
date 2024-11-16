@@ -10,6 +10,7 @@ import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 import { AppContext } from '../../../AppContext';
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 
 
 const SettingLoggedScreen = (props) => {
@@ -64,9 +65,14 @@ const SettingLoggedScreen = (props) => {
     };
 
     const openImagePicker = async () => {
-        const response = await launchImageLibrary({ selectionLimit: 1, ...commonOptions });
-        await handleImageSelection(response);
+        try {
+            const response = await launchImageLibrary({ selectionLimit: 1, ...commonOptions });
+            await handleImageSelection(response);
+        } catch (error) {
+            console.error("Image picker error:", error);
+        }
     };
+
 
     const openCamera = async () => {
         const response = await launchCamera({ cameraType: 'front', saveToPhotos: true, ...commonOptions });
@@ -154,6 +160,7 @@ const SettingLoggedScreen = (props) => {
     function handlePurchase() {
         navigation.navigate('Purchasehistory')
     }
+
     return (
         <View style={stylesglobal.container}>
             <View style={styles.headerContainer}>
@@ -232,6 +239,17 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
 
+
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_orther} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <View style={styles.underline} />
@@ -259,9 +277,9 @@ const SettingLoggedScreen = (props) => {
                     <View style={styles.lefticon}>
                         <Switch
                             trackColor={{ false: '#767577', true: '#0572E7' }}
-                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
+                            thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
+                            onValueChange={toggleSwitchchedo}
+                            value={isEnabledchdo}
                         />
                     </View>
                 </View>
