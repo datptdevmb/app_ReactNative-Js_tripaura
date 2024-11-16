@@ -14,6 +14,7 @@ const FavoriteScreen = () => {
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.reducer.auth);
   const {favoritesData} = useSelector(state => state.reducer.favorites);
+  const {favoritesStatus} = useSelector(state => state.reducer.favorites);
 
   useEffect(() => {
     if (user?.user?._id) {
@@ -33,7 +34,7 @@ const FavoriteScreen = () => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {favoritesData && favoritesData.length > 0 ? (
+      {favoritesStatus && favoritesData.length > 0 ? (
         <FavoriteList
           data={favoritesData}
           onToggleFavorite={handleToggleFavorite}
