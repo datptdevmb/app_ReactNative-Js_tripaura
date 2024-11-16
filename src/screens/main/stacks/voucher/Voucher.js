@@ -15,7 +15,8 @@ import { useNavigation } from '@react-navigation/native';
 const Voucher = () => {
   const navigation = useNavigation();
   return (
-    <ScrollView style={stylesglobal.container}>
+    <ScrollView style={stylesglobal.container}
+    showsVerticalScrollIndicator={false}>
       <Headercomponet
         leftIcon={Icons.ic_leftarrow}
         title={"Ưu đãi"}
@@ -40,6 +41,7 @@ const Voucher = () => {
           key={placename.id}
         />
       </View>
+      <View style={{ height: 120 }} />
     </ScrollView>
   );
 };
