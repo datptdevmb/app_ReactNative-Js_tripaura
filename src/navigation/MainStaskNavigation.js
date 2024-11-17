@@ -56,7 +56,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
       <Stack.Screen name="FiterScreen" component={FilterScreen} />
       <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
-      <Stack.Screen name="Payment" component={PaymentScreen} />
+      <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
       <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />

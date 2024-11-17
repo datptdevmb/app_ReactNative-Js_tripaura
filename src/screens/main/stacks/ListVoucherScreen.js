@@ -63,13 +63,15 @@ const ChonVoucher = ({ navigation, route }) => {
                 title={"Chọn Voucher"}
             />
             {getVoucherStatus === 'loading' ? (
-                <Text>Loading...</Text> // Show loading state
+                <Text>Loading...</Text>
             ) : (
                 <FlatList
                     data={getVoucherData.data}
-                    keyExtractor={item => item._id}
+                    keyExtractor={(item) => item._id}
                     renderItem={renderItemSearch}
+                    scrollEnabled={false} 
                 />
+
             )}
         </View>
     );
