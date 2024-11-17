@@ -138,6 +138,24 @@ const styles = StyleSheet.create({
     color: '#212121',
     fontWeight: 'bold',
   },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+  emptyImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    marginTop: 120,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#212121',
+    textAlign: 'center',
+    marginTop: 10,
+  },
 });
 
 export default styles;

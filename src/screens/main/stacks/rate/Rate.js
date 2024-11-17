@@ -17,6 +17,8 @@ const Rate = ({route, navigation}) => {
   const trangThaiDanhGia = useSelector(
     state => state.reducer.reviews.reviewsStatus,
   );
+  console.log('Danh sách đánh giá:', danhSachDanhGia);
+  console.log('Trạng thái đánh giá:', trangThaiDanhGia);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -134,34 +136,48 @@ const Rate = ({route, navigation}) => {
         />
       </View>
 
-      <FlatList
-        data={danhSachDanhGia}
-        renderItem={renderReviewItem}
-        keyExtractor={item => item._id}
-        contentContainerStyle={styles.listContainer}
-        ListHeaderComponent={
-          <View>
-            <Text style={styles.textRate}>Đánh giá chung</Text>
-            <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
+      {trangThaiDanhGia === 'loading' ? (
+        <Text></Text>
+      ) : !Array.isArray(danhSachDanhGia) || danhSachDanhGia.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Image
+            source={require('../../../../assets/icons/ic_Rate.png')}
+            style={styles.emptyImage}
+          />
+          <Text style={styles.emptyText}>
+            Chưa có đánh giá nào cho tour này !
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={danhSachDanhGia}
+          renderItem={renderReviewItem}
+          keyExtractor={item => item._id}
+          contentContainerStyle={styles.listContainer}
+          ListHeaderComponent={
+            <View>
+              <Text style={styles.textRate}>Đánh giá chung</Text>
+              <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
 
-            <View style={styles.starContainer}>
-              {mangSoSao.map((star, index) => (
-                <Image
-                  key={index}
-                  source={
-                    star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
-                  }
-                  style={styles.star}
-                />
-              ))}
+              <View style={styles.starContainer}>
+                {mangSoSao.map((star, index) => (
+                  <Image
+                    key={index}
+                    source={
+                      star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
+                    }
+                    style={styles.star}
+                  />
+                ))}
+              </View>
+
+              <Text style={styles.reviewCount}>
+                Dựa trên {soNguoiDanhGia} đánh giá
+              </Text>
             </View>
-
-            <Text style={styles.reviewCount}>
-              Dựa trên {soNguoiDanhGia} đánh giá
-            </Text>
-          </View>
-        }
-      />
+          }
+        />
+      )}
     </View>
   );
 };
