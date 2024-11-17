@@ -10,6 +10,7 @@ import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
 import { AppContext } from '../../../AppContext';
+import { checkLoginStatus, logoutUser } from '../../../../redux/slices/auth.slice';
 
 
 const SettingLoggedScreen = (props) => {
@@ -22,9 +23,9 @@ const SettingLoggedScreen = (props) => {
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     console.log('user: ', user);
-    // const userId = user.user._id
+    const userId = user.user._id
 
-    // console.log('image: ', image);
+    console.log('image: ', image);
 
 
     const changeUserStatus = useSelector(state => state.changeUser);
@@ -32,20 +33,20 @@ const SettingLoggedScreen = (props) => {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
-    // useEffect(() => {
-    //     if (user.user) {
-    //         const userData = user.user;
-    //         const avatar = userData.avatar;
-    //         const fullname = userData.fullname;
-    //         const email = userData.email;
-    //         const userId = userData._id;
+    useEffect(() => {
+        if (user.user) {
+            const userData = user.user;
+            const avatar = userData.avatar;
+            const fullname = userData.fullname;
+            const email = userData.email;
+            const userId = userData._id;
 
-    //         console.log('Avatar:', avatar);
-    //         console.log('Fullname:', fullname);
-    //         console.log('Email:', email);
-    //         console.log('User ID:', userId);
-    //     }
-    // }, [user]);
+            console.log('Avatar:', avatar);
+            console.log('Fullname:', fullname);
+            console.log('Email:', email);
+            console.log('User ID:', userId);
+        }
+    }, [user]);
 
     const commonOptions = {
         mediaType: 'photo',
@@ -64,12 +65,23 @@ const SettingLoggedScreen = (props) => {
     };
 
     const openImagePicker = async () => {
-        const response = await launchImageLibrary({ selectionLimit: 1, ...commonOptions });
-        await handleImageSelection(response);
+        try {
+            const response = await launchImageLibrary({
+                selectionLimit: 1,
+                ...commonOptions,
+            });
+            await handleImageSelection(response);
+        } catch (error) {
+            console.error('Image picker error:', error);
+        }
     };
 
     const openCamera = async () => {
-        const response = await launchCamera({ cameraType: 'front', saveToPhotos: true, ...commonOptions });
+        const response = await launchCamera({
+            cameraType: 'front',
+            saveToPhotos: true,
+            ...commonOptions,
+        });
         if (response.didCancel) {
             Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
             setImage(null);
@@ -134,15 +146,15 @@ const SettingLoggedScreen = (props) => {
     }, [changeUserStatus]);
 
 
-    // const userName = user?.user.fullname || 'Nguyễn Văn A';
+    const userName = user?.user.fullname || 'Nguyễn Văn A';
 
-    // const avatar = image
-    //     ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
-    //         ? { uri: user.user.avatar } : Icons.avatar;
+    const avatar = image
+        ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
+            ? { uri: user.user.avatar } : Icons.avatar;
 
-    // console.log('avatar', avatar);
-    // console.log('name', userName);
-    // console.log('userName:', user?.user.fullname);
+    console.log('avatar', avatar);
+    console.log('name', userName);
+    console.log('userName:', user?.user.fullname);
 
 
     function handleMap() {
@@ -154,6 +166,18 @@ const SettingLoggedScreen = (props) => {
     function handlePurchase() {
         navigation.navigate('Purchasehistory')
     }
+
+    const handleLogout = async () => {
+        try {
+          await dispatch(logoutUser());
+          dispatch(checkLoginStatus());
+          //   navigation.replace('LoginRegisterScreen');
+        } catch (error) {
+          Alert.alert('Lỗi', 'Đã xảy ra lỗi khi đăng xuất');
+          console.error('Đăng xuất không thành công:', error);
+        }
+      };
+    
     return (
         <View style={stylesglobal.container}>
             <ScrollView>
@@ -161,10 +185,10 @@ const SettingLoggedScreen = (props) => {
                     <View style={styles.avatarContainer}>
 
                         <TouchableOpacity onPress={openImagePicker}>
-                            {/* <Image
-                            source={avatar}
-                            style={styles.imageAvatar}
-                        /> */}
+                            <Image
+                                source={avatar}
+                                style={styles.imageAvatar}
+                            />
 
                         </TouchableOpacity>
 
@@ -174,7 +198,7 @@ const SettingLoggedScreen = (props) => {
                     </View>
                     <View style={styles.txtNameContainer}>
 
-                        <Text style={styles.txtName}>aaa</Text>
+                        <Text style={styles.txtName}>{userName}</Text>
                         <TouchableOpacity
                             onPress={() => navigation.navigate('EditProfileScreen')}
                             style={styles.btnCapNhaHoSo}>
@@ -263,9 +287,9 @@ const SettingLoggedScreen = (props) => {
                             <View style={styles.lefticon}>
                                 <Switch
                                     trackColor={{ false: '#767577', true: '#0572E7' }}
-                                    thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
-                                    onValueChange={toggleSwitch}
-                                    value={isEnabled}
+                                    thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
+                                    onValueChange={toggleSwitchchedo}
+                                    value={isEnabledchdo}
                                 />
                             </View>
                         </View>
@@ -301,6 +325,17 @@ const SettingLoggedScreen = (props) => {
                         </TouchableOpacity>
 
                     </View>
+                    <View style={styles.language}>
+                        <View style={styles.btnContainer}>
+                            <Image style={styles.imageBtn} source={Icons.ic_lockout} />
+                            <TouchableOpacity onPress={handleLogout}>
+                                <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
+                            </TouchableOpacity>
+                            <View style={styles.lefticon}>
+                                <Image style={styles.btnNext} source={Icons.ic_arrowright} />
+                            </View>
+                        </View>
+                    </View>
 
                 </View>
                 <View style={styles.underline} />
@@ -318,7 +353,7 @@ const SettingLoggedScreen = (props) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 20 }} />
+                <View style={{height: 40 }} />
             </ScrollView>
         </View>
     )
