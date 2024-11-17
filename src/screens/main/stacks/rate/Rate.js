@@ -17,6 +17,8 @@ const Rate = ({route, navigation}) => {
   const trangThaiDanhGia = useSelector(
     state => state.reducer.reviews.reviewsStatus,
   );
+  console.log('Danh sách đánh giá:', danhSachDanhGia);
+  console.log('Trạng thái đánh giá:', trangThaiDanhGia);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -88,7 +90,11 @@ const Rate = ({route, navigation}) => {
   const renderReviewItem = ({item}) => (
     <View style={styles.reviewItem}>
       <View style={styles.userInfo}>
-        <Image source={{uri: item.avatar || null}} style={styles.avatar} />
+        <Image
+          source={{uri: item.avatar}}
+          style={styles.avatar}
+          onError={() => console.log('Error loading avatar')}
+        />
         <View style={styles.userNameContainer}>
           <Text style={styles.fullname}>{item.fullname}</Text>
           <Text style={styles.rating}>Đánh giá: {item.rating} ⭐</Text>
@@ -107,7 +113,7 @@ const Rate = ({route, navigation}) => {
           data={item.image}
           renderItem={({item: imageUrl}) => (
             <Image
-              source={{uri: imageUrl || null}}
+              source={{uri: imageUrl}}
               style={styles.reviewImage}
               onError={() => console.log('Error loading image')}
             />
@@ -130,34 +136,48 @@ const Rate = ({route, navigation}) => {
         />
       </View>
 
-      <FlatList
-        data={danhSachDanhGia}
-        renderItem={renderReviewItem}
-        keyExtractor={item => item._id}
-        contentContainerStyle={styles.listContainer}
-        ListHeaderComponent={
-          <View>
-            <Text style={styles.textRate}>Đánh giá chung</Text>
-            <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
+      {trangThaiDanhGia === 'loading' ? (
+        <Text></Text>
+      ) : !Array.isArray(danhSachDanhGia) || danhSachDanhGia.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Image
+            source={require('../../../../assets/icons/ic_Rate.png')}
+            style={styles.emptyImage}
+          />
+          <Text style={styles.emptyText}>
+            Chưa có đánh giá nào cho tour này !
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={danhSachDanhGia}
+          renderItem={renderReviewItem}
+          keyExtractor={item => item._id}
+          contentContainerStyle={styles.listContainer}
+          ListHeaderComponent={
+            <View>
+              <Text style={styles.textRate}>Đánh giá chung</Text>
+              <Text style={styles.averageRating}>{trungBinhSoSao}</Text>
 
-            <View style={styles.starContainer}>
-              {mangSoSao.map((star, index) => (
-                <Image
-                  key={index}
-                  source={
-                    star === 'filled' ? Icons.ic_star : Icons.ic_star_emty
-                  }
-                  style={styles.star}
-                />
-              ))}
+              <View style={styles.starContainer}>
+                {mangSoSao.map((star, index) => (
+                  <Image
+                    key={index}
+                    source={
+                      star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
+                    }
+                    style={styles.star}
+                  />
+                ))}
+              </View>
+
+              <Text style={styles.reviewCount}>
+                Dựa trên {soNguoiDanhGia} đánh giá
+              </Text>
             </View>
-
-            <Text style={styles.reviewCount}>
-              Dựa trên {soNguoiDanhGia} đánh giá
-            </Text>
-          </View>
-        }
-      />
+          }
+        />
+      )}
     </View>
   );
 };
