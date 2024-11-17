@@ -112,11 +112,10 @@ android {
 dependencies {
     // Phiên bản của react-native được thiết lập bởi React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+   implementation files("E:/DemoZPDK_Android/zpdk-release-v3.1.aar")
     implementation platform('com.google.firebase:firebase-bom:32.2.0')
     implementation 'com.google.firebase:firebase-auth'  
 
-    // Đường dẫn tới file AAR
-    implementation files("D:/DemoZPDK_Android (2)/zpdk-release-v3.1.aar")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -124,3 +123,6 @@ dependencies {
         implementation jscFlavor
     }
 }
+apply plugin:'com.google.gms.google-services'
+
+ 

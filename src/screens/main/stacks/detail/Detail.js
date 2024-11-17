@@ -132,7 +132,7 @@ const Detail = ({ navigation, route }) => {
   };
 
   const handleNavigateToFavorite = () => {
-    navigation.navigate('yeuthich');
+    navigation.navigate('FavoriteList');
   };
 
   const handleDetailImage = () => {
