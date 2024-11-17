@@ -72,8 +72,6 @@ const OrderReviewScreen = ({ navigation }) => {
         }
     }, [selectedMethod, totalPrice]);
 
-    console.log('booking:', bookingId);
-    
 
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
@@ -138,7 +136,6 @@ const OrderReviewScreen = ({ navigation }) => {
                         price={totalPrice}
                     />
                     <DepartureInfo />
-                    {/* <ContactInfo /> */}
                     <SelecVoucher onPress={handleVoucher} />
                     <Paymethod
                         selectedMethod={selectedMethod}

@@ -17,8 +17,10 @@ import { clearPaymentData, createPayment } from "../../../redux/slices/paymentSl
 
 const OrderReviewScreen = ({ navigation }) => {
     const dispatch = useDispatch();
+    const { bookingId: routeBookingId } = route.params;
     const { tourById, adultTickets, childTickets, totalPrice, selectedDate } = useSelector((state) => state.reducer.tour);
     const { tourName } = tourById;
+    const [bookingId, setBookingId] = useState(routeBookingId);
 
     console.log('tour name: ' + tourName);
 
