@@ -20,6 +20,10 @@ const FavoriteList = ({data, onToggleFavorite}) => {
 };
 const styles = StyleSheet.create({
   title: {
+    width: 145,
+    height: 48,
+    fontSize: 32,
+    lineHeight: 48,
     marginTop: 12,
     fontSize: 28,
     fontFamily: 'Lato',
