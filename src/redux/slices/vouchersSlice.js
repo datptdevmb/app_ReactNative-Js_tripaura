@@ -13,11 +13,11 @@ export const LayDanhSachVoucher = createAsyncThunk('getVoucher', async userId =>
             },
         },
     );
-    const user = await response.json();
+    const vouchers = await response.json();
     if (response.ok) {
-        // console.log("=======================", user);
+        // console.log("=======================", vouchers);
 
-        return user;
+        return vouchers;
     }
     throw new Error('Failed');
 });

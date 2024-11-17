@@ -1,39 +1,31 @@
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ToastAndroid } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground, ToastAndroid } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Headercomponet from '../../../components/common/header/Headercomponet';
 import { useDispatch, useSelector } from 'react-redux';
 import { LayDanhSachVoucher } from '../../../redux/slices/vouchersSlice';
-import { data } from '../../../../constants/data';
 import fontsize from '../../../constants/fontsize';
 
 const ChonVoucher = ({ navigation, route }) => {
-    const { totalPrice } = route.params
-    console.log("============price", totalPrice);
-    const [btn, setbtn] = useState(false)
-    const dispatch = useDispatch()
+    const { totalPrice } = route.params;
+    const [btn, setbtn] = useState(false);
+    const dispatch = useDispatch();
     const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.vouchers);
     const userReducer = useSelector(state => state.reducer.auth);
-    const user = userReducer.user
-
-    console.log('user:', user);
-
-
-    console.log(user.user._id);
+    const user = userReducer.user;
 
     useEffect(() => {
-        dispatch(LayDanhSachVoucher(user.user._id))
-        // dispatch(LayDanhSachVoucher('6709c68681507ec7a47b03cc'))
-    }, [])
-    // console.log("====== data", getVoucherData.data);
-
+        if (user && user._id) {
+            dispatch(LayDanhSachVoucher(user._id));
+        }
+    }, [user]); // Dependency on user data to fetch vouchers
 
     const onPressItem = (discount, voucherId) => {
         if (totalPrice > discount) {
-            navigation.navigate('Order', { discount: discount, voucherId: voucherId })
+            navigation.navigate('Order', { discount: discount, voucherId: voucherId });
         } else {
-            ToastAndroid.show('không đủ điều kiên', ToastAndroid.SHORT)
+            ToastAndroid.show('Không đủ điều kiện', ToastAndroid.SHORT);
         }
-    }
+    };
 
     const formatCurrencyVND = amount => {
         return new Intl.NumberFormat('vi-VN', {
@@ -48,85 +40,59 @@ const ChonVoucher = ({ navigation, route }) => {
             <TouchableOpacity
                 onPress={() => onPressItem(item.discount, item._id)}
                 disabled={totalPrice < item.condition}>
-                <View></View>
-                <ImageBackground source={require('./../../../assets/images/backgroudVoucher.png')} resizeMode='cover' style={{ padding: 10 }} >
+                <ImageBackground source={require('./../../../assets/images/backgroudVoucher.png')} resizeMode='cover' style={styles.itemImage}>
                     <View style={{ flexDirection: 'row' }}>
-                        <View style={{
-                            width: 100, height: 100, marginLeft: 32, justifyContent: 'center'
-                        }}>
+                        <View style={{ width: 100, height: 100, justifyContent: 'center' }}>
                             <Text style={styles.textTitle}>Trip Aura</Text>
                         </View>
                         <View>
-                            <Text style={styles.itemName} >{item.description}</Text>
-
-                            <Text style={styles.itemPrice}>Tối đa: {formatCurrencyVND(item.discount)} </Text>
+                            <Text style={styles.itemName}>{item.description}</Text>
+                            <Text style={styles.itemPrice}>Tối đa: {formatCurrencyVND(item.discount)}</Text>
                         </View>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
-
         </View>
     );
-
-
 
     return (
         <View style={styles.container}>
             <Headercomponet
                 leftIcon={require('./../../../assets/images/close.png')}
-                onPressLeftIcon={() => { navigation.goBack() }}
-                title={"Chọn Voucher"} />
-
-            <FlatList
-                data={getVoucherData.data}
-                keyExtractor={item => item._id}
-                renderItem={renderItemSearch}
-                scrollEnabled={false}
+                onPressLeftIcon={() => navigation.goBack()}
+                title={"Chọn Voucher"}
             />
-
+            {getVoucherStatus === 'loading' ? (
+                <Text>Loading...</Text> // Show loading state
+            ) : (
+                <FlatList
+                    data={getVoucherData.data}
+                    keyExtractor={item => item._id}
+                    renderItem={renderItemSearch}
+                />
+            )}
         </View>
-    )
-}
-
-export default ChonVoucher
+    );
+};
 
 const styles = StyleSheet.create({
-    textTitleDisable: {
-        width: 38,
-        color: '#0572E7',
-        textAlign: 'center',
-        fontSize: fontsize.sm,
-        fontWeight: 'bold',
-        textTransform: 'uppercase'
-    },
-    textTitle: {
-        width: 38,
-        color: '#0572E7',
-        textAlign: 'center',
-        fontSize: fontsize.sm,
-        fontWeight: 'bold',
-        textTransform: 'uppercase'
-    },
     itemContainer: {
-
         marginBottom: 20,
     },
     itemImage: {
         width: '100%',
         height: 120,
-        borderTopLeftRadius: 10, // Bo góc trên bên trái
-        borderTopRightRadius: 10, // Bo góc trên bên phải
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        padding: 10,
     },
     itemName: {
-        height: 40,
-        width: 160,
         fontSize: fontsize.sm,
         color: '#4D4D4D',
-        fontWeight: 'bold',
+        fontWeight: '700',
         marginTop: 16,
         marginLeft: 16,
         marginRight: 16,
-        fontWeight: '700',
     },
     itemPrice: {
         fontSize: fontsize.sm,
@@ -135,16 +101,18 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginRight: 16,
     },
-    itemDay: {
-        height: 16,
-        fontSize: fontsize.fm,
-        color: '#757575',
-        marginLeft: 8,
-        marginRight: 16,
-        fontWeight: '700',
-    },
     container: {
         flex: 1,
-        padding: 16
-    }
-})
+        padding: 16,
+    },
+    textTitle: {
+        width: 38,
+        color: '#0572E7',
+        textAlign: 'center',
+        fontSize: fontsize.sm,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+    },
+});
+
+export default ChonVoucher;

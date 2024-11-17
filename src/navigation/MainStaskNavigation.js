@@ -1,7 +1,7 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/main/tabs/home/HomeScreen';
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
@@ -10,12 +10,12 @@ import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScree
 import EditProfileScreen from '../screens/main/stacks/profile/EditProfileScreen';
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import Detail from '../screens/main/stacks/detail/Detail';
 import ButtomNavigation from './BottomNavigation';
 import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
-import {ROUTES} from '../constants/routes';
+import { ROUTES } from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen';
 import VietnamMap from '../screens/main/stacks/Map/VietnamMap';
 import DependentDropdown from '../screens/main/stacks/Filter/FilterScreen';
@@ -30,7 +30,6 @@ import Purchasehistory from '../screens/main/stacks/purchasehistory/Purchasehist
 import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
 import Rate from '../screens/main/stacks/rate/Rate';
 
-
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -39,9 +38,8 @@ const MainTabNavigation = () => {
 };
 
 const MainStaskNavigation = () => {
-
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
@@ -54,25 +52,16 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
       <Stack.Screen name="Order" component={OrderReviewScreen} />
       <Stack.Screen name={ROUTES.login} component={Login} />
-      {/* <Stack.Screen name={ROUTES.login} component={Login} /> */}
       <Stack.Screen name="Rate" component={Rate} />
-      {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
-      <Stack.Screen
-        name="LoginRegisterScreen"
-        component={LoginRegisterScreen}
-      />
+      <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
       <Stack.Screen name="FiterScreen" component={FilterScreen} />
       <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
-      <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+      <Stack.Screen name="Payment" component={PaymentScreen} />
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
       <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
     </Stack.Navigator>
   );
 };
-
-
-
-
 
 export default MainStaskNavigation;
