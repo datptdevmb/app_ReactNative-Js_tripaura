@@ -1,52 +1,42 @@
-
-import { Alert, Image, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
-
+import { Alert, Image, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import colors from '../../../../constants/colors';
-
 import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
-import { AppContext } from '../../../AppContext';
 import { checkLoginStatus, logoutUser } from '../../../../redux/slices/auth.slice';
-
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
-
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
     const [image, setImage] = useState(null);
+    const [user, setUser] = useState(null);
     const dispatch = useDispatch();
-    const userReducer = useSelector(state => state.reducer.auth);
-    const user = userReducer.user;
-    console.log('user: ', user);
-    const userId = user.user._id
 
-    console.log('image: ', image);
+    useEffect(() => {
+        const loadUserData = async () => {
+            try {
+                const storedData = await AsyncStorage.getItem('user');
+                if (storedData) {
+                    const parsedData = JSON.parse(storedData);
+                    setUser(parsedData.user);
+                    console.log('Loaded user data:', parsedData.user);
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        };
 
-
-    const changeUserStatus = useSelector(state => state.changeUser);
+        loadUserData();
+    }, []);
 
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
-
-    useEffect(() => {
-        if (user.user) {
-            const userData = user.user;
-            const avatar = userData.avatar;
-            const fullname = userData.fullname;
-            const email = userData.email;
-            const userId = userData._id;
-
-            console.log('Avatar:', avatar);
-            console.log('Fullname:', fullname);
-            console.log('Email:', email);
-            console.log('User ID:', userId);
-        }
-    }, [user]);
 
     const commonOptions = {
         mediaType: 'photo',
@@ -113,20 +103,30 @@ const SettingLoggedScreen = (props) => {
 
             const result = await response.json();
             console.log("Cloudinary response:", result);
+
             if (response.ok) {
                 const imageUrl = result.secure_url;
 
                 const userUpdateData = {
-                    userId: userId,
+                    userId: user._id,
                     avatar: imageUrl,
                 };
 
                 const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
+
                 if (updateResult.error) {
                     Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
                 } else {
+                    const updatedUser = { ...user, avatar: imageUrl };
+                    console.log('Updated User:', updatedUser);
+                    await AsyncStorage.setItem('user', JSON.stringify({ user: updatedUser }));
+
+                    const storedData = await AsyncStorage.getItem('user');
+                    const storedUser = storedData ? JSON.parse(storedData).user : null;
+                    console.log('Dữ liệu người dùng sau khi cập nhật:', storedUser);
+
                     Alert.alert('Thành công', 'Cập nhật hình ảnh thành công');
-                    dispatch(fetchUserInfo(userId));
+                    dispatch(fetchUserInfo(user._id));
                     setImage(imageUrl);
                 }
             } else {
@@ -138,126 +138,76 @@ const SettingLoggedScreen = (props) => {
         }
     };
 
-
-    useEffect(() => {
-        if (changeUserStatus === 'failed') {
-            Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
-        }
-    }, [changeUserStatus]);
-
-
-    const userName = user?.user.fullname || 'Nguyễn Văn A';
-
-    const avatar = image
-        ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
-            ? { uri: user.user.avatar } : Icons.avatar;
-
-    console.log('avatar', avatar);
-    console.log('name', userName);
-    console.log('userName:', user?.user.fullname);
-
-
-    function handleMap() {
-        navigation.navigate('MapScreen')
-    }
-    function handleCauhoi() {
-        navigation.navigate('FAQsSrceen')
-    }
-    function handlePurchase() {
-        navigation.navigate('Purchasehistory')
-    }
-
     const handleLogout = async () => {
         try {
-          await dispatch(logoutUser());
-          dispatch(checkLoginStatus());
-          //   navigation.replace('LoginRegisterScreen');
+            await dispatch(logoutUser());
+            dispatch(checkLoginStatus());
         } catch (error) {
-          Alert.alert('Lỗi', 'Đã xảy ra lỗi khi đăng xuất');
-          console.error('Đăng xuất không thành công:', error);
+            Alert.alert('Lỗi', 'Đã xảy ra lỗi khi đăng xuất');
+            console.error('Đăng xuất không thành công:', error);
         }
-      };
-    
+    };
+
+    const userName = user?.fullname || '................................................................';
+    console.log('user');
+
+    const avatar = image ? { uri: image } : user?.avatar ? { uri: user.avatar } : Icons.avatar;
+
     return (
         <View style={stylesglobal.container}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.headerContainer}>
                     <View style={styles.avatarContainer}>
-
                         <TouchableOpacity onPress={openImagePicker}>
-                            <Image
-                                source={avatar}
-                                style={styles.imageAvatar}
-                            />
-
+                            <Image source={avatar} style={styles.imageAvatar} />
                         </TouchableOpacity>
-
                         <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
                             <Image source={Icons.ic_camera} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.txtNameContainer}>
-
                         <Text style={styles.txtName}>{userName}</Text>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('EditProfileScreen')}
-                            style={styles.btnCapNhaHoSo}>
-
+                        <TouchableOpacity onPress={() => navigation.navigate('EditProfileScreen')} style={styles.btnCapNhaHoSo}>
                             <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('ProfileScreen')}
-                        style={styles.iconNextContainer}>
-                        <Image
-                            style={styles.iconNext}
-                            source={Icons.ic_arrowright} />
+                    <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')} style={styles.iconNextContainer}>
+                        <Image style={styles.iconNext} source={Icons.ic_arrowright} />
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.underline} />
 
-
                 <View style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 16, elevation: 5, marginTop: 20 }}>
                     <View style={styles.itemrow}>
-                        <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
+                        <TouchableOpacity style={styles.btnCauHoiContainer} onPress={() => navigation.navigate('Purchasehistory')}>
                             <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_orther} />
+                                <Image style={styles.imageTroGiup} source={Icons.ic_orther} />
                             </View>
                         </TouchableOpacity>
                         <Text style={styles.txtTroGiup}>Tour</Text>
                     </View>
                     <View style={styles.itemrow}>
-                        <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
+                        <TouchableOpacity onPress={() => navigation.navigate('MapScreen')} style={styles.btnCauHoiContainer}>
                             <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_map} />
+                                <Image style={styles.imageTroGiup} source={Icons.ic_map} />
                             </View>
                         </TouchableOpacity>
                         <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
                     </View>
                     <View style={styles.itemrow}>
-                        <TouchableOpacity onPress={handleCauhoi} style={styles.btnCauHoiContainer}>
+                        <TouchableOpacity onPress={() => navigation.navigate('FAQsSrceen')} style={styles.btnCauHoiContainer}>
                             <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_message} />
+                                <Image style={styles.imageTroGiup} source={Icons.ic_message} />
                             </View>
-
                         </TouchableOpacity>
                         <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
                     </View>
                     <View style={styles.itemrow}>
                         <TouchableOpacity style={styles.btnCauHoiContainer}>
                             <View style={styles.imageTroGiupContainer}>
-                                <Image
-                                    style={styles.imageTroGiup}
-                                    source={Icons.ic_lock} />
+                                <Image style={styles.imageTroGiup} source={Icons.ic_lock} />
                             </View>
-
                         </TouchableOpacity>
                         <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
                     </View>
@@ -266,8 +216,7 @@ const SettingLoggedScreen = (props) => {
                 <View style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 16, elevation: 5, marginTop: 20 }}>
                     <View style={styles.thongBaoContainer}>
                         <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn}
-                                source={Icons.ic_bell} />
+                            <Image style={styles.imageBtn} source={Icons.ic_bell} />
                             <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
                             <View style={styles.lefticon}>
                                 <Switch
@@ -281,8 +230,7 @@ const SettingLoggedScreen = (props) => {
                     </View>
                     <View style={styles.SangToiContainer}>
                         <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn}
-                                source={Icons.ic_moon} />
+                            <Image style={styles.imageBtn} source={Icons.ic_moon} />
                             <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
                             <View style={styles.lefticon}>
                                 <Switch
@@ -298,32 +246,26 @@ const SettingLoggedScreen = (props) => {
                     <View style={styles.language}>
                         <TouchableOpacity>
                             <View style={styles.btnContainer}>
-                                <Image style={styles.imageBtn}
-                                    source={Icons.ic_earth} />
+                                <Image style={styles.imageBtn} source={Icons.ic_earth} />
                                 <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
                                 <View style={styles.lefticon}>
                                     <Text>VN</Text>
-                                    <Image style={styles.btnNext}
-                                        source={Icons.ic_arrowbottom} />
+                                    <Image style={styles.btnNext} source={Icons.ic_arrowbottom} />
                                 </View>
                             </View>
                         </TouchableOpacity>
-
                     </View>
                     <View style={styles.language}>
                         <TouchableOpacity>
                             <View style={styles.btnContainer}>
-                                <Image style={styles.imageBtn}
-                                    source={Icons.ic_mony} />
+                                <Image style={styles.imageBtn} source={Icons.ic_mony} />
                                 <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
                                 <View style={styles.lefticon}>
                                     <Text>VND</Text>
-                                    <Image style={styles.btnNext}
-                                        source={Icons.ic_arrowbottom} />
+                                    <Image style={styles.btnNext} source={Icons.ic_arrowbottom} />
                                 </View>
                             </View>
                         </TouchableOpacity>
-
                     </View>
                     <View style={styles.language}>
                         <View style={styles.btnContainer}>
@@ -336,30 +278,27 @@ const SettingLoggedScreen = (props) => {
                             </View>
                         </View>
                     </View>
-
                 </View>
                 <View style={styles.underline} />
 
                 <View style={styles.language}>
-                    <TouchableOpacity onPress={() => navigation.navigate('LoginRegisterScreen')} >
+                    <TouchableOpacity onPress={() => navigation.navigate('LoginRegisterScreen')}>
                         <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn}
-                                source={Icons.ic_lockout} />
+                            <Image style={styles.imageBtn} source={Icons.ic_lockout} />
                             <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
                             <View style={styles.lefticon}>
-                                <Image style={styles.btnNext}
-                                    source={Icons.ic_arrowright} />
+                                <Image style={styles.btnNext} source={Icons.ic_arrowright} />
                             </View>
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View style={{height: 40 }} />
+                <View style={{ height: 40 }} />
             </ScrollView>
         </View>
-    )
-}
+    );
+};
 
-export default SettingLoggedScreen
+export default SettingLoggedScreen;
 
 const styles = StyleSheet.create({
     itemrow: {
@@ -498,4 +437,4 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         resizeMode: 'cover'
     }
-})
+});

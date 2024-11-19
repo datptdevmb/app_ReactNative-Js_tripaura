@@ -18,12 +18,12 @@ import { LayDanhSachVoucher } from '../../../../redux/slices/vouchersSlice';
 const VoucherScreen = (props) => {
   const { navigation } = props;
   const { user, setUser } = useContext(AppContext)
-  const { getVoucherData, getVoucherStatus } = useSelector((state) => state.getVoucher)
+  const getVoucherData= useSelector((state) => state.reducer.vouchers)
   const dispatch = useDispatch();
 
 
   useEffect(() => {
-    dispatch(LayDanhSachVoucher('6709c68681507ec7a47b03cc'))
+    dispatch(LayDanhSachVoucher(' '))
     // console.log("============ data ==========", getVoucherData.data);
 
   }, [dispatch])

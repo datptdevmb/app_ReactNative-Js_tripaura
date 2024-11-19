@@ -1,4 +1,4 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authenReducer from './slices/auth.slice';
 import tourReducer from './slices/tour.slice';
 import categoryReducer from './slices/category.slice';
@@ -11,8 +11,8 @@ import changeUserReducer from './slices/ChangeUserSlice';
 import provincesReducer from './slices/cityprovince';
 import districtReducer from './slices/district';
 import getuserReducer from './slices/getUserbyID';
-import paymentReducer from './slices/paymentSlice'; 
-import bookingReducer from './slices/booking.slice'; 
+import paymentReducer from './slices/paymentSlice';
+import bookingReducer from './slices/booking.slice';
 import voucherReducer from './slices/vouchersSlice';
 import reviewReducer from './slices/reviewTourducers';
 
@@ -41,15 +41,13 @@ const rootReducer = combineReducers({
 // Configure the store
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    reducer: rootReducer,
+  },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-
-  reducer: {
-    reducer: rootReducer,
-  },
 });
 
 export default store;

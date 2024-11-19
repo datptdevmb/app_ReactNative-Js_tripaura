@@ -5,6 +5,7 @@ import Icons from '../../../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookingsByUserId } from '../../../../redux/slices/booking.slice';
 import colors from '../../../../constants/colors';
+import Toast from 'react-native-toast-message';
 
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const Purchasehistory = ({ navigation }) => {
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
+    console.log('bookings', bookings)
 
     const [selectedStatus, setSelectedStatus] = useState(0);
 
@@ -21,7 +23,54 @@ const Purchasehistory = ({ navigation }) => {
         }
     }, [dispatch, userId]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            bookings.forEach(booking => {
+                if (booking.status === 1) {
+                    updateBookingStatus(booking._id, 2);
+                }
+            });
+        }, 300000); // 5 minutes
 
+        return () => clearTimeout(timer);
+    }, [bookings]);
+
+    const updateBookingStatus = async (bookingId, status) => {
+        console.log('Updating booking status with:', status);
+        try {
+            const response = await fetch(`https://trip-aura-server.vercel.app/booking/api/update/${bookingId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status }),
+            });
+
+            console.log('Response from server:', response);
+
+            const data = await response.json();
+            console.log('Parsed response data:', data);
+
+            if (data.code === 200) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Cập nhật booking thành công',
+                });
+                dispatch(fetchBookingsByUserId(userId)); // Refresh bookings
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Cập nhật thất bại',
+                });
+            }
+        } catch (error) {
+            console.error('Error updating booking status:', error);
+            Toast.show({
+                type: 'error',
+                text1: 'Có lỗi xảy ra khi cập nhật',
+            });
+        }
+    };
 
     const onBackPress = () => {
         navigation.goBack();
@@ -43,25 +92,22 @@ const Purchasehistory = ({ navigation }) => {
             _id: bookingId,
             userInfo: { fullname, phone, email },
             tourInfo,
+            totalPrice,
         } = item;
+
+        
 
         console.log('priceChildren', priceChildren);
         console.log('priceAdults', priceAdult);
 
-
-
         const tourName = tourInfo ? tourInfo.tourName : 'Không có tên tour';
-        const totalCost = (numAdult * priceAdult) + (numChildren * priceChildren);
-        console.log('Total cost:', totalCost);
-
-
         console.log('fullname:', fullname);
         console.log('phone:', phone);
         console.log('email:', email);
         console.log('tourName:', tourName);
-        console.log('totalCost:', totalCost);
         console.log('image:', image);
-
+        console.log('totalPrice',totalPrice);
+        
         const handlePress = () => {
             navigation.navigate('OrderInformation', { bookingId: item._id });
         };
@@ -86,7 +132,8 @@ const Purchasehistory = ({ navigation }) => {
                     <View style={styles.containeritem}>
                         <Text style={styles.dateText}>Ngày: {item.createAt ? new Date(item.createAt).toLocaleDateString() : 'N/A'}</Text>
                         <Text style={styles.tourText}>Tour: {tourName}</Text>
-                        <Text style={styles.priceText}>Tổng giá: {totalCost ? totalCost.toLocaleString() : 'N/A'} VNĐ</Text>
+                        <Text style={styles.priceText}>Tổng giá: {item.totalPrice ? item.totalPrice.toLocaleString() : 'N/A'} VNĐ</Text>
+
                         <View style={styles.statusTextContainer}>
                             <Text style={styles.statusLabel}>Trạng thái: </Text>
                             <Text
@@ -108,7 +155,6 @@ const Purchasehistory = ({ navigation }) => {
             </TouchableOpacity>
         );
     };
-
 
     return (
         <ScrollView style={styles.container}>
@@ -228,7 +274,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '70%',
     },
-
     paymentButtonText: {
         color: '#fff',
         fontSize: 16,

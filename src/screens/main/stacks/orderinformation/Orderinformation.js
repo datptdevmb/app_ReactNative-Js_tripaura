@@ -88,7 +88,7 @@ const OrderInformation = ({ route, navigation }) => {
             Giá tour trẻ em: <Text style={styles.highlight}>{formatCurrency(booking?.priceChildren) || 'N/A'}</Text>
           </Text>
           <Text style={styles.totalText}>
-            Tổng tiền <Text style={styles.highlight}>{formatCurrency(totalCost) || 'N/A'}</Text>
+            Tổng tiền <Text style={styles.highlight}>{formatCurrency(booking?.totalPrice) || 'N/A'}</Text>
           </Text>
         </View>
 
@@ -105,74 +105,74 @@ const OrderInformation = ({ route, navigation }) => {
 export default OrderInformation;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F0F4F8',
-    },
-    containerformation: {
-        padding: 15,
-    },
-    card: {
-        padding: 15,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 15,
-        marginBottom: 15,
-        shadowColor: '#B0BEC5',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
-        elevation: 5,
-        marginTop: 10,
-    },
-    sectionTitle: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#2C3E50',
-        marginBottom: 15,
-        textAlign: 'center',
-        borderBottomWidth: 2,
-        borderBottomColor: '#D1D8E0',
-        paddingBottom: 5,
-    },
-    infoText: {
-        fontSize: 15,
-        color: '#34495E',
-        marginBottom: 8,
-        lineHeight: 24,
-    },
-    totalText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#E74C3C',
-        marginBottom: 15,
-    },
-    statusText: {
-        color: '#27AE60',
-        fontWeight: '600',
-    },
-    highlight: {
-        fontWeight: 'bold',
-        color: '#2980B9',
-    },
-    image: {
-        width: '100%',
-        height: 200,
-        resizeMode: 'cover',
-        marginVertical: 15,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#D1D8E0',
-    },
-    loadingText: {
-        fontSize: 16,
-        color: '#34495E',
-        textAlign: 'center',
-        marginTop: 20,
-    },
-    errorText: {
-        fontSize: 16,
-        color: 'red',
-        textAlign: 'center',
-        marginTop: 20,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#F0F4F8',
+  },
+  containerformation: {
+    padding: 15,
+  },
+  card: {
+    padding: 15,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    marginBottom: 15,
+    shadowColor: '#B0BEC5',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
+    marginTop: 10,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    marginBottom: 15,
+    textAlign: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: '#D1D8E0',
+    paddingBottom: 5,
+  },
+  infoText: {
+    fontSize: 15,
+    color: '#34495E',
+    marginBottom: 8,
+    lineHeight: 24,
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#E74C3C',
+    marginBottom: 15,
+  },
+  statusText: {
+    color: '#27AE60',
+    fontWeight: '600',
+  },
+  highlight: {
+    fontWeight: 'bold',
+    color: '#2980B9',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    marginVertical: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D1D8E0',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#34495E',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 20,
+  },
 });
