@@ -24,15 +24,28 @@ const Purchasehistory = ({ navigation }) => {
     }, [dispatch, userId]);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
+        const currentTime = new Date().getTime();
+        bookings.forEach(booking => {
+            const createdAt = new Date(booking.createAt).getTime();
+
+            const timePassed = currentTime - createdAt;
+    
+            if (booking.status === 1 && timePassed >= 300000) {
+                updateBookingStatus(booking._id, 2); 
+            }
+        });
+        const timer = setInterval(() => {
             bookings.forEach(booking => {
-                if (booking.status === 1) {
+                const createdAt = new Date(booking.createAt).getTime();
+                const timePassed = currentTime - createdAt;
+    
+                if (booking.status === 1 && timePassed >= 300000) {
                     updateBookingStatus(booking._id, 2);
                 }
             });
-        }, 300000); // 5 minutes
-
-        return () => clearTimeout(timer);
+        }, 60000); 
+    
+        return () => clearInterval(timer); 
     }, [bookings]);
 
     const updateBookingStatus = async (bookingId, status) => {
