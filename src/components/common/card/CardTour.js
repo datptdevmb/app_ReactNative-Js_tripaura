@@ -19,7 +19,7 @@ const TourCard = ({ tour, onClickFavorite, onClickItem }) => {
       </View>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.tourTitle} numberOfLines={1}>
+        <Text style={styles.tourTitle} numberOfLines={2}>
           {tour?.tourName}
         </Text>
         <View style={styles.locationContainer}>
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   locationText: {
+    paddingRight:10,
     marginLeft: 5,
     color: '#888',
     fontSize: 14,

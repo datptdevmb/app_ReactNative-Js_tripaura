@@ -91,7 +91,7 @@ const Detail = ({ navigation, route }) => {
   const { user } = useSelector(state => state.reducer.auth);
   const [showToast, setShowToast] = useState(false);
 
-  const { imges, tourName, description, location, details } = tourById;
+  const { imges, tourName, description = '<p>Default description</p>', location, details } = tourById;
 
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const translateY = useRef(new Animated.Value(500)).current;
@@ -231,7 +231,9 @@ const Detail = ({ navigation, route }) => {
               <View style={styles.divider} />
               {/* <Lable lable="Mô tả chuyến đi" /> */}
               {/* <Text style={styles.bodytext}>{description}</Text> */}
-              <RenderHtml contentWidth={width} source={{ html: description }} />
+              <RenderHtml
+               contentWidth={width}
+                source={{ html: description }} />
 
               <ReviewList onSeeMore={handleNavigateToRate} reviews={reviews} />
             </View>

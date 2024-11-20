@@ -113,7 +113,7 @@ const ButtomNavigation = () => {
       />
       <Tab.Screen
         name="Favourite"
-        component={ChonVoucher}
+        component={Voucher}
         options={{
 
           tabBarIcon: ({focused}) => (

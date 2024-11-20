@@ -16,11 +16,12 @@ const PopularToursList = ({ popularTours, onClick }) => {
 
   return (
     <FlatList
+      scrollEnabled={false}
       data={popularTours}
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}
-      numColumns={2} 
-      columnWrapperStyle={styles.columnWrapper} 
+      numColumns={2}
+      columnWrapperStyle={styles.columnWrapper}
       contentContainerStyle={styles.container}
     />
   );
@@ -29,16 +30,16 @@ const PopularToursList = ({ popularTours, onClick }) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 26,
-  
+
   },
   columnWrapper: {
     justifyContent: 'space-between',
-    alignItems: 'flex-start', // Giúp các item không bị ép cùng chiều cao
+    alignItems: 'flex-start', 
   },
   cardContainer: {
     flex: 1,
     margin: 8,
-    alignSelf: 'flex-start', 
+    alignSelf: 'flex-start',
   },
 });
 
