@@ -1,42 +1,53 @@
-import { Alert, Image, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+
+import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
+
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
 import colors from '../../../../constants/colors';
+
 import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
-import { checkLoginStatus, logoutUser } from '../../../../redux/slices/auth.slice';
+import { AppContext } from '../../../AppContext';
 import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { checkLoginStatus, logoutUser } from '../../../../redux/slices/auth.slice';
+
 
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
+
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
     const [image, setImage] = useState(null);
-    const [user, setUser] = useState(null);
     const dispatch = useDispatch();
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user;
+    console.log('user: ', user);
+    const userId = user.user._id
 
-    useEffect(() => {
-        const loadUserData = async () => {
-            try {
-                const storedData = await AsyncStorage.getItem('user');
-                if (storedData) {
-                    const parsedData = JSON.parse(storedData);
-                    setUser(parsedData.user);
-                    console.log('Loaded user data:', parsedData.user);
-                }
-            } catch (error) {
-                console.error('Error loading user data:', error);
-            }
-        };
+    console.log('image: ', image);
 
-        loadUserData();
-    }, []);
+
+    const changeUserStatus = useSelector(state => state.changeUser);
 
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
+
+    useEffect(() => {
+        if (user.user) {
+            const userData = user.user;
+            const avatar = userData.avatar;
+            const fullname = userData.fullname;
+            const email = userData.email;
+            const userId = userData._id;
+
+            console.log('Avatar:', avatar);
+            console.log('Fullname:', fullname);
+            console.log('Email:', email);
+            console.log('User ID:', userId);
+        }
+    }, [user]);
 
     const commonOptions = {
         mediaType: 'photo',
@@ -56,22 +67,16 @@ const SettingLoggedScreen = (props) => {
 
     const openImagePicker = async () => {
         try {
-            const response = await launchImageLibrary({
-                selectionLimit: 1,
-                ...commonOptions,
-            });
+            const response = await launchImageLibrary({ selectionLimit: 1, ...commonOptions });
             await handleImageSelection(response);
         } catch (error) {
-            console.error('Image picker error:', error);
+            console.error("Image picker error:", error);
         }
     };
 
+
     const openCamera = async () => {
-        const response = await launchCamera({
-            cameraType: 'front',
-            saveToPhotos: true,
-            ...commonOptions,
-        });
+        const response = await launchCamera({ cameraType: 'front', saveToPhotos: true, ...commonOptions });
         if (response.didCancel) {
             Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
             setImage(null);
@@ -103,30 +108,20 @@ const SettingLoggedScreen = (props) => {
 
             const result = await response.json();
             console.log("Cloudinary response:", result);
-
             if (response.ok) {
                 const imageUrl = result.secure_url;
 
                 const userUpdateData = {
-                    userId: user._id,
+                    userId: userId,
                     avatar: imageUrl,
                 };
 
                 const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
-
                 if (updateResult.error) {
                     Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
                 } else {
-                    const updatedUser = { ...user, avatar: imageUrl };
-                    console.log('Updated User:', updatedUser);
-                    await AsyncStorage.setItem('user', JSON.stringify({ user: updatedUser }));
-
-                    const storedData = await AsyncStorage.getItem('user');
-                    const storedUser = storedData ? JSON.parse(storedData).user : null;
-                    console.log('Dữ liệu người dùng sau khi cập nhật:', storedUser);
-
                     Alert.alert('Thành công', 'Cập nhật hình ảnh thành công');
-                    dispatch(fetchUserInfo(user._id));
+                    dispatch(fetchUserInfo(userId));
                     setImage(imageUrl);
                 }
             } else {
@@ -138,6 +133,34 @@ const SettingLoggedScreen = (props) => {
         }
     };
 
+
+    useEffect(() => {
+        if (changeUserStatus === 'failed') {
+            Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
+        }
+    }, [changeUserStatus]);
+
+
+    const userName = user?.user.fullname || 'Nguyễn Văn A';
+
+    const avatar = image
+        ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
+            ? { uri: user.user.avatar } : Icons.avatar;
+
+    console.log('avatar', avatar);
+    console.log('name', userName);
+    console.log('userName:', user?.user.fullname);
+
+
+    function handleMap() {
+        navigation.navigate('MapScreen')
+    }
+    function handleCauhoi() {
+        navigation.navigate('FAQsSrceen')
+    }
+    function handlePurchase() {
+        navigation.navigate('Purchasehistory')
+    }
     const handleLogout = async () => {
         try {
             await dispatch(logoutUser());
@@ -147,165 +170,181 @@ const SettingLoggedScreen = (props) => {
             console.error('Đăng xuất không thành công:', error);
         }
     };
-
-    const userName = user?.fullname || '................................................................';
-    console.log('user');
-
-    const avatar = image ? { uri: image } : user?.avatar ? { uri: user.avatar } : Icons.avatar;
-
     return (
         <View style={stylesglobal.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.headerContainer}>
-                    <View style={styles.avatarContainer}>
-                        <TouchableOpacity onPress={openImagePicker}>
-                            <Image source={avatar} style={styles.imageAvatar} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
-                            <Image source={Icons.ic_camera} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.txtNameContainer}>
-                        <Text style={styles.txtName}>{userName}</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('EditProfileScreen')} style={styles.btnCapNhaHoSo}>
-                            <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')} style={styles.iconNextContainer}>
-                        <Image style={styles.iconNext} source={Icons.ic_arrowright} />
+            <View style={styles.headerContainer}>
+                <View style={styles.avatarContainer}>
+
+                    <TouchableOpacity onPress={openImagePicker}>
+                        <Image
+                            source={avatar}
+                            style={styles.imageAvatar}
+                        />
+
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
+                        <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
+                <View style={styles.txtNameContainer}>
 
-                <View style={styles.underline} />
+                    <Text style={styles.txtName}>{userName}</Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('EditProfileScreen')}
+                        style={styles.btnCapNhaHoSo}>
 
-                <View style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 16, elevation: 5, marginTop: 20 }}>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity style={styles.btnCauHoiContainer} onPress={() => navigation.navigate('Purchasehistory')}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image style={styles.imageTroGiup} source={Icons.ic_orther} />
-                            </View>
-                        </TouchableOpacity>
+                        <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('ProfileScreen')}
+                    style={styles.iconNextContainer}>
+                    <Image
+                        style={styles.iconNext}
+                        source={Icons.ic_arrowright} />
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.btnHorizontalContainer}>
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_orther} />
+                        </View>
                         <Text style={styles.txtTroGiup}>Tour</Text>
-                    </View>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity onPress={() => navigation.navigate('MapScreen')} style={styles.btnCauHoiContainer}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image style={styles.imageTroGiup} source={Icons.ic_map} />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
-                    </View>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity onPress={() => navigation.navigate('FAQsSrceen')} style={styles.btnCauHoiContainer}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image style={styles.imageTroGiup} source={Icons.ic_message} />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
-                    </View>
-                    <View style={styles.itemrow}>
-                        <TouchableOpacity style={styles.btnCauHoiContainer}>
-                            <View style={styles.imageTroGiupContainer}>
-                                <Image style={styles.imageTroGiup} source={Icons.ic_lock} />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
-                    </View>
-                </View>
-
-                <View style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 16, elevation: 5, marginTop: 20 }}>
-                    <View style={styles.thongBaoContainer}>
-                        <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn} source={Icons.ic_bell} />
-                            <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
-                            <View style={styles.lefticon}>
-                                <Switch
-                                    trackColor={{ false: '#767577', true: '#0572E7' }}
-                                    thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
-                                    onValueChange={toggleSwitch}
-                                    value={isEnabled}
-                                />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.SangToiContainer}>
-                        <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn} source={Icons.ic_moon} />
-                            <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
-                            <View style={styles.lefticon}>
-                                <Switch
-                                    trackColor={{ false: '#767577', true: '#0572E7' }}
-                                    thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
-                                    onValueChange={toggleSwitchchedo}
-                                    value={isEnabledchdo}
-                                />
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={styles.language}>
-                        <TouchableOpacity>
-                            <View style={styles.btnContainer}>
-                                <Image style={styles.imageBtn} source={Icons.ic_earth} />
-                                <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
-                                <View style={styles.lefticon}>
-                                    <Text>VN</Text>
-                                    <Image style={styles.btnNext} source={Icons.ic_arrowbottom} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.language}>
-                        <TouchableOpacity>
-                            <View style={styles.btnContainer}>
-                                <Image style={styles.imageBtn} source={Icons.ic_mony} />
-                                <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
-                                <View style={styles.lefticon}>
-                                    <Text>VND</Text>
-                                    <Image style={styles.btnNext} source={Icons.ic_arrowbottom} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.language}>
-                        <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn} source={Icons.ic_lockout} />
-                            <TouchableOpacity onPress={handleLogout}>
-                                <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
-                            </TouchableOpacity>
-                            <View style={styles.lefticon}>
-                                <Image style={styles.btnNext} source={Icons.ic_arrowright} />
-                            </View>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.underline} />
-
-                <View style={styles.language}>
-                    <TouchableOpacity onPress={() => navigation.navigate('LoginRegisterScreen')}>
-                        <View style={styles.btnContainer}>
-                            <Image style={styles.imageBtn} source={Icons.ic_lockout} />
-                            <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
-                            <View style={styles.lefticon}>
-                                <Image style={styles.btnNext} source={Icons.ic_arrowright} />
-                            </View>
-                        </View>
                     </TouchableOpacity>
                 </View>
-                <View style={{ height: 40 }} />
-            </ScrollView>
-        </View>
-    );
-};
+                <View >
+                    <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_map} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
+                    </TouchableOpacity>
+                </View>
+                <View >
+                    <TouchableOpacity onPress={handleCauhoi} style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_message} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
+                    </TouchableOpacity>
+                </View>
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_lock} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
+                    </TouchableOpacity>
+                </View>
 
-export default SettingLoggedScreen;
+
+                <View >
+                    <TouchableOpacity style={styles.btnCauHoiContainer}>
+                        <View style={styles.imageTroGiupContainer}>
+                            <Image
+                                style={styles.imageTroGiup}
+                                source={Icons.ic_orther} />
+                        </View>
+                        <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            <View style={styles.underline} />
+
+            <View style={styles.thongBaoContainer}>
+                <View style={styles.btnContainer}>
+                    <Image style={styles.imageBtn}
+                        source={Icons.ic_bell} />
+                    <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
+                    <View style={styles.lefticon}>
+                        <Switch
+                            trackColor={{ false: '#767577', true: '#0572E7' }}
+                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
+                        />
+                    </View>
+                </View>
+            </View>
+            <View style={styles.SangToiContainer}>
+                <View style={styles.btnContainer}>
+                    <Image style={styles.imageBtn}
+                        source={Icons.ic_moon} />
+                    <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
+                    <View style={styles.lefticon}>
+                        <Switch
+                            trackColor={{ false: '#767577', true: '#0572E7' }}
+                            thumbColor={isEnabledchdo ? '#FFFFFF' : '#FFFFFF'}
+                            onValueChange={toggleSwitchchedo}
+                            value={isEnabledchdo}
+                        />
+                    </View>
+                </View>
+            </View>
+
+            <View style={styles.language}>
+                <TouchableOpacity>
+                    <View style={styles.btnContainer}>
+                        <Image style={styles.imageBtn}
+                            source={Icons.ic_earth} />
+                        <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
+                        <View style={styles.lefticon}>
+                            <Text>VN</Text>
+                            <Image style={styles.btnNext}
+                                source={Icons.ic_arrowbottom} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+            <View style={styles.language}>
+                <TouchableOpacity>
+                    <View style={styles.btnContainer}>
+                        <Image style={styles.imageBtn}
+                            source={Icons.ic_mony} />
+                        <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
+                        <View style={styles.lefticon}>
+                            <Text>VND</Text>
+                            <Image style={styles.btnNext}
+                                source={Icons.ic_arrowbottom} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+
+            <View style={styles.underline} />
+
+            <View style={styles.language}>
+                <View style={styles.btnContainer}>
+                    <Image style={styles.imageBtn} source={Icons.ic_lockout} />
+                    <TouchableOpacity onPress={handleLogout}>
+                        <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
+                    </TouchableOpacity>
+                    <View style={styles.lefticon}>
+                        <Image style={styles.btnNext} source={Icons.ic_arrowright} />
+                    </View>
+                </View>
+            </View>
+        </View>
+    )
+}
+
+export default SettingLoggedScreen
 
 const styles = StyleSheet.create({
-    itemrow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 10
-    },
     btnNext: {
         width: 16,
         height: 16,
@@ -321,7 +360,7 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     thongBaoContainer: {
-        marginTop: 0
+        marginTop: 34
     },
     txtDieuKhoan: {
         width: 230,
@@ -437,4 +476,4 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         resizeMode: 'cover'
     }
-});
+})
