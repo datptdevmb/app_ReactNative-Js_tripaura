@@ -92,7 +92,6 @@ const OrderReviewScreen = ({ route,navigation }) => {
     try {
       console.log('Sending booking data:', bookingData);
       const response = await dispatch(fetchBooking(bookingData)).unwrap();
-
       if (response.code === 200 && response.data && response.data._id) {
         setBookingId(response.data._id);
         handelNavigateToPayment(response.data._id);
