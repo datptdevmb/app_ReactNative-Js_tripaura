@@ -91,7 +91,21 @@ const Detail = ({navigation, route}) => {
   const {user} = useSelector(state => state.reducer.auth);
   const [showToast, setShowToast] = useState(false);
 
-  const {imges, tourName, description, location, details} = tourById;
+  const {
+    imges,
+    tourName,
+    description = '<p>Default description</p>',
+    location,
+    details,
+  } = tourById;
+
+  const [currentImage, setCurrentImage] = useState(
+    imges && imges.length > 0
+      ? imges[0]
+      : 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
+  );
+
+  console.log('data image:', imges);
 
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const translateY = useRef(new Animated.Value(500)).current;
@@ -132,7 +146,7 @@ const Detail = ({navigation, route}) => {
   };
 
   const handleNavigateToFavorite = () => {
-    navigation.navigate('FavoriteScreen');
+    navigation.navigate('FavoriteList');
   };
 
   const handleDetailImage = () => {
@@ -157,6 +171,12 @@ const Detail = ({navigation, route}) => {
     loadData();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (imges && imges.length > 0) {
+      setCurrentImage(imges[0]);
+    }
+  }, [imges]);
+
   console.log('detail', detailId);
 
   const toggleBottomSheet = () => {
@@ -166,6 +186,12 @@ const Detail = ({navigation, route}) => {
       duration: 300,
       useNativeDriver: true,
     }).start();
+  };
+
+  console.log(currentImage);
+
+  const handleImagePress = image => {
+    setCurrentImage(image);
   };
 
   return (
@@ -180,22 +206,18 @@ const Detail = ({navigation, route}) => {
       <TouchableOpacity onPress={handleFavorite} style={styles.btnFavorite}>
         {!isTourFavorited ? <Ic_ouFavorite /> : <IcFavorite color={'white'} />}
       </TouchableOpacity>
-
+      {/* //https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg */}
       <AnimatedScrollView
         TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
-        headerImage={
-          !loading && imges
-            ? {uri: imges[0]}
-            : {
-                uri: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
-              }
-        }
+        headerImage={{
+          uri: currentImage ? currentImage : imges[0],
+        }}
         imageStyle={{
           height: 243,
         }}
         showsVerticalScrollIndicator={false}>
         <TouchableOpacity
-          onPress={handleDetailImage}
+          // onPress={() => handleDetailImage()}
           style={{
             position: 'absolute',
             height: 243,
@@ -222,7 +244,8 @@ const Detail = ({navigation, route}) => {
 
         {!loading && (
           <View>
-            <ImageList dataimage={imges} />
+            <ImageList dataimage={imges} handleImagePress={handleImagePress} />
+
             <View style={styles.tourInfor}>
               <Text style={styles.tourname}>{tourName}</Text>
               <LocationInfo location={location} />
