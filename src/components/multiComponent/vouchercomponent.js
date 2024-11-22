@@ -14,10 +14,10 @@ const vouchercomponent = ({ data }) => {
                     <Text style={styles.textvoucher}>Toàn nền tảng</Text>
                 </View>
                 <View style={styles.containergiamgia}>
-                    <Text style={styles.txtgiamgia}>{item.description}</Text>
+                    <Text style={styles.txtgiamgia}>{item.voucherId.description}</Text>
                     <View style={styles.containerminiorder}>
                         <Text style={styles.textdon}>Đơn tối thiểu</Text>
-                        <Text style={styles.textdon}>{formatCurrencyVND(item.condition)}</Text>
+                        <Text style={styles.textdon}>{formatCurrencyVND(item.voucherId.condition)}</Text>
                     </View>
                     {item.receive == "0" ?
                         <TouchableOpacity style={styles.containerbtnvoucher}>

@@ -35,20 +35,16 @@ const Voucher = () => {
         title={"Ưu đãi"}
         onPressLeftIcon={() => navigation.goBack()}
       />
-      <View style={{ marginTop: 40 }}>
-        <CategroryCity data={datacity} />
-      </View>
       <View style={styles.containervoucher}>
         <Text style={styles.txtmauudai}>
-          Mã ưu đãi
+          Voucher
         </Text>
         <View style={styles.contaivorcher}>
           <Vouchercomponent data={getVoucherData.data} key={getVoucherData.data._id} />
         </View>
       </View>
       <View style={{ width: '100%', marginTop: 13, flexDirection: 'column' }}>
-        <Text style={styles.text}>Các địa danh nổi tiếng</Text>
-        <View style={{ width: 149, height: 1, backgroundColor: '#000' }} />
+        <Text style={styles.text}>Tour đang giảm giá</Text>
         <SectionViewVoucher
           data={placename}
           key={placename.id}
@@ -68,11 +64,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flexDirection: 'column',
     borderRadius: 20,
-    backgroundColor: colors.Coralred,
+    backgroundColor: '#E9967A',
     marginTop: 33,
   },
   txtmauudai: {
-    color: '#EDEDED',
+    color: 'white',
     fontFamily: 'Lato',
     fontSize: fontsize.sm,
     fontWeight: '700',
@@ -92,10 +88,12 @@ const styles = StyleSheet.create({
     paddingHorizontal:10
   },
   text: {
-    fontSize: 14,
+    fontSize: 16,
     fontStyle: 'normal',
-    fontWeight: '400',
+    fontWeight: '700',
     lineHeight: 20,
     letterSpacing: 0.035,
+    color:'black',
+    textDecorationLine:'underline'
   }
 });
