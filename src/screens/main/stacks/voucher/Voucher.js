@@ -1,5 +1,5 @@
 import { StyleSheet, Text, Image, View, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Headercomponet from './../../../../components/common/header/Headercomponet';
 import Icons from './../../../../constants/Icons';
 import CategroryCity from './../../../../components/multiComponent/categroryctity';
@@ -10,10 +10,24 @@ import stylesglobal from '../../../../constants/global';
 import colors from '../../../../constants/colors';
 import fontsize from '../../../../constants/fontsize';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { LayDanhSachVoucher } from '../../../../redux/slices/vouchersSlice';
+
 
 
 const Voucher = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch()
+  const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.vouchers);
+  const userReducer = useSelector(state => state.reducer.auth);
+  const user = userReducer.user
+
+  console.log(user.user._id);
+  useEffect(() => {
+    dispatch(LayDanhSachVoucher(user.user._id))
+  }, [])
+  console.log("===============", getVoucherData.data);
+
   return (
     <ScrollView style={stylesglobal.container}>
       <Headercomponet
@@ -29,7 +43,7 @@ const Voucher = () => {
           Mã ưu đãi
         </Text>
         <View style={styles.contaivorcher}>
-          <Vouchercomponent data={voucher} key={voucher.id} />
+          <Vouchercomponent data={getVoucherData.data} key={getVoucherData.data._id} />
         </View>
       </View>
       <View style={{ width: '100%', marginTop: 13, flexDirection: 'column' }}>
@@ -67,7 +81,7 @@ const styles = StyleSheet.create({
   },
   contaivorcher: {
     width: '100%',
-    height: 120,
+    height: 150,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 7,
@@ -75,6 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.Lavendermist,
     flexDirection: 'row',
     bottom: 0,
+    paddingHorizontal:10
   },
   text: {
     fontSize: 14,

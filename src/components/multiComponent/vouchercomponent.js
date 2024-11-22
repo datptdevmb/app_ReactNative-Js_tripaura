@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React from 'react'
 import colors from '../../constants/colors'
 import fontsize from '../../constants/fontsize'
+import formatCurrencyVND from '../../untils/formatCurrencyVND'
 
 const vouchercomponent = ({ data }) => {
     // console.log("============= data ============", data);
@@ -16,7 +17,7 @@ const vouchercomponent = ({ data }) => {
                     <Text style={styles.txtgiamgia}>{item.description}</Text>
                     <View style={styles.containerminiorder}>
                         <Text style={styles.textdon}>Đơn tối thiểu</Text>
-                        <Text style={styles.textdon}>{item.condition}</Text>
+                        <Text style={styles.textdon}>{formatCurrencyVND(item.condition)}</Text>
                     </View>
                     {item.receive == "0" ?
                         <TouchableOpacity style={styles.containerbtnvoucher}>
@@ -37,9 +38,9 @@ const vouchercomponent = ({ data }) => {
         <ScrollView
             horizontal={true}>
             <View style={
-                { flexDirection: 'row', paddingEnd: 10 }
+                { flexDirection: 'row',}
             }>
-                {data.map((item,index) => renderItems(item))}
+                {data.map((item, index) => renderItems(item))}
 
             </View>
         </ScrollView>
