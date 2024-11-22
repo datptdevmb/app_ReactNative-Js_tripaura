@@ -8,6 +8,7 @@ import {
   NativeModules,
   useWindowDimensions,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 
 const { ZaloPayModule } = NativeModules;
@@ -70,6 +71,8 @@ const Detail = ({ navigation, route }) => {
   const { _id: tourId } = route.params;
   const dispatch = useDispatch();
   const [detailId, setDetailId] = useState(null);
+  const [minTicket, setMinTicket] = useState(null);
+  const [maxTicket, setMaxTicket] = useState(null);
 
   const {
     tourById,
@@ -84,6 +87,9 @@ const Detail = ({ navigation, route }) => {
 
   console.log('adultPrice', adultPrice);
   console.log('childPrice', childPrice);
+
+
+
 
   const { isTourFavorited, favoritesStatus, message } = useSelector(
     state => state.reducer.favorites,
@@ -114,10 +120,25 @@ const Detail = ({ navigation, route }) => {
       setTimeout(() => setShowToast(false), 3000);
     }
   };
+  const checkticker = (count) => {
+    if (count < minTicket) {
+      Alert.alert('Thông báo', 'Vé phải từ ' + minTicket + ' trở lên')
+      return false;
+
+    } else if (count > maxTicket) {
+      Alert.alert('Thông báo', 'Vé phải ít hơn ' + maxTicket + ' vé')
+      return false;
+    }
+    return true;
+  };
 
   const handelNavigateToOrder = () => {
+    const toutailTicket = adultTickets + childTickets;
     if (!selectedDate) {
       console.log('vui lòng chọn ngày');
+      return;
+    }
+    if (!checkticker(toutailTicket)) {
       return;
     }
     if (adultTickets === 0 && childTickets === 0) {
@@ -128,6 +149,7 @@ const Detail = ({ navigation, route }) => {
       detailId,
       adultPrice,
       childPrice,
+      maxTicket
     });
   };
 
@@ -232,7 +254,7 @@ const Detail = ({ navigation, route }) => {
               {/* <Lable lable="Mô tả chuyến đi" /> */}
               {/* <Text style={styles.bodytext}>{description}</Text> */}
               <RenderHtml
-               contentWidth={width}
+                contentWidth={width}
                 source={{ html: description }} />
 
               <ReviewList onSeeMore={handleNavigateToRate} reviews={reviews} />
@@ -269,8 +291,8 @@ const Detail = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <Text style={styles.tourname}>{tourName}</Text>
                 <DepartureDateSelector
-                  onSelectDate={(date, id) => {
-                    dispatch(setSelectedDate(date)), setDetailId(id);
+                  onSelectDate={(date, id, minTicket, maxTicket) => {
+                    dispatch(setSelectedDate(date)), setDetailId(id), setMinTicket(minTicket), setMaxTicket(maxTicket);
                   }}
                   selectedDate={selectedDate}
                   data={details}

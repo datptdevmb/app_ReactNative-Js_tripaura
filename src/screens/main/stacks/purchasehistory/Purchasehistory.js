@@ -13,7 +13,6 @@ const Purchasehistory = ({ navigation }) => {
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
-    console.log('bookings', bookings)
 
     const [selectedStatus, setSelectedStatus] = useState(0);
 
@@ -22,30 +21,32 @@ const Purchasehistory = ({ navigation }) => {
             dispatch(fetchBookingsByUserId(userId));
         }
     }, [dispatch, userId]);
+    
 
     useEffect(() => {
         const currentTime = new Date().getTime();
-        bookings.forEach(booking => {
-            const createdAt = new Date(booking.createAt).getTime();
-
-            const timePassed = currentTime - createdAt;
-    
-            if (booking.status === 1 && timePassed >= 300000) {
-                updateBookingStatus(booking._id, 2); 
-            }
-        });
-        const timer = setInterval(() => {
+        if (Array.isArray(bookings)) {
             bookings.forEach(booking => {
                 const createdAt = new Date(booking.createAt).getTime();
                 const timePassed = currentTime - createdAt;
-    
+
                 if (booking.status === 1 && timePassed >= 300000) {
                     updateBookingStatus(booking._id, 2);
                 }
             });
-        }, 60000); 
-    
-        return () => clearInterval(timer); 
+        }
+        const timer = setInterval(() => {
+            bookings.forEach(booking => {
+                const createdAt = new Date(booking.createAt).getTime();
+                const timePassed = currentTime - createdAt;
+
+                if (booking.status === 1 && timePassed >= 300000) {
+                    updateBookingStatus(booking._id, 2);
+                }
+            });
+        }, 60000);
+
+        return () => clearInterval(timer);
     }, [bookings]);
 
     const updateBookingStatus = async (bookingId, status) => {
@@ -69,7 +70,7 @@ const Purchasehistory = ({ navigation }) => {
                     type: 'success',
                     text1: 'Cập nhật booking thành công',
                 });
-                dispatch(fetchBookingsByUserId(userId)); // Refresh bookings
+                dispatch(fetchBookingsByUserId(userId)); 
             } else {
                 Toast.show({
                     type: 'error',
@@ -108,7 +109,7 @@ const Purchasehistory = ({ navigation }) => {
             totalPrice,
         } = item;
 
-        
+
 
         console.log('priceChildren', priceChildren);
         console.log('priceAdults', priceAdult);
@@ -119,8 +120,8 @@ const Purchasehistory = ({ navigation }) => {
         console.log('email:', email);
         console.log('tourName:', tourName);
         console.log('image:', image);
-        console.log('totalPrice',totalPrice);
-        
+        console.log('totalPrice', totalPrice);
+
         const handlePress = () => {
             navigation.navigate('OrderInformation', { bookingId: item._id });
         };
@@ -144,7 +145,7 @@ const Purchasehistory = ({ navigation }) => {
                     <Image style={styles.image} source={{ uri: image || Icons.image }} />
                     <View style={styles.containeritem}>
                         <Text style={styles.dateText}>Ngày: {item.createAt ? new Date(item.createAt).toLocaleDateString() : 'N/A'}</Text>
-                        <Text style={styles.tourText}>Tour: {tourName}</Text>
+                        <Text style={styles.tourText} numberOfLines={1}>Tour: {tourName}</Text>
                         <Text style={styles.priceText}>Tổng giá: {item.totalPrice ? item.totalPrice.toLocaleString() : 'N/A'} VNĐ</Text>
 
                         <View style={styles.statusTextContainer}>

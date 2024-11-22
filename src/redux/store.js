@@ -36,6 +36,7 @@ const rootReducer = combineReducers({
   // favouriteDelete: favouriteDeleteReducer,
   vouchers: voucherReducer,
   reviews: reviewReducer,
+
 });
 
 // Configure the store

@@ -15,12 +15,24 @@ import SelecVoucher from "./selecVoucher";
 import { fetchBooking } from "../../../redux/slices/booking.slice";
 import { clearPaymentData, createPayment } from "../../../redux/slices/paymentSlice";
 
-const OrderReviewScreen = ({ route,navigation }) => {
+const OrderReviewScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { bookingId: routeBookingId } = route.params;
+
+  const [maxTicketState, setMaxTicketState] = useState(route.params.maxTicket);
+
+  console.log('maxTicket order:', maxTicketState)
+
   const { tourById, adultTickets, childTickets, totalPrice, selectedDate } = useSelector((state) => state.reducer.tour);
+
+  console.log('childTickets:', childTickets);
+  console.log('adultTickets:', adultTickets);
+
+
   const { tourName } = tourById;
   const [bookingId, setBookingId] = useState(routeBookingId);
+  console.log('bookingId:', bookingId);
+  
 
   const paymentStatus = useSelector((state) => state.reducer.payment.status);
   const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
@@ -63,7 +75,7 @@ const OrderReviewScreen = ({ route,navigation }) => {
       if (!bookingId) {
         const booking = await handleSaveBooking();
         if (booking) {
-          ZaloPayModule.createOrder(totalPriceString, bookingId);
+          ZaloPayModule.createOrder(totalPriceString, bookingId,);
         }
       }
     }
@@ -86,7 +98,7 @@ const OrderReviewScreen = ({ route,navigation }) => {
       numChildren: childTickets,
       priceAdult: adultPrice,
       priceChildren: childPrice,
-      totalPrice: finalPrice,
+      totalPrice: (totalPrice && discount) ? totalPrice - discount : totalPrice,
     };
 
     try {
@@ -103,18 +115,33 @@ const OrderReviewScreen = ({ route,navigation }) => {
     }
   };
 
+
   useEffect(() => {
     if (paymentStatus === 'succeeded') {
       if (paymentInfo.paymentLink && bookingId) {
-        navigation.navigate('PaymentScreen', { url: paymentInfo.paymentLink, bookingId });
+        navigation.navigate('PaymentScreen', {
+          url: paymentInfo.paymentLink,
+          bookingId,
+          maxTicket: maxTicketState,
+          childTickets,
+          adultTickets,
+          detailId
+        });
       } else {
         console.warn("Payment succeeded, but bookingId or paymentLink is missing");
+        if (!paymentInfo.paymentLink) {
+          console.warn("Missing paymentLink in paymentInfo");
+        }
+        if (!bookingId) {
+          console.warn("Missing bookingId");
+        }
       }
       dispatch(clearPaymentData());
     } else if (paymentStatus === 'failed') {
       dispatch(clearPaymentData());
     }
   }, [paymentStatus, paymentInfo, bookingId, dispatch]);
+
 
 
   const fullname = user.user.fullname;
