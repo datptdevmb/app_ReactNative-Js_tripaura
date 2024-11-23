@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React from 'react'
 import colors from '../../constants/colors'
 import fontsize from '../../constants/fontsize'
+import formatCurrencyVND from '../../untils/formatCurrencyVND'
 
 const vouchercomponent = ({ data }) => {
     // console.log("============= data ============", data);
@@ -13,10 +14,10 @@ const vouchercomponent = ({ data }) => {
                     <Text style={styles.textvoucher}>Toàn nền tảng</Text>
                 </View>
                 <View style={styles.containergiamgia}>
-                    <Text style={styles.txtgiamgia}>{item.description}</Text>
+                    <Text style={styles.txtgiamgia}>{item.voucherId.description}</Text>
                     <View style={styles.containerminiorder}>
                         <Text style={styles.textdon}>Đơn tối thiểu</Text>
-                        <Text style={styles.textdon}>{item.condition}</Text>
+                        <Text style={styles.textdon}>{formatCurrencyVND(item.voucherId.condition)}</Text>
                     </View>
                     {item.receive == "0" ?
                         <TouchableOpacity style={styles.containerbtnvoucher}>
@@ -37,9 +38,9 @@ const vouchercomponent = ({ data }) => {
         <ScrollView
             horizontal={true}>
             <View style={
-                { flexDirection: 'row', paddingEnd: 10 }
+                { flexDirection: 'row',}
             }>
-                {data.map((item,index) => renderItems(item))}
+                {data.map((item, index) => renderItems(item))}
 
             </View>
         </ScrollView>
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
         marginTop: 3,
     },
     textdon: {
-        color: colors.Grey_350_Day,
+        color: 'grey',
         textAlign: 'center',
         fontFamily: 'Lato',
         fontSize: 10,

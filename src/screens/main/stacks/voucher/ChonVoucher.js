@@ -31,21 +31,19 @@ const ChonVoucher = () => {
         <View style={styles.itemContainer}>
             <TouchableOpacity
                 onPress={() => onPressItem(item.voucherId._id)}>
-                <ImageBackground source={require('../../../../assets/images/backgroudVoucher.png')} resizeMode='cover' style={{ padding: 10 }} >
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{
-                            width: 100, height: 100, marginLeft: 32, justifyContent: 'center'
-                        }}>
-                            <Text style={{ width: 38, color: '#0572E7', textAlign: 'center', fontSize: fontsize.sm, fontWeight: 'bold', textTransform: 'uppercase' }}>Trip Aura</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.itemName} >{item.voucherId.description}</Text>
-
-                            <Text style={styles.itemPrice}>Tối đa: {formatCurrencyVND(item.voucherId.discount)} </Text>
-                        </View>
-
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{
+                        width: 100, height: 100, marginLeft: 32, justifyContent: 'center'
+                    }}>
+                        <Text style={{ width: 38, color: '#0572E7', textAlign: 'center', fontSize: fontsize.sm, fontWeight: 'bold', textTransform: 'uppercase' }}>Trip Aura</Text>
                     </View>
-                </ImageBackground>
+                    <View>
+                        <Text style={styles.itemName} >{item.voucherId.description}</Text>
+
+                        <Text style={styles.itemPrice}>{formatCurrencyVND(item.voucherId.discount)} </Text>
+                    </View>
+
+                </View>
             </TouchableOpacity>
 
         </View>

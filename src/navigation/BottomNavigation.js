@@ -106,7 +106,7 @@ const ButtomNavigation = () => {
                 height: 90,
               }}>
               <IcHome />
-              <Text style={{fontSize: 12}}>{ROUTES.home}</Text>
+              <Text style={{ fontSize: 12 }}>{ROUTES.home}</Text>
             </View>
           ),
         }}
@@ -116,7 +116,7 @@ const ButtomNavigation = () => {
         component={Voucher}
         options={{
 
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               style={{
                 justifyContent: 'center',
@@ -128,7 +128,7 @@ const ButtomNavigation = () => {
                 // backgroundColor:colors.primary
               }}>
               <IcVoucher />
-              <Text style={{fontSize: 12}}>Uu dai</Text>
+              <Text style={{ fontSize: 12 }}>Uu dai</Text>
             </View>
           ),
         }}
@@ -168,7 +168,7 @@ const ButtomNavigation = () => {
                 // backgroundColor:colors.primary
               }}>
               <IcFavorite color={"grey"} />
-              <Text  style={{fontSize: 12}}>{ROUTES.favorite}</Text>
+              <Text style={{ fontSize: 12 }}>{ROUTES.favorite}</Text>
             </View>
           ),
         }}
@@ -190,7 +190,7 @@ const ButtomNavigation = () => {
                 // backgroundColor:colors.primary
               }}>
               <IcProfile />
-              <Text  style={{fontSize: 12}} >{ROUTES.settings}</Text>
+              <Text style={{ fontSize: 12 }} >{ROUTES.settings}</Text>
             </View>
           ),
         }}

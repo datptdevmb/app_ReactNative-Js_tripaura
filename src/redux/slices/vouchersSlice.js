@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const LayDanhSachVoucher = createAsyncThunk('getVoucher', async userId => {
     console.log('User ID:', userId);
     const response = await fetch(
-        `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/voucher/api/getVoucher?userId=${userId}`,
+        `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/coupon/api/getByUserId?userId=${userId}`,
         {
             method: 'GET',
             headers: {
