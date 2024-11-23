@@ -25,6 +25,9 @@ const Voucher = () => {
     isLoading
   } = useHomeData();
 
+  console.log('tour',tours);
+  
+
   const dispatch = useDispatch()
   const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.vouchers);
   const userReducer = useSelector(state => state.reducer.auth);

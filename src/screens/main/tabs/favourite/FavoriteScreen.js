@@ -14,7 +14,9 @@ const FavoriteScreen = () => {
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.reducer.auth);
   const {favoritesData} = useSelector(state => state.reducer.favorites);
-  const {favoritesStatus} = useSelector(state => state.reducer.favorites);
+  const {favoritesStatus, loading} = useSelector(
+    state => state.reducer.favorites,
+  );
 
   useEffect(() => {
     if (user?.user?._id) {
@@ -34,14 +36,18 @@ const FavoriteScreen = () => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {favoritesStatus && favoritesData.length > 0 ? (
+      {favoritesStatus === 'loading' ? (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.textload}>loading</Text>
+        </View>
+      ) : favoritesData.length > 0 ? (
         <FavoriteList
           data={favoritesData}
           onToggleFavorite={handleToggleFavorite}
         />
-      ) : (
+      ) : favoritesStatus === 'success' ? (
         <FavouriteScreenNoItem />
-      )}
+      ) : null}
       <View style={{height: 120}} />
     </ScrollView>
   );
