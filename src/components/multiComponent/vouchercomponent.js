@@ -25,7 +25,7 @@ const vouchercomponent = ({ data }) => {
                         </TouchableOpacity>
                         :
                         <TouchableOpacity
-                            onPress={() => onPress}
+                       
                             style={styles.containerbtnvoucher}>
                             <Text style={styles.txtluuma}>Dùng ngay</Text>
                         </TouchableOpacity>
@@ -38,7 +38,7 @@ const vouchercomponent = ({ data }) => {
         <ScrollView
             horizontal={true}>
             <View style={
-                { flexDirection: 'row',}
+                { flexDirection: 'row', }
             }>
                 {data.map((item, index) => renderItems(item))}
 

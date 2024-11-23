@@ -167,7 +167,7 @@ const Detail = ({ navigation, route }) => {
 				console.error('Error fetching data:', err);
 			}
 		};
-		loadData();
+		loadData()
 	}, [dispatch]);
 
 	useEffect(() => {

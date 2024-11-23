@@ -32,7 +32,11 @@ import Purchasehistory from '../screens/main/stacks/purchasehistory/Purchasehist
 import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
 import Rate from '../screens/main/stacks/rate/Rate';
 
-
+import CancelOrderinfomation from '../screens/main/stacks/orderinformation/CancelOrderinfomation';
+import Evaluate from '../screens/main/stacks/purchasehistory/Evaluate';
+import Schedule from '../screens/main/stacks/schedule/schedule';
+import Schduletour from '../screens/main/stacks/schedule/schduletour';
+import Itinerary from '../screens/main/stacks/schedule/Itinerary';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -43,8 +47,12 @@ const MainTabNavigation = () => {
 
 const MainStaskNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>  
+     <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
+      <Stack.Screen name="Itinerary" component={Itinerary} />
+      <Stack.Screen name="Schduletour" component={Schduletour} />
+      <Stack.Screen name="Schedule" component={Schedule} />
+     
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
       {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
@@ -71,8 +79,9 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
       <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
-      {/* <Stack.Screen name="CancelOrderinfomation" component={CancelOrderinfomation} /> */}
-      {/* <Stack.Screen name="Evaluate" component={Evaluate} /> */}
+
+      <Stack.Screen name="CancelOrderinfomation" component={CancelOrderinfomation} />
+      <Stack.Screen name="Evaluate" component={Evaluate} />
     </Stack.Navigator>
   );
 };
