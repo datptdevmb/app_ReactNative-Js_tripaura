@@ -9,9 +9,7 @@ import Button from '../../../../components/common/button/Button';
 
 const ReviewList = ({ reviews, onSeeMore, tourId }) => {
   console.log('=================')
-  console.log(reviews)
 
-  
 
   return (
     <View>

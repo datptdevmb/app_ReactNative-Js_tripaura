@@ -9,12 +9,10 @@ import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScree
 import EditProfileScreen from '../screens/main/stacks/profile/EditProfileScreen';
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
-<<<<<<< HEAD
-import { NavigationContainer } from '@react-navigation/native';
-=======
+
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import {NavigationContainer} from '@react-navigation/native';
->>>>>>> b96c400223c95e73a58f8db27ab79a0806d481bd
+
 import Detail from '../screens/main/stacks/detail/Detail';
 import ButtomNavigation from './BottomNavigation';
 import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
@@ -49,7 +47,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
-      <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
+      {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
       <Stack.Screen name="Ponorama" component={PanoramaViewer} />
       <Stack.Screen name="ImageDetail" component={ImageDetail} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
@@ -73,8 +71,8 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
       <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
-      <Stack.Screen name="CancelOrderinfomation" component={CancelOrderinfomation} />
-      <Stack.Screen name="Evaluate" component={Evaluate} />
+      {/* <Stack.Screen name="CancelOrderinfomation" component={CancelOrderinfomation} /> */}
+      {/* <Stack.Screen name="Evaluate" component={Evaluate} /> */}
     </Stack.Navigator>
   );
 };

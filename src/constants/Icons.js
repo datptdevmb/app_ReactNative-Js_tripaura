@@ -29,7 +29,7 @@ import ic_instagram from '../assets/icons/ic_instagram.png';
 import ic_twitter from '../assets/icons/ic_twitter.png';
 import ic_website from '../assets/icons/ic_website.png';
 import icon_fb from '../assets/icons/icon_fb.png';
->>>>>>> b96c400223c95e73a58f8db27ab79a0806d481bd
+
 
 // image
 import avatar from '../assets/images/avatar.png';

@@ -4,7 +4,7 @@ import {View, Text, FlatList, Image, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Headercomponet from '../../../../components/common/header/Headercomponet';
 import Icons from '../../../../constants/Icons';
-import {LayDanhSachDanhGia} from '../../../../redux/slices/reviewTourducers';
+import {fetchReviewsByTourId, LayDanhSachDanhGia} from '../../../../redux/slices/reviewTourducers';
 import {Skeleton} from 'moti/skeleton';
 import styles from './RateStyle';
 
@@ -25,7 +25,7 @@ const Rate = ({route, navigation}) => {
 
   useEffect(() => {
     if (tourId) {
-      dispatch(LayDanhSachDanhGia(tourId));
+      dispatch(fetchReviewsByTourId(tourId));
       console.log('dispatch', dispatch);
     }
     return () => setIsLoading(false);

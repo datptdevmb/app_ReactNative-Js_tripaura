@@ -160,4 +160,4 @@ const styles = StyleSheet.create({
 });
 
 export default styles;
->>>>>>> b96c400223c95e73a58f8db27ab79a0806d481bd
+

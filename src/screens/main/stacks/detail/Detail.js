@@ -47,25 +47,8 @@ import Toast from '../../../../components/common/toast/Toast';
 import { ROUTES } from '../../../../constants/routes';
 import RenderHtml from 'react-native-render-html';
 import Accordion from '../../../../components/common/accordion/accordion';
-import { LayDanhSachDanhGia } from '../../../../redux/slices/reviewTourducers';
-const reviews = [
-	{
-		id: 1,
-		rating: 5,
-		date: '09/09/2024',
-		name: 'datpham',
-		reviewText: 'Một trải nghiệm tuyệt vời đáng để trải nghiệm',
-		imageUrl: 'https://link-to-avatar-image.com/avatar1.jpg',
-	},
-	{
-		id: 2,
-		rating: 4,
-		date: '15/10/2024',
-		name: 'datpham',
-		reviewText: 'Chuyến đi thú vị và đáng nhớ!',
-		imageUrl: 'https://link-to-avatar-image.com/avatar2.jpg',
-	},
-];
+import { fetchReviewsByTourId } from '../../../../redux/slices/reviewTourducers';
+
 
 const Detail = ({ navigation, route }) => {
 	const { width } = useWindowDimensions();
@@ -166,7 +149,7 @@ const Detail = ({ navigation, route }) => {
 		const loadData = async () => {
 			try {
 				await Promise.all([
-					dispatch(LayDanhSachDanhGia(tourId)),
+					dispatch(fetchReviewsByTourId(tourId)),
 					dispatch(fetchTourById({ tourId })),
 					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId })),
 				]);
