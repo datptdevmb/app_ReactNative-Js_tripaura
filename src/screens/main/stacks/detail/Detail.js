@@ -9,7 +9,6 @@ import {
 	NativeModules,
 	useWindowDimensions,
 	TouchableWithoutFeedback,
-
 } from 'react-native';
 
 const { ZaloPayModule } = NativeModules;
@@ -75,8 +74,6 @@ const Detail = ({ navigation, route }) => {
 	const { _id: tourId } = route.params;
 	const dispatch = useDispatch();
 	const [detailId, setDetailId] = useState(null);
-
-
 	const {
 		tourById,
 		adultTickets,
@@ -91,6 +88,8 @@ const Detail = ({ navigation, route }) => {
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
 	);
+
+
 
 
 	console.log('adultPrice', adultPrice);
@@ -271,8 +270,6 @@ const Detail = ({ navigation, route }) => {
 											{'\n'}
 											{'\n'}
 											• Mọi thất mất vui lòng liên hệ +84353944291
-
-
 										</Text>
 									}
 									title={"Lưu ý trước khi đặt "}

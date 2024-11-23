@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, Image, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -183,3 +184,4 @@ const Rate = ({route, navigation}) => {
 };
 
 export default Rate;
+

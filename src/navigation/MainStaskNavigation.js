@@ -3,14 +3,18 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/main/tabs/home/HomeScreen';
-import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
 import NotificationScreen from '../screens/main/tabs/notification/NotificationScreen';
 import SettingScreen from '../screens/main/tabs/setting/SettingScreen';
 import SettingLoggedScreen from '../screens/main/tabs/setting/SettingLoggedScreen';
 import EditProfileScreen from '../screens/main/stacks/profile/EditProfileScreen';
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
+<<<<<<< HEAD
 import { NavigationContainer } from '@react-navigation/native';
+=======
+import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
+import {NavigationContainer} from '@react-navigation/native';
+>>>>>>> b96c400223c95e73a58f8db27ab79a0806d481bd
 import Detail from '../screens/main/stacks/detail/Detail';
 import ButtomNavigation from './BottomNavigation';
 import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
@@ -29,8 +33,8 @@ import OrderInformation from '../screens/main/stacks/orderinformation/Orderinfor
 import Purchasehistory from '../screens/main/stacks/purchasehistory/Purchasehistory';
 import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
 import Rate from '../screens/main/stacks/rate/Rate';
-import CancelOrderinfomation from '../screens/main/stacks/orderinformation/CancelOrderinfomation';
-import Evaluate from '../screens/main/stacks/purchasehistory/Evaluate';
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,7 +59,14 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="Order" component={OrderReviewScreen} />
       <Stack.Screen name={ROUTES.login} component={Login} />
       <Stack.Screen name="Rate" component={Rate} />
-      <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
+
+      <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
+      <Stack.Screen name="FavouriteScreenNoItem" component={FavouriteScreenNoItem} />
+      {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
+      <Stack.Screen
+        name="LoginRegisterScreen"
+        component={LoginRegisterScreen}
+      />
       <Stack.Screen name="FiterScreen" component={FilterScreen} />
       <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
       <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
