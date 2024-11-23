@@ -1,13 +1,13 @@
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground, ToastAndroid } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ToastAndroid } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Headercomponet from '../../../components/common/header/Headercomponet';
 import { useDispatch, useSelector } from 'react-redux';
 import { LayDanhSachVoucher } from '../../../redux/slices/vouchersSlice';
+import { data } from '../../../../constants/data';
 import fontsize from '../../../constants/fontsize';
 import formatDate from '../../../untils/formatDate';
 
 const ChonVoucher = ({ navigation, route }) => {
-
     const { totalPrice } = route.params
     // console.log("============price", totalPrice);
     const [btn, setbtn] = useState(false)
@@ -56,11 +56,9 @@ const ChonVoucher = ({ navigation, route }) => {
     }
 
 
-
     const renderItemSearch = ({ item }) => (
         <View style={styles.itemContainer}>
             <TouchableOpacity
-
                 onPress={() => onPressItem(item.voucherId.discount, item.voucherId._id, item.voucherId.condition)}
                 disabled={totalPrice < item.voucherId.condition}>
 
@@ -69,7 +67,6 @@ const ChonVoucher = ({ navigation, route }) => {
                         width: 100, height: 100, justifyContent: 'center', backgroundColor: '#0572E7', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, alignItems: 'center'
                     }}>
                         <Text style={styles.textTitle}>Trip Aura</Text>
-
                     </View>
                     <View>
                         <Text style={styles.itemName} >{item.voucherId.description}</Text>
@@ -79,14 +76,16 @@ const ChonVoucher = ({ navigation, route }) => {
                 </View>
 
             </TouchableOpacity>
+
         </View>
     );
+
+
 
     return (
         <View style={styles.container}>
             <Headercomponet
                 leftIcon={require('./../../../assets/images/close.png')}
-
                 onPressLeftIcon={() => { navigation.goBack() }}
                 title={"Chọn Voucher"} />
             <View style={{ height: 30 }}></View>
@@ -97,23 +96,13 @@ const ChonVoucher = ({ navigation, route }) => {
                 renderItem={renderItemSearch}
 
             />
-            {getVoucherStatus === 'loading' ? (
-                <Text>Loading...</Text>
-            ) : (
-                <FlatList
-                    data={getVoucherData.data}
-                    keyExtractor={(item) => item._id}
-                    renderItem={renderItemSearch}
-                    scrollEnabled={false} 
-                />
-
-            )}
         </View>
-    );
-};
+    )
+}
+
+export default ChonVoucher
 
 const styles = StyleSheet.create({
-
     backgroundItem: {
         flexDirection: 'row',
         backgroundColor: 'white',
@@ -135,24 +124,25 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textTransform: 'uppercase'
     },
-
     itemContainer: {
         marginBottom: 20,
     },
     itemImage: {
         width: '100%',
         height: 120,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        padding: 10,
+        borderTopLeftRadius: 10, // Bo góc trên bên trái
+        borderTopRightRadius: 10, // Bo góc trên bên phải
     },
     itemName: {
+        height: 40,
+        width: 160,
         fontSize: fontsize.sm,
         color: '#4D4D4D',
-        fontWeight: '700',
+        fontWeight: 'bold',
         marginTop: 16,
         marginLeft: 16,
         marginRight: 16,
+        fontWeight: '700',
     },
     itemPrice: {
         fontSize: fontsize.sm,
@@ -161,18 +151,16 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginRight: 16,
     },
+    itemDay: {
+        height: 16,
+        fontSize: fontsize.fm,
+        color: '#757575',
+        marginLeft: 8,
+        marginRight: 16,
+        fontWeight: '700',
+    },
     container: {
         flex: 1,
-        padding: 16,
-    },
-    textTitle: {
-        width: 38,
-        color: '#0572E7',
-        textAlign: 'center',
-        fontSize: fontsize.sm,
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
-    },
-});
-
-export default ChonVoucher;
+        padding: 16
+    }
+})
