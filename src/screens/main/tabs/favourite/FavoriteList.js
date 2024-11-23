@@ -1,12 +1,14 @@
+
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import CardFavorite from '../../../../components/common/card/CardFavorite';
 
 const FavoriteList = ({ data, onToggleFavorite }) => {
+
   return (
     <View>
       <Text style={styles.title}>Yêu Thích</Text>
       <FlatList
-        scrollEnabled={false}
+
         data={data}
         renderItem={({ item }) => (
           <CardFavorite
@@ -21,10 +23,6 @@ const FavoriteList = ({ data, onToggleFavorite }) => {
 };
 const styles = StyleSheet.create({
   title: {
-    width: 145,
-    height: 48,
-    fontSize: 32,
-    lineHeight: 48,
     marginTop: 12,
     fontSize: 28,
     fontFamily: 'Lato',

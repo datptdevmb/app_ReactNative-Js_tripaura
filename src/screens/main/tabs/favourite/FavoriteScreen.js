@@ -1,21 +1,21 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, ScrollView, Text, View, Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect } from 'react';
+import { StyleSheet, ScrollView, Text, View, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   LayDanhSachYeuThich,
   themXoaYeuThichTour,
 } from '../../../../redux/slices/favouriteducers';
 import FavoriteList from './FavoriteList';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import FavouriteScreenNoItem from './FavouriteScreenNoItem';
 
 const FavoriteScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {user} = useSelector(state => state.reducer.auth);
-  const {favoritesData} = useSelector(state => state.reducer.favorites);
+  const { user } = useSelector(state => state.reducer.auth);
+  const { favoritesData } = useSelector(state => state.reducer.favorites);
 
-  const {favoritesStatus, loading} = useSelector(
+  const { favoritesStatus, loading } = useSelector(
     state => state.reducer.favorites,
   );
 
@@ -33,7 +33,7 @@ const FavoriteScreen = () => {
       Alert.alert('Thông báo', 'Không tìm thấy tourId');
       return;
     }
-    dispatch(themXoaYeuThichTour({userId, tourId: selectedTourId}));
+    dispatch(themXoaYeuThichTour({ userId, tourId: selectedTourId }));
   };
 
   return (
@@ -54,7 +54,7 @@ const FavoriteScreen = () => {
         <FavouriteScreenNoItem />
       ) : null}
 
-      <View style={{height: 120}} />
+      <View style={{ height: 120 }} />
     </ScrollView>
   );
 };
