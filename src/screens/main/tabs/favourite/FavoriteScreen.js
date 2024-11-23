@@ -12,9 +12,9 @@ import FavouriteScreenNoItem from './FavouriteScreenNoItem';
 const FavoriteScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const { user } = useSelector(state => state.reducer.auth);
   const { favoritesData } = useSelector(state => state.reducer.favorites);
-
   const { favoritesStatus, loading } = useSelector(
     state => state.reducer.favorites,
   );
@@ -53,7 +53,6 @@ const FavoriteScreen = () => {
       ) : favoritesStatus === 'success' ? (
         <FavouriteScreenNoItem />
       ) : null}
-
       <View style={{ height: 120 }} />
     </ScrollView>
   );
