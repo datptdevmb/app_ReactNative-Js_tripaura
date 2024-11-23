@@ -24,18 +24,34 @@ const OrderReviewScreen = ({ route, navigation }) => {
   const [bookingId, setBookingId] = useState(routeBookingId);
   const paymentStatus = useSelector((state) => state.reducer.payment.status);
   const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
-
   useEffect(() => {
     if (bookingId) {
       dispatch(fetchBookingById(bookingId));
     }
   }, [dispatch, bookingId]);
+  
   const bookingData = useSelector((state) => state.reducer.booking);
   const booking = bookingData?.bookingData?.data;
   console.log('booking:..........................', booking);
 
-  const tourName = booking?.tourInfo?.tourName || tourById?.tourName;
+  const tourName = tourById?.tourName || booking?.tourInfo?.tourName;
   console.log('tourName:..........................', tourName);
+  const date = selectedDate || booking?.detailInfo?.endDay;
+  console.log('date:..........................', date);
+  const numAdult = adultTickets || booking?.numAdult;
+  console.log('numAdult:..........................', numAdult);
+  const numChildren = childTickets || booking?.numChildren;
+  console.log('numchilden.......................', numChildren);
+  const priceChildren = booking?.priceChildren;
+  console.log('priceChildren:..........................', priceChildren);
+  const priceAdult = booking?.priceAdult;
+  console.log('priceAdult:..........................', priceAdult);
+  const totalPriceTour = totalPrice || (numAdult * priceAdult) + (numChildren * priceChildren);
+
+  console.log('totalPriceTour..............', totalPriceTour);
+
+
+
 
   const detailId = booking?.detailId || tourById?.details?.[0]?._id;
   console.log('detailId:', detailId);
@@ -178,10 +194,10 @@ const OrderReviewScreen = ({ route, navigation }) => {
         <View style={styles.content}>
           <TourInfo
             tourName={tourName}
-            date={selectedDate}
-            adultCount={adultTickets}
-            childCount={childTickets}
-            price={totalPrice}
+            date={date}
+            adultCount={numAdult}
+            childCount={numChildren}
+            price={totalPriceTour}
           />
           <DepartureInfo />
           <SelecVoucher onPress={handleVoucher}
@@ -198,7 +214,7 @@ const OrderReviewScreen = ({ route, navigation }) => {
             <Text style={styles.text}>Tổng giá tiền</Text>
             <Text style={styles.caption}>Đã bao gồm phí</Text>
           </View>
-          <Text style={styles.textPrice}>{formatCurrencyVND(finalPrice)}</Text>
+          <Text style={styles.textPrice}>{formatCurrencyVND(totalPriceTour)}</Text>
         </View>
         <Button onPressed={handlePurchase} style={styles.btn} label="Mua ngay" />
       </View>

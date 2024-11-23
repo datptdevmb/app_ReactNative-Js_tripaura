@@ -28,6 +28,8 @@ import ic_twitter from '../assets/icons/ic_twitter.png'
 import ic_website from '../assets/icons/ic_website.png'
 import icon_fb from '../assets/icons/icon_fb.png'
 import ic_star_emty from '../assets/icons/ic_star_emty'
+import down from '../assets/images/down.png'
+import clock from '../assets/icons/clock.png'
 
 // image
 
@@ -65,6 +67,8 @@ const Icons = {
   ic_twitter: ic_twitter,
   ic_website: ic_website,
   icon_fb: icon_fb,
+  down: down,
+  clock: clock,
   ic_star_emty:ic_star_emty,
 
 
