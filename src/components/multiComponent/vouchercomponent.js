@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         marginTop: 3,
     },
     textdon: {
-        color: colors.Grey_350_Day,
+        color: 'grey',
         textAlign: 'center',
         fontFamily: 'Lato',
         fontSize: 10,

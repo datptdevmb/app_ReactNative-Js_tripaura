@@ -21,12 +21,19 @@ const Voucher = () => {
   const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.vouchers);
   const userReducer = useSelector(state => state.reducer.auth);
   const user = userReducer.user
+  let key_id;
 
   console.log(user.user._id);
   useEffect(() => {
     dispatch(LayDanhSachVoucher(user.user._id))
-  }, [])
+    if (getVoucherData.data) {
+      key_id = getVoucherData.data.map((item) => {
+        return item.voucherId._id
+      })
+    }
+  }, [user.user._id])
   console.log("===============", getVoucherData.data);
+
 
   return (
     <ScrollView style={stylesglobal.container}>
@@ -40,7 +47,8 @@ const Voucher = () => {
           Voucher
         </Text>
         <View style={styles.contaivorcher}>
-          <Vouchercomponent data={getVoucherData.data} key={getVoucherData.data._id} />
+          {getVoucherData.data && <Vouchercomponent data={getVoucherData.data} key={key_id} />}
+
         </View>
       </View>
       <View style={{ width: '100%', marginTop: 13, flexDirection: 'column' }}>
@@ -85,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.Lavendermist,
     flexDirection: 'row',
     bottom: 0,
-    paddingHorizontal:10
+    paddingHorizontal: 10
   },
   text: {
     fontSize: 16,
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 20,
     letterSpacing: 0.035,
-    color:'black',
-    textDecorationLine:'underline'
+    color: 'black',
+    textDecorationLine: 'underline'
   }
 });
