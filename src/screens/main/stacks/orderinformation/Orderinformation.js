@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
 import { fetchBookingById } from '../../../../redux/slices/booking.slice';
-
 
 const OrderInformation = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -12,7 +11,10 @@ const OrderInformation = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
 
   const bookingData = useSelector((state) => state.reducer.booking);
-  console.log('Redux Booking Data:', bookingData);
+  console.log('Redux Booking Data:', bookingData)
+
+  console.log('bookingIdccccccccccccc:', bookingId);
+
 
   useEffect(() => {
     if (bookingId) {
@@ -35,9 +37,8 @@ const OrderInformation = ({ route, navigation }) => {
   }
 
   const booking = bookingData?.bookingData?.data;
-  console.log('booking', booking);
 
-  const formattedDate = new Date(booking.createAt).toLocaleDateString('vi-VN', {
+  const formattedDate = new Date(booking.detailInfo.endDay).toLocaleDateString('vi-VN', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -58,6 +59,13 @@ const OrderInformation = ({ route, navigation }) => {
   const totalCost = (booking?.numAdult * booking?.priceAdult) + (booking?.numChildren * booking?.priceChildren);
   console.log('Total cost:', totalCost);
   const statusText = booking.status === 0 ? 'Đã thanh toán' : booking.status === 1 ? 'Chưa thanh toán' : 'Đã hủy';
+
+  const handlePaymentPress = () => {
+    navigation.navigate('Order', {
+      bookingId: bookingId
+    });
+  };
+
 
   return (
     <ScrollView style={styles.container}>
@@ -80,7 +88,7 @@ const OrderInformation = ({ route, navigation }) => {
           {/* <Text style={styles.infoText}>Chi tiết tour: <Text style={styles.highlight}>{booking?.tourInfo?.description || 'N/A'}</Text></Text> */}
           <Text style={styles.infoText}>Số lượng người lớn: <Text style={styles.highlight}>{booking.numAdult || 0}</Text></Text>
           <Text style={styles.infoText}>Số lượng trẻ em: <Text style={styles.highlight}>{booking.numChildren || 0}</Text></Text>
-          <Text style={styles.infoText}>Ngày đặt: <Text style={styles.highlight}>{formattedDate || 'N/A'}</Text></Text>
+          <Text style={styles.infoText}>Ngày đ: <Text style={styles.highlight}>{formattedDate || 'N/A'}</Text></Text>
           <Text style={styles.infoText}>
             Giá tour người lớn: <Text style={styles.highlight}>{formatCurrency(booking?.priceAdult) || 'N/A'}</Text>
           </Text>
@@ -95,7 +103,20 @@ const OrderInformation = ({ route, navigation }) => {
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Thông tin thanh toán</Text>
           <Text style={styles.infoText}>Phương thức thanh toán: <Text style={styles.highlight}>Thanh toán qua ngân hàng</Text></Text>
-          <Text style={[styles.infoText, styles.statusText]}>Tình trạng: <Text style={styles.highlight}>{statusText}</Text></Text>
+          <View style={styles.statusTextContainer}>
+            <Text style={[styles.infoText, styles.statusText]}>Tình trạng: <Text style={styles.highlight}>{statusText}</Text></Text>
+            {booking.status === 0 && (
+              <TouchableOpacity style={styles.buttonCancel} onPress={() => navigation.navigate('CancelOrderinfomation')}>
+                <Text style={styles.buttonText}>Hủy đơn hàng</Text>
+              </TouchableOpacity>
+            )}
+
+            {booking.status === 2 && (
+              <TouchableOpacity style={styles.button} onPress={handlePaymentPress}>
+                <Text style={styles.buttonText}>Mua lại</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -175,4 +196,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
+  statusTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  button: {
+    backgroundColor: '#8DEEEE',
+    width: '35%',
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  buttonCancel: {
+    backgroundColor: '#8DEEEE',
+    padding: 10,
+    borderRadius: 5,
+  }
 });

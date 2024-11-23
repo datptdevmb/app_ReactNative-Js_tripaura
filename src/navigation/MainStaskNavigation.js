@@ -29,6 +29,8 @@ import OrderInformation from '../screens/main/stacks/orderinformation/Orderinfor
 import Purchasehistory from '../screens/main/stacks/purchasehistory/Purchasehistory';
 import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
 import Rate from '../screens/main/stacks/rate/Rate';
+import CancelOrderinfomation from '../screens/main/stacks/orderinformation/CancelOrderinfomation';
+import Evaluate from '../screens/main/stacks/purchasehistory/Evaluate';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -60,6 +62,8 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
       <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
+      <Stack.Screen name="CancelOrderinfomation" component={CancelOrderinfomation} />
+      <Stack.Screen name="Evaluate" component={Evaluate} />
     </Stack.Navigator>
   );
 };

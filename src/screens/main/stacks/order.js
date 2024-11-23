@@ -12,42 +12,42 @@ import Paymethod from "./Paymethod";
 import { useCallback, useEffect, useState } from "react";
 import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
 import SelecVoucher from "./selecVoucher";
-import { fetchBooking } from "../../../redux/slices/booking.slice";
+import { fetchBooking, fetchBookingById } from "../../../redux/slices/booking.slice";
 import { clearPaymentData, createPayment } from "../../../redux/slices/paymentSlice";
 
 const OrderReviewScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { bookingId: routeBookingId } = route.params;
-
   const [maxTicketState, setMaxTicketState] = useState(route.params.maxTicket);
-
-  console.log('maxTicket order:', maxTicketState)
-
   const { tourById, adultTickets, childTickets, totalPrice, selectedDate } = useSelector((state) => state.reducer.tour);
-
-  console.log('childTickets:', childTickets);
-  console.log('adultTickets:', adultTickets);
-
-
-  const { tourName } = tourById;
+  const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
   const [bookingId, setBookingId] = useState(routeBookingId);
-  console.log('bookingId:', bookingId);
-  
-
   const paymentStatus = useSelector((state) => state.reducer.payment.status);
   const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
 
-  const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
-  const detailId = tourById.details?.[0]?._id;
-  const adultPrice = tourById.details?.[0]?.priceAdult;
-  const childPrice = tourById.details?.[0]?.priceChildren;
+  useEffect(() => {
+    if (bookingId) {
+      dispatch(fetchBookingById(bookingId));
+    }
+  }, [dispatch, bookingId]);
+  const bookingData = useSelector((state) => state.reducer.booking);
+  const booking = bookingData?.bookingData?.data;
+  console.log('booking:..........................', booking);
+
+  const tourName = booking?.tourInfo?.tourName || tourById?.tourName;
+  console.log('tourName:..........................', tourName);
+
+  const detailId = booking?.detailId || tourById?.details?.[0]?._id;
+  console.log('detailId:', detailId);
+  const adultPrice = booking?.detailInfo?.priceAdult || tourById?.details?.[0]?.priceAdult;
+  console.log('adultPrice:', adultPrice);
+  const childPrice = booking?.detailInfo?.priceChildren || tourById?.details?.[0]?.priceChildren;
+  console.log('childPrice:', childPrice);
 
   const { discount } = route.params
   const { voucherId } = route.params
 
   let finalPrice = (totalPrice && discount) ? totalPrice - discount : totalPrice;
-  console.log("=================== discount", discount);
-  console.log("=================== voucherId", voucherId);
 
   const userReducer = useSelector(state => state.reducer.auth);
   const user = userReducer.user;
