@@ -101,6 +101,22 @@ const Detail = ({ navigation, route }) => {
 
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const translateY = useRef(new Animated.Value(500)).current;
+  
+  const [currentImage, setCurrentImage] = useState(
+    imges && imges.length > 0
+      ? imges[0]
+      : 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
+  );
+
+  useEffect(() => {
+    if (imges && imges.length > 0) {
+      setCurrentImage(imges[0]);
+    }
+  }, [imges]);
+
+  const handleImagePress = image => {
+    setCurrentImage(image);
+  };
 
   const handleIncreaseAdult = () => dispatch(increaseAdultTicket());
   const handleIncreaseChild = () => dispatch(increaseChildTicket());
@@ -204,67 +220,59 @@ const Detail = ({ navigation, route }) => {
       </TouchableOpacity>
 
       <AnimatedScrollView
-        TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
-        headerImage={
-          !loading && imges
-            ? { uri: imges[0] }
-            : {
-              uri: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
-            }
-        }
-        imageStyle={{
-          height: 243,
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-
-        <TouchableOpacity
-          onPress={handleDetailImage}
-          style={{
-            position: 'absolute',
-            height: 243,
-            top: 0,
-            zIndex: 1,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
+          headerImage={{
+            uri: currentImage ? currentImage : imges[0],
           }}
-        />
-
-        <StatusBar translucent backgroundColor="transparent" />
-        {loading && (
-          <View style={styles.animatedHeaderLoading}>
-            <LottieView
-              source={require('../../../../assets/lottile/loading.json')}
-              autoPlay
-              loop
-              style={styles.lottieAnimation}
-            />
-          </View>
-        )}
-
-        {!loading && (
-          <View>
-            <ImageList dataimage={imges} />
-            <View style={styles.tourInfor}>
-              <Text style={styles.tourname}>{tourName}</Text>
-              <LocationInfo location={location} />
-              <View style={styles.divider} />
-              {/* <Lable lable="Mô tả chuyến đi" /> */}
-              {/* <Text style={styles.bodytext}>{description}</Text> */}
-              <RenderHtml
-                contentWidth={width}
-                source={{ html: description }} />
-
-              <ReviewList onSeeMore={handleNavigateToRate} reviews={reviews} />
+          imageStyle={{
+            height: 243,
+          }}
+          showsVerticalScrollIndicator={false}>
+          <TouchableOpacity
+            // onPress={() => handleDetailImage()}
+            style={{
+              position: 'absolute',
+              height: 243,
+              top: 0,
+              zIndex: 1,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            }}
+          />
+  
+          <StatusBar translucent backgroundColor="transparent" />
+          {loading && (
+            <View style={styles.animatedHeaderLoading}>
+              <LottieView
+                source={require('../../../../assets/lottile/loading.json')}
+                autoPlay
+                loop
+                style={styles.lottieAnimation}
+              />
             </View>
-
-            <View style={{ height: 500 }}></View>
-          </View>
-        )}
-
-      </AnimatedScrollView>
+          )}
+  
+          {!loading && (
+            <View>
+              <ImageList dataimage={imges} handleImagePress={handleImagePress} />
+  
+              <View style={styles.tourInfor}>
+                <Text style={styles.tourname}>{tourName}</Text>
+                <LocationInfo location={location} />
+                <View style={styles.divider} />
+                {/* <Lable lable="Mô tả chuyến đi" /> */}
+                {/* <Text style={styles.bodytext}>{description}</Text> */}
+                <RenderHtml contentWidth={width} source={{html: description}} />
+  
+                <ReviewList onSeeMore={handleNavigateToRate} reviews={reviews} />
+              </View>
+  
+              <View style={{height: 500}}></View>
+            </View>
+          )}
+        </AnimatedScrollView>
 
       {/* Button Bottom */}
       <View style={styles.btnContainer}>
