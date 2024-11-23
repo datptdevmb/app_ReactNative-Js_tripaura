@@ -81,6 +81,11 @@ const Detail = ({ navigation, route }) => {
 	const { isTourFavorited, favoritesStatus, message } = useSelector(
 		state => state.reducer.favorites,
 	);
+	const [currentImage, setCurrentImage] = useState(
+		imges && imges.length > 0
+			? imges[0]
+			: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
+	);
 	const { user } = useSelector(state => state.reducer.auth);
 	const [showToast, setShowToast] = useState(false);
 
@@ -133,6 +138,7 @@ const Detail = ({ navigation, route }) => {
 		});
 	};
 
+
 	const handleNavigateToFavorite = () => {
 		navigation.navigate('FavoriteList');
 	};
@@ -143,6 +149,10 @@ const Detail = ({ navigation, route }) => {
 
 	const handleNavigateToRate = () => {
 		navigation.navigate('Rate', { tourId: tourId });
+	};
+
+	const handleImagePress = image => {
+		setCurrentImage(image);
 	};
 
 	useEffect(() => {
@@ -159,6 +169,12 @@ const Detail = ({ navigation, route }) => {
 		};
 		loadData();
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (imges && imges.length > 0) {
+		  setCurrentImage(imges[0]);
+		}
+	  }, [imges]);
 
 	console.log('detail', detailId);
 
@@ -190,7 +206,7 @@ const Detail = ({ navigation, route }) => {
 				TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
 				headerImage={
 					!loading && imges
-						? { uri: imges[0] }
+						? { uri: currentImage }
 						: {
 							uri: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
 						}
@@ -229,7 +245,7 @@ const Detail = ({ navigation, route }) => {
 
 				{!loading && (
 					<View>
-						<ImageList dataimage={imges} />
+						<ImageList handleImagePress={handleImagePress} dataimage={imges} />
 						<View style={styles.tourInfor}>
 							<Text style={styles.tourname}>{tourName}</Text>
 							<LocationInfo location={location} />
