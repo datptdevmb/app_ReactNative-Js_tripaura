@@ -247,18 +247,6 @@ const SettingLoggedScreen = (props) => {
                         <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
                     </TouchableOpacity>
                 </View>
-
-
-                <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
-                        <View style={styles.imageTroGiupContainer}>
-                            <Image
-                                style={styles.imageTroGiup}
-                                source={Icons.ic_orther} />
-                        </View>
-                        <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
 
             <View style={styles.underline} />

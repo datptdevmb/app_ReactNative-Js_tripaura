@@ -49,7 +49,6 @@ const Voucher = () => {
     }
   }, [getVoucherData]);
 
-  // Kiểm tra nếu dữ liệu voucher là rỗng hoặc null
   const hasVoucherData = getVoucherData?.data?.length > 0;
 
   return (
@@ -62,7 +61,6 @@ const Voucher = () => {
       <View style={styles.containervoucher}>
         <Text style={styles.txtmauudai}>Voucher</Text>
         <View style={styles.contaivorcher}>
-          {/* Kiểm tra dữ liệu voucher trước khi render */}
           {hasVoucherData ? (
             <Vouchercomponent data={getVoucherData.data} key={key_id} />
           ) : (
