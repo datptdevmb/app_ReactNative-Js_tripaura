@@ -217,7 +217,7 @@ const Detail = ({navigation, route}) => {
         }}
         showsVerticalScrollIndicator={false}>
         <TouchableOpacity
-          // onPress={() => handleDetailImage()}
+          onPress={() => handleDetailImage()}
           style={{
             position: 'absolute',
             height: 243,
