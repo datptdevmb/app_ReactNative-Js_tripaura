@@ -7,12 +7,9 @@ import InputComponent from '../../../components/common/input/InputCompoment';
 import Button from '../../../components/common/button/Button';
 import stylesglobal from '../../../constants/global';
 import Icons from '../../../constants/Icons';
+import { DangNhapTaiKhoan } from '../../../redux/slices/loginreducers';
 
 const Login = (props) => {
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
   const { navigation, route } = props;
   const { setUser, setIsLogin } = useContext(AppContext);
   const dispatch = useDispatch();
@@ -23,12 +20,6 @@ const Login = (props) => {
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const loginType = route.params?.loginType || 'email';
-<<<<<<< HEAD
-
-
-  useEffect(() => {
-    if (loginStatus === 'succeeded') {
-=======
   console.log(loginType)
 
   console.log('login', loginData),
@@ -37,9 +28,9 @@ const Login = (props) => {
   useEffect(() => {
     if (loginStatus === 'succeeded') {
       console.log('loginData.data:', loginData.data);
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
       setUser(loginData.data);
       setIsLogin(true);
+      console.log('user:', loginData.data);
       navigation.navigate('MainTabNavigation');
     }
 
@@ -58,7 +49,6 @@ const Login = (props) => {
       setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
-
 
   const back = () => {
     navigation.goBack();
@@ -81,10 +71,6 @@ const Login = (props) => {
     }
   };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
   const goToRegister = () => {
     navigation.navigate('RegisterScreen', { loginType });
   }

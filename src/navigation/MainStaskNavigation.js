@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import {View, Text} from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,30 +13,13 @@ import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import Detail from '../screens/main/stacks/detail/Detail';
 import ButtomNavigation from './BottomNavigation';
-<<<<<<< HEAD
-=======
 
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 import ImageDetail from '../screens/main/stacks/detail/ImageDetail';
 import PanoramaViewer from '../screens/main/stacks/detail/Ponorama';
 import { ROUTES } from '../constants/routes';
 import Login from '../screens/authen/LoginRegisterScreen'
-import VietnamMap from '../screens/main/stacks/Map/VietnamMap';
-import DependentDropdown from '../screens/main/stacks/Filter/FilterScreen';
-import FAQsSrceen from '../screens/main/stacks/FAQs/FAQsSrceen';
-import OrderReviewScreen from '../screens/main/stacks/order';
-import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
-import FilterScreen from '../screens/main/stacks/Filter/FilterScreen';
-import ListTourFilterScreen from '../screens/main/stacks/Filter/ListTourFilterScreen';
-import ListVoucherScreen from '../screens/main/stacks/ListVoucherScreen';
-import Rate from '../screens/main/stacks/rate/Rate';
 
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,10 +34,6 @@ const MainTabNavigation = () => {
 
 const MainStaskNavigation = () => {
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
@@ -63,20 +42,6 @@ const MainStaskNavigation = () => {
             <Stack.Screen name="Ponorama" component={PanoramaViewer} />
             <Stack.Screen name="ImageDetail" component={ImageDetail} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-<<<<<<< HEAD
-            <Stack.Screen name="MapScreen" component={VietnamMap} />
-            <Stack.Screen name="Filter" component={DependentDropdown} />
-            <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
-            <Stack.Screen name="Order" component={OrderReviewScreen} />
-            <Stack.Screen name={ROUTES.login} component={Login} />
-            {/* <Stack.Screen name={ROUTES.login} component={Login} /> */}
-            <Stack.Screen name="Rate" component={Rate} />
-            {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
-            <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
-            <Stack.Screen name="FiterScreen" component={FilterScreen} />
-            <Stack.Screen name="ListTourFilter" component={ListTourFilterScreen} />
-
-=======
             <Stack.Screen name={ROUTES.login} component={Login} />
             {/* <Stack.Screen name="Detail" component={Detail} /> */}
             {/* <Stack.Screen name="Voucher" component={Voucher} />
@@ -84,7 +49,6 @@ const MainStaskNavigation = () => {
 
             <Stack.Screen name="Voucher" component={Voucher} />
             <Stack.Screen name="LoginRegisterScreen" component={LoginRegisterScreen} />
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
         </Stack.Navigator>
     )
 }

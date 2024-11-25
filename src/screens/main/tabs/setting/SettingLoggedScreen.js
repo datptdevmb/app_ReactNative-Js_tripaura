@@ -1,474 +1,221 @@
-
-import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState, useContext, useEffect } from 'react'
-
+import React, { useState } from 'react';
+import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import stylesglobal from '../../../../constants/global';
 import Icons from '../../../../constants/Icons';
+import { useSelector } from 'react-redux';
 import colors from '../../../../constants/colors';
 
-import { ThayDoiThongTin } from '../../../../redux/slices/ChangeUserSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserInfo } from '../../../../redux/slices/getUserbyID';
-import { AppContext } from '../../../AppContext';
+const SettingLoggedScreen = ({ navigation }) => {
+    const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(false);
+    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
 
+    const { user } = useSelector((state) => state.reducer.auth);
 
-const SettingLoggedScreen = (props) => {
-    const { navigation } = props;
-    const [isEnabled, setIsEnabled] = useState(false);
-<<<<<<< HEAD
+    // Toggle functions
+    const toggleDarkMode = () => setIsDarkModeEnabled((prev) => !prev);
+    const toggleNotification = () => setIsNotificationEnabled((prev) => !prev);
 
-    const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const [image, setImage] = useState( null);
-    const dispatch = useDispatch();
-    const userReducer = useSelector(state => state.reducer.auth);
-    const user = userReducer.user;
-    console.log('user: ', user);
-    const userId = user.user._id
-
-    console.log('image: ', image);
-    
-    
-    const changeUserStatus = useSelector(state => state.changeUser);
-
-=======
-<<<<<<< HEAD
-    const { user } = useSelector(state => state.reducer.auth);
-=======
-    const [isEnabledchdo, setIsEnabledchedo] = useState(false);
-    const { user, setUser } = useContext(AppContext)
->>>>>>> 682b4584f05f4553c075764b42725e79185b80e8
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
-
-    useEffect(() => {
-        if (user.user) {
-            const userData = user.user; 
-            const avatar = userData.avatar; 
-            const fullname = userData.fullname; 
-            const email = userData.email; 
-            const userId = userData._id; 
-
-            console.log('Avatar:', avatar);
-            console.log('Fullname:', fullname);
-            console.log('Email:', email);
-            console.log('User ID:', userId);
-        }
-    }, [user]);
-
-    const commonOptions = {
-        mediaType: 'photo',
-        maxWidth: 100,
-        maxHeight: 100,
-    };
-
-    const handleImageSelection = async (response) => {
-        if (response?.assets?.[0]?.uri) {
-            setImage(response.assets[0].uri);
-            await handleUpdate(response.assets[0]);
-        } else {
-            console.log('User cancelled image picker');
-            setImage(null);
-        }
-    };
-
-    const openImagePicker = async () => {
-        const response = await launchImageLibrary({ selectionLimit: 1, ...commonOptions });
-        await handleImageSelection(response);
-    };
-
-    const openCamera = async () => {
-        const response = await launchCamera({ cameraType: 'front', saveToPhotos: true, ...commonOptions });
-        if (response.didCancel) {
-            Alert.alert('Camera Canceled', 'Bạn đã hủy trình chọn camera.');
-            setImage(null);
-        } else {
-            await handleImageSelection(response);
-        }
-    };
-
-    const handleUpdate = async (image) => {
-        if (!user) {
-            Alert.alert('Lỗi', 'Không tìm thấy thông tin người dùng');
-            return;
-        }
-    
-        const data = new FormData();
-        data.append('file', {
-            uri: image.uri,
-            type: image.type || 'image/jpeg',
-            name: `photo.${image.uri.split('.').pop()}`,
-        });
-        data.append('upload_preset', 'TripAuraAPI');
-        data.append('api_key', '976765598717887');
-    
-        try {
-            const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
-                method: 'POST',
-                body: data,
-            });
-    
-            const result = await response.json();
-            console.log("Cloudinary response:", result);
-            if (response.ok) {
-                const imageUrl = result.secure_url;
-    
-                const userUpdateData = {
-                    userId: userId,
-                    avatar: imageUrl,
-                };
-    
-                const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
-                if (updateResult.error) {
-                    Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
-                } else {
-                    Alert.alert('Thành công', 'Cập nhật hình ảnh thành công');
-                    dispatch(fetchUserInfo(userId));
-                    setImage(imageUrl);
-                }
-            } else {
-                Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
-            }
-        } catch (error) {
-            Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
-            console.error(error);
-        }
-    };
-    
-    
-    useEffect(() => {
-        if (changeUserStatus === 'failed') {
-            Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
-        }
-    }, [changeUserStatus]);
-
-
-    const userName = user?.user.fullname || 'Nguyễn Văn A';
-
-    const avatar = image
-        ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
-            ? { uri: user.user.avatar } : Icons.avatar;
-
-    console.log('avatar', avatar);
-    console.log('name', userName);
-    console.log('userName:', user?.user.fullname);
-
-
-    function handleMap(){
-        navigation.navigate('MapScreen')
-    }
-    function handleCauhoi(){
-        navigation.navigate('FAQsSrceen')
-    }
     return (
         <View style={stylesglobal.container}>
+            {/* Header */}
             <View style={styles.headerContainer}>
                 <View style={styles.avatarContainer}>
-
-                    <TouchableOpacity onPress={openImagePicker}>
-                        <Image
-                            source={avatar}
-                            style={styles.imageAvatar}
-                        />
-
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
+                    <Image
+                        style={styles.avatar}
+                        source={user?.avatar ? { uri: user.avatar } : Icons.avatar}
+                    />
+                    <TouchableOpacity style={styles.icCameraContainer}>
                         <Image source={Icons.ic_camera} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
-<<<<<<< HEAD
-
-                    <Text style={styles.txtName}>{userName}</Text>
+                    <Text style={styles.txtName}>{user?.fullname || 'Người dùng'}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
-                        style={styles.btnCapNhaHoSo}>
-
-=======
-<<<<<<< HEAD
-                    <Text style={styles.txtName}>{user.user.fullname}</Text>
-                    <TouchableOpacity 
-                    onPress={() => navigation.navigate('EditProfileScreen')}
-                    style={styles.btnCapNhaHoSo}>
-=======
-                    <Text style={styles.txtName}>{user && user.fullname}Nguyễn Văn A</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('EditProfileScreen')}
-                        style={styles.btnCapNhaHoSo}>
->>>>>>> 682b4584f05f4553c075764b42725e79185b80e8
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
-                        <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
+                        style={styles.btnUpdateProfile}>
+                        <Text style={styles.txtUpdateProfile}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity 
-                onPress={() => navigation.navigate('ProfileScreen')}
-                style={styles.iconNextContainer}>
-                    <Image
-                        style={styles.iconNext}
-                        source={Icons.ic_arrowright} />
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('ProfileScreen')}
+                    style={styles.iconNextContainer}>
+                    <Image style={styles.iconNext} source={Icons.ic_arrowright} />
                 </TouchableOpacity>
             </View>
 
+            {/* Shortcut Buttons */}
             <View style={styles.btnHorizontalContainer}>
-                <View >
-                    <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
+                {[
+                    { icon: Icons.ic_map, label: 'Địa điểm đã đi' },
+                    { icon: Icons.ic_message, label: 'Câu hỏi thường gặp' },
+                    { icon: Icons.ic_lock, label: 'Thay đổi mật khẩu' },
+                    { icon: Icons.ic_orther, label: 'Đơn hàng của tôi' },
+                ].map((item, index) => (
+                    <TouchableOpacity key={index} style={styles.btnCauHoiContainer}>
                         <View style={styles.imageTroGiupContainer}>
-                            <Image
-                                style={styles.imageTroGiup}
-                                source={Icons.ic_map} />
+                            <Image style={styles.imageTroGiup} source={item.icon} />
                         </View>
-                        <Text style={styles.txtTroGiup}>Địa điểm đã đi</Text>
+                        <Text style={styles.txtTroGiup}>{item.label}</Text>
                     </TouchableOpacity>
+                ))}
+            </View>
+
+            <View style={styles.underline} />
+
+            {/* Notifications */}
+            <View style={styles.settingItem}>
+                <Image style={styles.settingIcon} source={Icons.ic_bell} />
+                <Text style={styles.settingText}>Điều khoản sử dụng dịch vụ</Text>
+                <Switch
+                    trackColor={{ false: '#767577', true: '#0572E7' }}
+                    thumbColor="#FFFFFF"
+                    onValueChange={toggleNotification}
+                    value={isNotificationEnabled}
+                />
+            </View>
+
+            {/* Dark Mode */}
+            <View style={styles.settingItem}>
+                <Image style={styles.settingIcon} source={Icons.ic_moon} />
+                <Text style={styles.settingText}>Chế độ tối</Text>
+                <Switch
+                    trackColor={{ false: '#767577', true: '#0572E7' }}
+                    thumbColor="#FFFFFF"
+                    onValueChange={toggleDarkMode}
+                    value={isDarkModeEnabled}
+                />
+            </View>
+
+            {/* Language */}
+            <View style={styles.settingItem}>
+                <Image style={styles.settingIcon} source={Icons.ic_earth} />
+                <Text style={styles.settingText}>Ngôn ngữ</Text>
+                <View style={styles.settingRight}>
+                    <Text>VN</Text>
+                    <Image style={styles.iconNext} source={Icons.ic_arrowbottom} />
                 </View>
-                <View >
-                    <TouchableOpacity onPress={handleCauhoi} style={styles.btnCauHoiContainer}>
-                        <View style={styles.imageTroGiupContainer}>
-                            <Image
-                                style={styles.imageTroGiup}
-                                source={Icons.ic_message} />
-                        </View>
-                        <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
-                    </TouchableOpacity>
-                </View>
-                <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
-                        <View style={styles.imageTroGiupContainer}>
-                            <Image
-                                style={styles.imageTroGiup}
-                                source={Icons.ic_lock} />
-                        </View>
-                        <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
-                    </TouchableOpacity>
-                </View>
-                <View >
-                    <TouchableOpacity style={styles.btnCauHoiContainer}>
-                        <View style={styles.imageTroGiupContainer}>
-                            <Image
-                                style={styles.imageTroGiup}
-                                source={Icons.ic_orther} />
-                        </View>
-                        <Text style={styles.txtTroGiup}>Đơn hàng của tôi</Text>
-                    </TouchableOpacity>
+            </View>
+
+            {/* Currency */}
+            <View style={styles.settingItem}>
+                <Image style={styles.settingIcon} source={Icons.ic_mony} />
+                <Text style={styles.settingText}>Tiền tệ</Text>
+                <View style={styles.settingRight}>
+                    <Text>VND</Text>
+                    <Image style={styles.iconNext} source={Icons.ic_arrowbottom} />
                 </View>
             </View>
 
             <View style={styles.underline} />
 
-            <View style={styles.thongBaoContainer}>
-                <View style={styles.btnContainer}>
-                    <Image style={styles.imageBtn}
-                        source={Icons.ic_bell} />
-                    <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
-                    <View style={styles.lefticon}>
-                        <Switch
-                            trackColor={{ false: '#767577', true: '#0572E7' }}
-                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
-                        />
-                    </View>
-                </View>
-            </View>
-            <View style={styles.SangToiContainer}>
-                <View style={styles.btnContainer}>
-                    <Image style={styles.imageBtn}
-                        source={Icons.ic_moon} />
-                    <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
-                    <View style={styles.lefticon}>
-                        <Switch
-                            trackColor={{ false: '#767577', true: '#0572E7' }}
-                            thumbColor={isEnabled ? '#FFFFFF' : '#FFFFFF'}
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
-                        />
-                    </View>
-                </View>
-            </View>
-
-            <View style={styles.language}>
-                <TouchableOpacity>
-                    <View style={styles.btnContainer}>
-                        <Image style={styles.imageBtn}
-                            source={Icons.ic_earth} />
-                        <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
-                        <View style={styles.lefticon}>
-                            <Text>VN</Text>
-                            <Image style={styles.btnNext}
-                                source={Icons.ic_arrowbottom} />
-                        </View>
-                    </View>
-                </TouchableOpacity>
-
-            </View>
-            <View style={styles.language}>
-                <TouchableOpacity>
-                    <View style={styles.btnContainer}>
-                        <Image style={styles.imageBtn}
-                            source={Icons.ic_mony} />
-                        <Text style={styles.txtDieuKhoan}>Tiền tệ</Text>
-                        <View style={styles.lefticon}>
-                            <Text>VND</Text>
-                            <Image style={styles.btnNext}
-                                source={Icons.ic_arrowbottom} />
-                        </View>
-                    </View>
-                </TouchableOpacity>
-
-            </View>
-
-            <View style={styles.underline} />
-
-            <View style={styles.language}>
-                <TouchableOpacity onPress={() => navigation.navigate('LoginRegisterScreen')} >
-                    <View style={styles.btnContainer}>
-                        <Image style={styles.imageBtn}
-                            source={Icons.ic_lockout} />
-                        <Text style={styles.txtDieuKhoan}>Đăng xuất</Text>
-                        <View style={styles.lefticon}>
-                            <Image style={styles.btnNext}
-                                source={Icons.ic_arrowright} />
-                        </View>
-                    </View>
-                </TouchableOpacity>
-
-            </View>
+            {/* Logout */}
+            <TouchableOpacity
+                onPress={() => navigation.navigate('LoginRegisterScreen')}
+                style={styles.settingItem}>
+                <Image style={styles.settingIcon} source={Icons.ic_lockout} />
+                <Text style={styles.settingText}>Đăng xuất</Text>
+                <Image style={styles.iconNext} source={Icons.ic_arrowright} />
+            </TouchableOpacity>
         </View>
-    )
-}
+    );
+};
 
-export default SettingLoggedScreen
+export default SettingLoggedScreen;
 
 const styles = StyleSheet.create({
-    btnNext: {
-        width: 12,
-        height: 24,
-        marginLeft: 10
-    },
-    lefticon: {
-        width: 50,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    },
-    SangToiContainer: {
-        marginTop: 10
-    },
-    thongBaoContainer: {
-        marginTop: 34
-    },
-    txtDieuKhoan: {
-        width: 230,
-        fontFamily: 'Lato',
-        color: colors.Grey_900,
-        fontSize: 16,
-        fontWeight: '400',
-        lineHeight: 24
-    },
-    btnContainer: {
-        width: '100%',
-        height: 44,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    underline: {
-        width: '100%',
-        height: 1,
-        backgroundColor: '#B3B3B3CC',
-        marginTop: 16,
-    },
-    btnCauHoiContainer: {
-        width: 80,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    txtTroGiup: {
-        height: 34,
-        fontFamily: 'Lato',
-        color: '#212121',
-        fontSize: 14,
-        fontWeight: '400',
-        textAlign: 'center'
-    },
-    imageTroGiup: {
-        width: 24,
-        height: 24
-    },
-    imageTroGiupContainer: {
-        width: 50,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#0572E70D',
-        borderRadius: 8
-    },
-    btnHorizontalContainer: {
-        width: '100%',
-        flexDirection: 'row',
-        marginTop: 38,
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    iconNextContainer: {
-        width: 28,
-        height: 28,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    iconNext: {
-        width: 18,
-        height: 18
-    },
-    btnCapNhaHoSo: {
-        width: 100,
-        height: 24,
-        justifyContent: 'center'
-    },
-    txtName: {
-        fontFamily: 'Lato',
-        fontSize: 18,
-        fontWeight: '700',
-        lineHeight: 27,
-        color: '#000000'
-    },
-    txtLable: {
-        fontFamily: 'Lato',
-        fontSize: 14,
-        fontWeight: '400',
-        color: colors.primary_500
-    },
-    txtNameContainer: {
-        width: 200,
-    },
-    avatarContainer: {
+    avatar: {
         width: 65,
         height: 65,
-        borderRadius: 50
+        borderRadius: 32.5,
     },
-    headerContainer: {
-        width: '100%',
-        height: 70,
-        marginTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+    avatarContainer: {
+        position: 'relative',
     },
     icCameraContainer: {
         width: 28,
         height: 28,
         backgroundColor: colors.primary_500,
-        borderRadius: 28,
+        borderRadius: 14,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
+        bottom: 0,
         right: 0,
-        bottom: 0
     },
-    imageAvatar: {
-        width: 65,
-        height: 65,
-        borderRadius: 50,
-        resizeMode: 'cover'
-    }
-})
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginVertical: 20,
+    },
+    txtName: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#000',
+    },
+    btnUpdateProfile: {
+        marginTop: 4,
+    },
+    txtUpdateProfile: {
+        fontSize: 14,
+        color: colors.primary_500,
+    },
+    iconNextContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconNext: {
+        width: 18,
+        height: 18,
+    },
+    btnHorizontalContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+    },
+    btnCauHoiContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imageTroGiupContainer: {
+        width: 50,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#0572E70D',
+        borderRadius: 8,
+    },
+    imageTroGiup: {
+        width: 24,
+        height: 24,
+    },
+    txtTroGiup: {
+        fontSize: 14,
+        marginTop: 6,
+        textAlign: 'center',
+    },
+    underline: {
+        height: 1,
+        backgroundColor: '#B3B3B3CC',
+        marginVertical: 16,
+    },
+    settingItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginVertical: 10,
+    },
+    settingIcon: {
+        width: 24,
+        height: 24,
+    },
+    settingText: {
+        flex: 1,
+        fontSize: 16,
+        marginLeft: 10,
+    },
+    settingRight: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});

@@ -1,25 +1,13 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 import { StyleSheet, Text, View, Image, Alert, ActivityIndicator, Modal } from 'react-native'; // Thêm Modal
 import React, { useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 import auth from '@react-native-firebase/auth';
 import { styles } from './LoginRegisterScreenStyle';
 import Header from '../../components/common/header/Headercomponet';
 import SocialButton from '../../components/common/button/SocialButton';
 import stylesglobal from '../../constants/global';
 import Icons from '../../constants/Icons';
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGoogleUser } from '../../redux/slices/auth.slice';
 import { AppContext } from '../AppContext';
@@ -30,10 +18,6 @@ const LoginRegisterScreen = (props) => {
   const dispatch = useDispatch();
   const { isLogin } = useSelector(state => state.reducer.auth);
   const [loading, setLoading] = useState(false);
-<<<<<<< HEAD
-
-
-=======
   const { setUser, setIsLogin } = useContext(AppContext);
   const [loginType, setLoginType] = useState('email');
 
@@ -49,7 +33,6 @@ const LoginRegisterScreen = (props) => {
     navigation.navigate('Login', { loginType: 'phone' });
   };
   
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: '425470674648-kruk5stcsfk9gbi4chvoqu00fd02jad0.apps.googleusercontent.com',
@@ -104,10 +87,6 @@ const LoginRegisterScreen = (props) => {
       <Header style={styles.Header} leftIcon={Icons.ic_leftarrow} />
       <Text style={stylesglobal.textheader}>Đăng nhập / Đăng ký</Text>
       <Text style={stylesglobal.textauth_description}>
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
         Nhận tài khoản <Text style={{ color: '#0572E7' }}>TripAura</Text> để khám phá tiện ích
       </Text>
 

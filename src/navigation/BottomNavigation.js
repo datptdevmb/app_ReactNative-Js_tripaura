@@ -20,24 +20,16 @@ import IcHome from '../assets/icons/bottom_tab/Ic_home';
 import IcVoucher from '../assets/icons/bottom_tab/Ic_voucher';
 import IcProfile from '../assets/icons/bottom_tab/ic_profile';
 import IcFavorite from '../assets/icons/bottom_tab/Ic_favorite';
-<<<<<<< HEAD
-=======
 
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 import FavouriteScreenNoLogin from '../screens/main/tabs/favourite/FavouriteScreenNoLogin';
 import Voucher from '../screens/main/stacks/voucher/Voucher'
 import { useSelector } from 'react-redux';
 import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
 import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
-<<<<<<< HEAD
-import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
-
-=======
 
 import Mymap from '../screens/main/tabs/Home/Mymap';
 import LoginRegisterScreen from '../screens/authen/LoginRegisterScreen';
->>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 
 
 const Tab = createBottomTabNavigator();
@@ -87,7 +79,8 @@ function CustomBottom({onPress, children}) {
 }
 
 const ButtomNavigation = () => {
-  const { isLogin } = useSelector(state => state.reducer?.auth || {});
+  const {isLogin} = useSelector(state => state.reducer.auth);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -124,18 +117,16 @@ const ButtomNavigation = () => {
         name="Favourite"
         component={Voucher}
         options={{
-
-          tabBarIcon: ({focused}) => (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
-                height: 90,
-                // backgroundColor:colors.primary
-              }}>
+          tabBarIcon: ({ focused }) => (
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              borderTopWidth: focused ? 2 : 0,
+              borderTopColor: focused ? colors.primary : colors.onPrimary,
+              height: 90,
+              // backgroundColor:colors.primary
+            }}>
               <IcVoucher />
               <Text>Uu dai</Text>
             </View>
@@ -176,7 +167,7 @@ const ButtomNavigation = () => {
 
                 // backgroundColor:colors.primary
               }}>
-              <IcFavorite color={"grey"} />
+              <IcFavorite />
               <Text>{ROUTES.favorite}</Text>
             </View>
           ),
