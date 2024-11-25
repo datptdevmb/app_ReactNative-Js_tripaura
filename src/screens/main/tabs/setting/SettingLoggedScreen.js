@@ -15,6 +15,7 @@ import { AppContext } from '../../../AppContext';
 const SettingLoggedScreen = (props) => {
     const { navigation } = props;
     const [isEnabled, setIsEnabled] = useState(false);
+<<<<<<< HEAD
 
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
     const [image, setImage] = useState( null);
@@ -29,6 +30,14 @@ const SettingLoggedScreen = (props) => {
     
     const changeUserStatus = useSelector(state => state.changeUser);
 
+=======
+<<<<<<< HEAD
+    const { user } = useSelector(state => state.reducer.auth);
+=======
+    const [isEnabledchdo, setIsEnabledchedo] = useState(false);
+    const { user, setUser } = useContext(AppContext)
+>>>>>>> 682b4584f05f4553c075764b42725e79185b80e8
+>>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
@@ -169,12 +178,26 @@ const SettingLoggedScreen = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.txtNameContainer}>
+<<<<<<< HEAD
 
                     <Text style={styles.txtName}>{userName}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('EditProfileScreen')}
                         style={styles.btnCapNhaHoSo}>
 
+=======
+<<<<<<< HEAD
+                    <Text style={styles.txtName}>{user.user.fullname}</Text>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate('EditProfileScreen')}
+                    style={styles.btnCapNhaHoSo}>
+=======
+                    <Text style={styles.txtName}>{user && user.fullname}Nguyễn Văn A</Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('EditProfileScreen')}
+                        style={styles.btnCapNhaHoSo}>
+>>>>>>> 682b4584f05f4553c075764b42725e79185b80e8
+>>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
                         <Text style={styles.txtLable}>Cập nhật hồ sơ</Text>
                     </TouchableOpacity>
                 </View>

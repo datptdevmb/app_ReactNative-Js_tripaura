@@ -41,6 +41,10 @@ const registerSlice = createSlice({
                 state.registerStatus = 'failed';
                 const errorMessage = action.payload?.message || 'Đăng ký không thành công';
                 ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
             });
     },
 });

@@ -6,6 +6,7 @@ import categoryReducer from './slices/category.slice'
 import networkReducer from './slices/network.slice'
 import imageSliderReducer from './slices/image.slice'
 import favoriteReducer from './slices/favouriteducers'
+<<<<<<< HEAD
 import filterTourReducer from './slices/filterTourSlice'
 import searchTourReducer from './slices/searchTourSlice'
 import changeUserReducer from './slices/ChangeUserSlice';
@@ -48,6 +49,32 @@ const store = configureStore({
 
   reducer: {
     reducer: rootReducer,
+=======
+import favoriteAdDeleteReducer from './slices/favouriteAddDeleteducers'
+import favouriteDeleteReducer from './slices/favouriteDeleteDucers'
+import loginReducer from './slices/loginreducers';
+import registerReducer from './slices/registerreducers';
+
+const rootReducer = combineReducers({
+    tour: tourReducer,
+    auth:authenReducer,
+    category:categoryReducer,
+    network: networkReducer,
+    images:imageSliderReducer,
+    favorites: favoriteReducer,
+    login: loginReducer,
+    register: registerReducer,
+    // favoriteAdDelete: favoriteAdDeleteReducer,
+    // favouriteDelete: favouriteDeleteReducer,
+
+});
+
+const store = configureStore({
+  reducer: {
+    reducer: rootReducer,
+  },
+});
+>>>>>>> 8fd71a664d1c1ba1f0c54154897dbaf96aea97d1
 
   }
 });
