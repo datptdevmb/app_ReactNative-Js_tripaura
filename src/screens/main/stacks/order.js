@@ -1,5 +1,10 @@
 // OrderReviewScreen.js
+<<<<<<< HEAD
 import { ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+=======
+import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules, useWindowDimensions } from "react-native";
+const { ZaloPayModule } = NativeModules;
+>>>>>>> aee1b1af7168e56a7fc252ee383cc92f7ccf3b19
 import Header from "../../../components/common/header/Header";
 import TourInfo from "./TourInfor";
 import DepartureInfo from "./DepartureInfo";
@@ -7,10 +12,23 @@ import ContactInfo from "./ContactInfo";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../components/common/button/Button";
 import formatCurrencyVND from "../../../untils/formatCurrencyVND";
+<<<<<<< HEAD
 
 
 const OrderReviewScreen = ({ navigation }) => {
 
+=======
+import Paymethod from "./Paymethod";
+import { useCallback, useEffect, useState } from "react";
+import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
+import SelecVoucher from "./selecVoucher";
+
+
+
+const OrderReviewScreen = ({ navigation }) => {
+    const { width } = useWindowDimensions();
+    const dispatch = useDispatch();
+>>>>>>> aee1b1af7168e56a7fc252ee383cc92f7ccf3b19
     const {
         tourById,
         adultTickets,
@@ -39,14 +57,14 @@ const OrderReviewScreen = ({ navigation }) => {
 
     const handlePuchase = useCallback(() => {
         const totalPriceString = totalPrice.toString();
-        if(!selectedMethod) return
-        if(selectedMethod == 1){
+        if (!selectedMethod) return
+        if (selectedMethod == 1) {
             ZaloPayModule.createOrder(totalPriceString);
         }
-        if(selectedMethod == 2){
-           console.log('payos')
+        if (selectedMethod == 2) {
+            console.log('payos')
         }
-       
+
     })
 
 
