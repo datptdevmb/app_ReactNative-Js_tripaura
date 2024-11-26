@@ -9,6 +9,7 @@ import {
 	NativeModules,
 	useWindowDimensions,
 	TouchableWithoutFeedback,
+	Alert,
 } from 'react-native';
 
 const { ZaloPayModule } = NativeModules;
@@ -71,10 +72,6 @@ const Detail = ({ navigation, route }) => {
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
 	);
-
-
-
-
 	console.log('adultPrice', adultPrice);
 	console.log('childPrice', childPrice);
 
@@ -87,6 +84,8 @@ const Detail = ({ navigation, route }) => {
 			: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
 	);
 	const { user } = useSelector(state => state.reducer.auth);
+	console.log('user........................................: ', user);
+
 	const [showToast, setShowToast] = useState(false);
 
 
@@ -123,12 +122,31 @@ const Detail = ({ navigation, route }) => {
 	};
 
 	const handelNavigateToOrder = () => {
+		if (!user || !user.user || !user.user._id) {
+			Alert.alert(
+				'Thông báo',
+				'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.',
+				[
+					{
+						text: 'Đăng nhập',
+						onPress: () => {
+							navigation.navigate('LoginRegisterScreen');
+						}
+					},
+					{
+						text: 'Hủy',
+						style: 'cancel'
+					}
+				]
+			);
+			return;
+		}
 		if (!selectedDate) {
-			console.log('vui lòng chọn ngày');
+			Alert.alert('Lỗi', 'Vui lòng chọn ngày khởi hành.');
 			return;
 		}
 		if (adultTickets === 0 && childTickets === 0) {
-			console.log('vui lòng chọn số lượng vé');
+			Alert.alert('Lỗi', 'Vui lòng chọn số lượng vé.');
 			return;
 		}
 		navigation.navigate('Order', {
@@ -137,6 +155,7 @@ const Detail = ({ navigation, route }) => {
 			childPrice,
 		});
 	};
+
 
 
 	const handleNavigateToFavorite = () => {
@@ -172,9 +191,9 @@ const Detail = ({ navigation, route }) => {
 
 	useEffect(() => {
 		if (imges && imges.length > 0) {
-		  setCurrentImage(imges[0]);
+			setCurrentImage(imges[0]);
 		}
-	  }, [imges]);
+	}, [imges]);
 
 	console.log('detail', detailId);
 

@@ -28,12 +28,15 @@ const SearchScreen = (props) => {
   const dispatch = useDispatch();
   const { filterTourData, filterTourStatus } = useSelector((state) => state.reducer.filterTour);
 
+  console.log('filterTour', filterTourData);
+  
+
   const onChangeTextSearch = (text) => {
     setSearchText(text)
   }
 
   const handleClearText = () => {
-    setSearchText(''); // Xóa nội dung trong ô tìm kiếm
+    setSearchText('');
   };
   const onPressItem = (_id) => {
     navigation.navigate('Detail', { _id })
@@ -77,7 +80,7 @@ const SearchScreen = (props) => {
           placeholder="Tìm kiếm..."
           value={searchText}
           onChangeText={(text) => onChangeTextSearch(text)}
-          clearButtonMode="always" // Chỉ hoạt động trên iOS
+          clearButtonMode="always"
         />
         <TouchableOpacity onPress={handleClearText}>
           <Image
@@ -95,7 +98,7 @@ const SearchScreen = (props) => {
       <ScrollView 
         showsVerticalScrollIndicator={false}>
         <View>
-          {filterTourData.data && <Text style={styles.tile}>{filterTourData.data.length} kết quả</Text>}
+          {filterTourData.data && <Text style={styles.tile}>{filterTourData.data.length || 'Không có' } kết quả</Text>}
           <View style={{ marginTop: 20 }}>
             {filterTourData.data ?
               <FlatList

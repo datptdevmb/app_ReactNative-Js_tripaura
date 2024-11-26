@@ -37,6 +37,7 @@ import Evaluate from '../screens/main/stacks/purchasehistory/Evaluate';
 import Schedule from '../screens/main/stacks/schedule/schedule';
 import Schduletour from '../screens/main/stacks/schedule/schduletour';
 import Itinerary from '../screens/main/stacks/schedule/Itinerary';
+import SplashScreen from '../screens/authen/Splash/SplashScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,6 +49,7 @@ const MainTabNavigation = () => {
 const MainStaskNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>  
+     <Stack.Screen name="SplashScreen" component={SplashScreen} />
      <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
       <Stack.Screen name="Schduletour" component={Schduletour} />
