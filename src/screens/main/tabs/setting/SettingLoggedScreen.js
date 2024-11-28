@@ -265,7 +265,7 @@ const SettingLoggedScreen = (props) => {
         <View style={styles.btnContainer}>
           <Image style={styles.imageBtn}
             source={Icons.ic_bell} />
-          <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
+          <Text style={styles.txtDieuKhoan}>Thông báo</Text>
           <View style={styles.lefticon}>
             <Switch
               trackColor={{ false: '#767577', true: '#0572E7' }}
@@ -297,7 +297,7 @@ const SettingLoggedScreen = (props) => {
           <View style={styles.btnContainer}>
             <Image style={styles.imageBtn}
               source={Icons.ic_earth} />
-            <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
+            <Text style={styles.txtDieuKhoan}>Ngôn ngữ</Text>
             <View style={styles.lefticon}>
               <Text>VN</Text>
               <Image style={styles.btnNext}

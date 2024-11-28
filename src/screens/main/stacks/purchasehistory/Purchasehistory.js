@@ -161,7 +161,7 @@ const Purchasehistory = ({ navigation }) => {
                             <Text
                                 style={[
                                     styles.statusText,
-                                    { color: item.status === 0 ? '#2980B9' : item.status === 2 && isPast ? 'green' : 'red' }
+                                    { color: item.status === 0 ? '#2980B9' : item.status === 2 && isPast ? 'red' : 'red' }
                                 ]}
                             >
                                 {statusText}

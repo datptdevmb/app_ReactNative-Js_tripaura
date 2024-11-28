@@ -68,7 +68,7 @@ const Detail = ({ navigation, route }) => {
 		loading,
 		selectedDate,
 	} = useSelector(state => state.reducer.tour);
-	
+
 
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
@@ -92,7 +92,7 @@ const Detail = ({ navigation, route }) => {
 
 	const { imges, tourName, description = '<p>Default description</p>', location, details } = tourById;
 	console.log('location', location);
-	
+
 
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
@@ -280,7 +280,7 @@ const Detail = ({ navigation, route }) => {
 								source={{ html: description }} /> */}
 							<HTMLView
 								value={description}
-								// stylesheet={styles}
+							// stylesheet={styles}
 							/>
 
 
@@ -334,7 +334,6 @@ const Detail = ({ navigation, route }) => {
 						<View style={{ height: 150 }}></View>
 					</View>
 				)}
-
 			</AnimatedScrollView>
 
 			{/* Button Bottom */}
