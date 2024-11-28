@@ -8,8 +8,10 @@ const vouchercomponent = ({ data }) => {
     // console.log("============= data ============", data);
 
     const renderItems = (item) => {
+        console.log('item', item);
+        
         return (
-            <View key={item.id} style={styles.luuvoucher}>
+            <View key={item._id} style={styles.luuvoucher}>
                 <View style={styles.containertext}>
                     <Text style={styles.textvoucher}>Toàn nền tảng</Text>
                 </View>

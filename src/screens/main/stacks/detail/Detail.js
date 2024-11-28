@@ -208,9 +208,10 @@ const Detail = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			{showToast && favoritesStatus === 'success' && (
-				<Toast onPress={handleNavigateToFavorite} message={message} />
-			)}
+			{showToast &&
+				favoritesStatus === 'success' && (
+					<Toast onPress={handleNavigateToFavorite} message={message} />
+				)}
 			<TouchableOpacity onPress={handleBack} style={styles.btnBack}>
 				<IcleftArrow />
 			</TouchableOpacity>

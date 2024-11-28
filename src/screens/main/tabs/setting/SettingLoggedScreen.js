@@ -218,6 +218,16 @@ const SettingLoggedScreen = (props) => {
           </TouchableOpacity>
         </View>
         <View >
+          <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
+            <View style={styles.imageTroGiupContainer}>
+              <Image
+                style={styles.imageTroGiup}
+                source={Icons.ic_orther} />
+            </View>
+            <Text style={styles.txtTroGiup}>Tour cá nhân</Text>
+          </TouchableOpacity>
+        </View>
+        <View >
           <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
             <View style={styles.imageTroGiupContainer}>
               <Image
@@ -372,7 +382,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   btnCauHoiContainer: {
-    width: 80,
+    width: 60,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -380,13 +390,14 @@ const styles = StyleSheet.create({
     height: 34,
     fontFamily: 'Lato',
     color: '#212121',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '400',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 10,
   },
   imageTroGiup: {
-    width: 24,
-    height: 24
+    width: 23,
+    height: 23
   },
   imageTroGiupContainer: {
     width: 50,

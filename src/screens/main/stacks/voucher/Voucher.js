@@ -25,8 +25,8 @@ const Voucher = () => {
     isLoading
   } = useHomeData();
 
-  console.log('tour',tours);
-  
+  console.log('tour', tours);
+
 
   const dispatch = useDispatch()
   const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.vouchers);
@@ -65,7 +65,7 @@ const Voucher = () => {
         <Text style={styles.txtmauudai}>Voucher</Text>
         <View style={styles.contaivorcher}>
           {hasVoucherData ? (
-            <Vouchercomponent data={getVoucherData.data} key={key_id} />
+            <Vouchercomponent data={getVoucherData.data}/>
           ) : (
             <Text style={{ color: colors.grey }}>Không có voucher nào.</Text>
           )}
