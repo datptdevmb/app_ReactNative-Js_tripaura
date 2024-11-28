@@ -20,38 +20,6 @@ import Headercomponet from '../../../../components/common/header/Headercomponet'
 import FilterScreen from '../../stacks/Filter/FilterScreen';
 import ModalFilter from '../../../../components/common/modals/ModalFilter';
 
-// Dữ liệu mẫu
-const DATA = [
-  {
-    id: '1',
-    image: require('../../../../assets/images/image.png'), // Đường dẫn tới hình ảnh sản phẩm
-    name: 'Tour khám phá Đà Nẵng',
-    price: '1.200.000 VND',
-    day: 'Ngày 5/1/2024',
-  },
-  {
-    id: '2',
-    image: require('../../../../assets/images/image.png'), // Đường dẫn tới hình ảnh sản phẩm
-    name: 'Khám phá Phú Quốc',
-    price: '2.500.000 VND',
-    day: 'Ngày 10/1/2024',
-  },
-  {
-    id: '3',
-    image: require('../../../../assets/images/image.png'), // Đường dẫn tới hình ảnh sản phẩm
-    name: 'Chuyến đi đến Nha Trang',
-    price: '1.800.000 VND',
-    day: 'Ngày 15/1/2024',
-  },
-  {
-    id: '4',
-    image: require('../../../../assets/images/image.png'), // Đường dẫn tới hình ảnh sản phẩm
-    name: 'Tour tham quan miền Tây',
-    price: '900.000 VND',
-    day: 'Ngày 20/1/2024',
-  },
-  // Thêm nhiều sản phẩm hơn nếu cần
-];
 
 const SearchScreen = (props) => {
   const { navigation } = props
@@ -60,16 +28,20 @@ const SearchScreen = (props) => {
   const dispatch = useDispatch();
   const { filterTourData, filterTourStatus } = useSelector((state) => state.reducer.filterTour);
 
+  console.log('filterTour', filterTourData);
+  
+
   const onChangeTextSearch = (text) => {
     setSearchText(text)
   }
 
   const handleClearText = () => {
-    setSearchText(''); // Xóa nội dung trong ô tìm kiếm
+    setSearchText('');
   };
   const onPressItem = (_id) => {
     navigation.navigate('Detail', { _id })
   }
+  //
   useEffect(() => {
     dispatch(
       FilterTour({
@@ -91,7 +63,7 @@ const SearchScreen = (props) => {
         <Text style={styles.itemName} numberOfLines={2}>{item.tourName}</Text>
         <View style={styles.address}>
           <Image source={Icons.ic_address} />
-          <Text style={styles.itemDay}>{item.locations.destination}</Text>
+          <Text style={styles.itemDay} numberOfLines={1}>{item.locations.destination}</Text>
         </View>
         <Text style={styles.itemPrice}>Từ: {formatCurrencyVND(item.details.priceAdult)}</Text>
       </TouchableOpacity>
@@ -108,7 +80,7 @@ const SearchScreen = (props) => {
           placeholder="Tìm kiếm..."
           value={searchText}
           onChangeText={(text) => onChangeTextSearch(text)}
-          clearButtonMode="always" // Chỉ hoạt động trên iOS
+          clearButtonMode="always"
         />
         <TouchableOpacity onPress={handleClearText}>
           <Image
@@ -123,9 +95,10 @@ const SearchScreen = (props) => {
           />
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <ScrollView 
+        showsVerticalScrollIndicator={false}>
         <View>
-          {filterTourData.data && <Text style={styles.tile}>{filterTourData.data.length} kết quả</Text>}
+          {filterTourData.data && <Text style={styles.tile}>{filterTourData.data.length || 'Không có' } kết quả</Text>}
           <View style={{ marginTop: 20 }}>
             {filterTourData.data ?
               <FlatList
@@ -163,13 +136,12 @@ const SearchScreen = (props) => {
               </View>
 
               <ModalFilter searchText={searchText}
-                onPressAply={()=>{setisShowModal(false)}}
+                isShowModal={() => { setisShowModal(false) }  }
               />
             </View>
-
           </View>
-
         </Modal>
+        <View style={{ height: 60 }} />
       </ScrollView>
     </View>
   );

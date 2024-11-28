@@ -11,6 +11,7 @@ import ic_cellphone from '../assets/icons/ic_cellphone.png';
 import ic_address from '../assets/icons/ic_address.png';
 import ic_edit from '../assets/icons/ic_edit.png';
 import ic_time from '../assets/icons/ic_time.png';
+
 import ic_arrowright from '../assets/icons/ic_arrowright.png'
 import ic_map from '../assets/icons/ic_map.png'
 import ic_lock from '../assets/icons/ic_lock.png'
@@ -27,15 +28,19 @@ import ic_instagram from '../assets/icons/ic_instagram.png'
 import ic_twitter from '../assets/icons/ic_twitter.png'
 import ic_website from '../assets/icons/ic_website.png'
 import icon_fb from '../assets/icons/icon_fb.png'
-// image
+import ic_star_emty from '../assets/icons/ic_star_emty'
+import down from '../assets/images/down.png'
+import clock from '../assets/icons/clock.png'
 
+// image
 import avatar from '../assets/images/avatar.png';
 import image from '../assets/images/image.png';
 import slider from '../assets/images/slider1.png';
 
 const Icons = {
-  ic_email: ic_email,
+  ic_email,
   ic_leftarrow: lefticon,
+
   ic_phone: ic_phone,
   ic_facebook: ic_facebook,
   ic_google: ic_google,
@@ -63,6 +68,9 @@ const Icons = {
   ic_twitter: ic_twitter,
   ic_website: ic_website,
   icon_fb: icon_fb,
+  down: down,
+  clock: clock,
+  ic_star_emty:ic_star_emty,
 
 
   //image
@@ -71,6 +79,11 @@ const Icons = {
   slider: slider,
 
 
+
+  // images
+  avatar,
+  image,
+  slider,
 };
 
 export default Icons;

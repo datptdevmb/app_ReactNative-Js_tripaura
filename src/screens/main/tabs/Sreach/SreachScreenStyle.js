@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   address: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 8
+    paddingHorizontal : 16
   },
   container: {
     flex: 1,
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
   itemImage: {
     width: '100%',
     height: 120,
-    borderTopLeftRadius: 10, 
+    borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
   itemName: {
@@ -101,7 +101,6 @@ export const styles = StyleSheet.create({
     marginRight: 16,
   },
   itemDay: {
-    height: 16,
     fontSize: fontsize.fm,
     color: '#757575',
     marginLeft: 8,

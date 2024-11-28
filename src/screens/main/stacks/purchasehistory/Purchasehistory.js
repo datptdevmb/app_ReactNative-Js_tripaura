@@ -5,6 +5,7 @@ import Icons from '../../../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookingsByUserId } from '../../../../redux/slices/booking.slice';
 import colors from '../../../../constants/colors';
+import Toast from 'react-native-toast-message';
 
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const Purchasehistory = ({ navigation }) => {
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
+
 
     const [selectedStatus, setSelectedStatus] = useState(0);
 
@@ -21,59 +23,145 @@ const Purchasehistory = ({ navigation }) => {
         }
     }, [dispatch, userId]);
 
+
+    useEffect(() => {
+        if (Array.isArray(bookings)) {
+            const currentTime = new Date().getTime();
+            bookings.forEach(booking => {
+                const createdAt = new Date(booking.createAt).getTime();
+                const timePassed = currentTime - createdAt;
+
+                if (booking.status === 1 && timePassed >= 300000) {
+                    updateBookingStatus(booking._id, 2);
+                }
+            });
+        }
+    }, [bookings]);
+
+
+    const updateBookingStatus = async (bookingId, status) => {
+        console.log('Updating booking status with:', status);
+        try {
+            const response = await fetch(`https://trip-aura-server.vercel.app/booking/api/update/${bookingId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status }),
+            });
+
+            const data = await response.json();
+
+
+            if (data.code === 200) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Cập nhật booking thành công',
+                });
+                dispatch(fetchBookingsByUserId(userId));
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Cập nhật thất bại',
+                });
+            }
+        } catch (error) {
+            console.error('Error updating booking status:', error);
+            Toast.show({
+                type: 'error',
+                text1: 'Có lỗi xảy ra khi cập nhật',
+            });
+        }
+    };
+
     const onBackPress = () => {
         navigation.goBack();
     };
 
     const renderItem = ({ item }) => {
-        const image = item.linkImage ? item.linkImage[0] : null;
+        const image = item.tourImages && item.tourImages.length > 0 && item.tourImages[0].linkImage && item.tourImages[0].linkImage.length > 0
+            ? item.tourImages[0].linkImage[0]
+            : null;
 
-        const { tourName, selectedDate, numAdult, numChildren, priceAdult, priceChildren, fullname, phone, email } = item;
-        const totalCost = (item.numAdult * item.priceAdult) + (item.numChildren * item.priceChildren);
 
-        console.log('fullname: ' + fullname);
-        console.log('phone: '+ phone);
-        console.log('email: '+ email);
-        
+        const {
+            numAdult,
+            numChildren,
+            priceAdult,
+            priceChildren,
+            status,
+            createAt,
+            _id: bookingId,
+            userInfo: { fullname, phone, email },
+            tourInfo,
+            totalPrice,
+        } = item;
+
+
+        const tourName = tourInfo ? tourInfo.tourName : 'Không có tên tour';
+
+        const currentTime = new Date().getTime();
+        const bookingTime = new Date(item.detailInfo.endDay).getTime();
+        const isPast = bookingTime < currentTime;
+
+
         const handlePress = () => {
-            if (item.status !== 2 && item.status !== 1) {
-                navigation.navigate('OrderInformation', { bookingId: item._id });
+            if (selectedStatus === 3) {
+                return;
             }
+            navigation.navigate('OrderInformation', { bookingId: item._id });
         };
 
         const handlePaymentPress = () => {
-
-            const totalPrice = (numAdult * priceAdult) + (numChildren * priceChildren);
-            const childPrice = numChildren * priceChildren;
-
             console.log('tourname', tourName);
-
-
-            navigation.navigate('Payment', {
+            navigation.navigate('Order', {
                 bookingId: item._id
             });
         };
 
-        if (item.status !== selectedStatus) {
+        const handleEvaluatePress = () => {
+            navigation.navigate('Evaluate', { bookingId: item._id });
+        };
+
+        if (selectedStatus === 3) {
+            if (item.status !== 0 || !isPast) {
+                return null;
+            }
+        } else if (item.status !== selectedStatus) {
             return null;
         }
 
-        const statusText = item.status === 0 ? 'Đã thanh toán' : item.status === 1 ? 'Chưa thanh toán' : 'Đã hủy';
+        let statusText = '';
+        if (selectedStatus === 3) {
+            statusText = isPast ? 'Đã đi' : 'Chưa đi';
+        } else if (item.status === 0) {
+            statusText = 'Đã thanh toán';
+        } else if (item.status === 1) {
+            statusText = 'Chưa thanh toán';
+        } else if (item.status === 2) {
+            statusText = 'Đã hủy';
+        }
+
+
+        const words = tourName.split(' ');
+        const firstFourWords = words.slice(0, 4).join(' ');
+        const remainingWords = words.length > 4 ? '...' : '';
 
         return (
             <TouchableOpacity onPress={handlePress}>
                 <View style={styles.card}>
                     <Image style={styles.image} source={{ uri: image || Icons.image }} />
                     <View style={styles.containeritem}>
-                        <Text style={styles.dateText}>Ngày: {item.createAt ? new Date(item.createAt).toLocaleDateString() : 'N/A'}</Text>
-                        <Text style={styles.tourText}>Tour: {tourName}</Text>
-                        <Text style={styles.priceText}>Tổng giá: {totalCost ? totalCost.toLocaleString() : 'N/A'} VNĐ</Text>
+                        <Text style={styles.dateText}>Ngày: {item.detailInfo.endDay ? new Date(item.detailInfo.endDay).toLocaleDateString() : 'N/A'}</Text>
+                        <Text style={styles.tourText} numberOfLines={1}>Tour: {firstFourWords} {remainingWords}</Text>
+                        <Text style={styles.priceText}>Tổng giá: {item.totalPrice ? item.totalPrice.toLocaleString() : 'N/A'} VNĐ</Text>
+
                         <View style={styles.statusTextContainer}>
                             <Text style={styles.statusLabel}>Trạng thái: </Text>
                             <Text
                                 style={[
                                     styles.statusText,
-                                    { color: item.status === 0 ? '#2980B9' : 'red' }
+                                    { color: item.status === 0 ? '#2980B9' : item.status === 2 && isPast ? 'green' : 'red' }
                                 ]}
                             >
                                 {statusText}
@@ -82,6 +170,11 @@ const Purchasehistory = ({ navigation }) => {
                         {item.status === 1 && (
                             <TouchableOpacity onPress={handlePaymentPress} style={styles.paymentButton}>
                                 <Text style={styles.paymentButtonText}>Thanh toán</Text>
+                            </TouchableOpacity>
+                        )}
+                        {selectedStatus === 3 && (
+                            <TouchableOpacity onPress={handleEvaluatePress} style={styles.paymentButton}>
+                                <Text style={styles.paymentButtonText}>Bình luận</Text>
                             </TouchableOpacity>
                         )}
                     </View>
@@ -109,11 +202,17 @@ const Purchasehistory = ({ navigation }) => {
                         Đã hủy
                     </Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => setSelectedStatus(3)}>
+                    <Text style={[styles.statusButton, selectedStatus === 3 && styles.activeStatus]}>
+                        Đã đi
+                    </Text>
+                </TouchableOpacity>
+
             </View>
 
             <View style={{ padding: 16 }}>
                 <FlatList
-                    data={bookings}
+                    data={bookings || []}
                     renderItem={renderItem}
                     keyExtractor={(item) => item._id}
                     contentContainerStyle={styles.container}
@@ -140,7 +239,7 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
     },
     statusButton: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#000',
     },
     activeStatus: {
@@ -148,7 +247,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     containeritem: {
-        width: '100%',
+        width: '90%',
     },
     card: {
         backgroundColor: '#fff',
@@ -166,40 +265,44 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         fontWeight: '500',
-        paddingVertical: 2,
+        paddingVertical: 1,
     },
     tourText: {
         fontSize: 16,
         color: '#333',
-        paddingVertical: 2,
+        paddingVertical: 1,
+
     },
     priceText: {
         fontSize: 16,
         color: '#27AE60',
-        paddingVertical: 2,
+        paddingVertical: 1,
+
     },
     statusTextContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 2,
+        paddingVertical: 1,
     },
     statusLabel: {
         fontSize: 16,
         color: '#333',
+        paddingVertical: 1,
     },
     statusText: {
         fontSize: 16,
         fontWeight: 'bold',
         color: '#2980B9',
-        paddingVertical: 2,
+        paddingVertical: 1,
     },
     image: {
-        width: 90,
-        height: 140,
-        borderTopLeftRadius: 8,
-        borderBottomLeftRadius: 8,
+        width: 100,
+        height: 110,
+        borderRadius: 8,
         marginEnd: 10,
         resizeMode: 'cover',
+        marginStart: 10,
+        marginVertical: 10,
     },
     paymentButton: {
         backgroundColor: '#0033FF',
@@ -208,7 +311,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '70%',
     },
-
     paymentButtonText: {
         color: '#fff',
         fontSize: 16,

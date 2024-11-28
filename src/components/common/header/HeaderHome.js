@@ -1,17 +1,13 @@
 import { memo } from 'react';
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
 function HeaderHome() {
   return (
     <View style={[styles.flex_row, styles.headerContainer]}>
       <Text style={styles.textHeader}>Chào mừng </Text>
       <View style={[styles.flex_row, styles.iconContainer]}>
-        <TouchableOpacity>
-          <Image
-            style={styles.serchIcon}
-            source={require('../../../assets/images/searchIcon.png')}
-          />
-        </TouchableOpacity>
+        <View>
+        </View>
         <TouchableOpacity>
           <Image
             style={styles.noticeIcon}
