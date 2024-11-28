@@ -46,7 +46,7 @@ import {
 } from '../../../../redux/slices/favouriteducers';
 import Toast from '../../../../components/common/toast/Toast';
 import { ROUTES } from '../../../../constants/routes';
-import RenderHtml from 'react-native-render-html';
+import HTMLView from 'react-native-htmlview';
 import Accordion from '../../../../components/common/accordion/accordion';
 import { fetchReviewsByTourId } from '../../../../redux/slices/reviewTourducers';
 
@@ -271,9 +271,13 @@ const Detail = ({ navigation, route }) => {
 							<View style={styles.divider} />
 							{/* <Lable lable="Mô tả chuyến đi" /> */}
 							{/* <Text style={styles.bodytext}>{description}</Text> */}
-							<RenderHtml
+							{/* <RenderHtml
 								contentWidth={width}
-								source={{ html: description }} />
+								source={{ html: description }} /> */}
+							<HTMLView
+								value={description}
+								// stylesheet={styles}
+							/>
 
 
 							<ReviewList
@@ -281,16 +285,23 @@ const Detail = ({ navigation, route }) => {
 								reviews={danhSachDanhGia} />
 							<View style={styles.mrtop_12}>
 								<Accordion
+									title={"Những điều cần lưu ý"}
 									children={
-										<Text >
-											• Vui lòng tự bảo quản tài sản cá nhân chúng tôi khi chịu
-											trách nhiệm về sự việc
-											{'\n'}
-											{'\n'}
-											• Mọi thất mất vui lòng liên hệ +84353944291
-										</Text>
+										<View>
+											<Text> Xác nhận</Text>
+											<Text>
+												Hệ thống xác nhận ngay tức thời nếu không nhận được
+												email phản hồi của hệ thống hãy liên hệ với chúng tôi
+											</Text>
+											<Text> Chính sách hủy</Text>
+											<Text>
+												Hoàn tiền nếu hủy trước khi tour khởi hành tối
+												thiểu 48h
+											</Text>
+
+										</View>
+
 									}
-									title={"Lưu ý trước khi đặt "}
 								/>
 								<Accordion
 									title={"Điều khoản chung"}

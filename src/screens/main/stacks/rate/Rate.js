@@ -1,16 +1,16 @@
 
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, Image, ScrollView} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, Image, ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import Headercomponet from '../../../../components/common/header/Headercomponet';
 import Icons from '../../../../constants/Icons';
-import {fetchReviewsByTourId, LayDanhSachDanhGia} from '../../../../redux/slices/reviewTourducers';
-import {Skeleton} from 'moti/skeleton';
+import { fetchReviewsByTourId, LayDanhSachDanhGia } from '../../../../redux/slices/reviewTourducers';
+import { Skeleton } from 'moti/skeleton';
 import styles from './RateStyle';
 
-const Rate = ({route, navigation}) => {
+const Rate = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const {tourId} = route.params;
+  const { tourId } = route.params;
 
   const danhSachDanhGia = useSelector(
     state => state.reducer.reviews.reviewsData,
@@ -88,11 +88,11 @@ const Rate = ({route, navigation}) => {
 
   const mangSoSao = taoMangSoSao(trungBinhSoSao);
 
-  const renderReviewItem = ({item}) => (
+  const renderReviewItem = ({ item }) => (
     <View style={styles.reviewItem}>
       <View style={styles.userInfo}>
         <Image
-          source={{uri: item.avatar}}
+          source={{ uri: item.avatar }}
           style={styles.avatar}
           onError={() => console.log('Error loading avatar')}
         />
@@ -111,10 +111,11 @@ const Rate = ({route, navigation}) => {
 
       {item.image && item.image.length > 0 && (
         <FlatList
+          showsHorizontalScrollIndicator={false}
           data={item.image}
-          renderItem={({item: imageUrl}) => (
+          renderItem={({ item: imageUrl }) => (
             <Image
-              source={{uri: imageUrl}}
+              source={{ uri: imageUrl }}
               style={styles.reviewImage}
               onError={() => console.log('Error loading image')}
             />

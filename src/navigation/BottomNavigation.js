@@ -105,7 +105,7 @@ const ButtomNavigation = () => {
                 borderTopColor: focused ? colors.primary : colors.onPrimary,
                 height: 90,
               }}>
-              <IcHome />
+              <IcHome color={focused ? '#0572E7' : '#8A8A8A'}/>
               <Text style={{ fontSize: 12 }}>{ROUTES.home}</Text>
             </View>
           ),
@@ -127,7 +127,7 @@ const ButtomNavigation = () => {
                 height: 90,
                 // backgroundColor:colors.primary
               }}>
-              <IcVoucher />
+              <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'}/>
               <Text style={{ fontSize: 12 }}>Uu dai</Text>
             </View>
           ),
@@ -167,7 +167,7 @@ const ButtomNavigation = () => {
 
                 // backgroundColor:colors.primary
               }}>
-              <IcFavorite color={"grey"} />
+              <IcFavorite  color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }}>{ROUTES.favorite}</Text>
             </View>
           ),
@@ -189,7 +189,7 @@ const ButtomNavigation = () => {
 
                 // backgroundColor:colors.primary
               }}>
-              <IcProfile />
+              <IcProfile  color={focused ? '#0572E7' : '#8A8A8A'}/>
               <Text style={{ fontSize: 12 }} >{ROUTES.settings}</Text>
             </View>
           ),
