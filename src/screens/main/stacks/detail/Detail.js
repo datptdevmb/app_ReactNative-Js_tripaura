@@ -89,7 +89,7 @@ const Detail = ({ navigation, route }) => {
 	const [showToast, setShowToast] = useState(false);
 
 
-	const { imges, tourName, description = '<p>Default description</p>', location, details } = tourById;
+	const { imges, tourName, description, location, details } = tourById;
 
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
@@ -269,17 +269,9 @@ const Detail = ({ navigation, route }) => {
 							<Text style={styles.tourname}>{tourName}</Text>
 							<LocationInfo location={location} />
 							<View style={styles.divider} />
-							{/* <Lable lable="Mô tả chuyến đi" /> */}
-							{/* <Text style={styles.bodytext}>{description}</Text> */}
-							{/* <RenderHtml
-								contentWidth={width}
-								source={{ html: description }} /> */}
 							<HTMLView
 								value={description}
-								// stylesheet={styles}
 							/>
-
-
 							<ReviewList
 								onSeeMore={handleNavigateToRate}
 								reviews={danhSachDanhGia} />

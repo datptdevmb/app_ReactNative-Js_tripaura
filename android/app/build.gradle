@@ -115,9 +115,9 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
 
-     implementation files('D:/DemoZPDK_Android/zpdk-release-v3.1.aar')
+    //  implementation files('D:/DemoZPDK_Android/zpdk-release-v3.1.aar')
     
-    // implementation files('/home/datpt/DemoZalopay/zpdk-release-v3.1 (1).aar')
+    implementation files('/home/datpt/DemoZalopay/zpdk-release-v3.1 (1).aar')
 
 
 
