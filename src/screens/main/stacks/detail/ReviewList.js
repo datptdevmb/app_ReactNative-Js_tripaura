@@ -9,6 +9,7 @@ import Button from '../../../../components/common/button/Button';
 
 const ReviewList = ({ reviews, onSeeMore, tourId }) => {
   console.log('=================')
+  console.log(typeof (reviews))
 
 
   return (
@@ -16,13 +17,8 @@ const ReviewList = ({ reviews, onSeeMore, tourId }) => {
       <Lable style={styles.lable} lable={'Đánh giá chuyến đi'} />
       <View>
         {
-          reviews.length === 0 ? (<View style={styles.flrow}>
-            <Image
-              style={styles.iconNotFoud}
-              source={require('../../../../assets/icons/ic_Rate.png')} />
-            <Text style={styles.texta}>Hiện ko có đánh giá</Text>
-          </View>)
-            : (
+          Object.keys(reviews).length !== 0
+            ? (
               <View>
 
                 <View style={styles.ratingContainer}>
@@ -59,6 +55,14 @@ const ReviewList = ({ reviews, onSeeMore, tourId }) => {
                   styleText={styles.textBtn}
                   label="Xem thêm đánh giá"
                 />
+              </View>
+            )
+            : (
+              <View style={styles.flrow}>
+                <Image
+                  style={styles.iconNotFoud}
+                  source={require('../../../../assets/icons/ic_Rate.png')} />
+                <Text style={styles.texta}>Hiện ko có đánh giá</Text>
               </View>
             )
         }

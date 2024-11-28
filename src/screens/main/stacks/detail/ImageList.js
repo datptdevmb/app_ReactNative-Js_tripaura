@@ -8,15 +8,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const ImageList = ({dataimage, handleImagePress}) => {
+const ImageList = ({ dataimage, handleImagePress }) => {
   return (
     <FlatList
+      showsHorizontalScrollIndicator={false}
       data={dataimage}
       keyExtractor={(item, index) => index.toString()}
       horizontal
-      renderItem={({item, index}) => (
+      renderItem={({ item, index }) => (
         <TouchableOpacity onPress={() => handleImagePress(item)}>
-          <Image source={{uri: item}} style={styles.itemImage} />
+          <Image source={{ uri: item }} style={styles.itemImage} />
         </TouchableOpacity>
       )}
     />

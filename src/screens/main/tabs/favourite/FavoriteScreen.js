@@ -46,6 +46,7 @@ const FavoriteScreen = () => {
       ) : favoritesData.length > 0 ? (
 
         <FavoriteList
+          
           data={favoritesData}
           onToggleFavorite={handleToggleFavorite}
         />

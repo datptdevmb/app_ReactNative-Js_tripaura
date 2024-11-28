@@ -8,7 +8,7 @@ const FavoriteList = ({ data, onToggleFavorite }) => {
     <View>
       <Text style={styles.title}>Yêu Thích</Text>
       <FlatList
-
+        scrollEnabled={false}
         data={data}
         renderItem={({ item }) => (
           <CardFavorite

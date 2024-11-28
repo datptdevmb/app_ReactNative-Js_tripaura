@@ -7,11 +7,9 @@ import formatCurrencyVND from '../../untils/formatCurrencyVND'
 const vouchercomponent = ({ data }) => {
     // console.log("============= data ============", data);
 
-    const renderItems = (item) => {
-        console.log('item', item);
-        
+    const renderItems = (item, index) => {
         return (
-            <View key={item._id} style={styles.luuvoucher}>
+            <View key={index} style={styles.luuvoucher}>
                 <View style={styles.containertext}>
                     <Text style={styles.textvoucher}>Toàn nền tảng</Text>
                 </View>
@@ -27,7 +25,7 @@ const vouchercomponent = ({ data }) => {
                         </TouchableOpacity>
                         :
                         <TouchableOpacity
-                       
+
                             style={styles.containerbtnvoucher}>
                             <Text style={styles.txtluuma}>Dùng ngay</Text>
                         </TouchableOpacity>
@@ -42,7 +40,7 @@ const vouchercomponent = ({ data }) => {
             <View style={
                 { flexDirection: 'row', }
             }>
-                {data.map((item, index) => renderItems(item))}
+                {data.map((item, index) => renderItems(item, index))}
 
             </View>
         </ScrollView>
