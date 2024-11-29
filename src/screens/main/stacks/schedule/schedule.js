@@ -31,7 +31,7 @@ const Schedule = ({ navigation }) => {
             try {
                 const response = await fetch('https://trip-aura-server.vercel.app/tinh/api/getAll');
                 const data = await response.json();
-                setDestinations(data.data); // Dữ liệu trả về phải là mảng
+                setDestinations(data.data);
                 setIsLoading(false);
             } catch (error) {
                 console.error('Lỗi khi gọi API:', error);

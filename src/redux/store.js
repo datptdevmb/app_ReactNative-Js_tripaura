@@ -16,6 +16,7 @@ import bookingReducer from './slices/booking.slice';
 import voucherReducer from './slices/vouchersSlice';
 import reviewReducer from './slices/reviewTourducers';
 import schemalReducer from './slices/schemal.slice';
+import LichtrinhReducer from './slices/getlichtrinh.slice';
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
   // favouriteDelete: favouriteDeleteReducer,
   vouchers: voucherReducer,
   reviews: reviewReducer,
-  schemal:schemalReducer
+  schemal:schemalReducer,
+  lichtrinh: LichtrinhReducer,
 
 });
 

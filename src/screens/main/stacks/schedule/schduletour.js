@@ -1,9 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icons from '../../../../constants/Icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { LayDanhSachLichTrinh } from '../../../../redux/slices/getlichtrinh.slice';
 
-const TripDetails = ({ navigation }) => {
+const TripDetails = ({ navigation, route }) => {
     const [activeTab, setActiveTab] = useState('Chuyển đi');
+    const { Schedules } = useSelector(state => state.reducer.schemal || {});
+    const { getLichTrinhData, getLichTrinhStatus, error } = useSelector(state => state.reducer.lichtrinh);
+    const startDate = getLichTrinhData?.data?.startDay ? new Date(getLichTrinhData.data.startDay) : null;
+    const endDate = getLichTrinhData?.data?.endDay ? new Date(getLichTrinhData.data.endDay) : null;
+    const idlichtrinh = "67495362ea72cd1ced81fef8"
+
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user;
+    console.log('user', user);
+
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (idlichtrinh) {
+            dispatch(LayDanhSachLichTrinh(idlichtrinh));
+        }
+    }, [dispatch, Schedules]);
+
+    if (getLichTrinhData?.data?.locations) {
+    } else {
+        console.log("k có dữ liệu.");
+    }
+
+
+
+    const formatDate = (date) => {
+        if (!date) return '';
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+    const timeDifference = endDate && startDate ? endDate - startDate : 0;
+    const numberOfDays = timeDifference / (1000 * 3600 * 24)
+
+    const lichTrinhha = getLichTrinhData?.data?.locations;
+
+    if (Array.isArray(lichTrinhha)) {
+        lichTrinhha.forEach((daySchedule, index) => { });
+        const ngay = lichTrinhha?.locations;
+
+    } else {
+        console.log('lichTrinhha không hợp lệ hoặc không phải là mảng.');
+    }
+
+    const avatar = user.user.avatar;
+    console.log('avatar', avatar);
+
 
     const renderItinerary = () => {
         switch (activeTab) {
@@ -18,76 +68,34 @@ const TripDetails = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-                            <TouchableOpacity onPress={() => {
-                                navigation.navigate('Itinerary')
-                            }} style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>26 th 11</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>27 th 11</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>28 th 11</Text>
-                            </TouchableOpacity>
-                        </ScrollView>
-                    </View>
-                );
-            case 'Chuyến bay':
-                return (
-                    <View>
-                        <View style={styles.headerContainer}>
-                            <Text style={styles.sectionTitle}>Lịch trình chuyến đi</Text>
-                            <TouchableOpacity style={styles.viewAllContainer} onPress={() => { }}>
-                                <Text style={styles.viewAllText}>Xem tất cả</Text>
+                            {Array.isArray(lichTrinhha) ? (
+                                lichTrinhha.map((daySchedule, index) => {
+                                    const firstImage = daySchedule.locations?.[0]?.images?.[0];
+                                    console.log('firstImage', firstImage);
+                                    return (
+                                        <TouchableOpacity
+                                            key={daySchedule._id}
+                                            onPress={() => {
+                                                navigation.navigate('Itinerary', { day: daySchedule.day, locations: daySchedule.locations });
+                                            }}
+                                            style={styles.imageContainer}
+                                        >
+                                            <Image
+                                                source={firstImage ? { uri: firstImage } : Icons.image}
+                                                style={styles.image}
+                                            />
+                                            <Text style={styles.imageDate}>Ngày {daySchedule.day}</Text>
+                                        </TouchableOpacity>
+                                    );
+                                })
+                            ) : (
+                                <Text>Không có lịch trình để hiển thị</Text>
+                            )}
 
-                            </TouchableOpacity>
-                        </View>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-                            <View style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>26 th 11</Text>
-                            </View>
-                            <View style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>27 th 11</Text>
-                            </View>
-                            <View style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>28 th 11</Text>
-                            </View>
                         </ScrollView>
                     </View>
                 );
-            case 'Khách sạn':
-                return (
-                    <View>
-                        <View style={styles.headerContainer}>
-                            <Text style={styles.sectionTitle}>Lịch trình chuyến đi</Text>
-                            <TouchableOpacity style={styles.viewAllContainer} onPress={() => { }}>
-                                <Text style={styles.viewAllText}>Xem tất cả</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-                            <TouchableOpacity onPress={() => {
 
-                            }} style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>26 th 11</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>27 th 11</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.imageContainer}>
-                                <Image source={Icons.image} style={styles.image} />
-                                <Text style={styles.imageDate}>28 th 11</Text>
-                            </TouchableOpacity>
-                        </ScrollView>
-                    </View>
-                );
             default:
                 return null;
         }
@@ -95,12 +103,20 @@ const TripDetails = ({ navigation }) => {
 
     return (
         <ScrollView style={styles.container}>
-            <Image source={Icons.image} style={styles.imageBackground} />
+            {lichTrinhha.length > 0 && (
+                <Image
+                    source={lichTrinhha[0]?.locations?.[0]?.images?.[0] ? { uri: lichTrinhha[0].locations[0].images[0] } : Icons.image}
+                    style={styles.imageBackground}
+                />
+            )}
             <View style={styles.cardContainer}>
                 <View style={styles.card}>
-                    <Text style={styles.title}>3 ngày đi Bali từ Bali</Text>
-                    <Text style={styles.date}>26 th 11 - 28 th 11</Text>
-                    <Text style={styles.creator}>Tạo bởi Phạm Thành Đạt</Text>
+                    <Text style={styles.title}>
+                        {numberOfDays > 0 ? `${numberOfDays} ngày` : 'Không có thông tin về số ngày'} đi{' '}
+                        {getLichTrinhData?.data?.destination?.name || 'NANA'} đến {getLichTrinhData?.data?.departure || 'Không có thông tin về nơi khởi hành'}
+                    </Text>
+                    <Text style={styles.date}>{startDate ? formatDate(startDate) : 'ABCXYZ'} - {startDate ? formatDate(endDate) : 'NÂNNA'}</Text>
+                    <Text style={styles.creator}>{user?.user?.fullname}</Text>
                 </View>
 
 
@@ -112,20 +128,6 @@ const TripDetails = ({ navigation }) => {
                         <Text style={styles.tabText}>Chuyển đi</Text>
                         {activeTab === 'Chuyển đi' && <View style={styles.underline} />}
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.tab}
-                        onPress={() => setActiveTab('Chuyến bay')}
-                    >
-                        <Text style={styles.tabText}>Chuyến bay</Text>
-                        {activeTab === 'Chuyến bay' && <View style={styles.underline} />}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.tab}
-                        onPress={() => setActiveTab('Khách sạn')}
-                    >
-                        <Text style={styles.tabText}>Khách sạn</Text>
-                        {activeTab === 'Khách sạn' && <View style={styles.underline} />}
-                    </TouchableOpacity>
                 </View>
 
                 {renderItinerary()}
@@ -134,8 +136,11 @@ const TripDetails = ({ navigation }) => {
                 <Text style={styles.includedText}>Chưa có dịch vụ nào cho chuyến đi của bạn.</Text>
                 <Text style={styles.sectionTitle}>Thành viên</Text>
                 <View style={styles.memberContainer}>
-                    <Image source={Icons.avatar} style={styles.avatar} />
-                    <Text style={styles.memberText}>Phạm...</Text>
+                    <Image
+                        source={{ uri: user?.user?.avatar } || Icons.avatar}
+                        style={styles.avatar}
+                    />
+                    <Text style={styles.memberText}>{user?.user?.fullname ? `${user.user.fullname.substring(0, 5)}...` : "Không có tên"}</Text>
                 </View>
             </View>
             <View style={{ height: 650 }} />
@@ -257,6 +262,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'blue',
     },
+    avatar: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+    }
 });
 
 export default TripDetails;
