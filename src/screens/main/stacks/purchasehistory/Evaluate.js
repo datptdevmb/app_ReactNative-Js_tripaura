@@ -81,10 +81,13 @@ const Evaluate = ({ route, navigation }) => {
     };
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        // Kiểm tra nếu bất kỳ trường nào bị thiếu
         if (!userId || !tourId || !rating || !comment || !images) {
+            Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin trước khi gửi đánh giá.');
             return;
         }
+
         const reviewData = {
             userId,
             tourId,
@@ -93,21 +96,24 @@ const Evaluate = ({ route, navigation }) => {
             dayReview: new Date().toISOString(),
             image: images,
         };
-        dispatch(addReview(reviewData))
-            .then((result) => {
-                if (result.meta.requestStatus === 'fulfilled') {
-                    Alert.alert('Thành công', 'Đánh giá của bạn đã được gửi.');
-                    navigation.goBack();
 
-                } else {
-        
-                }
-            })
-            .catch((error) => {
-                
-            });
-        console.log({ rating, comment, images });
+        try {
+
+            const result = await dispatch(addReview(reviewData));
+
+            if (result.meta.requestStatus === 'fulfilled') {
+                Alert.alert('Thành công', 'Đánh giá của bạn đã được gửi.');
+                navigation.goBack();
+            } else {
+                Alert.alert('Thất bại', 'Không thể gửi đánh giá. Vui lòng thử lại sau.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi đánh giá:', error);
+            Alert.alert('Lỗi', 'Đã xảy ra lỗi. Vui lòng thử lại.');
+        }
+        console.log('Dữ liệu đánh giá:', { rating, comment, images });
     };
+
 
 
 

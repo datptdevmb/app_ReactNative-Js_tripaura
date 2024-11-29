@@ -4,6 +4,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { Svg, Path } from 'react-native-svg';
 import RegionCheckbox from './../../../../components/common/checkbox/RegionCheckbox';
 import { mapdata, getColor } from '../../../../constants/data';
+import Header from '../../../../components/common/header/Header';
 
 const VietnamMap = () => {
     const [selectedRegions, setSelectedRegions] = useState({});
@@ -21,6 +22,8 @@ const VietnamMap = () => {
 
     return (
         <View style={styles.container}>
+            <Header title={"Địa điểm đã đi"} />
+            <View style={{ marginTop: 30 }} />
             <Svg height="500" width="300">
                 {mapdata.map((region) => (
                     <Path
@@ -71,7 +74,6 @@ const VietnamMap = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff',
