@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icons from '../../../../constants/Icons';
 
-const TripDetails = () => {
+const TripDetails = ({ navigation }) => {
     const [activeTab, setActiveTab] = useState('Chuyển đi');
 
     const renderItinerary = () => {
@@ -18,18 +18,20 @@ const TripDetails = () => {
                             </TouchableOpacity>
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-                            <View style={styles.imageContainer}>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('Itinerary')
+                            }} style={styles.imageContainer}>
                                 <Image source={Icons.image} style={styles.image} />
                                 <Text style={styles.imageDate}>26 th 11</Text>
-                            </View>
-                            <View style={styles.imageContainer}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.imageContainer}>
                                 <Image source={Icons.image} style={styles.image} />
                                 <Text style={styles.imageDate}>27 th 11</Text>
-                            </View>
-                            <View style={styles.imageContainer}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.imageContainer}>
                                 <Image source={Icons.image} style={styles.image} />
                                 <Text style={styles.imageDate}>28 th 11</Text>
-                            </View>
+                            </TouchableOpacity>
                         </ScrollView>
                     </View>
                 );
@@ -69,18 +71,20 @@ const TripDetails = () => {
                             </TouchableOpacity>
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-                            <View style={styles.imageContainer}>
+                            <TouchableOpacity onPress={() => {
+
+                            }} style={styles.imageContainer}>
                                 <Image source={Icons.image} style={styles.image} />
                                 <Text style={styles.imageDate}>26 th 11</Text>
-                            </View>
-                            <View style={styles.imageContainer}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.imageContainer}>
                                 <Image source={Icons.image} style={styles.image} />
                                 <Text style={styles.imageDate}>27 th 11</Text>
-                            </View>
-                            <View style={styles.imageContainer}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.imageContainer}>
                                 <Image source={Icons.image} style={styles.image} />
                                 <Text style={styles.imageDate}>28 th 11</Text>
-                            </View>
+                            </TouchableOpacity>
                         </ScrollView>
                     </View>
                 );

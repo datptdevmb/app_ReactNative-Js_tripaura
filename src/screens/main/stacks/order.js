@@ -88,7 +88,7 @@ const OrderReviewScreen = ({ route, navigation }) => {
         }
 
         if (selectedMethod === 1) {
-
+            handleSaveBooking();
             ZaloPayModule.createOrder(totalPriceString);
         }
         if (selectedMethod === 2) {
@@ -153,9 +153,6 @@ const OrderReviewScreen = ({ route, navigation }) => {
             dispatch(clearPaymentData());
         }
     }, [paymentStatus, paymentInfo, bookingId, dispatch]);
-
-
-
     const fullname = user.user.fullname;
     const phone = user.user.phone;
     const email = user.user.email;

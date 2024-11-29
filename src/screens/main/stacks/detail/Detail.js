@@ -69,6 +69,7 @@ const Detail = ({ navigation, route }) => {
 		selectedDate,
 	} = useSelector(state => state.reducer.tour);
 
+
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
 	);
@@ -88,8 +89,8 @@ const Detail = ({ navigation, route }) => {
 
 	const [showToast, setShowToast] = useState(false);
 
-
 	const { imges, tourName, description, location, details } = tourById;
+
 
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
@@ -208,9 +209,10 @@ const Detail = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			{showToast && favoritesStatus === 'success' && (
-				<Toast onPress={handleNavigateToFavorite} message={message} />
-			)}
+			{showToast &&
+				favoritesStatus === 'success' && (
+					<Toast onPress={handleNavigateToFavorite} message={message} />
+				)}
 			<TouchableOpacity onPress={handleBack} style={styles.btnBack}>
 				<IcleftArrow />
 			</TouchableOpacity>
@@ -322,14 +324,13 @@ const Detail = ({ navigation, route }) => {
 						<View style={{ height: 150 }}></View>
 					</View>
 				)}
-
 			</AnimatedScrollView>
 
 			{/* Button Bottom */}
 			<View style={styles.btnContainer}>
 				<View style={styles.price}>
 					<Text style={styles.textprice}>Giá chỉ từ</Text>
-					<Text style={styles.total}>700.000 VNĐ</Text>
+					<Text style={styles.total}>{formatCurrencyVND(adultPrice)}</Text>
 				</View>
 				<Button
 					style={styles.btn}

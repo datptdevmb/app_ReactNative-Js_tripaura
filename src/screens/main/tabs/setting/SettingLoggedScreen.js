@@ -159,7 +159,7 @@ const SettingLoggedScreen = (props) => {
     navigation.navigate('FAQsSrceen')
   }
   function handlePurchase() {
-    navigation.navigate('Purchasehistory')
+    navigation.navigate('Schedule')
   }
   const handleLogout = async () => {
     try {
@@ -218,6 +218,16 @@ const SettingLoggedScreen = (props) => {
           </TouchableOpacity>
         </View>
         <View >
+          <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
+            <View style={styles.imageTroGiupContainer}>
+              <Image
+                style={styles.imageTroGiup}
+                source={Icons.ic_orther} />
+            </View>
+            <Text style={styles.txtTroGiup}>Tour cá nhân</Text>
+          </TouchableOpacity>
+        </View>
+        <View >
           <TouchableOpacity onPress={handleMap} style={styles.btnCauHoiContainer}>
             <View style={styles.imageTroGiupContainer}>
               <Image
@@ -255,7 +265,7 @@ const SettingLoggedScreen = (props) => {
         <View style={styles.btnContainer}>
           <Image style={styles.imageBtn}
             source={Icons.ic_bell} />
-          <Text style={styles.txtDieuKhoan}>Điều khoản sử dụng dịch vụ</Text>
+          <Text style={styles.txtDieuKhoan}>Thông báo</Text>
           <View style={styles.lefticon}>
             <Switch
               trackColor={{ false: '#767577', true: '#0572E7' }}
@@ -287,7 +297,7 @@ const SettingLoggedScreen = (props) => {
           <View style={styles.btnContainer}>
             <Image style={styles.imageBtn}
               source={Icons.ic_earth} />
-            <Text style={styles.txtDieuKhoan}>Chế độ tối</Text>
+            <Text style={styles.txtDieuKhoan}>Ngôn ngữ</Text>
             <View style={styles.lefticon}>
               <Text>VN</Text>
               <Image style={styles.btnNext}
@@ -372,7 +382,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   btnCauHoiContainer: {
-    width: 80,
+    width: 60,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -380,13 +390,14 @@ const styles = StyleSheet.create({
     height: 34,
     fontFamily: 'Lato',
     color: '#212121',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '400',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 10,
   },
   imageTroGiup: {
-    width: 24,
-    height: 24
+    width: 23,
+    height: 23
   },
   imageTroGiupContainer: {
     width: 50,

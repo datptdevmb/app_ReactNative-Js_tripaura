@@ -119,8 +119,6 @@ dependencies {
     
     implementation files('/home/datpt/DemoZalopay/zpdk-release-v3.1 (1).aar')
 
-
-
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
