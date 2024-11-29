@@ -89,9 +89,7 @@ const Detail = ({ navigation, route }) => {
 
 	const [showToast, setShowToast] = useState(false);
 
-
-	const { imges, tourName, description = '<p>Default description</p>', location, details } = tourById;
-	console.log('location', location);
+	const { imges, tourName, description, location, details } = tourById;
 
 
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -273,17 +271,9 @@ const Detail = ({ navigation, route }) => {
 							<Text style={styles.tourname}>{tourName}</Text>
 							<LocationInfo location={location} />
 							<View style={styles.divider} />
-							{/* <Lable lable="Mô tả chuyến đi" /> */}
-							{/* <Text style={styles.bodytext}>{description}</Text> */}
-							{/* <RenderHtml
-								contentWidth={width}
-								source={{ html: description }} /> */}
 							<HTMLView
 								value={description}
-							// stylesheet={styles}
 							/>
-
-
 							<ReviewList
 								onSeeMore={handleNavigateToRate}
 								reviews={danhSachDanhGia} />

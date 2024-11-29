@@ -1,24 +1,58 @@
-// src/screens/main/stacks/schedule/schedule.js
-import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, Switch, ActivityIndicator, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker'; // Thư viện picker
 import Header from '../../../../components/common/header/Header';
-import { Calendar } from 'react-native-calendars';
 import Button from '../../../../components/common/button/Button';
 import Icons from '../../../../constants/Icons';
+import { Calendar } from 'react-native-calendars';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSchedules } from '../../../../redux/slices/schemal.slice';
 
-const Schedule = () => {
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+const Schedule = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const [departure, setDeparture] = useState('Hồ Chí Minh');
+    const { Schedules } = useSelector(state => state.reducer.schemal);
+    const [destination, setDestination] = useState('');
+    const [destinations, setDestinations] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [startDay, setStartDate] = useState('');
+    const [endDay, setEndDate] = useState('');
+    const [person, setPeople] = useState(1);
+    const [isPublic, setIsPublic] = useState(true);
     const [isCalendarVisible, setCalendarVisible] = useState(false);
-    const [isEndDate, setIsEndDate] = useState(false); // Track if selecting end date
+    const [selectingEndDate, setSelectingEndDate] = useState(false);
 
+    console.log(Schedules)
 
-    const handleTimePress = () => {
-        setCalendarVisible(prev => !prev);
-    }
+    // Gọi API lấy danh sách điểm đến
+    useEffect(() => {
+        const fetchDestinations = async () => {
+            try {
+                const response = await fetch('https://trip-aura-server.vercel.app/tinh/api/getAll');
+                const data = await response.json();
+                setDestinations(data.data); // Dữ liệu trả về phải là mảng
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Lỗi khi gọi API:', error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchDestinations();
+    }, []);
+
+    useEffect(() => {
+
+    }, [])
+
+    const handleCalendarToggle = (isEndDate) => {
+        setSelectingEndDate(isEndDate);
+        setCalendarVisible(true);
+    };
 
     const handleDayPress = (day) => {
-        if (isEndDate) {
+        if (selectingEndDate) {
             setEndDate(day.dateString);
         } else {
             setStartDate(day.dateString);
@@ -26,90 +60,145 @@ const Schedule = () => {
         setCalendarVisible(false);
     };
 
+    const handleSubmit = async () => {
+        dispatch(createSchedules({ departure, destination, endDay, person, startDay }))
+        if (Schedules !== null) {
+            navigation.navigate('Schduletour')
+        }
+    };
+
+
     return (
         <ScrollView style={styles.container}>
-            <Header title='Lên lịch trình' />
+            <Header title="Lên lịch trình" />
 
             <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Điểm xuất phát"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Điểm kết thúc"
-                />
-                <TouchableOpacity style={styles.time} onPress={handleTimePress}>
-                    <Text style={styles.timeText}>
-                        Thời gian
-                    </Text>
-                    <Image source={Icons.down} style={styles.icon} />
-                </TouchableOpacity>
+                <View style={styles.row}>
+                    <Image source={Icons.location} style={styles.icon} />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Điểm xuất phát"
+                        value={departure}
+                        onChangeText={setDeparture}
+                    />
+                </View>
+
+                <View style={styles.row}>
+                    <Image source={Icons.destination} style={styles.icon} />
+                    {isLoading ? (
+                        <ActivityIndicator size="small" color="#0572E7" />
+                    ) : (
+                        <Picker
+                            selectedValue={destination}
+                            onValueChange={(itemValue) => {
+                                console.log(itemValue); // Xem giá trị _id được chọn
+                                setDestination(itemValue); // Lưu _id vào state
+                            }}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Chọn điểm đến" value="" />
+                            {destinations.map((item, index) => (
+                                <Picker.Item key={index} label={item.name} value={item._id} />
+                            ))}
+                        </Picker>
+                    )}
+                </View>
+
+                <View style={styles.row}>
+                    <Image source={Icons.calendar} style={styles.icon} />
+                    <TouchableOpacity style={styles.dateInput} onPress={() => handleCalendarToggle(false)}>
+                        <Text style={styles.dateText}>{startDay || 'Ngày khởi hành'}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.dateInput} onPress={() => handleCalendarToggle(true)}>
+                        <Text style={styles.dateText}>{endDay || 'Ngày về'}</Text>
+                    </TouchableOpacity>
+                </View>
 
                 {isCalendarVisible && (
-                    <View>
-                        <Text>Chọn ngày bắt đầu:</Text>
-                        <Calendar
-                            onDayPress={(day) => {
-                                setIsEndDate(false);
-                                handleDayPress(day);
-                            }}
-                            markedDates={{ [startDate]: { selected: true, marked: true, selectedColor: 'blue' } }}
-                        />
-                        <Text>Chọn ngày kết thúc:</Text>
-                        <Calendar
-                            onDayPress={(day) => {
-                                setIsEndDate(true);
-                                handleDayPress(day);
-                            }}
-                            markedDates={{ [endDate]: { selected: true, marked: true, selectedColor: 'blue' } }}
-                        />
-                    </View>
+                    <Calendar
+                        onDayPress={handleDayPress}
+                        markedDates={{
+                            [selectingEndDate ? endDay : startDay]: {
+                                selected: true,
+                                marked: true,
+                                selectedColor: '#0572E7',
+                            },
+                        }}
+                    />
                 )}
-                <TextInput
-                    style={styles.input}
-                    placeholder="Số người"
-                    keyboardType="numeric"
-                />
+
+                <View style={styles.row}>
+                    <Image source={Icons.people} style={styles.icon} />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Số người"
+                        keyboardType="numeric"
+                        value={String(person)}
+                        onChangeText={(text) => setPeople(Number(text))}
+                    />
+                </View>
+
+                <View style={styles.row}>
+                    <Image source={Icons.lock} style={styles.icon} />
+                    <Text style={styles.publicText}>Công khai</Text>
+                    <Switch value={isPublic} onValueChange={setIsPublic} />
+                </View>
+
                 <View style={styles.button}>
-                    <Button label='Áp Dụng' onPress={() => { }} />
+                    <Button label="Lên lịch trình" onPress={handleSubmit} />
                 </View>
             </View>
-
-            <View style={{ height: 60 }} />
         </ScrollView>
     );
+};
 
-}
 export default Schedule;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    inputContainer: {
         padding: 16,
     },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    icon: {
+        width: 24,
+        height: 24,
+        marginRight: 10,
+    },
     input: {
-        borderColor: 'gray',
+        flex: 1,
         borderBottomWidth: 1,
+        borderColor: 'gray',
+        paddingVertical: 8,
+        fontSize: 16,
+    },
+    picker: {
+        flex: 1,
+        height: 40,
+        color: 'black',
+    },
+    dateInput: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderColor: 'gray',
+        paddingVertical: 8,
+    },
+    dateText: {
+        fontSize: 16,
+        color: 'gray',
+    },
+    publicText: {
+        flex: 1,
+        fontSize: 16,
     },
     button: {
         marginTop: 30,
     },
-    inputContainer: {
-        marginTop: 20,
-    },
-    icon: {
-        width: 20,
-        height: 20,
-    },
-    time: {
-        flexDirection: 'row',
-        marginTop: 20,
-        height: 35,
-        justifyContent: 'space-between',
-        borderColor: 'gray',
-        borderBottomWidth: 1,
-
-    }
-}); 
+});
