@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, Switch, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, Switch, ActivityIndicator, Alert, ToastAndroid } from 'react-native';
 import { Picker } from '@react-native-picker/picker'; // Thư viện picker
 import Header from '../../../../components/common/header/Header';
 import Button from '../../../../components/common/button/Button';
@@ -22,8 +22,11 @@ const Schedule = ({ navigation }) => {
     const [isPublic, setIsPublic] = useState(true);
     const [isCalendarVisible, setCalendarVisible] = useState(false);
     const [selectingEndDate, setSelectingEndDate] = useState(false);
+    const userReducer = useSelector(state => state.reducer.auth);
+    const user = userReducer.user;
+    // console.log('user: ', user);
+    const userId = user.user._id
 
-    console.log(Schedules)
 
     // Gọi API lấy danh sách điểm đến
     useEffect(() => {
@@ -42,9 +45,6 @@ const Schedule = ({ navigation }) => {
         fetchDestinations();
     }, []);
 
-    useEffect(() => {
-
-    }, [])
 
     const handleCalendarToggle = (isEndDate) => {
         setSelectingEndDate(isEndDate);
@@ -60,13 +60,27 @@ const Schedule = ({ navigation }) => {
         setCalendarVisible(false);
     };
 
+
     const handleSubmit = async () => {
-        dispatch(createSchedules({ departure, destination, endDay, person, startDay }))
-        if (Schedules !== null) {
-            navigation.navigate('Schduletour')
+        if (departure == '' ||
+            destination == '' ||
+            endDay == '' ||
+            person == '' ||
+            startDay == '' ||
+            userId == '') {
+            ToastAndroid.show("Bạn cần nhập đầy đủ thông tin", ToastAndroid.SHORT)
+        } else {
+            dispatch(createSchedules({ departure, destination, endDay, person, startDay, userId }))
+
+
         }
     };
-
+    useEffect(() => {
+        if (Schedules && Schedules._id) {
+            console.log("=============== id", Schedules._id);
+            navigation.navigate('Schduletour', { lichTrinhId: Schedules._id });
+        }
+    }, [Schedules, Schedules._id]);
 
     return (
         <ScrollView style={styles.container}>

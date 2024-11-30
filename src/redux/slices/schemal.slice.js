@@ -27,8 +27,8 @@ export const createSchedules = createAsyncThunk(
 
 
             if (response.status === 200) {
-                console.log(response.data.data)
-                return response.data.data
+                console.log("respone", response.data.data)
+                return await response.data.data
             } else {
                 console.log('Lỗi', response.data.message || 'Không thể lên lịch trình.');
             }

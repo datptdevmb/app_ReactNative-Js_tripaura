@@ -1,10 +1,71 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { LayDiaDiemTheoNgay } from '../../../../redux/slices/diaDiemTheoNgaySlice';
 
-const ItineraryScreen = () => {
+const ItineraryScreen = ({ route }) => {
+    const { dayId, lichTrinhId } = route.params
+    console.log("======= day", dayId);
+    console.log("======= lichTrinhId", lichTrinhId);
+    const { locationByDateData, locationByDateStatus, error } = useSelector(state => state.reducer.locationByDate);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(LayDiaDiemTheoNgay(
+            { lichTrinhId, dayId}
+        ));
+    }, [dispatch]);
+
+    // console.log("=========== data", locationByDateData.data.dayInfo.locations);
+
+    // console.log("================= số địa điểm", locationByDateData.data.dayInfo.locations.length);
+
+    const renderItem = ({ item }) => {
+        return (
+            <View style={styles.timeline}>
+                <View style={styles.timelineContainer}>
+                    <View style={styles.card}>
+                        <View style={styles.cardImageContainer}>
+                            <Image
+                                source={{ uri: item.images[0] }}
+                                style={styles.cardImage}
+                            />
+                            <Text style={styles.cardTime}>11:00</Text>
+                        </View>
+                        <View style={styles.cardContent}>
+                            <Text style={styles.cardTitle}>{item.name}</Text>
+                            <Text style={styles.cardSubtitle}>T/g tham quan: {item.time}</Text>
+                            <View style={styles.cardActions}>
+                                <TouchableOpacity>
+                                    <Text style={styles.actionText}>Ghi chú</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Text style={styles.actionText}>Gần đây</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.freeTimeCard}>
+                        <Image source={Icons.clock} size={20} color="#007BFF" />
+                        <Text style={styles.freeTimeText}>Thời gian rảnh: 2h</Text>
+                    </View>
+                </View>
+                <View style={styles.timelineContainer2}>
+                    <View style={styles.transportContainer}>
+                        <Image source={Icons.clock} style={styles.carIcon} />
+                        <Text style={styles.travelInfo}>14.0 km | 21p</Text>
+                    </View>
+                    <View style={styles.line2} />
+                </View>
+
+
+            </View>
+        )
+    }
     return (
         <ScrollView style={styles.container}>
             <Header title="Lịch trình" />
@@ -13,10 +74,10 @@ const ItineraryScreen = () => {
                 <View style={styles.dateRow}>
                     <Text style={styles.dateText}>26/11/2024</Text>
                     <Text style={styles.infoText}>300.1km </Text>
-                    <Text style={styles.infoText}>3 địa điểm</Text>
+                    {locationByDateData != undefined && <Text style={styles.infoText}>{locationByDateData.data?.dayInfo?.locations.length} địa điểm</Text>}
                 </View>
             </View>
-            <View style={styles.underline} />
+            {/* <View style={styles.underline} />
             <View style={styles.timeline}>
                 <View style={styles.timelineContainer}>
                     <View style={styles.card}>
@@ -53,7 +114,7 @@ const ItineraryScreen = () => {
                     </View>
                     <View style={styles.line2} />
                 </View>
-                
+
 
             </View>
             <View style={styles.timeline2}>
@@ -92,9 +153,13 @@ const ItineraryScreen = () => {
                     </View>
                     <View style={styles.line2} />
                 </View>
-                
 
-            </View>
+
+            </View> */}
+            {locationByDateData != undefined && <FlatList
+                data={locationByDateData.data?.dayInfo?.locations}
+                renderItem={renderItem}
+            />}
             <TouchableOpacity style={styles.addButton}>
                 <Icon name="plus" size={20} color="#007BFF" />
                 <Text style={styles.addButtonText}>Thêm địa điểm</Text>
@@ -227,9 +292,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cardTitle: {
+        width: 220,
+        height: 40,
         fontSize: 16,
         fontWeight: '700',
-        marginBottom: 27,
+        marginBottom: 10
+
     },
     cardSubtitle: {
         fontSize: 14,

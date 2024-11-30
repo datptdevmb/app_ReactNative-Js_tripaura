@@ -10,19 +10,21 @@ const TripDetails = ({ navigation, route }) => {
     const { getLichTrinhData, getLichTrinhStatus, error } = useSelector(state => state.reducer.lichtrinh);
     const startDate = getLichTrinhData?.data?.startDay ? new Date(getLichTrinhData.data.startDay) : null;
     const endDate = getLichTrinhData?.data?.endDay ? new Date(getLichTrinhData.data.endDay) : null;
-    const idlichtrinh = "67495362ea72cd1ced81fef8"
+    // const idlichtrinh = "67495362ea72cd1ced81fef8"
 
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     console.log('user', user);
 
+    const { lichTrinhId } = route.params
+    console.log("================ lichTrinhId", lichTrinhId);
+
+
 
     const dispatch = useDispatch();
     useEffect(() => {
-        if (idlichtrinh) {
-            dispatch(LayDanhSachLichTrinh(idlichtrinh));
-        }
-    }, [dispatch, Schedules]);
+        dispatch(LayDanhSachLichTrinh(lichTrinhId));
+    }, [dispatch, lichTrinhId]);
 
     if (getLichTrinhData?.data?.locations) {
     } else {
@@ -42,6 +44,9 @@ const TripDetails = ({ navigation, route }) => {
     const numberOfDays = timeDifference / (1000 * 3600 * 24)
 
     const lichTrinhha = getLichTrinhData?.data?.locations;
+
+    console.log("getlichTrinh", getLichTrinhData);
+
 
     if (Array.isArray(lichTrinhha)) {
         lichTrinhha.forEach((daySchedule, index) => { });
@@ -76,7 +81,7 @@ const TripDetails = ({ navigation, route }) => {
                                         <TouchableOpacity
                                             key={daySchedule._id}
                                             onPress={() => {
-                                                navigation.navigate('Itinerary', { day: daySchedule.day, locations: daySchedule.locations });
+                                                navigation.navigate('Itinerary', { dayId: daySchedule._id, lichTrinhId: lichTrinhId });
                                             }}
                                             style={styles.imageContainer}
                                         >
@@ -103,7 +108,7 @@ const TripDetails = ({ navigation, route }) => {
 
     return (
         <ScrollView style={styles.container}>
-            {lichTrinhha.length > 0 && (
+            {lichTrinhha && (
                 <Image
                     source={lichTrinhha[0]?.locations?.[0]?.images?.[0] ? { uri: lichTrinhha[0].locations[0].images[0] } : Icons.image}
                     style={styles.imageBackground}
