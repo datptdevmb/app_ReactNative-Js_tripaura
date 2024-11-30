@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Icons from '../../../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { LayDanhSachLichTrinh } from '../../../../redux/slices/getlichtrinh.slice';
@@ -114,7 +114,13 @@ const TripDetails = ({ navigation, route }) => {
                     style={styles.imageBackground}
                 />
             )}
-            <View style={styles.cardContainer}>
+            { getLichTrinhStatus==="loading" ? (
+                // Hiển thị loading khi dữ liệu đang được tải
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#007BFF" />
+                    <Text>Đang tải dữ liệu...</Text>
+                </View>
+            ):(<View style={styles.cardContainer}>
                 <View style={styles.card}>
                     <Text style={styles.title}>
                         {numberOfDays > 0 ? `${numberOfDays} ngày` : 'Không có thông tin về số ngày'} đi{' '}
@@ -147,8 +153,8 @@ const TripDetails = ({ navigation, route }) => {
                     />
                     <Text style={styles.memberText}>{user?.user?.fullname ? `${user.user.fullname.substring(0, 5)}...` : "Không có tên"}</Text>
                 </View>
-            </View>
-            <View style={{ height: 650 }} />
+            </View>)}
+            
         </ScrollView>
     );
 };

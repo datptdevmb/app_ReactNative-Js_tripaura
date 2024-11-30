@@ -88,7 +88,7 @@ const Schedule = ({ navigation }) => {
 
             <View style={styles.inputContainer}>
                 <View style={styles.row}>
-                    <Image source={Icons.location} style={styles.icon} />
+                    {/* <Image source={Icons.location} style={styles.icon} /> */}
                     <TextInput
                         style={styles.input}
                         placeholder="Điểm xuất phát"
@@ -98,7 +98,7 @@ const Schedule = ({ navigation }) => {
                 </View>
 
                 <View style={styles.row}>
-                    <Image source={Icons.destination} style={styles.icon} />
+                    {/* <Image source={Icons.destination} style={styles.icon} /> */}
                     {isLoading ? (
                         <ActivityIndicator size="small" color="#0572E7" />
                     ) : (
@@ -119,7 +119,7 @@ const Schedule = ({ navigation }) => {
                 </View>
 
                 <View style={styles.row}>
-                    <Image source={Icons.calendar} style={styles.icon} />
+                    {/* <Image source={Icons.calendar} style={styles.icon} /> */}
                     <TouchableOpacity style={styles.dateInput} onPress={() => handleCalendarToggle(false)}>
                         <Text style={styles.dateText}>{startDay || 'Ngày khởi hành'}</Text>
                     </TouchableOpacity>
@@ -142,7 +142,7 @@ const Schedule = ({ navigation }) => {
                 )}
 
                 <View style={styles.row}>
-                    <Image source={Icons.people} style={styles.icon} />
+                    {/* <Image source={Icons.people} style={styles.icon} /> */}
                     <TextInput
                         style={styles.input}
                         placeholder="Số người"
@@ -153,7 +153,7 @@ const Schedule = ({ navigation }) => {
                 </View>
 
                 <View style={styles.row}>
-                    <Image source={Icons.lock} style={styles.icon} />
+                    {/* <Image source={Icons.lock} style={styles.icon} /> */}
                     <Text style={styles.publicText}>Công khai</Text>
                     <Switch value={isPublic} onValueChange={setIsPublic} />
                 </View>

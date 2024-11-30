@@ -159,7 +159,7 @@ const SettingLoggedScreen = (props) => {
     navigation.navigate('FAQsSrceen')
   }
   function handlePurchase() {
-    navigation.navigate('Schedule')
+    navigation.navigate('LichTrinhs')
   }
   const handleLogout = async () => {
     try {

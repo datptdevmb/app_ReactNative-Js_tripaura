@@ -11,7 +11,7 @@ import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import FavoriteScreen from '../screens/main/tabs/favourite/FavoriteScreen';
 
 import FavouriteScreenNoItem from '../screens/main/tabs/favourite/FavouriteScreenNoItem';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 
 import Detail from '../screens/main/stacks/detail/Detail';
 import ButtomNavigation from './BottomNavigation';
@@ -38,6 +38,7 @@ import Schedule from '../screens/main/stacks/schedule/schedule';
 import Schduletour from '../screens/main/stacks/schedule/schduletour';
 import Itinerary from '../screens/main/stacks/schedule/Itinerary';
 import SplashScreen from '../screens/authen/Splash/SplashScreen';
+import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,13 +49,14 @@ const MainTabNavigation = () => {
 
 const MainStaskNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>  
-     <Stack.Screen name="SplashScreen" component={SplashScreen} />
-     <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="SplashScreen" component={SplashScreen} />
+      <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
       <Stack.Screen name="Schduletour" component={Schduletour} />
       <Stack.Screen name="Schedule" component={Schedule} />
-     
+      <Stack.Screen name="LichTrinhs" component={LichTrinhs} />
+
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
       {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}

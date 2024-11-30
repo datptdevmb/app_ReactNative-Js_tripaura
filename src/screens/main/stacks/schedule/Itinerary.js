@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
@@ -15,7 +15,7 @@ const ItineraryScreen = ({ route }) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(LayDiaDiemTheoNgay(
-            { lichTrinhId, dayId}
+            { lichTrinhId, dayId }
         ));
     }, [dispatch]);
 
@@ -69,103 +69,42 @@ const ItineraryScreen = ({ route }) => {
     return (
         <ScrollView style={styles.container}>
             <Header title="Lịch trình" />
-            <View style={styles.dayInfo}>
-                <Text style={styles.dayText}>Ngày 1</Text>
-                <View style={styles.dateRow}>
-                    <Text style={styles.dateText}>26/11/2024</Text>
-                    <Text style={styles.infoText}>300.1km </Text>
-                    {locationByDateData != undefined && <Text style={styles.infoText}>{locationByDateData.data?.dayInfo?.locations.length} địa điểm</Text>}
+            {locationByDateStatus === "loading" ? (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#007BFF" />
+                    <Text>Đang tải dữ liệu...</Text>
                 </View>
-            </View>
-            {/* <View style={styles.underline} />
-            <View style={styles.timeline}>
-                <View style={styles.timelineContainer}>
-                    <View style={styles.card}>
-                        <View style={styles.cardImageContainer}>
-                            <Image
-                                source={{ uri: 'https://via.placeholder.com/300' }}
-                                style={styles.cardImage}
-                            />
-                            <Text style={styles.cardTime}>11:00</Text>
-                        </View>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Đảo Phú Quốc</Text>
-                            <Text style={styles.cardSubtitle}>T/g tham quan: 1h</Text>
-                            <View style={styles.cardActions}>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Ghi chú</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Gần đây</Text>
-                                </TouchableOpacity>
+            ) : (
+                <>
+                    {locationByDateData?.data?.dayInfo ? (
+                        <View style={styles.dayInfo}>
+                            <Text style={styles.dayText}>Ngày 1</Text>
+                            <View style={styles.dateRow}>
+                                <Text style={styles.dateText}>26/11/2024</Text>
+                                <Text style={styles.infoText}>300.1km</Text>
+                                <Text style={styles.infoText}>
+                                    {locationByDateData.data?.dayInfo?.locations?.length || 0} địa điểm
+                                </Text>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.line} />
-                    <View style={styles.freeTimeCard}>
-                        <Image source={Icons.clock} size={20} color="#007BFF" />
-                        <Text style={styles.freeTimeText}>Thời gian rảnh: 2h</Text>
-                    </View>
-                </View>
-                <View style={styles.timelineContainer2}>
-                    <View style={styles.transportContainer}>
-                        <Image source={Icons.clock} style={styles.carIcon} />
-                        <Text style={styles.travelInfo}>14.0 km | 21p</Text>
-                    </View>
-                    <View style={styles.line2} />
-                </View>
-
-
-            </View>
-            <View style={styles.timeline2}>
-                <View style={styles.timelineContainer}>
-                    <View style={styles.card}>
-                        <View style={styles.cardImageContainer}>
-                            <Image
-                                source={{ uri: 'https://via.placeholder.com/300' }}
-                                style={styles.cardImage}
-                            />
-                            <Text style={styles.cardTime}>11:00</Text>
-                        </View>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Đảo Phú Quốc</Text>
-                            <Text style={styles.cardSubtitle}>T/g tham quan: 1h</Text>
-                            <View style={styles.cardActions}>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Ghi chú</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Gần đây</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.line} />
-                    <View style={styles.freeTimeCard}>
-                        <Image source={Icons.clock} size={20} color="#007BFF" />
-                        <Text style={styles.freeTimeText}>Thời gian rảnh: 2h</Text>
-                    </View>
-                </View>
-                <View style={styles.timelineContainer2}>
-                    <View style={styles.transportContainer}>
-                        <Image source={Icons.clock} style={styles.carIcon} />
-                        <Text style={styles.travelInfo}>14.0 km | 21p</Text>
-                    </View>
-                    <View style={styles.line2} />
-                </View>
-
-
-            </View> */}
-            {locationByDateData != undefined && <FlatList
-                data={locationByDateData.data?.dayInfo?.locations}
-                renderItem={renderItem}
-            />}
+                    ) : (
+                        <Text>Không có dữ liệu lịch trình!</Text>
+                    )}
+                    <FlatList
+                        scrollEnabled={false}
+                        data={locationByDateData.data?.dayInfo?.locations}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                    />
+                </>
+            )}
             <TouchableOpacity style={styles.addButton}>
                 <Icon name="plus" size={20} color="#007BFF" />
                 <Text style={styles.addButtonText}>Thêm địa điểm</Text>
             </TouchableOpacity>
-            <View style={{ height: 50 }} />
+            <View style={{ height: 44 }}></View>
         </ScrollView>
+
     );
 };
 
