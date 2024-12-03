@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 //tạo hàm DangKyTaiKhoan để thực hiện chức năng gọi API đăng ký tài khoản
 export const AddDiaDiem = createAsyncThunk('addDiaDiem', async data => {
-    // console.log("==============data==============",data);
+    console.log("==============data==============",data);
 
     const response = await fetch(
         `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/lichTrinh/api/addDiaDiem`,

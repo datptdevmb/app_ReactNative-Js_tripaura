@@ -39,6 +39,7 @@ import Schduletour from '../screens/main/stacks/schedule/schduletour';
 import Itinerary from '../screens/main/stacks/schedule/Itinerary';
 import SplashScreen from '../screens/authen/Splash/SplashScreen';
 import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
+import DiaDiem from '../screens/main/stacks/schedule/DiaDiem';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -56,6 +57,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="Schduletour" component={Schduletour} />
       <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="LichTrinhs" component={LichTrinhs} />
+      <Stack.Screen name="DiaDiem" component={DiaDiem} />
 
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />

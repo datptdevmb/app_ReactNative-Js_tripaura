@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LayDiaDiemTheoNgay } from '../../../../redux/slices/diaDiemTheoNgaySlice';
 import { DeleteDiaDiem } from '../../../../redux/slices/deleteDiadiemSlice';
 
-const ItineraryScreen = ({ route }) => {
+const ItineraryScreen = ({ route, navigation }) => {
     const { dayId, lichTrinhId } = route.params
     console.log("======= day", dayId);
     console.log("======= lichTrinhId", lichTrinhId);
@@ -29,7 +29,7 @@ const ItineraryScreen = ({ route }) => {
         ));
     }, [dispatch, deleteDiaDiemStatus]);
 
-    // console.log("=========== data", locationByDateData.data.dayInfo.locations);
+    // console.log("=========== data", locationByDateData.data.destination?._id);
 
     // console.log("================= số địa điểm", locationByDateData.data.dayInfo.locations.length);
 
@@ -115,7 +115,13 @@ const ItineraryScreen = ({ route }) => {
                     />
                 </>
             )}
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton}
+                onPress={() => navigation.navigate('DiaDiem',
+                    {
+                        tinhId: locationByDateData.data.destination?._id,
+                        lichTrinhId: lichTrinhId,
+                        dayId: dayId
+                    })}>
                 <Icon name="plus" size={20} color="#007BFF" />
                 <Text style={styles.addButtonText}>Thêm địa điểm</Text>
             </TouchableOpacity>
