@@ -56,6 +56,7 @@ const Detail = ({ navigation, route }) => {
 
 
 	const { _id: tourId } = route.params;
+	console.log(tourId)
 	const dispatch = useDispatch();
 	const [detailId, setDetailId] = useState(null);
 	const {

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const LayDanhSachLichTrinh = createAsyncThunk('getVoucher', async lichTrinhId => {
+export const LayDanhSachLichTrinh = createAsyncThunk('getVoucher', async (lichTrinhId) => {
     console.log('User ID:', lichTrinhId);
     const response = await fetch(
         `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/lichTrinh/api/getByLichTrinhId?lichTrinhId=${lichTrinhId}`,
@@ -12,7 +12,7 @@ export const LayDanhSachLichTrinh = createAsyncThunk('getVoucher', async lichTri
         },
     );
     console.log('response:', response);
-    
+
 
     const lichtrinh = await response.json();
     console.log('API Response:', lichtrinh);
@@ -20,7 +20,7 @@ export const LayDanhSachLichTrinh = createAsyncThunk('getVoucher', async lichTri
     if (response.ok) {
         return lichtrinh;
     }
-    console.error('API Error:', response.statusText); 
+    console.error('API Error:', response.statusText);
     throw new Error('Failed');
 });
 

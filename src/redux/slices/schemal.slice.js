@@ -27,6 +27,7 @@ export const createSchedules = createAsyncThunk(
 
 
             if (response.status === 200) {
+                console.log('=====================')
                 console.log(response.data.data)
                 return response.data.data
             } else {

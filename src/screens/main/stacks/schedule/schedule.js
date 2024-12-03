@@ -23,7 +23,7 @@ const Schedule = ({ navigation }) => {
     const [isCalendarVisible, setCalendarVisible] = useState(false);
     const [selectingEndDate, setSelectingEndDate] = useState(false);
 
-    console.log(Schedules)
+    console.log('a'+Schedules)
 
     // Gọi API lấy danh sách điểm đến
     useEffect(() => {

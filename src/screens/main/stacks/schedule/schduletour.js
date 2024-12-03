@@ -10,26 +10,17 @@ const TripDetails = ({ navigation, route }) => {
     const { getLichTrinhData, getLichTrinhStatus, error } = useSelector(state => state.reducer.lichtrinh);
     const startDate = getLichTrinhData?.data?.startDay ? new Date(getLichTrinhData.data.startDay) : null;
     const endDate = getLichTrinhData?.data?.endDay ? new Date(getLichTrinhData.data.endDay) : null;
-    const idlichtrinh = "67495362ea72cd1ced81fef8"
+    const idlichtrinh = "67495362ea72cd1ced81fef8";
 
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
-    console.log('user', user);
-
 
     const dispatch = useDispatch();
     useEffect(() => {
         if (idlichtrinh) {
             dispatch(LayDanhSachLichTrinh(idlichtrinh));
         }
-    }, [dispatch, Schedules]);
-
-    if (getLichTrinhData?.data?.locations) {
-    } else {
-        console.log("k có dữ liệu.");
-    }
-
-
+    }, [dispatch, idlichtrinh]);
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -38,22 +29,11 @@ const TripDetails = ({ navigation, route }) => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
+
     const timeDifference = endDate && startDate ? endDate - startDate : 0;
-    const numberOfDays = timeDifference / (1000 * 3600 * 24)
+    const numberOfDays = timeDifference / (1000 * 3600 * 24);
 
     const lichTrinhha = getLichTrinhData?.data?.locations;
-
-    if (Array.isArray(lichTrinhha)) {
-        lichTrinhha.forEach((daySchedule, index) => { });
-        const ngay = lichTrinhha?.locations;
-
-    } else {
-        console.log('lichTrinhha không hợp lệ hoặc không phải là mảng.');
-    }
-
-    const avatar = user.user.avatar;
-    console.log('avatar', avatar);
-
 
     const renderItinerary = () => {
         switch (activeTab) {
@@ -64,14 +44,12 @@ const TripDetails = ({ navigation, route }) => {
                             <Text style={styles.sectionTitle}>Lịch trình chuyến đi</Text>
                             <TouchableOpacity style={styles.viewAllContainer} onPress={() => { }}>
                                 <Text style={styles.viewAllText}>Xem tất cả</Text>
-
                             </TouchableOpacity>
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
                             {Array.isArray(lichTrinhha) ? (
                                 lichTrinhha.map((daySchedule, index) => {
                                     const firstImage = daySchedule.locations?.[0]?.images?.[0];
-                                    console.log('firstImage', firstImage);
                                     return (
                                         <TouchableOpacity
                                             key={daySchedule._id}
@@ -91,7 +69,6 @@ const TripDetails = ({ navigation, route }) => {
                             ) : (
                                 <Text>Không có lịch trình để hiển thị</Text>
                             )}
-
                         </ScrollView>
                     </View>
                 );
@@ -103,22 +80,27 @@ const TripDetails = ({ navigation, route }) => {
 
     return (
         <ScrollView style={styles.container}>
-            {lichTrinhha.length > 0 && (
+            {Array.isArray(lichTrinhha) && lichTrinhha.length > 0 ? (
                 <Image
-                    source={lichTrinhha[0]?.locations?.[0]?.images?.[0] ? { uri: lichTrinhha[0].locations[0].images[0] } : Icons.image}
+                    source={
+                        lichTrinhha[0]?.locations?.[0]?.images?.[0]
+                            ? { uri: lichTrinhha[0].locations[0].images[0] }
+                            : Icons.image
+                    }
                     style={styles.imageBackground}
                 />
+            ) : (
+                <Text style={styles.includedText}>Không có hình ảnh lịch trình nào để hiển thị</Text>
             )}
             <View style={styles.cardContainer}>
                 <View style={styles.card}>
                     <Text style={styles.title}>
                         {numberOfDays > 0 ? `${numberOfDays} ngày` : 'Không có thông tin về số ngày'} đi{' '}
-                        {getLichTrinhData?.data?.destination?.name || 'NANA'} đến {getLichTrinhData?.data?.departure || 'Không có thông tin về nơi khởi hành'}
+                        {getLichTrinhData?.data?.destination?.name || 'Chưa xác định'} đến {getLichTrinhData?.data?.departure || 'Chưa xác định'}
                     </Text>
-                    <Text style={styles.date}>{startDate ? formatDate(startDate) : 'ABCXYZ'} - {startDate ? formatDate(endDate) : 'NÂNNA'}</Text>
+                    <Text style={styles.date}>{startDate ? formatDate(startDate) : 'Chưa xác định'} - {endDate ? formatDate(endDate) : 'Chưa xác định'}</Text>
                     <Text style={styles.creator}>{user?.user?.fullname}</Text>
                 </View>
-
 
                 <View style={styles.tabContainer}>
                     <TouchableOpacity
@@ -137,10 +119,12 @@ const TripDetails = ({ navigation, route }) => {
                 <Text style={styles.sectionTitle}>Thành viên</Text>
                 <View style={styles.memberContainer}>
                     <Image
-                        source={{ uri: user?.user?.avatar } || Icons.avatar}
+                        source={user?.user?.avatar ? { uri: user.user.avatar } : Icons.avatar}
                         style={styles.avatar}
                     />
-                    <Text style={styles.memberText}>{user?.user?.fullname ? `${user.user.fullname.substring(0, 5)}...` : "Không có tên"}</Text>
+                    <Text style={styles.memberText}>
+                        {user?.user?.fullname ? `${user.user.fullname.substring(0, 5)}...` : "Không có tên"}
+                    </Text>
                 </View>
             </View>
             <View style={{ height: 650 }} />
@@ -223,7 +207,6 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         marginVertical: 8,
-
     },
     imageContainer: {
         marginRight: 10,
@@ -253,11 +236,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    viewAllIcon: {
-        width: 16,
-        height: 16,
-        marginRight: 4,
-    },
     viewAllText: {
         fontSize: 14,
         color: 'blue',
@@ -266,7 +244,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
-    }
+    },
 });
 
 export default TripDetails;
