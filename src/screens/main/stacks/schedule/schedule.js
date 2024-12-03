@@ -72,7 +72,7 @@ const Schedule = () => {
                     keyboardType="numeric"
                 />
                 <View style={styles.button}>
-                    <Button label='Áp Dụng' onPress={() => { }} />
+                    <Button label='Áp Dụng' onPress={() => {z }} />
                 </View>
             </View>
 

@@ -161,6 +161,9 @@ const SettingLoggedScreen = (props) => {
   function handlePurchase() {
     navigation.navigate('Purchasehistory')
   }
+  function handleProfile() {
+      navigation.navigate('Schedule')
+    }
   const handleLogout = async () => {
     try {
       await dispatch(logoutUser());
@@ -218,7 +221,7 @@ const SettingLoggedScreen = (props) => {
           </TouchableOpacity>
         </View>
         <View >
-          <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
+          <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handleProfile}>
             <View style={styles.imageTroGiupContainer}>
               <Image
                 style={styles.imageTroGiup}

@@ -15,6 +15,7 @@ import paymentReducer from './slices/paymentSlice';
 import bookingReducer from './slices/booking.slice';
 import voucherReducer from './slices/vouchersSlice';
 import reviewReducer from './slices/reviewTourducers';
+import lTrReducer from './slices/schedule';
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   // favouriteDelete: favouriteDeleteReducer,
   vouchers: voucherReducer,
   reviews: reviewReducer,
+  lTr:lTrReducer
 
 });
 
