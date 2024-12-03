@@ -5,19 +5,29 @@ import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { LayDiaDiemTheoNgay } from '../../../../redux/slices/diaDiemTheoNgaySlice';
+import { DeleteDiaDiem } from '../../../../redux/slices/deleteDiadiemSlice';
 
 const ItineraryScreen = ({ route }) => {
     const { dayId, lichTrinhId } = route.params
     console.log("======= day", dayId);
     console.log("======= lichTrinhId", lichTrinhId);
     const { locationByDateData, locationByDateStatus, error } = useSelector(state => state.reducer.locationByDate);
+    const { deleteDiaDiemData, deleteDiaDiemStatus } = useSelector(state => state.reducer.deleteDiaDiem);
+
+    const nhanXoa = (diaDiemId) => {
+        dispatch(DeleteDiaDiem({
+            lichTrinhId, dayId, diaDiemId
+        }))
+        console.log("=====  delete", deleteDiaDiemData);
+
+    }
 
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(LayDiaDiemTheoNgay(
             { lichTrinhId, dayId }
         ));
-    }, [dispatch]);
+    }, [dispatch, deleteDiaDiemStatus]);
 
     // console.log("=========== data", locationByDateData.data.dayInfo.locations);
 
@@ -36,7 +46,7 @@ const ItineraryScreen = ({ route }) => {
                             <Text style={styles.cardTime}>11:00</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>{item.name}</Text>
+                            <Text style={styles.cardTitle}>{item.name} {item._id}</Text>
                             <Text style={styles.cardSubtitle}>T/g tham quan: {item.time}</Text>
                             <View style={styles.cardActions}>
                                 <TouchableOpacity>
@@ -53,6 +63,13 @@ const ItineraryScreen = ({ route }) => {
                         <Image source={Icons.clock} size={20} color="#007BFF" />
                         <Text style={styles.freeTimeText}>Thời gian rảnh: 2h</Text>
                     </View>
+                    <TouchableOpacity style={styles.btnDelete}
+                        onPress={() => nhanXoa(item._id)}>
+                        <Image
+                            source={require('../../../../assets/images/close.png')}
+                            style={{ width: 16, height: 16 }}
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.timelineContainer2}>
                     <View style={styles.transportContainer}>
@@ -109,6 +126,17 @@ const ItineraryScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+    btnDelete: {
+        width: 32,
+        height: 32,
+        borderRadius: 32,
+        borderWidth: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 8,
+        right: 8
+    },
     cardImageContainer: {
         position: 'relative',
     },
@@ -231,7 +259,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cardTitle: {
-        width: 220,
+        width: 180,
         height: 40,
         fontSize: 16,
         fontWeight: '700',

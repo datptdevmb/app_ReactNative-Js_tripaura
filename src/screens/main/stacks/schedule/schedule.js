@@ -71,14 +71,13 @@ const Schedule = ({ navigation }) => {
             ToastAndroid.show("Bạn cần nhập đầy đủ thông tin", ToastAndroid.SHORT)
         } else {
             dispatch(createSchedules({ departure, destination, endDay, person, startDay, userId }))
-
+            navigation.navigate('Schduletour', { lichTrinhId: Schedules._id });
 
         }
     };
     useEffect(() => {
         if (Schedules && Schedules._id) {
-            console.log("=============== id", Schedules._id);
-            navigation.navigate('Schduletour', { lichTrinhId: Schedules._id });
+            console.log("=============== id", Schedules._id);   
         }
     }, [Schedules, Schedules._id]);
 
