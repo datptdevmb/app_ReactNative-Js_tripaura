@@ -20,6 +20,8 @@ export const fetchBookingsByUserId = createAsyncThunk(
     async (userId, { rejectWithValue }) => {
         try {
             const response = await fetch(`https://trip-aura-server.vercel.app/booking/api/bookinguser/${userId}`);
+            console.log('response', response);
+            
             if (!response.ok) {
                 throw new Error('Failed to fetch bookings for user');
             }
