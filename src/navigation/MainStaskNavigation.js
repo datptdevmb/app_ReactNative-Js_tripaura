@@ -57,11 +57,9 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
       <Stack.Screen name="Schduletour" component={Schduletour} />
-      <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="LichTrinhs" component={LichTrinhs} />
+      <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="DiaDiem" component={DiaDiem} />
-
-
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
       {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
@@ -74,6 +72,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="Order" component={OrderReviewScreen} />
       <Stack.Screen name={ROUTES.login} component={Login} />
       <Stack.Screen name="Rate" component={Rate} />
+      <Stack.Screen name="VietnamMap" component={VietnamMap} />
 
       <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
       <Stack.Screen name="FavouriteScreenNoItem" component={FavouriteScreenNoItem} />

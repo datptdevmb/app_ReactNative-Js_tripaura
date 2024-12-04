@@ -50,7 +50,6 @@ const rootReducer = combineReducers({
   deleteDiaDiem: deleteDiaDiemReducer,
   addDiaDiem: addDiaDiemReducer,
   diaDiemByTinh:getDiaDiemByTinhReducer
-
 });
 
 // Configure the store

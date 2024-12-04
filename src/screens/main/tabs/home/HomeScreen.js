@@ -37,6 +37,7 @@ import SearchView from './SearchView';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { fetchImages } from '../../../../redux/slices/image.slice';
 import { checkLoginStatus } from '../../../../redux/slices/auth.slice';
+import IcLocate from '../../../../assets/icons/Ic_locate';
 
 
 function HomeScreen({ navigation }) {
@@ -66,7 +67,7 @@ function HomeScreen({ navigation }) {
         navigation.navigate('Voucher');
     }
     const renderItem = useCallback(({ item, index }) => {
-
+        console.log(item)
         if (index == 0) {
             return (
                 <TouchableOpacity
@@ -87,6 +88,14 @@ function HomeScreen({ navigation }) {
                 <Text
                     numberOfLines={2}
                     style={styles.textName}>{item.tourName}</Text>
+                <View style={{marginTop: 10, width: '100%', flexDirection: 'row' }}>
+                    <View style={{ marginStart: 8, marginEnd: 8 }}>
+                        <IcLocate />
+                    </View>
+                    <Text
+                        lineBreakMode='clip'
+                        numberOfLines={1}>{item?.destination}</Text>
+                </View>
             </TouchableOpacity>
         );
     }, []);
