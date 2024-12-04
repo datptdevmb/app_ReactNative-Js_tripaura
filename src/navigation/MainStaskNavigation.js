@@ -40,6 +40,7 @@ import Itinerary from '../screens/main/stacks/schedule/Itinerary';
 import SplashScreen from '../screens/authen/Splash/SplashScreen';
 import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
 import DiaDiem from '../screens/main/stacks/schedule/DiaDiem';
+import Voucher from '../screens/main/stacks/voucher/Voucher';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -50,6 +51,7 @@ const MainTabNavigation = () => {
 
 const MainStaskNavigation = () => {
   return (
+
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
@@ -58,6 +60,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="LichTrinhs" component={LichTrinhs} />
       <Stack.Screen name="DiaDiem" component={DiaDiem} />
+
 
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
@@ -74,7 +77,7 @@ const MainStaskNavigation = () => {
 
       <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
       <Stack.Screen name="FavouriteScreenNoItem" component={FavouriteScreenNoItem} />
-      {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
+      <Stack.Screen name="Voucher" component={Voucher} />
       <Stack.Screen
         name="LoginRegisterScreen"
         component={LoginRegisterScreen}

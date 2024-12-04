@@ -102,11 +102,9 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                borderTopWidth: focused ? 1 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
                 height: 90,
               }}>
-              <IcHome color={focused ? '#0572E7' : '#8A8A8A'}/>
+              <IcHome color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }}>{ROUTES.home}</Text>
             </View>
           ),
@@ -128,7 +126,7 @@ const ButtomNavigation = () => {
                 height: 90,
                 // backgroundColor:colors.primary
               }}>
-              <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'}/>
+              <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }}>Uu dai</Text>
             </View>
           ),
@@ -139,17 +137,20 @@ const ButtomNavigation = () => {
         component={SearchScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Image
-                resizeMode="contain"
-                source={require('../assets/icons/SearchIcon.png')}
-                style={{
-                  tintColor: colors.onPrimary,
-                }}
-              />
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                height: 90,
+
+                // backgroundColor:colors.primary
+              }}>
+              <IcFavorite color={focused ? '#0572E7' : '#8A8A8A'} />
+              <Text style={{ fontSize: 12 }}>{ROUTES.favorite}</Text>
             </View>
           ),
-          tabBarButton: props => <CustomBottom {...props} />,
+          // tabBarButton: props => <CustomBottom {...props} />,
         }}
       />
       <Tab.Screen
@@ -162,13 +163,11 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
                 height: 90,
 
                 // backgroundColor:colors.primary
               }}>
-              <IcFavorite  color={focused ? '#0572E7' : '#8A8A8A'} />
+              <IcFavorite color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }}>{ROUTES.favorite}</Text>
             </View>
           ),
@@ -184,13 +183,9 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 width: '100%',
                 alignItems: 'center',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
                 height: 90,
-
-                // backgroundColor:colors.primary
               }}>
-              <IcProfile  color={focused ? '#0572E7' : '#8A8A8A'}/>
+              <IcProfile color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }} >{ROUTES.settings}</Text>
             </View>
           ),

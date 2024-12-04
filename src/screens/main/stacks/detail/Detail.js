@@ -49,6 +49,7 @@ import { ROUTES } from '../../../../constants/routes';
 import HTMLView from 'react-native-htmlview';
 import Accordion from '../../../../components/common/accordion/accordion';
 import { fetchReviewsByTourId } from '../../../../redux/slices/reviewTourducers';
+import colors from '../../../../constants/colors';
 
 
 const Detail = ({ navigation, route }) => {
@@ -56,6 +57,7 @@ const Detail = ({ navigation, route }) => {
 
 
 	const { _id: tourId } = route.params;
+	console.log(tourId)
 	const dispatch = useDispatch();
 	const [detailId, setDetailId] = useState(null);
 	const {
@@ -495,7 +497,7 @@ const styles = StyleSheet.create({
 	btn: {
 		width: 148,
 		height: 44,
-		backgroundColor: '#2196F3',
+		backgroundColor: colors.primary_600,
 		position: 'absolute',
 		right: 16,
 	},
