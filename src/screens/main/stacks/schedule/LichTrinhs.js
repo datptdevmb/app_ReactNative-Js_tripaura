@@ -11,6 +11,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Headercomponet from '../../../../components/common/header/Headercomponet';
 import { LayLichTrinhTheoUser } from '../../../../redux/slices/getLichTrinhUserSlice';
+import colors from '../../../../constants/colors';
 
 const LichTrinhs = (props) => {
     const { navigation } = props;
@@ -46,36 +47,40 @@ const LichTrinhs = (props) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Headercomponet
-                title={"Lịch Trình Cá Nhân"}
-                leftIcon={require('../../../../assets/images/back.png')}
-            />
-            <View style={{ height: 24 }}></View>
-            {lichTrinhByUserStatus === 'loading' ? (
-                // Hiển thị loading khi dữ liệu đang được tải
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#007BFF" />
-                    <Text>Đang tải dữ liệu...</Text>
-                </View>
-            ) : (
-                // Hiển thị FlatList khi dữ liệu đã tải xong
-                <FlatList
-                    data={lichTrinhByUserData.data}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id}
-                />
-            )}
-            <TouchableOpacity
-                style={styles.btnAdd}
-                onPress={() => navigation.navigate('Schedule')}
-            >
-                <Image
-                    style={styles.imageBtn}
-                    source={require('../../../../assets/images/back.png')}
-                />
-            </TouchableOpacity>
+        <View style={{flex:1}}>
+            <View style={{ fontSize:22, justifyContent: 'center', alignItems: 'center', height: 54, backgroundColor: 'white' }}>
+                <Text>Lịch trình của tôi</Text>
+            </View>
+            <View style={styles.container}>
+
+                <View style={{ height: 24 }}></View>
+                {lichTrinhByUserStatus === 'loading' ? (
+                    // Hiển thị loading khi dữ liệu đang được tải
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#007BFF" />
+                        <Text>Đang tải dữ liệu...</Text>
+                    </View>
+                ) : (
+                    // Hiển thị FlatList khi dữ liệu đã tải xong
+                    <FlatList
+                        data={lichTrinhByUserData.data}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                    />
+                )}
+                <TouchableOpacity
+                    style={styles.btnAdd}
+                    onPress={() => navigation.navigate('Schedule')}
+                >
+                    {/* <Image
+                        style={styles.imageBtn}
+                        source={require('../../../../assets/images/back.png')}
+                    /> */}
+                    <Text style={{fontSize:20,color:'white'}}>+</Text>
+                </TouchableOpacity>
+            </View>
         </View>
+
     );
 };
 
@@ -97,20 +102,23 @@ const styles = StyleSheet.create({
         height: 24,
     },
     btnAdd: {
-        width: 62,
-        height: 62,
-        borderRadius: 62,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor:colors.primary_500,
         justifyContent: 'center',
-        borderWidth: 1,
         alignItems: 'center',
         position: 'absolute',
-        bottom: 44,
+        bottom: 120,
         right: 24,
     },
     imageItem: {
-        width: '100%',
-        height: 118,
-        marginVertical: 8
+        marginHorizontal:18,
+        width: '90%',
+        borderRadius:6,
+        height: 175,
+        resizeMode:'cover',
+        marginVertical: 16
     },
     itemContainer: {
         flex: 1,

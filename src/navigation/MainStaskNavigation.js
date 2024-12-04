@@ -50,6 +50,7 @@ const MainTabNavigation = () => {
 
 const MainStaskNavigation = () => {
   return (
+
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
@@ -59,13 +60,14 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="LichTrinhs" component={LichTrinhs} />
       <Stack.Screen name="DiaDiem" component={DiaDiem} />
 
+
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
       {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
       <Stack.Screen name="Ponorama" component={PanoramaViewer} />
       <Stack.Screen name="ImageDetail" component={ImageDetail} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="MapScreen" component={VietnamMap} />
+
       <Stack.Screen name="Filter" component={DependentDropdown} />
       <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
       <Stack.Screen name="Order" component={OrderReviewScreen} />
