@@ -13,7 +13,7 @@ const ItineraryScreen = ({ route, navigation }) => {
     console.log("======= lichTrinhId", lichTrinhId);
     const { locationByDateData, locationByDateStatus, error } = useSelector(state => state.reducer.locationByDate);
     const { deleteDiaDiemData, deleteDiaDiemStatus } = useSelector(state => state.reducer.deleteDiaDiem);
-
+    const { addDiaDiemData, addDiaDiemStatus } = useSelector(state => state.reducer.addDiaDiem);
     const nhanXoa = (diaDiemId) => {
         dispatch(DeleteDiaDiem({
             lichTrinhId, dayId, diaDiemId
@@ -27,7 +27,7 @@ const ItineraryScreen = ({ route, navigation }) => {
         dispatch(LayDiaDiemTheoNgay(
             { lichTrinhId, dayId }
         ));
-    }, [dispatch, deleteDiaDiemStatus]);
+    }, [dispatch, deleteDiaDiemStatus, addDiaDiemStatus]);
 
     // console.log("=========== data", locationByDateData.data.destination?._id);
 
