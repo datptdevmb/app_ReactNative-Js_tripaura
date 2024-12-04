@@ -65,7 +65,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="Ponorama" component={PanoramaViewer} />
       <Stack.Screen name="ImageDetail" component={ImageDetail} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="MapScreen" component={VietnamMap} />
+   
       <Stack.Screen name="Filter" component={DependentDropdown} />
       <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
       <Stack.Screen name="Order" component={OrderReviewScreen} />
