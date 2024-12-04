@@ -21,6 +21,7 @@ import diaDiemTheoNgayReducer from './slices/diaDiemTheoNgaySlice'
 import getLichTrinhByUserIdReducer from './slices/getLichTrinhUserSlice'
 import addDiaDiemReducer from './slices/addDiaDiemSlice'
 import deleteDiaDiemReducer from './slices/deleteDiadiemSlice'
+import getDiaDiemByTinhReducer from './slices/getDiaDiemByTinhSlice'
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -48,7 +49,7 @@ const rootReducer = combineReducers({
   lichTrinhByUser: getLichTrinhByUserIdReducer,
   deleteDiaDiem: deleteDiaDiemReducer,
   addDiaDiem: addDiaDiemReducer,
-
+  diaDiemByTinh:getDiaDiemByTinhReducer
 });
 
 // Configure the store

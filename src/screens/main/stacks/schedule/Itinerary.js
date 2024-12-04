@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LayDiaDiemTheoNgay } from '../../../../redux/slices/diaDiemTheoNgaySlice';
 import { DeleteDiaDiem } from '../../../../redux/slices/deleteDiadiemSlice';
 
-const ItineraryScreen = ({ route }) => {
+const ItineraryScreen = ({ route, navigation }) => {
     const { dayId, lichTrinhId } = route.params
     console.log("======= day", dayId);
     console.log("======= lichTrinhId", lichTrinhId);
     const { locationByDateData, locationByDateStatus, error } = useSelector(state => state.reducer.locationByDate);
     const { deleteDiaDiemData, deleteDiaDiemStatus } = useSelector(state => state.reducer.deleteDiaDiem);
-
+    const { addDiaDiemData, addDiaDiemStatus } = useSelector(state => state.reducer.addDiaDiem);
     const nhanXoa = (diaDiemId) => {
         dispatch(DeleteDiaDiem({
             lichTrinhId, dayId, diaDiemId
@@ -27,9 +27,9 @@ const ItineraryScreen = ({ route }) => {
         dispatch(LayDiaDiemTheoNgay(
             { lichTrinhId, dayId }
         ));
-    }, [dispatch, deleteDiaDiemStatus]);
+    }, [dispatch, deleteDiaDiemStatus, addDiaDiemStatus]);
 
-    // console.log("=========== data", locationByDateData.data.dayInfo.locations);
+    // console.log("=========== data", locationByDateData.data.destination?._id);
 
     // console.log("================= số địa điểm", locationByDateData.data.dayInfo.locations.length);
 
@@ -84,42 +84,54 @@ const ItineraryScreen = ({ route }) => {
         )
     }
     return (
-        <ScrollView style={styles.container}>
-            <Header title="Lịch trình" />
-            {locationByDateStatus === "loading" ? (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#007BFF" />
-                    <Text>Đang tải dữ liệu...</Text>
-                </View>
-            ) : (
-                <>
-                    {locationByDateData?.data?.dayInfo ? (
-                        <View style={styles.dayInfo}>
-                            <Text style={styles.dayText}>Ngày 1</Text>
-                            <View style={styles.dateRow}>
-                                <Text style={styles.dateText}>26/11/2024</Text>
-                                <Text style={styles.infoText}>300.1km</Text>
-                                <Text style={styles.infoText}>
-                                    {locationByDateData.data?.dayInfo?.locations?.length || 0} địa điểm
-                                </Text>
+
+        <ScrollView >
+            <Header title="Lịch trình" 
+            onBackPress={() => {
+                navigation.goBack();
+            }} />
+            <View style={styles.container}>
+                {locationByDateStatus === "loading" ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#007BFF" />
+                        <Text>Đang tải dữ liệu...</Text>
+                    </View>
+                ) : (
+                    <>
+                        {locationByDateData?.data?.dayInfo ? (
+                            <View style={styles.dayInfo}>
+                                <Text style={styles.dayText}>Ngày 1</Text>
+                                <View style={styles.dateRow}>
+                                    <Text style={styles.dateText}>26/11/2024</Text>
+                                    <Text style={styles.infoText}>300.1km</Text>
+                                    <Text style={styles.infoText}>
+                                        {locationByDateData.data?.dayInfo?.locations?.length || 0} địa điểm
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    ) : (
-                        <Text>Không có dữ liệu lịch trình!</Text>
-                    )}
-                    <FlatList
-                        scrollEnabled={false}
-                        data={locationByDateData.data?.dayInfo?.locations}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item._id}
-                    />
-                </>
-            )}
-            <TouchableOpacity style={styles.addButton}>
-                <Icon name="plus" size={20} color="#007BFF" />
-                <Text style={styles.addButtonText}>Thêm địa điểm</Text>
-            </TouchableOpacity>
-            <View style={{ height: 44 }}></View>
+                        ) : (
+                            <Text>Không có dữ liệu lịch trình!</Text>
+                        )}
+                        <FlatList
+                            scrollEnabled={false}
+                            data={locationByDateData.data?.dayInfo?.locations}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item._id}
+                        />
+                    </>
+                )}
+                <TouchableOpacity style={styles.addButton}
+                    onPress={() => navigation.navigate('DiaDiem',
+                        {
+                            tinhId: locationByDateData.data.destination?._id,
+                            lichTrinhId: lichTrinhId,
+                            dayId: dayId
+                        })}>
+                    <Icon name="plus" size={20} color="#007BFF" />
+                    <Text style={styles.addButtonText}>Thêm địa điểm</Text>
+                </TouchableOpacity>
+                <View style={{ height: 44 }}></View>
+            </View>
         </ScrollView>
 
     );

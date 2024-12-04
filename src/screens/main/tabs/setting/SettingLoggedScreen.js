@@ -153,13 +153,13 @@ const SettingLoggedScreen = (props) => {
 
 
   function handleMap() {
-    navigation.navigate('MapScreen')
+    navigation.navigate('VietnamMap')
   }
   function handleCauhoi() {
     navigation.navigate('FAQsSrceen')
   }
   function handlePurchase() {
-    navigation.navigate('LichTrinhs')
+    navigation.navigate('Purchasehistory')
   }
   const handleLogout = async () => {
     try {
@@ -215,16 +215,6 @@ const SettingLoggedScreen = (props) => {
                 source={Icons.ic_orther} />
             </View>
             <Text style={styles.txtTroGiup}>Tour</Text>
-          </TouchableOpacity>
-        </View>
-        <View >
-          <TouchableOpacity style={styles.btnCauHoiContainer} onPress={handlePurchase}>
-            <View style={styles.imageTroGiupContainer}>
-              <Image
-                style={styles.imageTroGiup}
-                source={Icons.ic_orther} />
-            </View>
-            <Text style={styles.txtTroGiup}>Tour cá nhân</Text>
           </TouchableOpacity>
         </View>
         <View >
@@ -382,7 +372,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   btnCauHoiContainer: {
-    width: 60,
+    width: 70,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -390,14 +380,14 @@ const styles = StyleSheet.create({
     height: 34,
     fontFamily: 'Lato',
     color: '#212121',
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '400',
     textAlign: 'center',
     marginTop: 10,
   },
   imageTroGiup: {
-    width: 23,
-    height: 23
+    width: 26,
+    height: 26
   },
   imageTroGiupContainer: {
     width: 50,

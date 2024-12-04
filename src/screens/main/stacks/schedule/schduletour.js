@@ -67,10 +67,6 @@ const TripDetails = ({ navigation, route }) => {
                     <View>
                         <View style={styles.headerContainer}>
                             <Text style={styles.sectionTitle}>Lịch trình chuyến đi</Text>
-                            <TouchableOpacity style={styles.viewAllContainer} onPress={() => { }}>
-                                <Text style={styles.viewAllText}>Xem tất cả</Text>
-
-                            </TouchableOpacity>
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
                             {Array.isArray(lichTrinhha) ? (
@@ -113,14 +109,27 @@ const TripDetails = ({ navigation, route }) => {
                     source={lichTrinhha[0]?.locations?.[0]?.images?.[0] ? { uri: lichTrinhha[0].locations[0].images[0] } : Icons.image}
                     style={styles.imageBackground}
                 />
+
+
             )}
-            { getLichTrinhStatus==="loading" ? (
+            <TouchableOpacity style={styles.buttonback}
+                onPress={
+                    () => {
+                        navigation.goBack();
+                    }
+                }>
+                <Image
+                    source={Icons.ic_leftarrow}
+                    style={styles.heartIcon}
+                />
+            </TouchableOpacity>
+            {getLichTrinhStatus === "loading" ? (
                 // Hiển thị loading khi dữ liệu đang được tải
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color="#007BFF" />
                     <Text>Đang tải dữ liệu...</Text>
                 </View>
-            ):(<View style={styles.cardContainer}>
+            ) : (<View style={styles.cardContainer}>
                 <View style={styles.card}>
                     <Text style={styles.title}>
                         {numberOfDays > 0 ? `${numberOfDays} ngày` : 'Không có thông tin về số ngày'} đi{' '}
@@ -129,18 +138,6 @@ const TripDetails = ({ navigation, route }) => {
                     <Text style={styles.date}>{startDate ? formatDate(startDate) : 'ABCXYZ'} - {startDate ? formatDate(endDate) : 'NÂNNA'}</Text>
                     <Text style={styles.creator}>{user?.user?.fullname}</Text>
                 </View>
-
-
-                <View style={styles.tabContainer}>
-                    <TouchableOpacity
-                        style={styles.tab}
-                        onPress={() => setActiveTab('Chuyển đi')}
-                    >
-                        <Text style={styles.tabText}>Chuyển đi</Text>
-                        {activeTab === 'Chuyển đi' && <View style={styles.underline} />}
-                    </TouchableOpacity>
-                </View>
-
                 {renderItinerary()}
 
                 <Text style={styles.sectionTitle}>Bao gồm</Text>
@@ -154,7 +151,7 @@ const TripDetails = ({ navigation, route }) => {
                     <Text style={styles.memberText}>{user?.user?.fullname ? `${user.user.fullname.substring(0, 5)}...` : "Không có tên"}</Text>
                 </View>
             </View>)}
-            
+
         </ScrollView>
     );
 };
@@ -165,10 +162,21 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#fff',
     },
+    heartIcon: {
+        width: 32,
+        height: 32,
+        tintColor: '#fff',
+        marginStart: 16,
+    },
     cardContainer: {
         padding: 16,
         position: 'absolute',
         top: 100,
+    },
+    buttonback: {
+        position: 'absolute',
+        marginTop: 10,
+
     },
     memberContainer: {
         flexDirection: 'column',
@@ -192,6 +200,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 5,
+        marginStart: 20,
     },
     title: {
         fontWeight: '600',
@@ -248,7 +257,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 165,
         position: 'relative',
-        borderRadius: 8,
     },
     imageDate: {
         textAlign: 'center',
