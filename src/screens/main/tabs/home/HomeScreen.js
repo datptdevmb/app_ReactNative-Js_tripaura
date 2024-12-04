@@ -63,7 +63,7 @@ function HomeScreen({ navigation }) {
     }
 
     function handlerClickSlider() {
-        navigation.navigate('Voucher', { _id });
+        navigation.navigate('Voucher');
     }
     const renderItem = useCallback(({ item, index }) => {
 

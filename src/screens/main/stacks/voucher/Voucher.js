@@ -73,7 +73,7 @@ const Voucher = () => {
       </View>
       <View style={{ width: '100%', marginTop: 13, flexDirection: 'column' }}>
         <Text style={styles.text}>Tour đang giảm giá</Text>
-        <PopularToursList onClick={handelPopular} popularTours={tours} />
+        <PopularToursList onClick={handelPopular} popularTours={popularTours} />
       </View>
       <View style={{ height: 120 }} />
     </ScrollView>
