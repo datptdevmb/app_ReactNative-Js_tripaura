@@ -129,7 +129,7 @@ const ButtomNavigation = () => {
                 // backgroundColor:colors.primary
               }}>
               <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'}/>
-              <Text style={{ fontSize: 12 }}>Uu dai</Text>
+              <Text style={{ fontSize: 12 }}>Lịch trình</Text>
             </View>
           ),
         }}
