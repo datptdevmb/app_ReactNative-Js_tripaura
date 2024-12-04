@@ -7,6 +7,7 @@ import AppNavigation from './src/AppNavigation';
 import Purchasehistory from './src/screens/main/stacks/purchasehistory/Purchasehistory.js';
 import OrderInformation from './src/screens/main/stacks/orderinformation/Orderinformation.js'
 import SettingLoggedScreen from './src/screens/main/tabs/setting/SettingLoggedScreen.js';
+import LichTrinhs from './src/screens/main/stacks/schedule/LichTrinhs.js';
 
 
 const App = () => {
@@ -14,7 +15,8 @@ const App = () => {
     <Provider store={store}>
       <AppProvider>
 
-        <AppNavigation/>
+        <AppNavigation />
+        {/* <LichTrinhs></LichTrinhs> */}
 
       </AppProvider>
 

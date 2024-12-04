@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 export const createSchedules = createAsyncThunk(
-    'shedules/create', async ({ name = 'abc', departure, destination, endDay, person, startDay }) => {
+    'shedules/create', async ({ name = 'abc', departure, destination, endDay, person, startDay,userId }) => {
         if (!departure || !destination || !startDay || !endDay || person < 1) {
             console.log('Thông báo', 'Vui lòng nhập đầy đủ thông tin.');
             console.log(departure);
@@ -22,14 +22,16 @@ export const createSchedules = createAsyncThunk(
                 endDay,
                 person,
                 startDay,
+                userId
             }
             );
 
 
             if (response.status === 200) {
-                console.log('=====================')
-                console.log(response.data.data)
-                return response.data.data
+
+                console.log("respone", response.data.data)
+                return await response.data.data
+
             } else {
                 console.log('Lỗi', response.data.message || 'Không thể lên lịch trình.');
             }

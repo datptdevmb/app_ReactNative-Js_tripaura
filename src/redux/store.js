@@ -17,6 +17,10 @@ import voucherReducer from './slices/vouchersSlice';
 import reviewReducer from './slices/reviewTourducers';
 import schemalReducer from './slices/schemal.slice';
 import LichtrinhReducer from './slices/getlichtrinh.slice';
+import diaDiemTheoNgayReducer from './slices/diaDiemTheoNgaySlice'
+import getLichTrinhByUserIdReducer from './slices/getLichTrinhUserSlice'
+import addDiaDiemReducer from './slices/addDiaDiemSlice'
+import deleteDiaDiemReducer from './slices/deleteDiadiemSlice'
 
 const rootReducer = combineReducers({
   tour: tourReducer,
@@ -38,8 +42,12 @@ const rootReducer = combineReducers({
   // favouriteDelete: favouriteDeleteReducer,
   vouchers: voucherReducer,
   reviews: reviewReducer,
-  schemal:schemalReducer,
+  schemal: schemalReducer,
   lichtrinh: LichtrinhReducer,
+  locationByDate: diaDiemTheoNgayReducer,
+  lichTrinhByUser: getLichTrinhByUserIdReducer,
+  deleteDiaDiem: deleteDiaDiemReducer,
+  addDiaDiem: addDiaDiemReducer,
 
 });
 

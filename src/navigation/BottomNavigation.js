@@ -28,6 +28,7 @@ import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
 import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import ChonVoucher from '../screens/main/stacks/voucher/ChonVoucher';
+import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
 
 
 
@@ -113,7 +114,7 @@ const ButtomNavigation = () => {
       />
       <Tab.Screen
         name="Favourite"
-        component={Voucher}
+        component={LichTrinhs}
         options={{
 
           tabBarIcon: ({ focused }) => (

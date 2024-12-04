@@ -1,35 +1,53 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { LayDiaDiemTheoNgay } from '../../../../redux/slices/diaDiemTheoNgaySlice';
+import { DeleteDiaDiem } from '../../../../redux/slices/deleteDiadiemSlice';
 
-const ItineraryScreen = () => {
-    return (
-        <ScrollView style={styles.container}>
-            <Header title="Lịch trình" />
-            <View style={styles.dayInfo}>
-                <Text style={styles.dayText}>Ngày 1</Text>
-                <View style={styles.dateRow}>
-                    <Text style={styles.dateText}>26/11/2024</Text>
-                    <Text style={styles.infoText}>300.1km </Text>
-                    <Text style={styles.infoText}>3 địa điểm</Text>
-                </View>
-            </View>
-            <View style={styles.underline} />
+const ItineraryScreen = ({ route }) => {
+    const { dayId, lichTrinhId } = route.params
+    console.log("======= day", dayId);
+    console.log("======= lichTrinhId", lichTrinhId);
+    const { locationByDateData, locationByDateStatus, error } = useSelector(state => state.reducer.locationByDate);
+    const { deleteDiaDiemData, deleteDiaDiemStatus } = useSelector(state => state.reducer.deleteDiaDiem);
+
+    const nhanXoa = (diaDiemId) => {
+        dispatch(DeleteDiaDiem({
+            lichTrinhId, dayId, diaDiemId
+        }))
+        console.log("=====  delete", deleteDiaDiemData);
+
+    }
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(LayDiaDiemTheoNgay(
+            { lichTrinhId, dayId }
+        ));
+    }, [dispatch, deleteDiaDiemStatus]);
+
+    // console.log("=========== data", locationByDateData.data.dayInfo.locations);
+
+    // console.log("================= số địa điểm", locationByDateData.data.dayInfo.locations.length);
+
+    const renderItem = ({ item }) => {
+        return (
             <View style={styles.timeline}>
                 <View style={styles.timelineContainer}>
                     <View style={styles.card}>
                         <View style={styles.cardImageContainer}>
                             <Image
-                                source={{ uri: 'https://via.placeholder.com/300' }}
+                                source={{ uri: item.images[0] }}
                                 style={styles.cardImage}
                             />
                             <Text style={styles.cardTime}>11:00</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Đảo Phú Quốc</Text>
-                            <Text style={styles.cardSubtitle}>T/g tham quan: 1h</Text>
+                            <Text style={styles.cardTitle}>{item.name} {item._id}</Text>
+                            <Text style={styles.cardSubtitle}>T/g tham quan: {item.time}</Text>
                             <View style={styles.cardActions}>
                                 <TouchableOpacity>
                                     <Text style={styles.actionText}>Ghi chú</Text>
@@ -45,6 +63,13 @@ const ItineraryScreen = () => {
                         <Image source={Icons.clock} size={20} color="#007BFF" />
                         <Text style={styles.freeTimeText}>Thời gian rảnh: 2h</Text>
                     </View>
+                    <TouchableOpacity style={styles.btnDelete}
+                        onPress={() => nhanXoa(item._id)}>
+                        <Image
+                            source={require('../../../../assets/images/close.png')}
+                            style={{ width: 16, height: 16 }}
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.timelineContainer2}>
                     <View style={styles.transportContainer}>
@@ -53,58 +78,65 @@ const ItineraryScreen = () => {
                     </View>
                     <View style={styles.line2} />
                 </View>
-                
+
 
             </View>
-            <View style={styles.timeline2}>
-                <View style={styles.timelineContainer}>
-                    <View style={styles.card}>
-                        <View style={styles.cardImageContainer}>
-                            <Image
-                                source={{ uri: 'https://via.placeholder.com/300' }}
-                                style={styles.cardImage}
-                            />
-                            <Text style={styles.cardTime}>11:00</Text>
-                        </View>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Đảo Phú Quốc</Text>
-                            <Text style={styles.cardSubtitle}>T/g tham quan: 1h</Text>
-                            <View style={styles.cardActions}>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Ghi chú</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Gần đây</Text>
-                                </TouchableOpacity>
+        )
+    }
+    return (
+        <ScrollView style={styles.container}>
+            <Header title="Lịch trình" />
+            {locationByDateStatus === "loading" ? (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#007BFF" />
+                    <Text>Đang tải dữ liệu...</Text>
+                </View>
+            ) : (
+                <>
+                    {locationByDateData?.data?.dayInfo ? (
+                        <View style={styles.dayInfo}>
+                            <Text style={styles.dayText}>Ngày 1</Text>
+                            <View style={styles.dateRow}>
+                                <Text style={styles.dateText}>26/11/2024</Text>
+                                <Text style={styles.infoText}>300.1km</Text>
+                                <Text style={styles.infoText}>
+                                    {locationByDateData.data?.dayInfo?.locations?.length || 0} địa điểm
+                                </Text>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.line} />
-                    <View style={styles.freeTimeCard}>
-                        <Image source={Icons.clock} size={20} color="#007BFF" />
-                        <Text style={styles.freeTimeText}>Thời gian rảnh: 2h</Text>
-                    </View>
-                </View>
-                <View style={styles.timelineContainer2}>
-                    <View style={styles.transportContainer}>
-                        <Image source={Icons.clock} style={styles.carIcon} />
-                        <Text style={styles.travelInfo}>14.0 km | 21p</Text>
-                    </View>
-                    <View style={styles.line2} />
-                </View>
-                
-
-            </View>
+                    ) : (
+                        <Text>Không có dữ liệu lịch trình!</Text>
+                    )}
+                    <FlatList
+                        scrollEnabled={false}
+                        data={locationByDateData.data?.dayInfo?.locations}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                    />
+                </>
+            )}
             <TouchableOpacity style={styles.addButton}>
                 <Icon name="plus" size={20} color="#007BFF" />
                 <Text style={styles.addButtonText}>Thêm địa điểm</Text>
             </TouchableOpacity>
-            <View style={{ height: 50 }} />
+            <View style={{ height: 44 }}></View>
         </ScrollView>
+
     );
 };
 
 const styles = StyleSheet.create({
+    btnDelete: {
+        width: 32,
+        height: 32,
+        borderRadius: 32,
+        borderWidth: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 8,
+        right: 8
+    },
     cardImageContainer: {
         position: 'relative',
     },
@@ -227,9 +259,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cardTitle: {
+        width: 180,
+        height: 40,
         fontSize: 16,
         fontWeight: '700',
-        marginBottom: 27,
+        marginBottom: 10
+
     },
     cardSubtitle: {
         fontSize: 14,
