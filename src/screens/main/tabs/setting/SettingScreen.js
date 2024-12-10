@@ -26,7 +26,6 @@ import {
   const SettingLoggedScreen = props => {
     const {navigation} = props;
     const [isEnabled, setIsEnabled] = useState(false);
-  
     const [isEnabledchdo, setIsEnabledchedo] = useState(false);
     const [image, setImage] = useState(null);
     const dispatch = useDispatch();
@@ -104,7 +103,6 @@ import {
         Alert.alert('Lỗi', 'Không tìm thấy thông tin người dùng');
         return;
       }
-  
       const data = new FormData();
       data.append('file', {
         uri: image.uri,
@@ -181,7 +179,7 @@ import {
   
     const handleLogout = async () => {
       try {
-        await dispatch(logoutUser());
+        dispatch(logoutUser());
         dispatch(checkLoginStatus());
         //   navigation.replace('LoginRegisterScreen');
       } catch (error) {
@@ -189,7 +187,6 @@ import {
         console.error('Đăng xuất không thành công:', error);
       }
     };
-  
     return (
       <View style={stylesglobal.container}>
         <View style={styles.headerContainer}>
@@ -197,7 +194,6 @@ import {
             <TouchableOpacity onPress={openImagePicker}>
               <Image source={avatar} style={styles.imageAvatar} />
             </TouchableOpacity>
-  
             <TouchableOpacity
               style={styles.icCameraContainer}
               onPress={openCamera}>
@@ -218,7 +214,6 @@ import {
             <Image style={styles.iconNext} source={Icons.ic_arrowright} />
           </TouchableOpacity>
         </View>
-  
         <View style={styles.btnHorizontalContainer}>
           <View>
             <TouchableOpacity

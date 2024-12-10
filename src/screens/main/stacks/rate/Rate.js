@@ -166,7 +166,7 @@ const Rate = ({ route, navigation }) => {
                   <Image
                     key={index}
                     source={
-                      star === 'filled' ? Icons.ic_star : Icons.ic_star_empty
+                      star === 'filled' ? Icons.ic_star : Icons.ic_star_emty
                     }
                     style={styles.star}
                   />

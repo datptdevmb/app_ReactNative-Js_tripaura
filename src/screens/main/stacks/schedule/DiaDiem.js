@@ -7,7 +7,9 @@ import formatCurrencyVND from '../../../../untils/formatCurrencyVND';
 import { AddDiaDiem } from '../../../../redux/slices/addDiaDiemSlice';
 
 const DiaDiem = ({ route, navigation }) => {
-    const { tinhId, lichTrinhId, dayId } = route.params
+    const { tinhId, lichTrinhId, dayId, id } = route.params
+    console.log('id: ', id);
+
     console.log('tinhId', tinhId, lichTrinhId, dayId);
 
     const dispatch = useDispatch();
@@ -33,6 +35,9 @@ const DiaDiem = ({ route, navigation }) => {
     }
 
     const renderItem = ({ item }) => {
+        if (id.includes(item._id)) {
+            return null;
+        }
         return (
             <View style={styles.itemConttainer}>
                 <Image source={{ uri: item.images[0] }}
@@ -51,10 +56,10 @@ const DiaDiem = ({ route, navigation }) => {
                         style={{ width: 16, height: 16 }}
                     />
                 </TouchableOpacity>
-
             </View>
-        )
-    }
+        );
+    };
+
     if (diaDiemByTinhStatus === "loading") {
         return (
             <View style={styles.loadingContainer}>
@@ -68,6 +73,7 @@ const DiaDiem = ({ route, navigation }) => {
             <Headercomponet title={'Dia Diem'} />
 
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={diaDiemByTinhData.data}
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}

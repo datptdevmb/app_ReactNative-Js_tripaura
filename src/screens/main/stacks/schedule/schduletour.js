@@ -151,7 +151,7 @@ const TripDetails = ({ navigation, route }) => {
                     <Text style={styles.memberText}>{user?.user?.fullname ? `${user.user.fullname.substring(0, 5)}...` : "Không có tên"}</Text>
                 </View>
             </View>)}
-
+            
         </ScrollView>
     );
 };

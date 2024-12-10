@@ -7,4 +7,5 @@ export const ROUTES = {
   login :'Login',
   detail:'Detail',
   loginScreen: 'LoginScreen',
+  search: 'Tìm kiếm'
 };

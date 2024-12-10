@@ -111,13 +111,15 @@ const Detail = ({ navigation, route }) => {
 			console.log('uid null hoặc user không hợp lệ');
 			navigation.navigate('LoginRegisterScreen');
 			return;
-		}
-		dispatch(
+		} else {
+			dispatch(
 			themXoaYeuThichTour({
 				userId: user.user._id,
 				tourId,
 			}),
 		);
+		}
+		
 		if (favoritesStatus === 'success') {
 			setShowToast(true);
 			setTimeout(() => setShowToast(false), 3000);
@@ -186,7 +188,8 @@ const Detail = ({ navigation, route }) => {
 					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId })),
 				]);
 			} catch (err) {
-				console.error('Error fetching data:', err);
+				// console.error('Error fetching data:', err);
+				throw err;
 			}
 		};
 		loadData()

@@ -146,16 +146,14 @@ const Schedule = ({ navigation }) => {
                 {isCalendarVisible && (
                     <Calendar
                         onDayPress={handleDayPress}
+                        minDate={selectingEndDate ? startDay : new Date().toISOString().split('T')[0]}
                         markedDates={{
-                            [selectingEndDate ? endDay : startDay]: {
-                                selected: true,
-                                marked: true,
-                                selectedColor: '#0572E7',
-                            },
+                            [startDay]: { selected: true, marked: true, selectedColor: '#0572E7' },
+                            [endDay]: { selected: true, marked: true, selectedColor: '#0572E7' },
                         }}
                     />
                 )}
-
+                
                 <View style={styles.row}>
                     <Image source={Icons.user} style={styles.icon} />
                     <View style={styles.containerinput}>
