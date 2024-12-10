@@ -11,31 +11,31 @@ import ic_cellphone from '../assets/icons/ic_cellphone.png';
 import ic_address from '../assets/icons/ic_address.png';
 import ic_edit from '../assets/icons/ic_edit.png';
 import ic_time from '../assets/icons/ic_time.png';
-import ic_arrowright from '../assets/icons/ic_arrowright.png'
-import ic_map from '../assets/icons/ic_map.png'
-import ic_lock from '../assets/icons/ic_lock.png'
-import ic_orther from '../assets/icons/ic_orther.png'
-import ic_bell from '../assets/icons/ic_bell.png'
-import ic_moon from '../assets/icons/ic_moon.png'
-import ic_earth from '../assets/icons/ic_earth.png'
-import ic_mony from '../assets/icons/ic_mony.png'
-import ic_lockout from '../assets/icons/ic_lockout.png'
-import ic_message from '../assets/icons/ic_message.png'
-import ic_arrowbottom from '../assets/icons/ic_arrowbottom.png'
-import ic_helpcenter from '../assets/icons/ic_helpcenter.png'
-import ic_instagram from '../assets/icons/ic_instagram.png'
-import ic_twitter from '../assets/icons/ic_twitter.png'
-import ic_website from '../assets/icons/ic_website.png'
-import icon_fb from '../assets/icons/icon_fb.png'
-import ic_star_emty from '../assets/icons/ic_star_emty'
-import down from '../assets/images/down.png'
-import clock from '../assets/icons/clock.png'
-import user from '../assets/icons/user.png'
-import location from '../assets/icons/location.png'
-import gps from '../assets/icons/gps.png'
-import calendar from '../assets/icons/calendar.png'
+import ic_arrowright from '../assets/icons/ic_arrowright.png';
+import ic_map from '../assets/icons/ic_map.png';
+import ic_lock from '../assets/icons/ic_lock.png';
+import ic_orther from '../assets/icons/ic_orther.png';
+import ic_bell from '../assets/icons/ic_bell.png';
+import ic_moon from '../assets/icons/ic_moon.png';
+import ic_earth from '../assets/icons/ic_earth.png';
+import ic_mony from '../assets/icons/ic_mony.png';
+import ic_lockout from '../assets/icons/ic_lockout.png';
+import ic_message from '../assets/icons/ic_message.png';
+import ic_arrowbottom from '../assets/icons/ic_arrowbottom.png';
+import ic_helpcenter from '../assets/icons/ic_helpcenter.png';
+import ic_instagram from '../assets/icons/ic_instagram.png';
+import ic_twitter from '../assets/icons/ic_twitter.png';
+import ic_website from '../assets/icons/ic_website.png';
+import icon_fb from '../assets/icons/icon_fb.png';
+import ic_star_empty from '../assets/icons/ic_star_empty.png';
+import down from '../assets/images/down.png';
+import clock from '../assets/icons/clock.png';
+import user from '../assets/icons/user.png';
+import location from '../assets/icons/location.png';
+import gps from '../assets/icons/gps.png';
+import calendar from '../assets/icons/calendar.png';
 import padlock from '../assets/icons/padlock.png';
-import back from '../assets/icons/back.png'
+import back from '../assets/icons/back.png';
 // image
 import avatar from '../assets/images/avatar.png';
 import image from '../assets/images/image.png';
@@ -73,7 +73,7 @@ const Icons = {
   icon_fb: icon_fb,
   down: down,
   clock: clock,
-  ic_star_emty:ic_star_emty,
+  ic_star_empty: ic_star_empty,
   ic_back: back,
   user: user,
   location: location,
@@ -84,8 +84,6 @@ const Icons = {
   avatar: avatar,
   image: image,
   slider: slider,
-
-
 
   // images
   avatar,
