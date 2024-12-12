@@ -46,7 +46,7 @@ const ItineraryScreen = ({ route, navigation }) => {
                             <Text style={styles.cardTime}>11:00</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>{item.name} {item._id}</Text>
+                            <Text style={styles.cardTitle}>{item.name}</Text>
                             <Text style={styles.cardSubtitle}>T/g tham quan: {item.time}</Text>
                             <View style={styles.cardActions}>
                                 <TouchableOpacity>
@@ -85,11 +85,12 @@ const ItineraryScreen = ({ route, navigation }) => {
     }
     return (
 
-        <ScrollView >
-            <Header title="Lịch trình" 
-            onBackPress={() => {
-                navigation.goBack();
-            }} />
+        <ScrollView
+            showsVerticalScrollIndicator={false}>
+            <Header title="Lịch trình"
+                onBackPress={() => {
+                    navigation.goBack();
+                }} />
             <View style={styles.container}>
                 {locationByDateStatus === "loading" ? (
                     <View style={styles.loadingContainer}>
@@ -120,12 +121,15 @@ const ItineraryScreen = ({ route, navigation }) => {
                         />
                     </>
                 )}
+
                 <TouchableOpacity style={styles.addButton}
                     onPress={() => navigation.navigate('DiaDiem',
                         {
                             tinhId: locationByDateData.data.destination?._id,
                             lichTrinhId: lichTrinhId,
-                            dayId: dayId
+                            dayId: dayId,
+                            id: locationByDateData.data.dayInfo.locations.map(location => location._id)
+
                         })}>
                     <Icon name="plus" size={20} color="#007BFF" />
                     <Text style={styles.addButtonText}>Thêm địa điểm</Text>
@@ -271,7 +275,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cardTitle: {
-        width: 180,
+        width: 150,
         height: 40,
         fontSize: 16,
         fontWeight: '700',
@@ -294,7 +298,7 @@ const styles = StyleSheet.create({
     cardTime: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#555',
+        color: '#fff',
         position: 'absolute',
         bottom: 0,
         height: 20,

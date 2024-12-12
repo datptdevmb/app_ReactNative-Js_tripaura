@@ -5,7 +5,6 @@ import colors from '../../../constants/colors';
 import GlowingText from '../../../screens/main/tabs/home/GowingText';
 
 function HeaderHome() {
-  console.log('render')
   return (
     <View style={[styles.flex_row, styles.headerContainer]}>
       <FastImage

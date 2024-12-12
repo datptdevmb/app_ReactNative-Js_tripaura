@@ -63,6 +63,33 @@ const FavoriteScreen = () => {
           <View style={styles.skeletonText} />
         </View>
       </View>
+      <View style={styles.skeletonContainer}>
+        <View style={styles.skeletonImage} />
+        <View style={{flexDirection: 'column'}}>
+          <View style={styles.skeletonText1} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+        </View>
+      </View>
+      <View style={styles.skeletonContainer}>
+        <View style={styles.skeletonImage} />
+        <View style={{flexDirection: 'column'}}>
+          <View style={styles.skeletonText1} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+        </View>
+      </View>
+      <View style={styles.skeletonContainer}>
+        <View style={styles.skeletonImage} />
+        <View style={{flexDirection: 'column'}}>
+          <View style={styles.skeletonText1} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+        </View>
+      </View>
     </SkeletonPlaceholder>
   );
 

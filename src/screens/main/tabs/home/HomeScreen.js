@@ -88,7 +88,7 @@ function HomeScreen({ navigation }) {
                 <Text
                     numberOfLines={2}
                     style={styles.textName}>{item.tourName}</Text>
-                <View style={{marginTop: 10, width: '100%', flexDirection: 'row' }}>
+                <View style={{ marginTop: 10, width: '100%', flexDirection: 'row' }}>
                     <View style={{ marginStart: 8, marginEnd: 8 }}>
                         <IcLocate />
                     </View>
@@ -127,9 +127,9 @@ function HomeScreen({ navigation }) {
             <View>
                 <HeaderHome />
                 <SearchView />
-
             </View>
             <FlatList
+                showsVerticalScrollIndicator={false}
                 ref={flatListRef}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

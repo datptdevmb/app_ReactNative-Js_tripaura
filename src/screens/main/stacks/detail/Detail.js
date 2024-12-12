@@ -154,7 +154,7 @@ const Detail = ({navigation, route}) => {
   };
 
   const handleNavigateToFavorite = () => {
-    navigation.navigate('FavoriteList');
+    navigation.navigate('FavoriteScreen');
   };
 
   const handleDetailImage = () => {
