@@ -14,9 +14,10 @@ import {
 
 const { ZaloPayModule } = NativeModules;
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatedScrollView } from '@kanelloc/react-native-animated-header-scroll-view';
 import {
+	clearTourData,
 	decreaseAdultTicket,
 	decreaseChildTicket,
 	fetchTourById,
@@ -50,12 +51,11 @@ import HTMLView from 'react-native-htmlview';
 import Accordion from '../../../../components/common/accordion/accordion';
 import { fetchReviewsByTourId } from '../../../../redux/slices/reviewTourducers';
 import colors from '../../../../constants/colors';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const Detail = ({ navigation, route }) => {
 	const { width } = useWindowDimensions();
-
-
 	const { _id: tourId } = route.params;
 	console.log(tourId)
 	const dispatch = useDispatch();
@@ -70,8 +70,6 @@ const Detail = ({ navigation, route }) => {
 		loading,
 		selectedDate,
 	} = useSelector(state => state.reducer.tour);
-
-
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
 	);
@@ -96,8 +94,6 @@ const Detail = ({ navigation, route }) => {
 
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
-
-
 	const handleIncreaseAdult = () => dispatch(increaseAdultTicket());
 	const handleIncreaseChild = () => dispatch(increaseChildTicket());
 	const handleDecreaseAdult = () => dispatch(decreaseAdultTicket());
@@ -106,7 +102,6 @@ const Detail = ({ navigation, route }) => {
 
 	const handleFavorite = () => {
 		console.log(typeof (user))
-
 		if (!user || !user.user || !user.user._id) {
 			console.log('uid null hoặc user không hợp lệ');
 			navigation.navigate('LoginRegisterScreen');
@@ -159,9 +154,6 @@ const Detail = ({ navigation, route }) => {
 			childPrice,
 		});
 	};
-
-
-
 	const handleNavigateToFavorite = () => {
 		navigation.navigate('FavoriteList');
 	};
@@ -187,7 +179,8 @@ const Detail = ({ navigation, route }) => {
 					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId })),
 				]);
 			} catch (err) {
-				console.error('Error fetching data:', err);
+				// console.error('Error fetching data:', err);
+				throw err;
 			}
 		};
 		loadData()
@@ -365,11 +358,12 @@ const Detail = ({ navigation, route }) => {
 									onIncreaseChild={handleIncreaseChild}
 									onDecreaseAdult={handleDecreaseAdult}
 									onDecreaseChild={handleDecreaseChild}
-									adultPrice={details[0].priceAdult}
-									childPrice={details[0].priceChildren}
+									adultPrice={details?.[0]?.priceAdult || 0}
+									childPrice={details?.[0]?.priceChildren || 0}
 									childTickets={childTickets}
 									adultTickets={adultTickets}
 								/>
+
 								<RefundPolicy />
 							</View>
 

@@ -110,6 +110,16 @@ const tourSlice = createSlice({
     setSelectedDate: (state, action) => {
       state.selectedDate = action.payload;
     },
+    clearTourData: (state) => {
+      state.adultTickets = 0;
+      state.childTickets = 0;
+      state.adultPrice = 0;
+      state.childPrice = 0;
+      state.totalPrice = 0;
+      state.selectedDate = null;
+      state.loading = false;
+      state.err = null;
+    },
   },
   extraReducers: builder => {
     builder
@@ -150,6 +160,7 @@ const tourSlice = createSlice({
 });
 
 export const {
+  clearTourData,
   setPrices,
   setSelectedDate,
   increaseAdultTicket,

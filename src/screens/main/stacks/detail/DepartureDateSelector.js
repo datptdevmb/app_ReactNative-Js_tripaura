@@ -42,13 +42,13 @@ const DepartureDateSelector = ({ data, selectedDate, onSelectDate}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Ngày khởi hành hiện có</Text>
       <FlatList
-        data={showAll ? data : data.slice(0, 4)}
+        data={showAll ? data : data?.slice(0, 4) || []}
         renderItem={renderDateItem}
         keyExtractor={(item, index) => index.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
-      {!showAll && data.length > 4 && (
+      {!showAll && data?.length > 4 && (
         <TouchableOpacity onPress={handleShowAll} style={styles.showAllButton}>
           <Text style={styles.showAllText}>Xem tất cả</Text>
         </TouchableOpacity>

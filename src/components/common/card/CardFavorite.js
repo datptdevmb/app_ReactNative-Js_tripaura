@@ -5,28 +5,37 @@ import IcLocate from '../../../assets/icons/Ic_locate';
 import {Rating} from 'react-native-ratings';
 import IcFavorite from '../../../assets/icons/bottom_tab/Ic_favorite';
 
-const CardFavorite = ({item, onToggleFavorite}) => {
+const CardFavorite = ({item, onToggleFavorite, navigation}) => {
+
+  const onNavigateItem = () => {
+    navigation.navigate('Detail', {_id: item.id});
+  };
+  
   return (
-    <View style={styles.card}>
-      <Image source={{uri: item.image}} style={styles.image} />
-      <View style={styles.content}>
-        <Text style={styles.title} numberOfLines={2}>
-          {item.tourName}
-        </Text>
-        <View style={styles.locationContainer}>
-          <IcLocate />
-          <Text style={styles.location}>{item.locate}</Text>
+    <TouchableOpacity onPress={onNavigateItem}>
+      <View style={styles.card}>
+        <Image source={{uri: item.image}} style={styles.image} />
+        <View style={styles.content}>
+          <Text style={styles.title} numberOfLines={2}>
+            {item.tourName}
+          </Text>
+          <View style={styles.locationContainer}>
+            <IcLocate />
+            <Text style={styles.location}>{item.locate}</Text>
+          </View>
+          <View style={styles.ratingContainer}>
+            <Rating imageSize={12} startingValue={1} ratingCount={1} />
+            <Text>{item.rating} (100+ đánh giá)</Text>
+          </View>
+          <Text style={styles.price}>{formatCurrencyVND(item.price)}</Text>
         </View>
-        <View style={styles.ratingContainer}>
-          <Rating imageSize={12} startingValue={1} ratingCount={1} />
-          <Text>{item.rating} (100+ đánh giá)</Text>
-        </View>
-        <Text style={styles.price}>{formatCurrencyVND(item.price)}</Text>
+        <TouchableOpacity
+          onPress={onToggleFavorite}
+          style={styles.favoriteIcon}>
+          <IcFavorite color="#F47352" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={onToggleFavorite} style={styles.favoriteIcon}>
-        <IcFavorite color="#F47352" />
-      </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 

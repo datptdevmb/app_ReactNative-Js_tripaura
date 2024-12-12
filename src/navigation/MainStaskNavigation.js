@@ -41,6 +41,8 @@ import SplashScreen from '../screens/authen/Splash/SplashScreen';
 import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
 import DiaDiem from '../screens/main/stacks/schedule/DiaDiem';
 import Voucher from '../screens/main/stacks/voucher/Voucher';
+import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -54,6 +56,7 @@ const MainStaskNavigation = () => {
 
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
+    
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
       <Stack.Screen name="Schduletour" component={Schduletour} />
@@ -87,7 +90,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
       <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
-
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name="CancelOrderinfomation" component={CancelOrderinfomation} />
       <Stack.Screen name="Evaluate" component={Evaluate} />
     </Stack.Navigator>

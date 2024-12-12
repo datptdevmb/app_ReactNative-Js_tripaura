@@ -130,7 +130,7 @@ const SearchScreen = (props) => {
               <View>
                 <Headercomponet
                   leftIcon={require('../../../../assets/images/close.png')}
-                  title={"Bộ lọc"}
+                  title={"Chọn ảnh"}
                   onPressLeftIcon={() => { setisShowModal(false) }}></Headercomponet>
                 <View style={{ height: 1, backgroundColor: 'black' }}></View>
               </View>

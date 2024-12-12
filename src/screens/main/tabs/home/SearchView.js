@@ -1,13 +1,19 @@
+import { useNavigation } from "@react-navigation/native";
 import { memo } from "react"
 import { KeyboardAvoidingView, Text, TextInput, TouchableWithoutFeedback, StyleSheet, View, Keyboard } from "react-native"
 
 const SearchView = () => {
+    const navigation = useNavigation();
+    const navigateToSearch = () => {
+        navigation.navigate("SearchScreen"); 
+    };
+
 
     return (
         <View>
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined} // iOS cần padding
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined} 
             >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.inner}>
@@ -17,6 +23,7 @@ const SearchView = () => {
                             placeholder="Nhập nội dung tìm kiếm..."
                             value={''}
                             onChangeText={() => { }}
+                            onFocus={navigateToSearch}
                         />
                     </View>
                 </TouchableWithoutFeedback>

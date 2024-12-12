@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList, Image, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, Image, ScrollView, TouchableOpacity, Dimensions, Alert, ActivityIndicator } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Icons from '../../../../constants/Icons';
 import Header from '../../../../components/common/header/Header';
@@ -7,7 +7,7 @@ import { fetchBookingById } from '../../../../redux/slices/booking.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReview } from '../../../../redux/slices/reviewTourducers';
 
-const Evaluate = ({ route, navigation }) => {
+const Evaluate = ({ route,navigation }) => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [images, setImages] = useState([]);
@@ -24,14 +24,15 @@ const Evaluate = ({ route, navigation }) => {
     console.log('userId', userId);
     const tourId = booking?.detailInfo?.tourId;
     console.log('tourId', tourId);
-
+    const [loadingImages, setLoadingImages] = useState([]);
+    
     const screenWidth = Dimensions.get('window').width;
 
     useEffect(() => {
         if (bookingId) {
             dispatch(fetchBookingById(bookingId));
         }
-    }, [dispatch, bookingId]);
+    }, [dispatch, bookingId]); 
 
     const handleAddImages = () => {
         launchImageLibrary(
@@ -62,6 +63,8 @@ const Evaluate = ({ route, navigation }) => {
         data.append('api_key', '976765598717887');
 
         try {
+            setLoadingImages(prev => [...prev, image.uri]);
+
             const response = await fetch(`https://api.cloudinary.com/v1_1/dtoazwcfd/upload`, {
                 method: 'POST',
                 body: data,
@@ -77,12 +80,12 @@ const Evaluate = ({ route, navigation }) => {
         } catch (error) {
             Alert.alert('Lỗi', 'Đã xảy ra lỗi khi tải lên hình ảnh');
             console.error(error);
+        } finally {
+            setLoadingImages(prev => prev.filter(uri => uri !== image.uri));
         }
     };
 
-
     const handleSubmit = async () => {
-        // Kiểm tra nếu bất kỳ trường nào bị thiếu
         if (!userId || !tourId || !rating || !comment || !images) {
             Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin trước khi gửi đánh giá.');
             return;
@@ -99,17 +102,18 @@ const Evaluate = ({ route, navigation }) => {
 
         try {
 
-            const result = await dispatch(addReview(reviewData));
+            const result = dispatch(addReview(reviewData));
+            console.log('result', result);
+            if (!result) {
+                Alert.alert('Loi', 'Đánh giá thất bại');
 
-            if (result.meta.requestStatus === 'fulfilled') {
-                Alert.alert('Thành công', 'Đánh giá của bạn đã được gửi.');
-                navigation.goBack();
+                return;
             } else {
-                Alert.alert('Thất bại', 'Không thể gửi đánh giá. Vui lòng thử lại sau.');
+                Alert.alert('Thành công', 'Đánh giá thành công');
+                navigation.goBack();
             }
         } catch (error) {
-            console.error('Lỗi khi gửi đánh giá:', error);
-            Alert.alert('Lỗi', 'Đã xảy ra lỗi. Vui lòng thử lại.');
+           
         }
         console.log('Dữ liệu đánh giá:', { rating, comment, images });
     };
@@ -131,57 +135,76 @@ const Evaluate = ({ route, navigation }) => {
     });
 
     return (
-        <ScrollView style={styles.scrollContainer}>
-            <Header title='Đánh giá Tour' />
-            <View style={styles.container}>
-                <View style={styles.containerHeader}>
-                    <Text style={styles.label}>Tên Tour: {booking?.tourInfo?.tourName}</Text>
-                    <Text style={styles.label}>Ngày đi: {formattedDate}</Text>
-                    <Text style={styles.label}>Số người: {booking?.numAdult + booking?.numChildren}</Text>
-                </View>
-                <Image source={{ uri: image }} style={styles.imagetour} />
-                <Text style={styles.label}>Đánh giá (1-5 sao):</Text>
-                <View style={styles.starContainer}>
-                    {[...Array(5)].map((_, index) => (
-                        <TouchableOpacity key={index} onPress={() => handleStarPress(index)}>
-                            <Text style={[styles.star, rating > index && styles.selectedStar]}>★</Text>
+        <FlatList
+            ListHeaderComponent={
+                <>
+                    <Header title='Đánh giá Tour' />
+                    <View style={styles.container}>
+                        <View style={styles.containerHeader}>
+                            <Text style={styles.label}>Tên Tour: {booking?.tourInfo?.tourName}</Text>
+                            <Text style={styles.label}>Ngày đi: {formattedDate}</Text>
+                            <Text style={styles.label}>Số người: {booking?.numAdult + booking?.numChildren}</Text>
+                        </View>
+                        <Image source={{ uri: image }} style={styles.imagetour} />
+                        <Text style={styles.label}>Đánh giá (1-5 sao):</Text>
+                        <View style={styles.starContainer}>
+                            {[...Array(5)].map((_, index) => (
+                                <TouchableOpacity key={index} onPress={() => handleStarPress(index)}>
+                                    <Text style={[styles.star, rating > index && styles.selectedStar]}>★</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+
+                        <Text style={styles.label}>Bình luận:</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Nhập bình luận"
+                            multiline
+                            value={comment}
+                            onChangeText={setComment}
+                            placeholderTextColor="#aaa"
+                        />
+
+                        <Text style={styles.label}>Thêm ảnh (tùy chọn):</Text>
+                        <View style={styles.containerImagevideo}>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }}>
+                                {(images.length === 0 || loadingImages.length > 0) && (
+                                    <TouchableOpacity
+                                        onPress={handleAddImages}
+                                        style={[styles.image, { width: screenWidth * 0.28, marginRight: 10, marginLeft: images.length > 0 ? 'auto' : 0 }]}
+                                    >
+                                        {loadingImages.length > 0 ? (
+                                            <ActivityIndicator size="small" color="#4CAF50" style={styles.loadingIndicator} />
+                                        ) : (
+                                            <Text style={styles.imageButtonText}>Chọn ảnh</Text>
+                                        )}
+                                    </TouchableOpacity>
+                                )}
+                                <FlatList
+                                    data={images}
+                                    renderItem={({ item }) => (
+                                        <View style={[styles.imageContainer, { width: screenWidth * 0.28 }]}>
+                                            {loadingImages.includes(item) ? (
+                                                <ActivityIndicator size="small" color="#4CAF50" style={styles.loadingIndicator} />
+                                            ) : (
+                                                <Image source={{ uri: item }} style={[styles.image, { width: screenWidth * 0.28 }]} />
+                                            )}
+                                        </View>
+                                    )}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    numColumns={3}
+                                    columnWrapperStyle={styles.columnWrapper}
+                                />
+                            </View>
+                        </View>
+                        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+                            <Text style={styles.submitButtonText}>Gửi đánh giá</Text>
                         </TouchableOpacity>
-                    ))}
-                </View>
-
-                <Text style={styles.label}>Bình luận:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Nhập bình luận"
-                    multiline
-                    value={comment}
-                    onChangeText={setComment}
-                    placeholderTextColor="#aaa"
-                />
-
-                <Text style={styles.label}>Thêm ảnh (tùy chọn):</Text>
-                <View style={styles.containerImagevideo}>
-                    {!images.length && (
-                        <TouchableOpacity onPress={handleAddImages} style={[styles.image, { width: screenWidth * 0.28 }]}>
-                            <Text style={styles.imageButtonText}>Chọn ảnh</Text>
-                        </TouchableOpacity>
-                    )}
-                    <FlatList
-                        data={images}
-                        renderItem={({ item }) => (
-                            <Image source={{ uri: item }} style={[styles.image, { width: screenWidth * 0.28 }]} />
-                        )}
-                        keyExtractor={(item, index) => index.toString()}
-                        numColumns={3}
-                        columnWrapperStyle={styles.columnWrapper}
-                    />
-                </View>
-
-                <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-                    <Text style={styles.submitButtonText}>Gửi đánh giá</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
+                    </View>
+                </>
+            }
+            keyExtractor={() => 'header'}
+        />
     );
 };
 

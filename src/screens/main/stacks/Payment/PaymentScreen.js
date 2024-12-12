@@ -3,6 +3,8 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 import { updateBookingStatus, updateMaxTicket } from '../../../../sevices/apiServices';
+import { clearTourData } from '../../../../redux/slices/tour.slice'
+import { useDispatch } from 'react-redux';
 
 
 const PaymentScreen = ({ route }) => {
@@ -13,7 +15,7 @@ const PaymentScreen = ({ route }) => {
   const [detailId, setDetailId] = useState(route.params.detailId);
 
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   const ticker = maxTicketState - ((childTicketsState || 0) + (adultTicketsState || 0));
 
   const handleNavigationChange = (navState) => {
@@ -21,12 +23,16 @@ const PaymentScreen = ({ route }) => {
     if (url.includes('/payment/success')) {
       Alert.alert('Thành công', 'Bạn đã thanh toán thành công');
       updateBookingStatus(bookingId, 'success');
+      
       updateMaxTicket(detailId, ticker);
       setTimeout(() => navigation.navigate('MainTabNavigation'), 1000);
+      dispatch(clearTourData())
     } else if (url.includes('/payment/cancel')) {
       Alert.alert('Thất bại', 'Đã hủy thanh toán.');
+     
       updateBookingStatus(bookingId, 'cancel');
       setTimeout(() => navigation.navigate('MainTabNavigation'), 1000);
+      dispatch(clearTourData())
     }
   };
 

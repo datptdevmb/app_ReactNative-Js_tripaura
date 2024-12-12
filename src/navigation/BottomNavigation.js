@@ -29,6 +29,8 @@ import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import ChonVoucher from '../screens/main/stacks/voucher/ChonVoucher';
 import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
+import IcSearch from '../assets/icons/bottom_tab/ic_search';
+import IcGPS from '../assets/icons/Ic_GPS';
 
 
 
@@ -111,7 +113,7 @@ const ButtomNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Favourite"
+        name="lichtrinh"
         component={LichTrinhs}
         options={{
 
@@ -121,19 +123,17 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.onPrimary : colors.onPrimary,
                 height: 90,
                 // backgroundColor:colors.primary
               }}>
-              <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'} />
-              <Text style={{ fontSize: 12 }}>Uu dai</Text>
+              <IcGPS color={focused ? '#0572E7' : '#8A8A8A'} />
+              <Text style={{ fontSize: 12 }}>{ROUTES.schedule}</Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="yeuthich"
+        name="search"
         component={SearchScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -143,14 +143,12 @@ const ButtomNavigation = () => {
                 alignItems: 'center',
                 width: '100%',
                 height: 90,
-
                 // backgroundColor:colors.primary
               }}>
-              <IcFavorite color={focused ? '#0572E7' : '#8A8A8A'} />
-              <Text style={{ fontSize: 12 }}>{ROUTES.favorite}</Text>
+              <IcSearch color={focused ? '#0572E7' : '#8A8A8A'} />
             </View>
           ),
-          // tabBarButton: props => <CustomBottom {...props} />,
+          tabBarButton: props => <CustomBottom {...props} />,
         }}
       />
       <Tab.Screen

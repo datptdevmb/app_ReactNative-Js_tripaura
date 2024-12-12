@@ -1,5 +1,5 @@
 
-import { Alert, Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Modal, PermissionsAndroid, Platform, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 
 import stylesglobal from '../../../../constants/global';
@@ -13,41 +13,45 @@ import { AppContext } from '../../../AppContext';
 import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import { checkLoginStatus, logoutUser } from '../../../../redux/slices/auth.slice';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+import Headercomponet from '../../../../components/common/header/Headercomponet';
 
 const SettingLoggedScreen = (props) => {
   const { navigation } = props;
   const [isEnabled, setIsEnabled] = useState(false);
-
+  const [isShowModal, setisShowModal] = useState(false);
   const [isEnabledchdo, setIsEnabledchedo] = useState(false);
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
-  const userReducer = useSelector(state => state.reducer.auth);
-  const user = userReducer.user;
-  console.log('user: ', user);
-  const userId = user.user._id
 
-  console.log('image: ', image);
-
+  const [user, setUser] = useState(null);
+  const userId = user?.user?._id;
 
   const changeUserStatus = useSelector(state => state.changeUser);
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const toggleSwitchchedo = () => setIsEnabledchedo(previousState => !previousState);
 
-  useEffect(() => {
-    if (user.user) {
-      const userData = user.user;
-      const avatar = userData.avatar;
-      const fullname = userData.fullname;
-      const email = userData.email;
-      const userId = userData._id;
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUserData = async () => {
+        try {
+          const userData = await AsyncStorage.getItem('userId');
+          const parsedData = JSON.parse(userData);
+          setUser(parsedData || null);
+        } catch (error) {
+          console.error('Lỗi khi đọc dữ liệu từ AsyncStorage:', error);
+          Alert.alert('Lỗi', 'Không thể tải dữ liệu người dùng');
+        }
+      };
 
-      console.log('Avatar:', avatar);
-      console.log('Fullname:', fullname);
-      console.log('Email:', email);
-      console.log('User ID:', userId);
-    }
-  }, [user]);
+      fetchUserData();
+      return () => {
+        setUser(null);
+      };
+    }, [])
+  );
 
   const commonOptions = {
     mediaType: 'photo',
@@ -71,6 +75,32 @@ const SettingLoggedScreen = (props) => {
       await handleImageSelection(response);
     } catch (error) {
       console.error("Image picker error:", error);
+    }
+  };
+  const requestCameraPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Quyền truy cập camera',
+            message: 'Ứng dụng cần quyền truy cập camera để chụp ảnh.',
+            buttonNeutral: 'Hỏi lại sau',
+            buttonNegative: 'Hủy',
+            buttonPositive: 'OK',
+          }
+        );
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          openCamera();
+        } else {
+          Alert.alert('Lỗi', 'Bạn cần cấp quyền truy cập camera để sử dụng tính năng này.');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    } else {
+      openCamera();
     }
   };
 
@@ -107,7 +137,6 @@ const SettingLoggedScreen = (props) => {
       });
 
       const result = await response.json();
-      console.log("Cloudinary response:", result);
       if (response.ok) {
         const imageUrl = result.secure_url;
 
@@ -115,14 +144,15 @@ const SettingLoggedScreen = (props) => {
           userId: userId,
           avatar: imageUrl,
         };
-
         const updateResult = await dispatch(ThayDoiThongTin(userUpdateData));
         if (updateResult.error) {
           Alert.alert('Lỗi', 'Cập nhật thông tin người dùng không thành công');
         } else {
           Alert.alert('Thành công', 'Cập nhật hình ảnh thành công');
-          dispatch(fetchUserInfo(userId));
           setImage(imageUrl);
+          const updatedUser = { ...user, user: { ...user.user, avatar: imageUrl } };
+          setUser(updatedUser);
+          await AsyncStorage.setItem('userId', JSON.stringify(updatedUser));
         }
       } else {
         Alert.alert('Lỗi', 'Không thể tải lên hình ảnh');
@@ -132,7 +162,6 @@ const SettingLoggedScreen = (props) => {
       console.error(error);
     }
   };
-
 
   useEffect(() => {
     if (changeUserStatus === 'failed') {
@@ -144,12 +173,12 @@ const SettingLoggedScreen = (props) => {
   const userName = user?.user.fullname || 'Nguyễn Văn A';
 
   const avatar = image
-    ? { uri: image } : typeof user?.user.avatar === 'string' && user.user.avatar.startsWith('http')
-      ? { uri: user.user.avatar } : Icons.avatar;
+    ? { uri: image } : typeof user?.user?.avatar === 'string' && user?.user?.avatar.startsWith('http')
+      ? { uri: user?.user?.avatar } : Icons.avatar;
 
   console.log('avatar', avatar);
   console.log('name', userName);
-  console.log('userName:', user?.user.fullname);
+  console.log('userName:', user?.fullname);
 
 
   function handleMap() {
@@ -175,15 +204,15 @@ const SettingLoggedScreen = (props) => {
       <View style={styles.headerContainer}>
         <View style={styles.avatarContainer}>
 
-          <TouchableOpacity onPress={openImagePicker}>
+          <View >
             <Image
               source={avatar}
               style={styles.imageAvatar}
             />
 
-          </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity style={styles.icCameraContainer} onPress={openCamera}>
+          <TouchableOpacity style={styles.icCameraContainer} onPress={() => setisShowModal(true)}>
             <Image source={Icons.ic_camera} />
           </TouchableOpacity>
         </View>
@@ -235,16 +264,6 @@ const SettingLoggedScreen = (props) => {
                 source={Icons.ic_message} />
             </View>
             <Text style={styles.txtTroGiup}>Câu hỏi thường gặp</Text>
-          </TouchableOpacity>
-        </View>
-        <View >
-          <TouchableOpacity style={styles.btnCauHoiContainer}>
-            <View style={styles.imageTroGiupContainer}>
-              <Image
-                style={styles.imageTroGiup}
-                source={Icons.ic_lock} />
-            </View>
-            <Text style={styles.txtTroGiup}>Thay đổi mật khẩu</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -326,6 +345,42 @@ const SettingLoggedScreen = (props) => {
           </View>
         </View>
       </View>
+
+      <Modal
+        transparent={true}
+        visible={isShowModal}
+        animationType="fade"
+        onRequestClose={() => setisShowModal(false)}
+      >
+        <View style={{ justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.5)', flex: 1 }}>
+          <View style={{
+            height: 200,
+            backgroundColor: 'white',
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            padding: 20,
+          }}>
+            <View>
+              <Headercomponet
+                leftIcon={require('../../../../assets/images/close.png')}
+                title={"Chọn ảnh"}
+                onPressLeftIcon={() => { setisShowModal(false) }}></Headercomponet>
+            </View>
+            <View>
+              <TouchableOpacity onPress={openImagePicker}>
+                <View style={{ backgroundColor: '#0572E7', borderRadius: 5, padding: 10, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ color: 'white', fontFamily: 'Lato', fontSize: 16, fontWeight: '700' }}>Chọn ảnh</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={requestCameraPermission}>
+                <View style={{ backgroundColor: '#E5E5E5', borderRadius: 5, padding: 10, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                  <Text style={{ color: colors.Grey_900, fontFamily: 'Lato', fontSize: 16, fontWeight: '700' }}>Chụp ảnh</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
@@ -463,6 +518,8 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 50,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    borderWidth: 1.5,
+    borderColor: 'black',
   }
 })

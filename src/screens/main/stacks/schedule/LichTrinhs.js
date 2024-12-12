@@ -107,6 +107,7 @@ const LichTrinhs = props => {
                 <Text> tạo ngày thôi nào</Text>
               </View>
             }
+            showsVerticalScrollIndicator={false}
           />
         )}
 
@@ -117,7 +118,9 @@ const LichTrinhs = props => {
             <Text style={{fontSize: 20, color: 'white'}}>+</Text>
           </TouchableOpacity>
         )}
+        <View style={{height: 100}}/>
       </View>
+      
     </View>
   );
 };
