@@ -11,6 +11,9 @@ import styles from './RateStyle';
 const Rate = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { tourId } = route.params;
+  const [review, setreview] = useState([])
+  console.log('set review', review);
+
 
   const danhSachDanhGia = useSelector(
     state => state.reducer.reviews.reviewsData,
@@ -18,10 +21,15 @@ const Rate = ({ route, navigation }) => {
   const trangThaiDanhGia = useSelector(
     state => state.reducer.reviews.reviewsStatus,
   );
-  console.log('Danh sách đánh giá:', danhSachDanhGia);
-  console.log('Trạng thái đánh giá:', trangThaiDanhGia);
-
   const [isLoading, setIsLoading] = useState(false);
+
+
+  useEffect(() => {
+    if (Array.isArray(danhSachDanhGia)) {
+      const sortedReview = [...danhSachDanhGia].sort((a, b) => new Date(b.dayReview) - new Date(a.dayReview));
+      setreview(sortedReview);
+    }
+  }, [danhSachDanhGia]);
 
   useEffect(() => {
     if (tourId) {
@@ -32,18 +40,15 @@ const Rate = ({ route, navigation }) => {
   }, [dispatch, tourId]);
 
   const tinhTrungBinhSoSao = danhGia => {
-    // Kiểm tra nếu danhGia không phải là mảng hoặc mảng rỗng, trả về 0
     if (!Array.isArray(danhGia) || danhGia.length === 0) {
       return 0;
     }
 
-    let tongSoSao = 0; // Biến để lưu tổng số sao
-    let soDanhGia = danhGia.length; // Số lượng đánh giá
+    let tongSoSao = 0;
+    let soDanhGia = danhGia.length;
     console.log('soDanhGia:', soDanhGia);
 
-    // Duyệt qua từng đánh giá và cộng điểm rating vào tongSoSao
     for (let i = 0; i < soDanhGia; i++) {
-      // Kiểm tra nếu có rating, nếu không thì thêm 0
       tongSoSao += danhGia[i].rating || 0;
     }
     console.log('tongSoSao:', tongSoSao);
@@ -138,8 +143,10 @@ const Rate = ({ route, navigation }) => {
         />
       </View>
 
-      {trangThaiDanhGia === 'loading' ? (
-        <Text></Text>
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#3498db" />
+        </View>
       ) : !Array.isArray(danhSachDanhGia) || danhSachDanhGia.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Image
@@ -147,12 +154,12 @@ const Rate = ({ route, navigation }) => {
             style={styles.emptyImage}
           />
           <Text style={styles.emptyText}>
-            Chưa có đánh giá nào cho tour này !
+            Chưa có đánh giá nào cho tour này!
           </Text>
         </View>
       ) : (
         <FlatList
-          data={danhSachDanhGia}
+          data={review}
           renderItem={renderReviewItem}
           keyExtractor={item => item._id}
           contentContainerStyle={styles.listContainer}

@@ -53,12 +53,41 @@ export const addReview = createAsyncThunk(
   }
 );
 
+export const getreviewbytouridandbyuserid = createAsyncThunk(
+  'reviews/getreviewbytouridandbyuserid',
+  async ({ userId, tourId }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/review/getreviewbytouridandbyuserid?userId=${userId}&tourId=${tourId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      if (!response.ok) {
+        const errorData = await response.text(); 
+        return rejectWithValue(errorData);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching review:", error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 
 const initialState = {
   reviewsData: [],
   reviewsStatus: 'idle',
-  error: null, 
-  addReviewStatus: 'idle', 
+  error: null,
+  addReviewStatus: 'idle',
+  getReviewByUserAndTourStatus: 'idle',
+  getReviewByUserAndTourData: [],
 };
 
 
@@ -88,12 +117,29 @@ const reviewSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         state.addReviewStatus = 'success';
-        state.reviewsData.push(action.payload.data); 
+        state.reviewsData.push(action.payload.data);
       })
       .addCase(addReview.rejected, (state, action) => {
         state.addReviewStatus = 'failed';
         state.error = action.payload || action.error.message;
+      })
+
+      .addCase(getreviewbytouridandbyuserid.fulfilled, (state, action) => {
+        const { userId, tourId } = action.meta.arg;
+        state.getReviewByUserAndTourStatus = 'succeeded';
+        state.getReviewByUserAndTourData = {
+          ...state.getReviewByUserAndTourData,
+          [tourId]: action.payload, 
+        };
+      })
+      .addCase(getreviewbytouridandbyuserid.pending, (state) => {
+        state.getReviewByUserAndTourStatus = 'loading';
+      })
+      .addCase(getreviewbytouridandbyuserid.rejected, (state, action) => {
+        state.getReviewByUserAndTourStatus = 'failed';
+        state.getReviewByUserAndTourData = action.payload;
       });
+
   },
 });
 

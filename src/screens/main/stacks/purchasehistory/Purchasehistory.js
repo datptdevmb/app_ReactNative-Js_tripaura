@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
@@ -6,20 +6,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookingsByUserId } from '../../../../redux/slices/booking.slice';
 import colors from '../../../../constants/colors';
 import Toast from 'react-native-toast-message';
+import { getreviewbytouridandbyuserid } from '../../../../redux/slices/reviewTourducers';
 
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
     const { bookings } = useSelector((state) => state.reducer.booking);
+    console.log('bookings', bookings);
+    
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
+    const [reviews, setReviews] = useState({});
 
+    console.log('reviedddddđw', reviews);
 
     const [selectedStatus, setSelectedStatus] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (userId) {
-            dispatch(fetchBookingsByUserId(userId));
+            setLoading(true);
+            dispatch(fetchBookingsByUserId(userId))
+                .finally(() => setLoading(false));
         }
     }, [dispatch, userId]);
 
@@ -27,17 +35,15 @@ const Purchasehistory = ({ navigation }) => {
     useEffect(() => {
         if (Array.isArray(bookings)) {
             const currentTime = new Date().getTime();
-            bookings.forEach(booking => {
-                const createdAt = new Date(booking.createAt).getTime();
+            bookings.forEach(bookings => {
+                const createdAt = new Date(bookings.createAt).getTime();
                 const timePassed = currentTime - createdAt;
-
-                if (booking.status === 1 && timePassed >= 300000) {
-                    updateBookingStatus(booking._id, 2);
+                if (bookings.status === 1 && timePassed >= 300000) {
+                    updateBookingStatus(bookings._id, 2);
                 }
             });
         }
     }, [bookings]);
-
 
     const updateBookingStatus = async (bookingId, status) => {
         console.log('Updating booking status with:', status);
@@ -51,7 +57,6 @@ const Purchasehistory = ({ navigation }) => {
             });
 
             const data = await response.json();
-
 
             if (data.code === 200) {
                 Toast.show({
@@ -78,10 +83,49 @@ const Purchasehistory = ({ navigation }) => {
         navigation.goBack();
     };
 
+    useEffect(() => {
+        bookings.forEach(booking => {
+            const tourId = booking.detailInfo?.tourId;
+            if (tourId && !reviews[tourId]) {
+                dispatch(getreviewbytouridandbyuserid({ userId, tourId }))
+                    .then(response => {
+                        if (response.payload.success) {
+                            setReviews(prevReviews => ({
+                                ...prevReviews,
+                                [tourId]: response.payload.data
+                            }));
+                        } else {
+                            console.log('Không có đánh giá cho tour này');
+                            setReviews(prevReviews => ({
+                                ...prevReviews,
+                                [tourId]: []
+                            }));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi tải đánh giá:', error);
+                    });
+            }
+        });
+    }, [bookings, userId, reviews, dispatch]);
+
+
+
     const renderItem = ({ item }) => {
+
         const image = item.tourImages && item.tourImages.length > 0 && item.tourImages[0].linkImage && item.tourImages[0].linkImage.length > 0
             ? item.tourImages[0].linkImage[0]
             : null;
+        const tourId = item.detailInfo?.tourId;
+        const review = reviews[tourId];
+
+        if (review?.length === 0) {
+            console.log("Không có đánh giá cho tour này");
+        } else if (review?.length > 0) {
+            console.log("Danh sách đánh giá:", review);
+        } else {
+            console.log("Dữ liệu đánh giá chưa được tải hoặc lỗi khác xảy ra.");
+        }
 
 
         const {
@@ -97,13 +141,11 @@ const Purchasehistory = ({ navigation }) => {
             totalPrice,
         } = item;
 
-
         const tourName = tourInfo ? tourInfo.tourName : 'Không có tên tour';
 
         const currentTime = new Date().getTime();
         const bookingTime = new Date(item.detailInfo.endDay).getTime();
         const isPast = bookingTime < currentTime;
-
 
         const handlePress = () => {
             if (selectedStatus === 3) {
@@ -118,6 +160,12 @@ const Purchasehistory = ({ navigation }) => {
                 bookingId: item._id
             });
         };
+
+
+        const handleNavigateToRate = () => {
+            navigation.navigate('Rate', { tourId: tourId });
+        };
+
 
         const handleEvaluatePress = () => {
             navigation.navigate('Evaluate', { bookingId: item._id });
@@ -173,10 +221,20 @@ const Purchasehistory = ({ navigation }) => {
                             </TouchableOpacity>
                         )}
                         {selectedStatus === 3 && (
-                            <TouchableOpacity onPress={handleEvaluatePress} style={styles.paymentButton}>
-                                <Text style={styles.paymentButtonText}>Bình luận</Text>
-                            </TouchableOpacity>
+                            <>
+                                {review?.length > 0 ? (
+                                    <TouchableOpacity onPress={handleNavigateToRate} style={styles.paymentButton}>
+                                        <Text style={styles.paymentButtonText}>Xem bình luận</Text>
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity onPress={handleEvaluatePress} style={styles.paymentButton}>
+                                        <Text style={styles.paymentButtonText}>Bình luận</Text>
+                                    </TouchableOpacity>
+                                )}
+                            </>
                         )}
+
+
                     </View>
                 </View>
             </TouchableOpacity>
@@ -207,18 +265,22 @@ const Purchasehistory = ({ navigation }) => {
                         Đã đi
                     </Text>
                 </TouchableOpacity>
-
             </View>
-
-            <View style={{ padding: 16 }}>
-                <FlatList
-                    data={bookings || []}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id}
-                    contentContainerStyle={styles.container}
-                    scrollEnabled={false}
-                />
-            </View>
+            {loading ? (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={colors.primary} />
+                </View>
+            ) : (
+                <View style={{ padding: 16 }}>
+                    <FlatList
+                        data={bookings}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                        contentContainerStyle={styles.container}
+                        scrollEnabled={false}
+                    />
+                </View>
+            )}
         </ScrollView>
     );
 };
@@ -271,13 +333,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         paddingVertical: 1,
-
     },
     priceText: {
         fontSize: 16,
         color: '#27AE60',
         paddingVertical: 1,
-
     },
     statusTextContainer: {
         flexDirection: 'row',
@@ -316,5 +376,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

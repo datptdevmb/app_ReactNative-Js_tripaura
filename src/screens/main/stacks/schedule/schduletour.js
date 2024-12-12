@@ -12,6 +12,10 @@ const TripDetails = ({ navigation, route }) => {
     const endDate = getLichTrinhData?.data?.endDay ? new Date(getLichTrinhData.data.endDay) : null;
     // const idlichtrinh = "67495362ea72cd1ced81fef8"
 
+    console.log('================================ startdate',startDate);
+    console.log('================================ enddate', endDate);
+    
+
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     console.log('user', user);
@@ -30,8 +34,6 @@ const TripDetails = ({ navigation, route }) => {
     } else {
         console.log("k có dữ liệu.");
     }
-
-
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -71,13 +73,15 @@ const TripDetails = ({ navigation, route }) => {
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
                             {Array.isArray(lichTrinhha) ? (
                                 lichTrinhha.map((daySchedule, index) => {
+                                    console.log('daySchedule', daySchedule);
+                                    
                                     const firstImage = daySchedule.locations?.[0]?.images?.[0];
                                     console.log('firstImage', firstImage);
                                     return (
                                         <TouchableOpacity
                                             key={daySchedule._id}
                                             onPress={() => {
-                                                navigation.navigate('Itinerary', { dayId: daySchedule._id, lichTrinhId: lichTrinhId });
+                                                navigation.navigate('Itinerary', { dayId: daySchedule._id, lichTrinhId: lichTrinhId,daySchedule: daySchedule.day });
                                             }}
                                             style={styles.imageContainer}
                                         >

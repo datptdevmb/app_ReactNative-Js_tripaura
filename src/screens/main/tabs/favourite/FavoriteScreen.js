@@ -33,9 +33,35 @@ const FavoriteScreen = () => {
     dispatch(themXoaYeuThichTour({userId, tourId: selectedTourId}));
   };
 
-  // Function to render the skeleton loader
   const renderSkeleton = () => (
     <SkeletonPlaceholder>
+      <View style={styles.skeletonContainer}>
+        <View style={styles.skeletonImage} />
+        <View style={{flexDirection: 'column'}}>
+          <View style={styles.skeletonText1} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+        </View>
+      </View>
+      <View style={styles.skeletonContainer}>
+        <View style={styles.skeletonImage} />
+        <View style={{flexDirection: 'column'}}>
+          <View style={styles.skeletonText1} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+        </View>
+      </View>
+      <View style={styles.skeletonContainer}>
+        <View style={styles.skeletonImage} />
+        <View style={{flexDirection: 'column'}}>
+          <View style={styles.skeletonText1} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+          <View style={styles.skeletonText} />
+        </View>
+      </View>
       <View style={styles.skeletonContainer}>
         <View style={styles.skeletonImage} />
         <View style={{flexDirection: 'column'}}>
@@ -74,6 +100,7 @@ const FavoriteScreen = () => {
         <FavoriteList
           data={favoritesData}
           onToggleFavorite={handleToggleFavorite}
+          navigation={navigation}
         />
       ) : favoritesStatus === 'success' ? (
         <FavouriteScreenNoItem />

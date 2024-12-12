@@ -22,6 +22,7 @@ import { tours, categorys, data } from '../../../../constants/data';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategory } from '../../../../redux/slices/category.slice';
 import {
+    clearTourData,
     fetchPopularTour,
     fetchTours,
 } from '../../../../redux/slices/tour.slice';
@@ -38,10 +39,12 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { fetchImages } from '../../../../redux/slices/image.slice';
 import { checkLoginStatus } from '../../../../redux/slices/auth.slice';
 import IcLocate from '../../../../assets/icons/Ic_locate';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 function HomeScreen({ navigation }) {
     const dispatch = useDispatch();
+    
 
     const { categories, tours, loading, popularTours, images, isLoading } = useHomeData();
     const flatListRef = useRef(null);
@@ -68,16 +71,16 @@ function HomeScreen({ navigation }) {
     }
     const renderItem = useCallback(({ item, index }) => {
         console.log(item)
-        if (index == 0) {
-            return (
-                <TouchableOpacity
-                    onPress={handlerClickSlider}
-                    style={styles.slider}>
-                    <Slider images={images} />
-                </TouchableOpacity>
+        // if (index == 0) {
+        //     return (
+        //         <TouchableOpacity
+        //             onPress={handlerClickSlider}
+        //             style={styles.slider}>
+        //             <Slider images={images} />
+        //         </TouchableOpacity>
 
-            )
-        }
+        //     )
+        // }
 
         return (
 
@@ -120,7 +123,12 @@ function HomeScreen({ navigation }) {
         flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
     };
 
-
+    useFocusEffect(
+        useCallback(() => {
+            dispatch(clearTourData());
+        }, [dispatch])
+    );
+    
 
     return (
         <SafeAreaView style={styles.container}>

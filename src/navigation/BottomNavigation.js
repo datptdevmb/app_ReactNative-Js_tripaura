@@ -123,13 +123,11 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.onPrimary : colors.onPrimary,
                 height: 90,
                 // backgroundColor:colors.primary
               }}>
               <IcGPS color={focused ? '#0572E7' : '#8A8A8A'} />
-              <Text style={{ fontSize: 12 }}>Lịch Trình</Text>
+              <Text style={{ fontSize: 12 }}>{ROUTES.schedule}</Text>
             </View>
           ),
         }}
@@ -145,14 +143,12 @@ const ButtomNavigation = () => {
                 alignItems: 'center',
                 width: '100%',
                 height: 90,
-
                 // backgroundColor:colors.primary
               }}>
               <IcSearch color={focused ? '#0572E7' : '#8A8A8A'} />
-              <Text style={{ fontSize: 12 }}>{ROUTES.search}</Text>
             </View>
           ),
-          // tabBarButton: props => <CustomBottom {...props} />,
+          tabBarButton: props => <CustomBottom {...props} />,
         }}
       />
       <Tab.Screen

@@ -1,16 +1,46 @@
-import { memo } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import React, { memo, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import colors from '../../../constants/colors';
 import GlowingText from '../../../screens/main/tabs/home/GowingText';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function HeaderHome() {
+
+  const [user, setUser] = useState(null);
+  console.log('userddddddddddddddđ', user);
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUserData = async () => {
+        try {
+          const userData = await AsyncStorage.getItem('userId');
+          const parsedData = JSON.parse(userData);
+          setUser(parsedData || null);
+        } catch (error) {
+        }
+      };
+
+      fetchUserData();
+      return () => {
+        setUser(null);
+      };
+    }, [])
+  );
+
+  const image =
+    user?.user?.avatar && typeof user.user.avatar === "string"
+      ? { uri: user.user.avatar }
+      : require("../../../assets/images/image.png");
+
   return (
     <View style={[styles.flex_row, styles.headerContainer]}>
       <FastImage
         style={styles.image}
         resizeMode='cover'
-        source={require('../../../assets/images/image.png')} />
+        source={image} />
       <GlowingText />
       <View style={[styles.flex_row, styles.iconContainer]}>
         <View>
@@ -36,8 +66,8 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   noticeIcon: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 8
   },
   headerContainer: {
@@ -57,8 +87,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   imageView: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.Grey_0,
