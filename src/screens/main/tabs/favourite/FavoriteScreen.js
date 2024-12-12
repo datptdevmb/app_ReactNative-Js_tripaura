@@ -74,6 +74,7 @@ const FavoriteScreen = () => {
         <FavoriteList
           data={favoritesData}
           onToggleFavorite={handleToggleFavorite}
+          navigation={navigation}
         />
       ) : favoritesStatus === 'success' ? (
         <FavouriteScreenNoItem />
