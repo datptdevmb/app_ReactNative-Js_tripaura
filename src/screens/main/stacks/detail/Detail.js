@@ -49,6 +49,7 @@ import { ROUTES } from '../../../../constants/routes';
 import HTMLView from 'react-native-htmlview';
 import Accordion from '../../../../components/common/accordion/accordion';
 import { fetchReviewsByTourId } from '../../../../redux/slices/reviewTourducers';
+import colors from '../../../../constants/colors';
 
 
 const Detail = ({ navigation, route }) => {
@@ -110,13 +111,14 @@ const Detail = ({ navigation, route }) => {
 			console.log('uid null hoặc user không hợp lệ');
 			navigation.navigate('LoginRegisterScreen');
 			return;
+		} else {
+			dispatch(
+				themXoaYeuThichTour({
+					userId: user.user._id,
+					tourId,
+				}),
+			);
 		}
-		dispatch(
-			themXoaYeuThichTour({
-				userId: user.user._id,
-				tourId,
-			}),
-		);
 		if (favoritesStatus === 'success') {
 			setShowToast(true);
 			setTimeout(() => setShowToast(false), 3000);
@@ -496,7 +498,7 @@ const styles = StyleSheet.create({
 	btn: {
 		width: 148,
 		height: 44,
-		backgroundColor: '#2196F3',
+		backgroundColor: colors.primary_600,
 		position: 'absolute',
 		right: 16,
 	},

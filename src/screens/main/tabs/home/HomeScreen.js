@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 // import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {
     View,
@@ -35,72 +35,107 @@ import FastImage from 'react-native-fast-image';
 import GlowingText from './GowingText';
 import SearchView from './SearchView';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { fetchImages } from '../../../../redux/slices/image.slice';
+import { checkLoginStatus } from '../../../../redux/slices/auth.slice';
+import IcLocate from '../../../../assets/icons/Ic_locate';
 
 
 function HomeScreen({ navigation }) {
     const dispatch = useDispatch();
 
     const { categories, tours, loading, popularTours, images, isLoading } = useHomeData();
+    const flatListRef = useRef(null);
 
     const [refreshing, setRefreshing] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [selectedFavorite, setSelectedFavorite] = useState(null);
+
 
     function handleCatePress(item, index) {
         if (selectedIndex !== index) {
             setSelectedIndex(index);
         }
+        scrollToTop()
         dispatch(fetchTours(item._id));
     }
-    const handleClickFavorite = (tour, index) => {
-        if (selectedFavorite === index) {
-            setSelectedFavorite(null);
-        } else {
-            setSelectedFavorite(index);
-        }
-        console.log(`Tour favorited`);
-    };
 
     function handleClickItem(_id) {
         navigation.navigate('Detail', { _id });
 
     }
 
-    const handelPopular = useCallback(
-        () => {
-            console.log('Popular category selected');
-        },
-        [
-            /* Các giá trị phụ thuộc */
-        ],
-    );
-    const renderItem = useCallback(({ item }) => {
-        console.log('llll')
+    function handlerClickSlider() {
+        navigation.navigate('Voucher');
+    }
+    const renderItem = useCallback(({ item, index }) => {
+        console.log(item)
+        if (index == 0) {
+            return (
+                <TouchableOpacity
+                    onPress={handlerClickSlider}
+                    style={styles.slider}>
+                    <Slider images={images} />
+                </TouchableOpacity>
+
+            )
+        }
+
         return (
-            <View style={styles.View}>
+
+            <TouchableOpacity onPress={() => handleClickItem(item._id)} style={styles.View}>
                 <FastImage
                     style={{ width: '95%', height: '60%', borderRadius: 10 }}
                     source={{ uri: item?.image[0] }} />
-                <Text>{item.tourName}</Text>
-            </View>
+                <Text
+                    numberOfLines={2}
+                    style={styles.textName}>{item.tourName}</Text>
+                <View style={{marginTop: 10, width: '100%', flexDirection: 'row' }}>
+                    <View style={{ marginStart: 8, marginEnd: 8 }}>
+                        <IcLocate />
+                    </View>
+                    <Text
+                        lineBreakMode='clip'
+                        numberOfLines={1}>{item?.destination}</Text>
+                </View>
+            </TouchableOpacity>
         );
     }, []);
 
-    const onRefresh = useCallback(() => {
+    const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        setTimeout(() => {
+        try {
+            await Promise.all([
+                dispatch(fetchImages()),
+                dispatch(fetchCategory()),
+                dispatch(fetchTours('67049d4526be2256863506cc')),
+                dispatch(fetchPopularTour()),
+                dispatch(checkLoginStatus()),
+            ]);
+        } catch (err) {
+            console.error('Error refreshing data:', err);
+        } finally {
             setRefreshing(false);
-        }, 5000);
-    }, []);
+        }
+    }, [dispatch]);
+    const scrollToTop = () => {
+        flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+    };
+
 
 
     return (
         <SafeAreaView style={styles.container}>
+            <View>
+                <HeaderHome />
+                <SearchView />
+
+            </View>
             <FlatList
+                ref={flatListRef}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
                 ListHeaderComponent={
                     <View>
-                        <HeaderHome />
-                        <SearchView />
                         <View style={{ marginTop: 12 }}>
                             <CategoryList
                                 selectedIndex={selectedIndex}
@@ -108,7 +143,6 @@ function HomeScreen({ navigation }) {
                                 isLoading={isLoading}
                                 categories={categories} />
                         </View>
-
                         <TourCardList
                             onClick={handleClickItem}
                             isLoading={loading}
@@ -124,7 +158,7 @@ function HomeScreen({ navigation }) {
                         <View style={styles.View}>
                             <SkeletonPlaceholder>
                                 <Image style={{ marginTop: 10, borderRadius: 8, marginStart: 10, marginEnd: 14, width: '90%', height: 150 }} />
-                                <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '90%', height: 14 }}></Text>
+                                <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '100%', height: 14 }}></Text>
                                 <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '90%', height: 14 }}></Text>
                             </SkeletonPlaceholder>
                         </View>
@@ -149,6 +183,12 @@ const styles = StyleSheet.create({
     },
     flatL: {
         // backgroundColor: 'green'
+    },
+    textName: {
+        fontSize: 14,
+        color: colors.Grey_500,
+        fontStyle: 'normal',
+        fontWeight: '500'
     },
     searchRow: {
         marginTop: 18,
@@ -207,6 +247,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexWrap: 'nowrap',
         paddingTop: 26,
+    },
+    slider: {
+        width: 180,
+        height: 240,
+        marginBottom: 24,
+        marginEnd: 14
     },
 
     itemContainer: {
@@ -337,10 +383,9 @@ const styles = StyleSheet.create({
         height: 200,
         alignItems: 'center',
         width: '48%',
-
         marginEnd: 16,
         marginBottom: 16,
-
+        paddingHorizontal: 2,
         overflow: 'hidden', // Đảm bảo phần tử con không tràn ra ngoài bo góc
         borderRadius: 10, // Đảm bảo border-radius áp dụng cho nội dung bên trong
         shadowColor: '#000', // Màu bóng
