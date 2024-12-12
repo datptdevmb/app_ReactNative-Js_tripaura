@@ -71,10 +71,10 @@ const OrderReviewScreen = ({route, navigation}) => {
   console.log('detailId:', detailId);
   const adultPrice =
     booking?.detailInfo?.priceAdult || tourById?.details?.[0]?.priceAdult;
-  console.log('adultPrice++++++++++++++++++++++++++:', adultPrice);
+  console.log('adultPrice:', adultPrice);
   const childPrice =
     booking?.detailInfo?.priceChildren || tourById?.details?.[0]?.priceChildren;
-  console.log('childPrice++++++++++++++++++++++++++:', childPrice);
+  console.log('childPrice:', childPrice);
 
   const {discount} = route.params;
   const {voucherId} = route.params;
@@ -99,7 +99,7 @@ const OrderReviewScreen = ({route, navigation}) => {
     const totalPriceString = totalPrice.toString();
     if (!selectedMethod) {
       Alert.alert('Thông báo', 'Vui lòng chọn phương thức thanh toán');
-      return; 
+      return;
     }
 
     if (selectedMethod === 1) {

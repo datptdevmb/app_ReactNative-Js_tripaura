@@ -25,7 +25,7 @@ const TourInforTotal = ({price, adultPrice, childPrice}) => {
       <Text style={styles.textTong}>
         Giá tổng:
         <Text style={styles.price}>
-          ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ ㅤ ㅤ {formatCurrencyVND(price)}
+          ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ {formatCurrencyVND(price)}
         </Text>
       </Text>
     </View>
