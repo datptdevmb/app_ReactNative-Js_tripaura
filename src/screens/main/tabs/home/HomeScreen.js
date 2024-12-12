@@ -169,19 +169,18 @@ function HomeScreen({ navigation }) {
                 renderItem={isLoading ?
                     ({ item }) => (
                         <View style={styles.View}>
-                            <SkeletonPlaceholder>
+                            {/* <SkeletonPlaceholder>
                                 <Image style={{ marginTop: 10, borderRadius: 8, marginStart: 10, marginEnd: 14, width: '90%', height: 150 }} />
                                 <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '100%', height: 14 }}></Text>
                                 <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '90%', height: 14 }}></Text>
-                            </SkeletonPlaceholder>
+                            </SkeletonPlaceholder> */}
                         </View>
                     )
-                    : renderItem // Nếu không loading, sử dụng renderItem bình thường
+                    : renderItem 
                 }
                 style={styles.flatL}
             >
             </FlatList>
-            <View style={{ height: 100 }}></View>
         </SafeAreaView>
     );
 }

@@ -24,6 +24,8 @@ const Purchasehistory = ({ navigation }) => {
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [loading, setLoading] = useState(false);
 
+    console.log('selectedStatus === 2', selectedStatus === 2);
+    
     useFocusEffect(
         useCallback(() => {
             if (!userId) return;
@@ -92,32 +94,6 @@ const Purchasehistory = ({ navigation }) => {
     const onBackPress = () => {
         navigation.goBack();
     };
-
-    useEffect(() => {
-        bookings.forEach(booking => {
-            const tourId = booking.detailInfo?.tourId;
-            if (tourId && !reviews[tourId]) {
-                dispatch(getreviewbytouridandbyuserid({ userId, tourId }))
-                    .then(response => {
-                        if (response.payload.success) {
-                            setReviews(prevReviews => ({
-                                ...prevReviews,
-                                [tourId]: response.payload.data
-                            }));
-                        } else {
-                            console.log('Không có đánh giá cho tour này');
-                            setReviews(prevReviews => ({
-                                ...prevReviews,
-                                [tourId]: []
-                            }));
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Lỗi khi tải đánh giá:', error);
-                    });
-            }
-        });
-    }, [bookings, userId, reviews, dispatch]);
 
 
 
