@@ -1,59 +1,41 @@
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookingsByUserId } from '../../../../redux/slices/booking.slice';
 import colors from '../../../../constants/colors';
 import Toast from 'react-native-toast-message';
-import { getreviewbytouridandbyuserid } from '../../../../redux/slices/reviewTourducers';
-import { useFocusEffect } from '@react-navigation/native';
 
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
     const { bookings } = useSelector((state) => state.reducer.booking);
-    console.log('bookings', bookings);
-
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
-    const userId = user?.user?._id;
-    const [reviews, setReviews] = useState({});
-
-    console.log('reviedddddđw', reviews);
+    const userId = user.user._id;
 
     const [selectedStatus, setSelectedStatus] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false); 
 
-    console.log('selectedStatus === 2', selectedStatus === 2);
-    
-    useFocusEffect(
-        useCallback(() => {
-            if (!userId) return;
-            let isActive = true;
-
-            setLoading(true);
-            dispatch(fetchBookingsByUserId(userId)) 
-                .finally(() => {
-                    if (isActive) setLoading(false);
-                });
-
-            return () => {
-                isActive = false;
-            };
-        }, [dispatch, userId])
-    );
-
+    useEffect(() => {
+        if (userId) {
+            setLoading(true); 
+            dispatch(fetchBookingsByUserId(userId));
+        }
+    }, [dispatch, userId]);
 
     useEffect(() => {
         if (Array.isArray(bookings)) {
             const currentTime = new Date().getTime();
-            bookings.forEach(bookings => {
-                const createdAt = new Date(bookings.createAt).getTime();
+            bookings.forEach(booking => {
+                const createdAt = new Date(booking.createAt).getTime();
                 const timePassed = currentTime - createdAt;
-                if (bookings.status === 1 && timePassed >= 300000) {
-                    updateBookingStatus(bookings._id, 2);
+
+                if (booking.status === 1 && timePassed >= 300000) {
+                    updateBookingStatus(booking._id, 2);
                 }
             });
+            setLoading(false); 
         }
     }, [bookings]);
 
@@ -95,24 +77,10 @@ const Purchasehistory = ({ navigation }) => {
         navigation.goBack();
     };
 
-
-
     const renderItem = ({ item }) => {
-
         const image = item.tourImages && item.tourImages.length > 0 && item.tourImages[0].linkImage && item.tourImages[0].linkImage.length > 0
             ? item.tourImages[0].linkImage[0]
             : null;
-        const tourId = item.detailInfo?.tourId;
-        const review = reviews[tourId];
-
-        if (review?.length === 0) {
-            console.log("Không có đánh giá cho tour này");
-        } else if (review?.length > 0) {
-            console.log("Danh sách đánh giá:", review);
-        } else {
-            console.log("Dữ liệu đánh giá chưa được tải hoặc lỗi khác xảy ra.");
-        }
-
 
         const {
             numAdult,
@@ -147,12 +115,6 @@ const Purchasehistory = ({ navigation }) => {
             });
         };
 
-
-        const handleNavigateToRate = () => {
-            navigation.navigate('Rate', { tourId: tourId });
-        };
-
-
         const handleEvaluatePress = () => {
             navigation.navigate('Evaluate', { bookingId: item._id });
         };
@@ -176,7 +138,6 @@ const Purchasehistory = ({ navigation }) => {
             statusText = 'Đã hủy';
         }
 
-
         const words = tourName.split(' ');
         const firstFourWords = words.slice(0, 4).join(' ');
         const remainingWords = words.length > 4 ? '...' : '';
@@ -193,10 +154,7 @@ const Purchasehistory = ({ navigation }) => {
                         <View style={styles.statusTextContainer}>
                             <Text style={styles.statusLabel}>Trạng thái: </Text>
                             <Text
-                                style={[
-                                    styles.statusText,
-                                    { color: item.status === 0 ? '#2980B9' : item.status === 2 && isPast ? 'red' : 'red' }
-                                ]}
+                                style={[styles.statusText, { color: item.status === 0 ? '#2980B9' : item.status === 2 && isPast ? 'red' : 'red' }]}
                             >
                                 {statusText}
                             </Text>
@@ -207,20 +165,10 @@ const Purchasehistory = ({ navigation }) => {
                             </TouchableOpacity>
                         )}
                         {selectedStatus === 3 && (
-                            <>
-                                {review?.length > 0 ? (
-                                    <TouchableOpacity onPress={handleNavigateToRate} style={styles.paymentButton}>
-                                        <Text style={styles.paymentButtonText}>Xem bình luận</Text>
-                                    </TouchableOpacity>
-                                ) : (
-                                    <TouchableOpacity onPress={handleEvaluatePress} style={styles.paymentButton}>
-                                        <Text style={styles.paymentButtonText}>Bình luận</Text>
-                                    </TouchableOpacity>
-                                )}
-                            </>
+                            <TouchableOpacity onPress={handleEvaluatePress} style={styles.paymentButton}>
+                                <Text style={styles.paymentButtonText}>Bình luận</Text>
+                            </TouchableOpacity>
                         )}
-
-
                     </View>
                 </View>
             </TouchableOpacity>
@@ -252,9 +200,10 @@ const Purchasehistory = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
             </View>
+
             {loading ? (
                 <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color={colors.primary} />
+                    <ActivityIndicator size="large" color={colors.primary_600} />
                 </View>
             ) : (
                 <View style={{ padding: 16 }}>
@@ -270,7 +219,6 @@ const Purchasehistory = ({ navigation }) => {
         </ScrollView>
     );
 };
-
 export default Purchasehistory;
 
 const styles = StyleSheet.create({
@@ -367,5 +315,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        height: '100%',
     },
 });
