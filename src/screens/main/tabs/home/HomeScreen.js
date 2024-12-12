@@ -44,7 +44,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 function HomeScreen({ navigation }) {
     const dispatch = useDispatch();
-    
+
 
     const { categories, tours, loading, popularTours, images, isLoading } = useHomeData();
     const flatListRef = useRef(null);
@@ -81,6 +81,11 @@ function HomeScreen({ navigation }) {
 
         //     )
         // }
+        const getFirstFourWords = (text) => {
+            if (!text) return '';
+            const words = text.split(' ');
+            return words.slice(0, 4).join(' ') + (words.length > 4 ? '...' : '');
+        };
 
         return (
 
@@ -92,12 +97,12 @@ function HomeScreen({ navigation }) {
                     numberOfLines={2}
                     style={styles.textName}>{item.tourName}</Text>
                 <View style={{ marginTop: 10, width: '100%', flexDirection: 'row' }}>
-                    <View style={{ marginStart: 8, marginEnd: 8 }}>
+                    <View style={{ marginStart: 8, marginEnd: 2 }}>
                         <IcLocate />
                     </View>
                     <Text
                         lineBreakMode='clip'
-                        numberOfLines={1}>{item?.destination}</Text>
+                        numberOfLines={1}>{getFirstFourWords(item?.destination)}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -128,7 +133,7 @@ function HomeScreen({ navigation }) {
             dispatch(clearTourData());
         }, [dispatch])
     );
-    
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -175,8 +180,8 @@ function HomeScreen({ navigation }) {
                 }
                 style={styles.flatL}
             >
-
             </FlatList>
+            <View style={{ height: 100 }}></View>
         </SafeAreaView>
     );
 }

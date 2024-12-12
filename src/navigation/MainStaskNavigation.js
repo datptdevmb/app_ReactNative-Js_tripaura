@@ -53,10 +53,8 @@ const MainTabNavigation = () => {
 
 const MainStaskNavigation = () => {
   return (
-
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
-    
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
       <Stack.Screen name="Schduletour" component={Schduletour} />
@@ -69,7 +67,6 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="Ponorama" component={PanoramaViewer} />
       <Stack.Screen name="ImageDetail" component={ImageDetail} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-   
       <Stack.Screen name="Filter" component={DependentDropdown} />
       <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
       <Stack.Screen name="Order" component={OrderReviewScreen} />

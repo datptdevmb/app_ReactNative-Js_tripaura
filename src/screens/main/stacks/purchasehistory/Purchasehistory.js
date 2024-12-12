@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,15 +7,16 @@ import { fetchBookingsByUserId } from '../../../../redux/slices/booking.slice';
 import colors from '../../../../constants/colors';
 import Toast from 'react-native-toast-message';
 import { getreviewbytouridandbyuserid } from '../../../../redux/slices/reviewTourducers';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
     const { bookings } = useSelector((state) => state.reducer.booking);
     console.log('bookings', bookings);
-    
+
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
-    const userId = user.user._id;
+    const userId = user?.user?._id;
     const [reviews, setReviews] = useState({});
 
     console.log('reviedddddđw', reviews);
@@ -23,13 +24,22 @@ const Purchasehistory = ({ navigation }) => {
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (userId) {
+    useFocusEffect(
+        useCallback(() => {
+            if (!userId) return;
+            let isActive = true;
+
             setLoading(true);
-            dispatch(fetchBookingsByUserId(userId))
-                .finally(() => setLoading(false));
-        }
-    }, [dispatch, userId]);
+            dispatch(fetchBookingsByUserId(userId)) 
+                .finally(() => {
+                    if (isActive) setLoading(false);
+                });
+
+            return () => {
+                isActive = false;
+            };
+        }, [dispatch, userId])
+    );
 
 
     useEffect(() => {
