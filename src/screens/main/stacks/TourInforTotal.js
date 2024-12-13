@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import formatCurrencyVND from '../../../untils/formatCurrencyVND';
 
-const TourInforTotal = ({ price, adultPrice, childPrice }) => {
+const TourInforTotal = ({ price, adultPrice, childPrice, discount }) => {
   return (
     <View style={styles.tourInfor}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -17,6 +17,7 @@ const TourInforTotal = ({ price, adultPrice, childPrice }) => {
         </Text>
       </View>
 
+
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text
           style={
@@ -26,7 +27,15 @@ const TourInforTotal = ({ price, adultPrice, childPrice }) => {
           {formatCurrencyVND(childPrice)}
         </Text>
       </View>
-
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text
+          style={
+            styles.text
+          }>Mã giảm giá</Text>
+        <Text>
+          {formatCurrencyVND(discount)}
+        </Text>
+      </View>
       <Text style={styles.live}></Text>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={styles.textTong}>

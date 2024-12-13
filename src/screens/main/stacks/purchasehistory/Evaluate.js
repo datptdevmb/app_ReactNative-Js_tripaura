@@ -7,7 +7,7 @@ import { fetchBookingById } from '../../../../redux/slices/booking.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReview } from '../../../../redux/slices/reviewTourducers';
 
-const Evaluate = ({ route,navigation }) => {
+const Evaluate = ({ route, navigation }) => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [images, setImages] = useState([]);
@@ -25,14 +25,14 @@ const Evaluate = ({ route,navigation }) => {
     const tourId = booking?.detailInfo?.tourId;
     console.log('tourId', tourId);
     const [loadingImages, setLoadingImages] = useState([]);
-    
+
     const screenWidth = Dimensions.get('window').width;
 
     useEffect(() => {
         if (bookingId) {
             dispatch(fetchBookingById(bookingId));
         }
-    }, [dispatch, bookingId]); 
+    }, [dispatch, bookingId]);
 
     const handleAddImages = () => {
         launchImageLibrary(
@@ -113,7 +113,7 @@ const Evaluate = ({ route,navigation }) => {
                 navigation.goBack();
             }
         } catch (error) {
-           
+
         }
         console.log('Dữ liệu đánh giá:', { rating, comment, images });
     };
@@ -124,8 +124,8 @@ const Evaluate = ({ route,navigation }) => {
     const handleStarPress = (index) => {
         setRating(index + 1);
     };
+    const image = booking?.tourImages?.[0]?.linkImage?.[0] || 'https://via.placeholder.com/150';
 
-    const image = booking?.tourImages?.[0]?.linkImage?.[0];
     console.log('image', image);
 
     const formattedDate = new Date(booking?.detailInfo?.endDay).toLocaleDateString('vi-VN', {
@@ -145,7 +145,12 @@ const Evaluate = ({ route,navigation }) => {
                             <Text style={styles.label}>Ngày đi: {formattedDate}</Text>
                             <Text style={styles.label}>Số người: {booking?.numAdult + booking?.numChildren}</Text>
                         </View>
-                        <Image source={{ uri: image }} style={styles.imagetour} />
+                        {image ? (
+                            <Image source={{ uri: image }} style={styles.imagetour} />
+                        ) : (
+                            <Text>No Image Available</Text>
+                        )}
+
                         <Text style={styles.label}>Đánh giá (1-5 sao):</Text>
                         <View style={styles.starContainer}>
                             {[...Array(5)].map((_, index) => (

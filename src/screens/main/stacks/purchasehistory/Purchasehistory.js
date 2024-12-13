@@ -20,9 +20,12 @@ const Purchasehistory = ({ navigation }) => {
     useEffect(() => {
         if (userId) {
             setLoading(true); 
-            dispatch(fetchBookingsByUserId(userId));
+            dispatch(fetchBookingsByUserId(userId)).finally(() => {
+                setLoading(false);
+            });
         }
-    }, [dispatch, userId]);
+    }, [userId, dispatch]);
+    
 
     useEffect(() => {
         if (Array.isArray(bookings)) {
