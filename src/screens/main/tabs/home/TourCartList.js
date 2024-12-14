@@ -278,7 +278,6 @@ const TourCardList = ({
                     <Image style={{ marginTop: 10, borderRadius: 10, marginEnd: 14, width: 20, height: 20 }} />
                     <Text style={{ marginTop: 10, marginEnd: 14, width: 190, height: 14 }}></Text>
                   </View>
-
                 </SkeletonPlaceholder>
               </View>
             ))}

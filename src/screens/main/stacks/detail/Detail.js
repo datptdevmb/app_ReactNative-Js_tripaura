@@ -155,7 +155,7 @@ const Detail = ({ navigation, route }) => {
 		});
 	};
 	const handleNavigateToFavorite = () => {
-		navigation.navigate('FavoriteList');
+		navigation.navigate('FavoriteScreen');
 	};
 
 	const handleDetailImage = () => {
@@ -172,19 +172,21 @@ const Detail = ({ navigation, route }) => {
 
 	useEffect(() => {
 		const loadData = async () => {
-			try {
-				await Promise.all([
-					dispatch(fetchReviewsByTourId(tourId)),
-					dispatch(fetchTourById({ tourId })),
-					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId })),
-				]);
-			} catch (err) {
-				// console.error('Error fetching data:', err);
-				throw err;
-			}
+		  try {
+			await Promise.all([
+			  dispatch(fetchReviewsByTourId(tourId)),
+			  dispatch(fetchTourById({ tourId })),
+			  user?.user?._id &&
+				dispatch(KiemTraYeuThich({ userId: user.user._id, tourId })),
+			]);
+		  } catch (err) {
+			console.error('Error loading data:', err);
+		  }
 		};
-		loadData()
-	}, [dispatch]);
+	  
+		loadData();
+	  }, [dispatch, tourId, user]);
+	  
 
 	useEffect(() => {
 		if (imges && imges.length > 0) {
@@ -506,5 +508,12 @@ const styles = StyleSheet.create({
 		// ...StyleSheet.absoluteFillObject,
 		// backgroundColor: 'rgba(0, 0, 0, 0.5)',
 		// justifyContent: 'flex-end',
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		backgroundColor: 'rgba(0, 0, 0, 0)',
+		zIndex: 10, // Đảm bảo backdrop nằm trên nội dung khác
 	},
 });

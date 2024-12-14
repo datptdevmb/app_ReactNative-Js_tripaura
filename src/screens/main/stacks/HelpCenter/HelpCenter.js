@@ -7,9 +7,10 @@ import colors from '../../../../constants/colors'
 import ButtonHelp from '../../../../components/common/button/ButtonHelp'
 import { helpcenterdata } from '../../../../constants/data'
 
-const HelpCenter = () => {
+const HelpCenter = ({ navigation }) => {
+    
     const nhanBack = () => {
-        navigation.goBack()
+        navigation.goBack();
     }
     return (
         <View style={stylesglobal.container}>
@@ -21,11 +22,13 @@ const HelpCenter = () => {
             />
             <View style={{ width: '100%', height: 2, backgroundColor: colors.LightGray, marginTop: 10, marginBottom: 22 }} />
             {helpcenterdata.map((item, index) => {
+                
                 return (
                     <ButtonHelp
                         key={index}
                         title={item.title}
                         iconSource={item.iconSource}
+                        sections = {item.sections.content}
                     />
                 )
             })}

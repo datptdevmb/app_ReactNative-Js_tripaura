@@ -27,7 +27,10 @@ const TripDetails = ({ navigation, route }) => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(LayDanhSachLichTrinh(lichTrinhId));
+        
+            dispatch(LayDanhSachLichTrinh(lichTrinhId));
+       
+        
     }, [dispatch, lichTrinhId]);
 
     if (getLichTrinhData?.data?.locations) {

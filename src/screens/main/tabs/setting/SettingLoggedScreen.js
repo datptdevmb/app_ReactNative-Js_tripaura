@@ -45,7 +45,6 @@ const SettingLoggedScreen = (props) => {
           Alert.alert('Lỗi', 'Không thể tải dữ liệu người dùng');
         }
       };
-
       fetchUserData();
       return () => {
         setUser(null);

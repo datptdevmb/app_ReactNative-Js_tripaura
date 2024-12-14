@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookingsByUserId } from '../../../../redux/slices/booking.slice';
 
-const VietnamMap = ({ navigation }) => {  // Thêm navigation vào props
+const VietnamMap = ({ navigation }) => { 
     const dispatch = useDispatch();
     const [selectedRegions, setSelectedRegions] = useState({});
     const [showCheckbox, setShowCheckbox] = useState(false);
@@ -23,7 +23,6 @@ const VietnamMap = ({ navigation }) => {  // Thêm navigation vào props
         }
     }, [dispatch, userId]);
 
-    // Tải vùng đã chọn từ AsyncStorage
     const loadSelectedRegions = async () => {
         try {
             const storedRegions = await AsyncStorage.getItem('selectedRegions');
@@ -39,12 +38,11 @@ const VietnamMap = ({ navigation }) => {  // Thêm navigation vào props
         loadSelectedRegions();
     }, []);
 
-    // Lọc những booking đã hết hạn
+
     const expiredBookings = bookings.filter((booking) =>
         new Date(booking.detailInfo.endDay) < new Date()
     );
 
-    // Lưu trạng thái vùng đã chọn vào AsyncStorage
     const saveSelectedRegions = async (regions) => {
         try {
             await AsyncStorage.setItem('selectedRegions', JSON.stringify(regions));
@@ -53,7 +51,6 @@ const VietnamMap = ({ navigation }) => {  // Thêm navigation vào props
         }
     };
 
-    // Chuyển đổi trạng thái vùng khi người dùng chọn hoặc bỏ chọn
     const toggleRegion = (id) => {
         const updatedRegions = {
             ...selectedRegions,
@@ -63,15 +60,12 @@ const VietnamMap = ({ navigation }) => {  // Thêm navigation vào props
         saveSelectedRegions(updatedRegions);
     };
 
-    const handleUpdate = () => {
-        console.log(selectedRegions);
-    };
 
     return (
         <View style={styles.container}>
-            <Header 
-                title={"Địa điểm đã đi"} 
-                onBackPress={() => navigation.goBack()} 
+            <Header
+                title={"Địa điểm đã đi"}
+                onBackPress={() => navigation.goBack()}
             />
             <View style={{ marginTop: 30 }} />
 
@@ -86,7 +80,7 @@ const VietnamMap = ({ navigation }) => {  // Thêm navigation vào props
             </Svg>
 
             {showCheckbox && (
-                <ScrollView 
+                <ScrollView
                     style={styles.checkboxContainer}
                     contentContainerStyle={{ paddingBottom: 20 }}
                     showsVerticalScrollIndicator={false}
@@ -104,22 +98,19 @@ const VietnamMap = ({ navigation }) => {  // Thêm navigation vào props
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-                            <Text style={styles.buttonText}>Cập nhật</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={styles.button} 
+                        <TouchableOpacity
+                            style={styles.button}
                             onPress={() => setShowCheckbox(false)}
                         >
-                            <Text style={styles.buttonText}>Đóng cài đặt</Text>
+                            <Text style={styles.buttonText}>Cập nhật</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
             )}
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity 
-                    style={styles.button} 
+                <TouchableOpacity
+                    style={styles.button}
                     onPress={() => setShowCheckbox(!showCheckbox)}
                 >
                     <Text style={styles.buttonText}>

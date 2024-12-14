@@ -5,7 +5,7 @@ import { KeyboardAvoidingView, Text, TextInput, TouchableWithoutFeedback, StyleS
 const SearchView = () => {
     const navigation = useNavigation();
     const navigateToSearch = () => {
-        navigation.navigate("SearchScreen"); 
+        navigation.navigate("SearchScreen");
     };
 
 
@@ -13,17 +13,19 @@ const SearchView = () => {
         <View>
             <KeyboardAvoidingView
                 style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined} 
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.inner}>
 
                         <TextInput
+
                             style={styles.input}
                             placeholder="Nhập nội dung tìm kiếm..."
                             value={''}
                             onChangeText={() => { }}
                             onFocus={navigateToSearch}
+                            
                         />
                     </View>
                 </TouchableWithoutFeedback>
