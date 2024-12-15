@@ -26,8 +26,8 @@ export const fetchTourById = createAsyncThunk(
         throw new Error(response.msg || 'Error fetching tour data');
       }
 
-      // Giả sử API trả về đúng định dạng
       const tour = response.data[0];
+      
       const { tourName, description, images, locations, details } = tour;
 
       // Chuẩn bị dữ liệu để trả về
@@ -44,7 +44,7 @@ export const fetchTourById = createAsyncThunk(
         location,
         details,
         adultPrice,
-        childPrice,
+        childPrice
       };
     } catch (error) {
       console.error('Fetch tour by ID failed:', error);

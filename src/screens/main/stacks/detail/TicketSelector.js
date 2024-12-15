@@ -11,9 +11,10 @@ const TicketSelector = ({
     onDecreaseAdult,
     onIncreaseChild,
     onDecreaseChild,
-    maxTicket,
-    minTicket,
+
 }) => {
+    
+    
     return (
         <View>
             <Text style={style.text}>Chọn số lượng vé</Text>

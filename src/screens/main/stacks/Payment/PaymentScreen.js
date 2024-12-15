@@ -23,7 +23,6 @@ const PaymentScreen = ({ route }) => {
     if (url.includes('/payment/success')) {
       Alert.alert('Thành công', 'Bạn đã thanh toán thành công');
       updateBookingStatus(bookingId, 'success');
-      
       updateMaxTicket(detailId, ticker);
       setTimeout(() => navigation.navigate('MainTabNavigation'), 1000);
       dispatch(clearTourData())
