@@ -2,6 +2,8 @@ package com.myapp.tripaura.Api;
 
 
 
+import android.util.Log;
+
 import com.myapp.tripaura.Constant.AppInfo;
 import com.myapp.tripaura.Helper.Helpers;
 
@@ -66,6 +68,7 @@ public class CreateOrder {
                 .build();
 
         JSONObject data = HttpProvider.sendPost(AppInfo.URL_CREATE_ORDER, formBody);
+         Log.e("data", String.valueOf(data));
         return data;
     }
 }

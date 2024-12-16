@@ -1,12 +1,13 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const ButtonHelp = ({ title, iconSource, onPress }) => {
+const ButtonHelp = ({ title, iconSource, onPress,sections }) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.containerbutton} onPress={onPress}>
                 <Image style={styles.icon} source={iconSource} />
                 <Text style={styles.text}>{title}</Text>
+                <Text style={styles.text}>{sections}</Text>
             </TouchableOpacity>
         </View>
     )

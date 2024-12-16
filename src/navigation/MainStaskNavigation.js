@@ -40,6 +40,9 @@ import Itinerary from '../screens/main/stacks/schedule/Itinerary';
 import SplashScreen from '../screens/authen/Splash/SplashScreen';
 import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
 import DiaDiem from '../screens/main/stacks/schedule/DiaDiem';
+import Voucher from '../screens/main/stacks/voucher/Voucher';
+import SearchScreen from '../screens/main/tabs/Sreach/SearchScreen';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,26 +58,25 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="MainTabNavigation" component={MainTabNavigation} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
       <Stack.Screen name="Schduletour" component={Schduletour} />
-      <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="LichTrinhs" component={LichTrinhs} />
+      <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="DiaDiem" component={DiaDiem} />
-
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="Detail" component={Detail} />
       {/* <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} /> */}
       <Stack.Screen name="Ponorama" component={PanoramaViewer} />
       <Stack.Screen name="ImageDetail" component={ImageDetail} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-   
       <Stack.Screen name="Filter" component={DependentDropdown} />
       <Stack.Screen name="FAQsSrceen" component={FAQsSrceen} />
       <Stack.Screen name="Order" component={OrderReviewScreen} />
       <Stack.Screen name={ROUTES.login} component={Login} />
       <Stack.Screen name="Rate" component={Rate} />
+      <Stack.Screen name="VietnamMap" component={VietnamMap} />
 
       <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
       <Stack.Screen name="FavouriteScreenNoItem" component={FavouriteScreenNoItem} />
-      {/* <Stack.Screen name="Voucher" component={Voucher} /> */}
+      <Stack.Screen name="Voucher" component={Voucher} />
       <Stack.Screen
         name="LoginRegisterScreen"
         component={LoginRegisterScreen}
@@ -85,7 +87,7 @@ const MainStaskNavigation = () => {
       <Stack.Screen name="OrderInformation" component={OrderInformation} />
       <Stack.Screen name="Purchasehistory" component={Purchasehistory} />
       <Stack.Screen name="ListVoucherScreen" component={ListVoucherScreen} />
-
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name="CancelOrderinfomation" component={CancelOrderinfomation} />
       <Stack.Screen name="Evaluate" component={Evaluate} />
     </Stack.Navigator>

@@ -2,7 +2,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import CardFavorite from '../../../../components/common/card/CardFavorite';
 
-const FavoriteList = ({ data, onToggleFavorite }) => {
+const FavoriteList = ({ data, onToggleFavorite,navigation }) => {
 
   return (
     <View>
@@ -12,6 +12,7 @@ const FavoriteList = ({ data, onToggleFavorite }) => {
         data={data}
         renderItem={({ item }) => (
           <CardFavorite
+            navigation={navigation}
             item={item}
             onToggleFavorite={() => onToggleFavorite(item.id)}
           />

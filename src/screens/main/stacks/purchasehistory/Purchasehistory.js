@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
@@ -14,15 +14,18 @@ const Purchasehistory = ({ navigation }) => {
     const user = userReducer.user;
     const userId = user.user._id;
 
-
     const [selectedStatus, setSelectedStatus] = useState(0);
+    const [loading, setLoading] = useState(false); 
 
     useEffect(() => {
         if (userId) {
-            dispatch(fetchBookingsByUserId(userId));
+            setLoading(true); 
+            dispatch(fetchBookingsByUserId(userId)).finally(() => {
+                setLoading(false);
+            });
         }
-    }, [dispatch, userId]);
-
+    }, [userId, dispatch]);
+    
 
     useEffect(() => {
         if (Array.isArray(bookings)) {
@@ -35,9 +38,9 @@ const Purchasehistory = ({ navigation }) => {
                     updateBookingStatus(booking._id, 2);
                 }
             });
+            setLoading(false); 
         }
     }, [bookings]);
-
 
     const updateBookingStatus = async (bookingId, status) => {
         console.log('Updating booking status with:', status);
@@ -51,7 +54,6 @@ const Purchasehistory = ({ navigation }) => {
             });
 
             const data = await response.json();
-
 
             if (data.code === 200) {
                 Toast.show({
@@ -83,7 +85,6 @@ const Purchasehistory = ({ navigation }) => {
             ? item.tourImages[0].linkImage[0]
             : null;
 
-
         const {
             numAdult,
             numChildren,
@@ -97,13 +98,11 @@ const Purchasehistory = ({ navigation }) => {
             totalPrice,
         } = item;
 
-
         const tourName = tourInfo ? tourInfo.tourName : 'Không có tên tour';
 
         const currentTime = new Date().getTime();
         const bookingTime = new Date(item.detailInfo.endDay).getTime();
         const isPast = bookingTime < currentTime;
-
 
         const handlePress = () => {
             if (selectedStatus === 3) {
@@ -142,7 +141,6 @@ const Purchasehistory = ({ navigation }) => {
             statusText = 'Đã hủy';
         }
 
-
         const words = tourName.split(' ');
         const firstFourWords = words.slice(0, 4).join(' ');
         const remainingWords = words.length > 4 ? '...' : '';
@@ -159,10 +157,7 @@ const Purchasehistory = ({ navigation }) => {
                         <View style={styles.statusTextContainer}>
                             <Text style={styles.statusLabel}>Trạng thái: </Text>
                             <Text
-                                style={[
-                                    styles.statusText,
-                                    { color: item.status === 0 ? '#2980B9' : item.status === 2 && isPast ? 'red' : 'red' }
-                                ]}
+                                style={[styles.statusText, { color: item.status === 0 ? '#2980B9' : item.status === 2 && isPast ? 'red' : 'red' }]}
                             >
                                 {statusText}
                             </Text>
@@ -207,22 +202,26 @@ const Purchasehistory = ({ navigation }) => {
                         Đã đi
                     </Text>
                 </TouchableOpacity>
-
             </View>
 
-            <View style={{ padding: 16 }}>
-                <FlatList
-                    data={bookings || []}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id}
-                    contentContainerStyle={styles.container}
-                    scrollEnabled={false}
-                />
-            </View>
+            {loading ? (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={colors.primary_600} />
+                </View>
+            ) : (
+                <View style={{ padding: 16 }}>
+                    <FlatList
+                        data={bookings}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                        contentContainerStyle={styles.container}
+                        scrollEnabled={false}
+                    />
+                </View>
+            )}
         </ScrollView>
     );
 };
-
 export default Purchasehistory;
 
 const styles = StyleSheet.create({
@@ -271,13 +270,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         paddingVertical: 1,
-
     },
     priceText: {
         fontSize: 16,
         color: '#27AE60',
         paddingVertical: 1,
-
     },
     statusTextContainer: {
         flexDirection: 'row',
@@ -316,5 +313,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
     },
 });

@@ -1,13 +1,16 @@
-import { FlatList, StyleSheet, Text, View, ActivityIndicator, Image, TouchableOpacity, ToastAndroid } from 'react-native'
+import { FlatList, StyleSheet, Text, View, ActivityIndicator, Image, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Headercomponet from '../../../../components/common/header/Headercomponet'
 import { useDispatch, useSelector } from 'react-redux';
 import { GetDiaDiemByTinh } from '../../../../redux/slices/getDiaDiemByTinhSlice';
 import formatCurrencyVND from '../../../../untils/formatCurrencyVND';
 import { AddDiaDiem } from '../../../../redux/slices/addDiaDiemSlice';
+import colors from '../../../../constants/colors';
 
 const DiaDiem = ({ route, navigation }) => {
-    const { tinhId, lichTrinhId, dayId } = route.params
+    const { tinhId, lichTrinhId, dayId, id } = route.params
+    console.log('id: ', id);
+
     console.log('tinhId', tinhId, lichTrinhId, dayId);
 
     const dispatch = useDispatch();
@@ -25,14 +28,18 @@ const DiaDiem = ({ route, navigation }) => {
 
     const nhanThem = (diaDiemId) => {
         dispatch(AddDiaDiem({ lichTrinhId, dayId, diaDiemId }))
-        if (addDiaDiemStatus === "successed") {
-            ToastAndroid.show(`${addDiaDiemData.msg}`, ToastAndroid.SHORT)
-        } else {
+        // if (addDiaDiemStatus === "successed") {
+        // } else {
 
-        }
+        // }
+        Alert.alert("Success", "Thêm địa điểm thành công")
+        navigation.goBack();
     }
 
     const renderItem = ({ item }) => {
+        if (id.includes(item._id)) {
+            return null;
+        }
         return (
             <View style={styles.itemConttainer}>
                 <Image source={{ uri: item.images[0] }}
@@ -45,16 +52,15 @@ const DiaDiem = ({ route, navigation }) => {
                     <Text>Giá vé: {formatCurrencyVND(item.price)}</Text>
                 </View>
                 <TouchableOpacity style={styles.btnDelete}
-                    onPress={() => nhanThem(item._id)}>
-                    <Image
-                        source={require('../../../../assets/images/close.png')}
-                        style={{ width: 16, height: 16 }}
-                    />
+                    onPress={() =>
+                        nhanThem(item._id)
+                    }>
+                    <Text style={{ textAlign: 'center', width: '100%', height: '100%', color: colors.primary_600, fontSize: 20 }}>+</Text>
                 </TouchableOpacity>
-
             </View>
-        )
-    }
+        );
+    };
+
     if (diaDiemByTinhStatus === "loading") {
         return (
             <View style={styles.loadingContainer}>
@@ -65,9 +71,10 @@ const DiaDiem = ({ route, navigation }) => {
     }
     return (
         <View style={styles.container}>
-            <Headercomponet title={'Dia Diem'} />
+            <Headercomponet title={'Địa Điểm'} />
 
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={diaDiemByTinhData.data}
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}
@@ -80,9 +87,9 @@ export default DiaDiem
 
 const styles = StyleSheet.create({
     btnDelete: {
-        width: 32,
-        height: 32,
-        borderRadius: 32,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',

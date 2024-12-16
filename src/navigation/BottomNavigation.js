@@ -29,6 +29,8 @@ import SettingScreen from '../screens/main/stacks/profile/ProfileNologin';
 import ProfileScreen from '../screens/main/stacks/profile/ProfileScreen';
 import ChonVoucher from '../screens/main/stacks/voucher/ChonVoucher';
 import LichTrinhs from '../screens/main/stacks/schedule/LichTrinhs';
+import IcSearch from '../assets/icons/bottom_tab/ic_search';
+import IcGPS from '../assets/icons/Ic_GPS';
 
 
 
@@ -62,7 +64,7 @@ function CustomBottom({ onPress, children }) {
           }}>
           <View
             style={{
-              backgroundColor: colors.primary_200,
+              backgroundColor: colors.primary_600,
               width: 60,
               height: 60,
               borderRadius: 30,
@@ -84,6 +86,7 @@ const ButtomNavigation = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.onPrimary,
@@ -102,18 +105,16 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                borderTopWidth: focused ? 1 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
                 height: 90,
               }}>
-              <IcHome color={focused ? '#0572E7' : '#8A8A8A'}/>
+              <IcHome color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }}>{ROUTES.home}</Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="Favourite"
+        name="Lịch Trình"
         component={LichTrinhs}
         options={{
 
@@ -123,30 +124,31 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.onPrimary : colors.onPrimary,
                 height: 90,
                 // backgroundColor:colors.primary
               }}>
-              <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'}/>
-              <Text style={{ fontSize: 12 }}>Uu dai</Text>
+              <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'} />
+              <Text style={{ fontSize: 12 }}>Lịch trình</Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="yeuthich"
+        name="search"
         component={SearchScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Image
-                resizeMode="contain"
-                source={require('../assets/icons/SearchIcon.png')}
-                style={{
-                  tintColor: colors.onPrimary,
-                }}
-              />
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                height: 90,
+              }}>
+              <IcSearch />
+              {/* <IcFavorite color={focused ? '#0572E7' : '#8A8A8A'} />
+            
+              <Text style={{ fontSize: 12 }}>Tìm kiếm</Text> */}
             </View>
           ),
           tabBarButton: props => <CustomBottom {...props} />,
@@ -162,13 +164,11 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
                 height: 90,
 
                 // backgroundColor:colors.primary
               }}>
-              <IcFavorite  color={focused ? '#0572E7' : '#8A8A8A'} />
+              <IcFavorite color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }}>{ROUTES.favorite}</Text>
             </View>
           ),
@@ -184,13 +184,9 @@ const ButtomNavigation = () => {
                 justifyContent: 'center',
                 width: '100%',
                 alignItems: 'center',
-                borderTopWidth: focused ? 2 : 0,
-                borderTopColor: focused ? colors.primary : colors.onPrimary,
                 height: 90,
-
-                // backgroundColor:colors.primary
               }}>
-              <IcProfile  color={focused ? '#0572E7' : '#8A8A8A'}/>
+              <IcProfile color={focused ? '#0572E7' : '#8A8A8A'} />
               <Text style={{ fontSize: 12 }} >{ROUTES.settings}</Text>
             </View>
           ),

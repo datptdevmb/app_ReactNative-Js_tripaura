@@ -14,9 +14,10 @@ import {
 
 const { ZaloPayModule } = NativeModules;
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatedScrollView } from '@kanelloc/react-native-animated-header-scroll-view';
 import {
+	clearTourData,
 	decreaseAdultTicket,
 	decreaseChildTicket,
 	fetchTourById,
@@ -49,13 +50,14 @@ import { ROUTES } from '../../../../constants/routes';
 import HTMLView from 'react-native-htmlview';
 import Accordion from '../../../../components/common/accordion/accordion';
 import { fetchReviewsByTourId } from '../../../../redux/slices/reviewTourducers';
+import colors from '../../../../constants/colors';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const Detail = ({ navigation, route }) => {
 	const { width } = useWindowDimensions();
-
-
 	const { _id: tourId } = route.params;
+	console.log(tourId)
 	const dispatch = useDispatch();
 	const [detailId, setDetailId] = useState(null);
 	const {
@@ -68,13 +70,25 @@ const Detail = ({ navigation, route }) => {
 		loading,
 		selectedDate,
 	} = useSelector(state => state.reducer.tour);
-
-
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
 	);
-	console.log('adultPrice', adultPrice);
-	console.log('childPrice', childPrice);
+
+	console.log('adultTickets....................', adultTickets);
+	console.log('childTickets....................', childTickets);
+
+	const totalTicher = adultTickets + childTickets;
+	console.log('totalTickets................', totalTicher);
+
+
+
+
+
+
+	const [maxTicket, setMaxTicket] = useState(null);
+	console.log('maxTicket...............................................', maxTicket);
+
+
 
 	const { isTourFavorited, favoritesStatus, message } = useSelector(
 		state => state.reducer.favorites,
@@ -85,37 +99,34 @@ const Detail = ({ navigation, route }) => {
 			: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
 	);
 	const { user } = useSelector(state => state.reducer.auth);
-	console.log('user........................................: ', user);
 
 	const [showToast, setShowToast] = useState(false);
 
 	const { imges, tourName, description, location, details } = tourById;
 
-
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
-
-
 	const handleIncreaseAdult = () => dispatch(increaseAdultTicket());
 	const handleIncreaseChild = () => dispatch(increaseChildTicket());
 	const handleDecreaseAdult = () => dispatch(decreaseAdultTicket());
 	const handleDecreaseChild = () => dispatch(decreaseChildTicket());
 	const handleBack = () => navigation.goBack();
 
+
 	const handleFavorite = () => {
 		console.log(typeof (user))
-
 		if (!user || !user.user || !user.user._id) {
 			console.log('uid null hoặc user không hợp lệ');
 			navigation.navigate('LoginRegisterScreen');
 			return;
+		} else {
+			dispatch(
+				themXoaYeuThichTour({
+					userId: user.user._id,
+					tourId,
+				}),
+			);
 		}
-		dispatch(
-			themXoaYeuThichTour({
-				userId: user.user._id,
-				tourId,
-			}),
-		);
 		if (favoritesStatus === 'success') {
 			setShowToast(true);
 			setTimeout(() => setShowToast(false), 3000);
@@ -150,17 +161,20 @@ const Detail = ({ navigation, route }) => {
 			Alert.alert('Lỗi', 'Vui lòng chọn số lượng vé.');
 			return;
 		}
+		if (totalTicher > maxTicket) {
+			Alert.alert('Thông báo', 'Số lượng véo đã đạt giới hạn cho tour này');
+			return;
+		}
 		navigation.navigate('Order', {
 			detailId,
 			adultPrice,
 			childPrice,
 		});
+
+
 	};
-
-
-
 	const handleNavigateToFavorite = () => {
-		navigation.navigate('FavoriteList');
+		navigation.navigate('FavoriteScreen');
 	};
 
 	const handleDetailImage = () => {
@@ -181,14 +195,17 @@ const Detail = ({ navigation, route }) => {
 				await Promise.all([
 					dispatch(fetchReviewsByTourId(tourId)),
 					dispatch(fetchTourById({ tourId })),
+					user?.user?._id &&
 					dispatch(KiemTraYeuThich({ userId: user.user._id, tourId })),
 				]);
 			} catch (err) {
-				console.error('Error fetching data:', err);
+				console.error('Error loading data:', err);
 			}
 		};
-		loadData()
-	}, [dispatch]);
+
+		loadData();
+	}, [dispatch, tourId, user]);
+
 
 	useEffect(() => {
 		if (imges && imges.length > 0) {
@@ -196,7 +213,6 @@ const Detail = ({ navigation, route }) => {
 		}
 	}, [imges]);
 
-	console.log('detail', detailId);
 
 	const toggleBottomSheet = () => {
 		setBottomSheetVisible(!bottomSheetVisible);
@@ -205,7 +221,12 @@ const Detail = ({ navigation, route }) => {
 			duration: 300,
 			useNativeDriver: true,
 		}).start();
+
+
 	};
+
+	const maxTickets = details?.[0]?.maxTicket;
+
 
 	return (
 		<View style={styles.container}>
@@ -350,23 +371,37 @@ const Detail = ({ navigation, route }) => {
 									<Ic_x onPress={toggleBottomSheet} />
 								</TouchableOpacity>
 								<Text style={styles.tourname}>{tourName}</Text>
+
 								<DepartureDateSelector
-									onSelectDate={(date, id) => {
-										dispatch(setSelectedDate(date)), setDetailId(id);
+									onSelectDate={(date, id, minTicket, maxTicket) => {
+										dispatch(setSelectedDate(date));
+										setDetailId(id);
+										setMaxTicket(maxTicket);
 									}}
 									selectedDate={selectedDate}
 									data={details}
 								/>
+								{maxTicket ? (
+									<View>
+										<Text style={{ fontSize: 16, fontWeight: '600', color: '#000' }}>
+											Số vé còn lại: {maxTicket}
+										</Text>
+									</View>
+								) : null}
+
+
+
 								<TicketSelector
 									onIncreaseAdult={handleIncreaseAdult}
 									onIncreaseChild={handleIncreaseChild}
 									onDecreaseAdult={handleDecreaseAdult}
 									onDecreaseChild={handleDecreaseChild}
-									adultPrice={details[0].priceAdult}
-									childPrice={details[0].priceChildren}
+									adultPrice={details?.[0]?.priceAdult || 0}
+									childPrice={details?.[0]?.priceChildren || 0}
 									childTickets={childTickets}
 									adultTickets={adultTickets}
 								/>
+
 								<RefundPolicy />
 							</View>
 
@@ -495,7 +530,7 @@ const styles = StyleSheet.create({
 	btn: {
 		width: 148,
 		height: 44,
-		backgroundColor: '#2196F3',
+		backgroundColor: colors.primary_600,
 		position: 'absolute',
 		right: 16,
 	},
@@ -509,5 +544,12 @@ const styles = StyleSheet.create({
 		// ...StyleSheet.absoluteFillObject,
 		// backgroundColor: 'rgba(0, 0, 0, 0.5)',
 		// justifyContent: 'flex-end',
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		backgroundColor: 'rgba(0, 0, 0, 0)',
+		zIndex: 10, // Đảm bảo backdrop nằm trên nội dung khác
 	},
 });

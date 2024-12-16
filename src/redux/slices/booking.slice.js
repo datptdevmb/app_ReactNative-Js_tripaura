@@ -20,6 +20,8 @@ export const fetchBookingsByUserId = createAsyncThunk(
     async (userId, { rejectWithValue }) => {
         try {
             const response = await fetch(`https://trip-aura-server.vercel.app/booking/api/bookinguser/${userId}`);
+            console.log('response', response);
+            
             if (!response.ok) {
                 throw new Error('Failed to fetch bookings for user');
             }
@@ -51,11 +53,14 @@ const initialState = {
     loading: false,
     err: null,
 };
-
 const bookingSlice = createSlice({
     name: 'bookings',
     initialState,
-    reducers: {},
+    reducers: {
+        clearBookingData: (state) => {
+            state.bookingData = null; // Đặt lại dữ liệu bookingData
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchBookingById.fulfilled, (state, action) => {
             state.bookingData = action.payload;
@@ -81,7 +86,6 @@ const bookingSlice = createSlice({
             state.err = action.error.message;
         });
 
-
         builder.addCase(fetchBooking.fulfilled, (state, action) => {
             state.bookings = action.payload;
             state.loading = false;
@@ -96,4 +100,5 @@ const bookingSlice = createSlice({
     },
 });
 
+export const { clearBookingData } = bookingSlice.actions;
 export default bookingSlice.reducer;

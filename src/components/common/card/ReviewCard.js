@@ -17,7 +17,7 @@ function ReviewCard({ review }) {
                     <>
                         <View style={styles.flexRow}>
                             <Image
-                                source={{uri:review.avatar}}
+                                source={{ uri: review.avatar }}
                                 style={styles.image} />
                             <View style={styles.mr_start_12}>
                                 <Text style={styles.lable}> {review.fullname}</Text>
@@ -31,7 +31,9 @@ function ReviewCard({ review }) {
                             startingValue={5}
                             imageSize={14} />
 
-                        <Text style={styles.bodyText}> {review?.comment} </Text>
+                        <Text
+                            numberOfLines={2}
+                            style={styles.bodyText}> {review?.comment} </Text>
                     </>
                 </View>
             }

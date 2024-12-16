@@ -12,6 +12,10 @@ const TripDetails = ({ navigation, route }) => {
     const endDate = getLichTrinhData?.data?.endDay ? new Date(getLichTrinhData.data.endDay) : null;
     // const idlichtrinh = "67495362ea72cd1ced81fef8"
 
+    console.log('================================ startdate',startDate);
+    console.log('================================ enddate', endDate);
+    
+
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     console.log('user', user);
@@ -23,15 +27,16 @@ const TripDetails = ({ navigation, route }) => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(LayDanhSachLichTrinh(lichTrinhId));
+        
+            dispatch(LayDanhSachLichTrinh(lichTrinhId));
+       
+        
     }, [dispatch, lichTrinhId]);
 
     if (getLichTrinhData?.data?.locations) {
     } else {
         console.log("k có dữ liệu.");
     }
-
-
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -67,21 +72,19 @@ const TripDetails = ({ navigation, route }) => {
                     <View>
                         <View style={styles.headerContainer}>
                             <Text style={styles.sectionTitle}>Lịch trình chuyến đi</Text>
-                            <TouchableOpacity style={styles.viewAllContainer} onPress={() => { }}>
-                                <Text style={styles.viewAllText}>Xem tất cả</Text>
-
-                            </TouchableOpacity>
                         </View>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
                             {Array.isArray(lichTrinhha) ? (
                                 lichTrinhha.map((daySchedule, index) => {
+                                    console.log('daySchedule', daySchedule);
+                                    
                                     const firstImage = daySchedule.locations?.[0]?.images?.[0];
                                     console.log('firstImage', firstImage);
                                     return (
                                         <TouchableOpacity
                                             key={daySchedule._id}
                                             onPress={() => {
-                                                navigation.navigate('Itinerary', { dayId: daySchedule._id, lichTrinhId: lichTrinhId });
+                                                navigation.navigate('Itinerary', { dayId: daySchedule._id, lichTrinhId: lichTrinhId,daySchedule: daySchedule.day });
                                             }}
                                             style={styles.imageContainer}
                                         >
@@ -113,14 +116,27 @@ const TripDetails = ({ navigation, route }) => {
                     source={lichTrinhha[0]?.locations?.[0]?.images?.[0] ? { uri: lichTrinhha[0].locations[0].images[0] } : Icons.image}
                     style={styles.imageBackground}
                 />
+
+
             )}
-            { getLichTrinhStatus==="loading" ? (
+            <TouchableOpacity style={styles.buttonback}
+                onPress={
+                    () => {
+                        navigation.goBack();
+                    }
+                }>
+                <Image
+                    source={Icons.ic_leftarrow}
+                    style={styles.heartIcon}
+                />
+            </TouchableOpacity>
+            {getLichTrinhStatus === "loading" ? (
                 // Hiển thị loading khi dữ liệu đang được tải
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color="#007BFF" />
                     <Text>Đang tải dữ liệu...</Text>
                 </View>
-            ):(<View style={styles.cardContainer}>
+            ) : (<View style={styles.cardContainer}>
                 <View style={styles.card}>
                     <Text style={styles.title}>
                         {numberOfDays > 0 ? `${numberOfDays} ngày` : 'Không có thông tin về số ngày'} đi{' '}
@@ -129,18 +145,6 @@ const TripDetails = ({ navigation, route }) => {
                     <Text style={styles.date}>{startDate ? formatDate(startDate) : 'ABCXYZ'} - {startDate ? formatDate(endDate) : 'NÂNNA'}</Text>
                     <Text style={styles.creator}>{user?.user?.fullname}</Text>
                 </View>
-
-
-                <View style={styles.tabContainer}>
-                    <TouchableOpacity
-                        style={styles.tab}
-                        onPress={() => setActiveTab('Chuyển đi')}
-                    >
-                        <Text style={styles.tabText}>Chuyển đi</Text>
-                        {activeTab === 'Chuyển đi' && <View style={styles.underline} />}
-                    </TouchableOpacity>
-                </View>
-
                 {renderItinerary()}
 
                 <Text style={styles.sectionTitle}>Bao gồm</Text>
@@ -165,10 +169,21 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#fff',
     },
+    heartIcon: {
+        width: 32,
+        height: 32,
+        tintColor: '#fff',
+        marginStart: 16,
+    },
     cardContainer: {
         padding: 16,
         position: 'absolute',
         top: 100,
+    },
+    buttonback: {
+        position: 'absolute',
+        marginTop: 10,
+
     },
     memberContainer: {
         flexDirection: 'column',
@@ -192,6 +207,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 5,
+        marginStart: 20,
     },
     title: {
         fontWeight: '600',
@@ -248,7 +264,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 165,
         position: 'relative',
-        borderRadius: 8,
     },
     imageDate: {
         textAlign: 'center',

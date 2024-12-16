@@ -27,7 +27,6 @@ const Schedule = ({ navigation }) => {
     // console.log('user: ', user);
     const userId = user.user._id
 
-
     // Gọi API lấy danh sách điểm đến
     useEffect(() => {
         const fetchDestinations = async () => {
@@ -71,41 +70,49 @@ const Schedule = ({ navigation }) => {
             ToastAndroid.show("Bạn cần nhập đầy đủ thông tin", ToastAndroid.SHORT)
         } else {
             dispatch(createSchedules({ departure, destination, endDay, person, startDay, userId }))
-            navigation.navigate('Schduletour', { lichTrinhId: Schedules._id });
+            navigation.navigate('Schduletour', { lichTrinhId: Schedules._id});
 
         }
     };
     useEffect(() => {
         if (Schedules && Schedules._id) {
-            console.log("=============== id", Schedules._id);   
+            console.log("=============== id", Schedules._id);
         }
-    }, [Schedules, Schedules._id]);
+    }, [Schedules]);
 
     return (
         <ScrollView style={styles.container}>
-            <Header title="Lên lịch trình" />
+            <Header title="Lên lịch trình" onBackPress={
+                () => {
+                    navigation.goBack();
+                }
+            } />
 
             <View style={styles.inputContainer}>
                 <View style={styles.row}>
-                    {/* <Image source={Icons.location} style={styles.icon} /> */}
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Điểm xuất phát"
-                        value={departure}
-                        onChangeText={setDeparture}
-                    />
+                    <Image source={Icons.gps} style={styles.icon} />
+                    <View style={styles.containerinput}>
+                        <Text>Điểm xuất phát</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Điểm xuất phát"
+                            value={departure}
+                            onChangeText={setDeparture}
+                        />
+                    </View>
+
                 </View>
 
                 <View style={styles.row}>
-                    {/* <Image source={Icons.destination} style={styles.icon} /> */}
-                    {isLoading ? (
-                        <ActivityIndicator size="small" color="#0572E7" />
-                    ) : (
+                    <Image source={Icons.location} style={styles.icon} />
+
+                    <View style={{ flex: 1 }}>
+                        <Text>Điểm đến:</Text>
                         <Picker
                             selectedValue={destination}
                             onValueChange={(itemValue) => {
-                                console.log(itemValue); // Xem giá trị _id được chọn
-                                setDestination(itemValue); // Lưu _id vào state
+                                console.log(itemValue);
+                                setDestination(itemValue);
                             }}
                             style={styles.picker}
                         >
@@ -114,45 +121,55 @@ const Schedule = ({ navigation }) => {
                                 <Picker.Item key={index} label={item.name} value={item._id} />
                             ))}
                         </Picker>
-                    )}
+                        <View style={styles.separator} />
+                    </View>
+
                 </View>
 
+
                 <View style={styles.row}>
-                    {/* <Image source={Icons.calendar} style={styles.icon} /> */}
-                    <TouchableOpacity style={styles.dateInput} onPress={() => handleCalendarToggle(false)}>
-                        <Text style={styles.dateText}>{startDay || 'Ngày khởi hành'}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.dateInput} onPress={() => handleCalendarToggle(true)}>
-                        <Text style={styles.dateText}>{endDay || 'Ngày về'}</Text>
-                    </TouchableOpacity>
+                    <Image source={Icons.calendar} style={styles.icon} />
+                    <View style={{ flex: 1 }}>
+                        <Text>Ngày khởi hành</Text>
+                        <TouchableOpacity style={styles.dateInput} onPress={() => handleCalendarToggle(false)}>
+                            <Text style={styles.dateText}>{startDay || ''}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 1, marginStart: 10 }}>
+                        <Text>Ngày về</Text>
+                        <TouchableOpacity style={styles.dateInput} onPress={() => handleCalendarToggle(true)}>
+                            <Text style={styles.dateText}>{endDay || ''}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 {isCalendarVisible && (
                     <Calendar
                         onDayPress={handleDayPress}
+                        minDate={selectingEndDate ? startDay : new Date().toISOString().split('T')[0]}
                         markedDates={{
-                            [selectingEndDate ? endDay : startDay]: {
-                                selected: true,
-                                marked: true,
-                                selectedColor: '#0572E7',
-                            },
+                            [startDay]: { selected: true, marked: true, selectedColor: '#0572E7' },
+                            [endDay]: { selected: true, marked: true, selectedColor: '#0572E7' },
                         }}
                     />
                 )}
-
+                
                 <View style={styles.row}>
-                    {/* <Image source={Icons.people} style={styles.icon} /> */}
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Số người"
-                        keyboardType="numeric"
-                        value={String(person)}
-                        onChangeText={(text) => setPeople(Number(text))}
-                    />
+                    <Image source={Icons.user} style={styles.icon} />
+                    <View style={styles.containerinput}>
+                        <Text>Chọn số người</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Số người"
+                            keyboardType="numeric"
+                            value={String(person)}
+                            onChangeText={(text) => setPeople(Number(text))}
+                        />
+                    </View>
                 </View>
 
                 <View style={styles.row}>
-                    {/* <Image source={Icons.lock} style={styles.icon} /> */}
+                    <Image source={Icons.padlock} style={styles.icon} />
                     <Text style={styles.publicText}>Công khai</Text>
                     <Switch value={isPublic} onValueChange={setIsPublic} />
                 </View>
@@ -172,8 +189,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+    separator: {
+        height: 1,
+        backgroundColor: 'gray',
+    },
     inputContainer: {
         padding: 16,
+    },
+    containerinput: {
+        flex: 1,
     },
     row: {
         flexDirection: 'row',
@@ -194,7 +218,6 @@ const styles = StyleSheet.create({
     },
     picker: {
         flex: 1,
-        height: 40,
         color: 'black',
     },
     dateInput: {
@@ -204,7 +227,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
     },
     dateText: {
-        fontSize: 16,
+        fontSize: 15,
         color: 'gray',
     },
     publicText: {

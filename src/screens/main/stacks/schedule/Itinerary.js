@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, FlatList, ActivityIndicator, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../../../../components/common/header/Header';
 import Icons from '../../../../constants/Icons';
@@ -8,9 +8,11 @@ import { LayDiaDiemTheoNgay } from '../../../../redux/slices/diaDiemTheoNgaySlic
 import { DeleteDiaDiem } from '../../../../redux/slices/deleteDiadiemSlice';
 
 const ItineraryScreen = ({ route, navigation }) => {
-    const { dayId, lichTrinhId } = route.params
+    const { dayId, lichTrinhId, daySchedule } = route.params
     console.log("======= day", dayId);
     console.log("======= lichTrinhId", lichTrinhId);
+    console.log('daySchedule', daySchedule);
+
     const { locationByDateData, locationByDateStatus, error } = useSelector(state => state.reducer.locationByDate);
     const { deleteDiaDiemData, deleteDiaDiemStatus } = useSelector(state => state.reducer.deleteDiaDiem);
     const { addDiaDiemData, addDiaDiemStatus } = useSelector(state => state.reducer.addDiaDiem);
@@ -18,6 +20,7 @@ const ItineraryScreen = ({ route, navigation }) => {
         dispatch(DeleteDiaDiem({
             lichTrinhId, dayId, diaDiemId
         }))
+        Alert.alert('Thành công', 'Xóa địa điểm thành công')
         console.log("=====  delete", deleteDiaDiemData);
 
     }
@@ -33,7 +36,9 @@ const ItineraryScreen = ({ route, navigation }) => {
 
     // console.log("================= số địa điểm", locationByDateData.data.dayInfo.locations.length);
 
-    const renderItem = ({ item }) => {
+    const renderItem = (item, index, dataLength) => {
+        const isLastItem = index === dataLength - 1;
+    
         return (
             <View style={styles.timeline}>
                 <View style={styles.timelineContainer}>
@@ -43,89 +48,81 @@ const ItineraryScreen = ({ route, navigation }) => {
                                 source={{ uri: item.images[0] }}
                                 style={styles.cardImage}
                             />
-                            <Text style={styles.cardTime}>11:00</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>{item.name} {item._id}</Text>
+                            <Text style={styles.cardTitle}>{item.name}</Text>
                             <Text style={styles.cardSubtitle}>T/g tham quan: {item.time}</Text>
-                            <View style={styles.cardActions}>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Ghi chú</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Text style={styles.actionText}>Gần đây</Text>
-                                </TouchableOpacity>
-                            </View>
+
                         </View>
                     </View>
-                    <View style={styles.line} />
-                    <View style={styles.freeTimeCard}>
-                        <Image source={Icons.clock} size={20} color="#007BFF" />
-                        <Text style={styles.freeTimeText}>Thời gian rảnh: 2h</Text>
-                    </View>
-                    <TouchableOpacity style={styles.btnDelete}
-                        onPress={() => nhanXoa(item._id)}>
+                    {!isLastItem && <View style={styles.line} />} 
+                    <TouchableOpacity
+                        style={styles.btnDelete}
+                        onPress={() => nhanXoa(item._id)}
+                    >
                         <Image
                             source={require('../../../../assets/images/close.png')}
-                            style={{ width: 16, height: 16 }}
+                            style={{ width: 12, height: 12 }}
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.timelineContainer2}>
-                    <View style={styles.transportContainer}>
-                        <Image source={Icons.clock} style={styles.carIcon} />
-                        <Text style={styles.travelInfo}>14.0 km | 21p</Text>
-                    </View>
-                    <View style={styles.line2} />
-                </View>
-
-
             </View>
-        )
-    }
+        );
+    };
+    
     return (
-        <ScrollView style={styles.container}>
-            <Header title="Lịch trình" />
-            {locationByDateStatus === "loading" ? (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#007BFF" />
-                    <Text>Đang tải dữ liệu...</Text>
-                </View>
-            ) : (
-                <>
-                    {locationByDateData?.data?.dayInfo ? (
-                        <View style={styles.dayInfo}>
-                            <Text style={styles.dayText}>Ngày 1</Text>
-                            <View style={styles.dateRow}>
-                                <Text style={styles.dateText}>26/11/2024</Text>
-                                <Text style={styles.infoText}>300.1km</Text>
-                                <Text style={styles.infoText}>
-                                    {locationByDateData.data?.dayInfo?.locations?.length || 0} địa điểm
-                                </Text>
+
+        <ScrollView
+            showsVerticalScrollIndicator={false}>
+            <Header title="Lịch trình"
+                onBackPress={() => {
+                    navigation.goBack();
+                }} />
+            <View style={styles.container}>
+                {locationByDateStatus === "loading" ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#007BFF" />
+                        <Text>Đang tải dữ liệu...</Text>
+                    </View>
+                ) : (
+                    <>
+                        {locationByDateData?.data?.dayInfo ? (
+                            <View style={styles.dayInfo}>
+                                <View style={styles.dateRow}>
+                                    <Text style={styles.dayText}>Ngày {daySchedule}</Text>
+                                    <Text style={styles.infoText}>
+                                        {locationByDateData.data?.dayInfo?.locations?.length || 0} địa điểm
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    ) : (
-                        <Text>Không có dữ liệu lịch trình!</Text>
-                    )}
-                    <FlatList
-                        scrollEnabled={false}
-                        data={locationByDateData.data?.dayInfo?.locations}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item._id}
-                    />
-                </>
-            )}
-            <TouchableOpacity style={styles.addButton}
-                onPress={() => navigation.navigate('DiaDiem',
-                    {
-                        tinhId: locationByDateData.data.destination?._id,
-                        lichTrinhId: lichTrinhId,
-                        dayId: dayId
-                    })}>
-                <Icon name="plus" size={20} color="#007BFF" />
-                <Text style={styles.addButtonText}>Thêm địa điểm</Text>
-            </TouchableOpacity>
-            <View style={{ height: 44 }}></View>
+                        ) : (
+                            <Text>Không có dữ liệu lịch trình!</Text>
+                        )}
+                        <FlatList
+                            scrollEnabled={false}
+                            data={locationByDateData.data?.dayInfo?.locations || []} 
+                            renderItem={({ item, index }) =>
+                                renderItem(item, index, locationByDateData.data?.dayInfo?.locations?.length || 0)
+                            }
+                            keyExtractor={(item) => item._id}
+                        />
+
+                    </>
+                )}
+
+                <TouchableOpacity style={styles.addButton}
+                    onPress={() => navigation.navigate('DiaDiem',
+                        {
+                            tinhId: locationByDateData.data.destination?._id,
+                            lichTrinhId: lichTrinhId,
+                            dayId: dayId,
+                            id: locationByDateData.data.dayInfo.locations.map(location => location._id)
+
+                        })}>
+                    <Text style={styles.addButtonText}>Thêm địa điểm</Text>
+                </TouchableOpacity>
+                <View style={{ height: 44 }}></View>
+            </View>
         </ScrollView>
 
     );
@@ -133,8 +130,8 @@ const ItineraryScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     btnDelete: {
-        width: 32,
-        height: 32,
+        width: 25,
+        height: 25,
         borderRadius: 32,
         borderWidth: 1,
         justifyContent: 'center',
@@ -165,7 +162,7 @@ const styles = StyleSheet.create({
         left: 20,
         top: 118,
         width: 2,
-        height: 120,
+        height: 50,
         backgroundColor: '#0572E7',
     },
     line2: {
@@ -265,7 +262,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cardTitle: {
-        width: 180,
+        width: 150,
         height: 40,
         fontSize: 16,
         fontWeight: '700',
@@ -288,7 +285,7 @@ const styles = StyleSheet.create({
     cardTime: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#555',
+        color: '#fff',
         position: 'absolute',
         bottom: 0,
         height: 20,

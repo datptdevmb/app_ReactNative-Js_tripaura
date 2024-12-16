@@ -1,69 +1,90 @@
-import { ScrollView, StatusBar, StyleSheet, Text, View, NativeModules, Alert } from "react-native";
+import {
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    View,
+    NativeModules,
+    Alert,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 const { ZaloPayModule } = NativeModules;
-import Header from "../../../components/common/header/Header";
-import TourInfo from "./TourInfor";
-import DepartureInfo from "./DepartureInfo";
-import ContactInfo from "./ContactInfo";
-import { useDispatch, useSelector } from "react-redux";
-import Button from "../../../components/common/button/Button";
-import formatCurrencyVND from "../../../untils/formatCurrencyVND";
-import Paymethod from "./Paymethod";
-import { useCallback, useEffect, useState } from "react";
-import { LayDanhSachVoucher } from "../../../redux/slices/vouchersSlice";
-import SelecVoucher from "./selecVoucher";
-import { fetchBooking, fetchBookingById } from "../../../redux/slices/booking.slice";
-import { clearPaymentData, createPayment } from "../../../redux/slices/paymentSlice";
+import Header from '../../../components/common/header/Header';
+import TourInfo from './TourInfor';
+import TourInforTotal from './TourInforTotal';
+import DepartureInfo from './DepartureInfo';
+import ContactInfo from './ContactInfo';
+import { useDispatch, useSelector } from 'react-redux';
+import Button from '../../../components/common/button/Button';
+import formatCurrencyVND from '../../../untils/formatCurrencyVND';
+import Paymethod from './Paymethod';
+import { useCallback, useEffect, useState } from 'react';
+import { LayDanhSachVoucher } from '../../../redux/slices/vouchersSlice';
+import SelecVoucher from './selecVoucher';
+import {
+    clearBookingData,
+    fetchBooking,
+    fetchBookingById,
+} from '../../../redux/slices/booking.slice';
+import {
+    clearPaymentData,
+    createPayment,
+} from '../../../redux/slices/paymentSlice';
 
 const OrderReviewScreen = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const { bookingId: routeBookingId } = route.params;
     const [maxTicketState, setMaxTicketState] = useState(route.params.maxTicket);
-    const { tourById, adultTickets, childTickets, totalPrice, selectedDate } = useSelector((state) => state.reducer.tour);
-    const { getVoucherData } = useSelector((state) => state.reducer.vouchers);
+    const { tourById, adultPrice, childPrice, adultTickets, childTickets, totalPrice, selectedDate } = useSelector(state => state.reducer.tour);
+    const { getVoucherData } = useSelector(state => state.reducer.vouchers);
     const [bookingId, setBookingId] = useState(routeBookingId);
-    const paymentStatus = useSelector((state) => state.reducer.payment.status);
-    const paymentInfo = useSelector((state) => state.reducer.payment.paymentInfo);
+    const paymentStatus = useSelector(state => state.reducer.payment.status);
+    const paymentInfo = useSelector(state => state.reducer.payment.paymentInfo);
     useEffect(() => {
         if (bookingId) {
             dispatch(fetchBookingById(bookingId));
         }
     }, [dispatch, bookingId]);
 
-    const bookingData = useSelector((state) => state.reducer.booking);
-    const booking = bookingData?.bookingData?.data;
-    console.log('booking:..........................', booking);
+    const bookingData = useSelector(state => state.reducer.booking);
 
+    const booking = bookingData?.bookingData?.data;
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearBookingData());
+        };
+    }, [dispatch]);
+
+    console.log('booking:..........................', booking);
     const tourName = tourById?.tourName || booking?.tourInfo?.tourName;
     console.log('tourName:..........................', tourName);
     const date = selectedDate || booking?.detailInfo?.endDay;
     console.log('date:..........................', date);
-    const numAdult = adultTickets || booking?.numAdult;
+    const numAdult = adultTickets || booking?.numAdult || 0;
     console.log('numAdult:..........................', numAdult);
-    const numChildren = childTickets || booking?.numChildren;
+    const numChildren = childTickets || booking?.numChildren || 0;
     console.log('numchilden.......................', numChildren);
-    const priceChildren = booking?.priceChildren;
+    const priceChildren = booking?.priceChildren || childPrice;
     console.log('priceChildren:..........................', priceChildren);
-    const priceAdult = booking?.priceAdult;
+    const priceAdult = booking?.priceAdult || adultPrice;
     console.log('priceAdult:..........................', priceAdult);
-    const totalPriceTour = totalPrice || (numAdult * priceAdult) + (numChildren * priceChildren);
+    const totalPriceTour = totalPrice || numAdult * priceAdult + numChildren * priceChildren;
 
     console.log('totalPriceTour..............', totalPriceTour);
-
-
-
-
     const detailId = booking?.detailId || tourById?.details?.[0]?._id;
     console.log('detailId:', detailId);
-    const adultPrice = booking?.detailInfo?.priceAdult || tourById?.details?.[0]?.priceAdult;
-    console.log('adultPrice:', adultPrice);
-    const childPrice = booking?.detailInfo?.priceChildren || tourById?.details?.[0]?.priceChildren;
-    console.log('childPrice:', childPrice);
+    const adultPricee = booking?.priceAdult || tourById?.details?.[0]?.priceAdult;
+    console.log('adultPrice:', adultPricee);
 
-    const { discount } = route.params
-    const { voucherId } = route.params
+    const a = priceChildren * numAdult;
+    const b = priceAdult * numChildren;
 
-    let finalPrice = (totalPrice && discount) ? totalPrice - discount : totalPrice;
+
+    const { discount } = route.params;
+    const { voucherId } = route.params;
+
+    let finalPrice = totalPrice && discount ? totalPrice - discount : totalPrice;
 
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
@@ -79,17 +100,18 @@ const OrderReviewScreen = ({ route, navigation }) => {
         navigation.navigate('ListVoucherScreen', { totalPrice: totalPrice });
     });
 
-
     const handlePurchase = useCallback(async () => {
         const totalPriceString = totalPrice.toString();
         if (!selectedMethod) {
-            console.log('No payment method selected');
+            Alert.alert('Thông báo', 'Vui lòng chọn phương thức thanh toán');
             return;
         }
 
         if (selectedMethod === 1) {
             handleSaveBooking();
-            ZaloPayModule.createOrder(totalPriceString);
+            ZaloPayModule.createOrder(totalPriceString, (result) => {
+                console.log(result)
+            });
         }
         if (selectedMethod === 2) {
             handleSaveBooking();
@@ -110,7 +132,7 @@ const OrderReviewScreen = ({ route, navigation }) => {
             numChildren: childTickets,
             priceAdult: adultPrice,
             priceChildren: childPrice,
-            totalPrice: (totalPrice && discount) ? totalPrice - discount : totalPrice,
+            totalPrice: totalPrice && discount ? totalPrice - discount : totalPrice,
         };
 
         try {
@@ -127,7 +149,6 @@ const OrderReviewScreen = ({ route, navigation }) => {
         }
     };
 
-
     useEffect(() => {
         if (paymentStatus === 'succeeded') {
             if (paymentInfo.paymentLink && bookingId) {
@@ -137,15 +158,14 @@ const OrderReviewScreen = ({ route, navigation }) => {
                     maxTicket: maxTicketState,
                     childTickets,
                     adultTickets,
-                    detailId
+                    detailId,
                 });
             } else {
-                console.warn("Payment succeeded, but bookingId or paymentLink is missing");
                 if (!paymentInfo.paymentLink) {
-                    console.warn("Missing paymentLink in paymentInfo");
+                    console.warn('Missing paymentLink in paymentInfo');
                 }
                 if (!bookingId) {
-                    console.warn("Missing bookingId");
+                    console.warn('Missing bookingId');
                 }
             }
             dispatch(clearPaymentData());
@@ -161,18 +181,23 @@ const OrderReviewScreen = ({ route, navigation }) => {
         const orderId = Math.floor(100000 + Math.random() * 900000);
         const shortenedTourName = tourName.slice(0, 20);
         if (!totalPrice || !tourName || !orderId || !fullname || !phone || !email) {
-            Alert.alert('Error', 'Incomplete payment information. Please check again.');
+            Alert.alert(
+                'Error',
+                'Incomplete payment information. Please check again.',
+            );
             return;
         }
-        dispatch(createPayment({
-            amount: totalPrice,
-            orderId,
-            description: shortenedTourName,
-            fullname,
-            phone,
-            email,
-            bookingId
-        }));
+        dispatch(
+            createPayment({
+                amount: totalPrice,
+                orderId,
+                description: shortenedTourName,
+                fullname,
+                phone,
+                email,
+                bookingId,
+            }),
+        );
     };
 
     const handleBack = () => {
@@ -181,7 +206,11 @@ const OrderReviewScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            <StatusBar translucent={false} barStyle="dark-content" backgroundColor="#FFF" />
+            <StatusBar
+                translucent={false}
+                barStyle="dark-content"
+                backgroundColor="#FFF"
+            />
             <Header title={'Hoàn tất hóa đơn'} onBackPress={handleBack} />
             <ScrollView>
                 <View style={styles.content}>
@@ -192,12 +221,20 @@ const OrderReviewScreen = ({ route, navigation }) => {
                         childCount={numChildren}
                         price={totalPriceTour}
                     />
+
                     <DepartureInfo />
-                    <SelecVoucher onPress={handleVoucher}
-                        discount={discount} />
+                    {/*Icon màu voucher */}
+                    <SelecVoucher onPress={handleVoucher} discount={discount} />
                     <Paymethod
                         selectedMethod={selectedMethod}
                         setSelectedMethod={setSelectedMethod}
+                    />
+                    {/* Tổng hoàn tất hoá đơn */}
+                    <TourInforTotal
+                        price={totalPriceTour}
+                        adultPrice={a}
+                        childPrice={b}
+                        discount={discount || 0}
                     />
                 </View>
             </ScrollView>
@@ -207,9 +244,15 @@ const OrderReviewScreen = ({ route, navigation }) => {
                         <Text style={styles.text}>Tổng giá tiền</Text>
                         <Text style={styles.caption}>Đã bao gồm phí</Text>
                     </View>
-                    <Text style={styles.textPrice}>{formatCurrencyVND(totalPriceTour)}</Text>
+                    <Text style={styles.textPrice}>
+                        {formatCurrencyVND(totalPriceTour)}
+                    </Text>
                 </View>
-                <Button onPressed={handlePurchase} style={styles.btn} label="Mua ngay" />
+                <Button
+                    onPressed={handlePurchase}
+                    style={styles.btn}
+                    label="Mua ngay"
+                />
             </View>
         </View>
     );
@@ -241,8 +284,8 @@ const styles = StyleSheet.create({
     },
     buttonBottom: {
         width: '100%',
-        position: "absolute",
-        backgroundColor: "#fff",
+        position: 'absolute',
+        backgroundColor: '#fff',
         bottom: 0,
         padding: 20,
     },
