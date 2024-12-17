@@ -30,6 +30,7 @@ import {
   clearPaymentData,
   createPayment,
 } from '../../../redux/slices/paymentSlice';
+import { updateBookingStatus } from '../../../sevices/apiServices';
 
 const OrderReviewScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -96,14 +97,23 @@ const OrderReviewScreen = ({ route, navigation }) => {
   });
 
   const handlePurchase = useCallback(async () => {
-    const totalPriceString = totalPrice.toString();
+    const totalPriceString = totalPriceTour.toString();
     if (!selectedMethod) {
       Alert.alert('Thông báo', 'Vui lòng chọn phương thức thanh toán');
       return;
     }
     if (selectedMethod === 1) {
-      handleSaveBooking();
-      ZaloPayModule.createOrder(totalPriceString);
+      const newBookingId = await handleSaveBookingZL();
+      console.log('kkkkk')
+      console.log(newBookingId)
+      if (newBookingId) {
+        ZaloPayModule.createOrder(totalPriceString, (result) => {
+          if (result == 1) {
+            console.log(`bookingId ${newBookingId}`); 
+            updateBookingStatus(newBookingId, 'success'); 
+          }
+        });
+      }
     }
     if (selectedMethod === 2) {
       handleSaveBooking();
@@ -133,6 +143,37 @@ const OrderReviewScreen = ({ route, navigation }) => {
       if (response.code === 200 && response.data && response.data._id) {
         setBookingId(response.data._id);
         handelNavigateToPayment(response.data._id);
+        return response.data._id;
+      } else {
+        console.log('Could not fetch bookingId');
+      }
+    } catch (error) {
+      console.log('Error calling fetchBooking:', error);
+    }
+  };
+
+  const handleSaveBookingZL = async () => {
+    if (bookingId) {
+      console.log('Already have bookingId, no need to create a new one');
+      return bookingId;
+    }
+    const bookingData = {
+      detailId,
+      userId,
+      voucherId: voucherId || null,
+      numAdult: adultTickets,
+      numChildren: childTickets,
+      priceAdult: adultPrice,
+      priceChildren: childPrice,
+      totalPrice: totalPrice && discount ? totalPrice - discount : totalPrice,
+    };
+
+    try {
+      console.log('Sending booking data:', bookingData);
+      const response = await dispatch(fetchBooking(bookingData)).unwrap();
+      if (response.code === 200 && response.data && response.data._id) {
+
+        return response.data._id;
       } else {
         console.log('Could not fetch bookingId');
       }

@@ -102,7 +102,7 @@ const Purchasehistory = ({ navigation }) => {
             if (selectedStatus === 3) {
                 return;
             }
-            navigation.navigate('OrderInformation', { bookingId: item._id });
+            navigation.navigate('OrderInformation', { bookingId: item._id, total: item.totalPrice });
         };
 
         const handlePaymentPress = () => {

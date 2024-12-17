@@ -252,6 +252,7 @@ const TourCardList = ({
   tours, // Danh sách các tour
   isLoading,
   horizontal,
+  loading,
   numColumns,
   onClick// Trạng thái loading
 }) => {
@@ -260,13 +261,13 @@ const TourCardList = ({
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
     const visibleIds = viewableItems.map(item => item.key);
-    setVisibleItems(visibleIds); // Cập nhật danh sách các item đang hiển thị
+    setVisibleItems(visibleIds); 
   }, []);
 
   return (
     <View style={styles.container}>
       {
-        isLoading ? (
+        isLoading || loading ? (
           <View style={styles.flexRow}>
             {[...Array(4)].map((_, index) => (
               <View key={index} style={styles.imgContaierLod}>

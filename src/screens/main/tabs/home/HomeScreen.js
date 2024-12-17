@@ -63,7 +63,6 @@ function HomeScreen({ navigation }) {
 
     function handleClickItem(_id) {
         navigation.navigate('Detail', { _id });
-
     }
     function handlerClickSlider() {
         navigation.navigate('Voucher');
@@ -71,23 +70,16 @@ function HomeScreen({ navigation }) {
 
     const renderItem = useCallback(({ item, index }) => {
         console.log(item)
-        // if (index == 0) {
-        //     return (
-        //         <TouchableOpacity
-        //             onPress={handlerClickSlider}
-        //             style={styles.slider}>
-        //             <Slider images={images} />
-        //         </TouchableOpacity>
 
-        //     )
-        // }
-        const getFirstFourWords = (text) => {
-            if (!text) return '';
-            const words = text.split(' ');
-            return words.slice(0, 4).join(' ') + (words.length > 4 ? '...' : '');
-        };  
+
+
         return (
-            <TouchableOpacity onPress={() => handleClickItem(item._id)} style={styles.View}>
+
+            <TouchableOpacity
+                key={index.toString()}
+                onPress={
+                    () => handleClickItem(item._id)}
+                style={styles.View}>
                 <FastImage
                     style={{ width: '95%', height: '60%', borderRadius: 10 }}
                     source={{ uri: item?.image[0] }} />
@@ -100,7 +92,7 @@ function HomeScreen({ navigation }) {
                     </View>
                     <Text
                         lineBreakMode='clip'
-                        numberOfLines={1}>{getFirstFourWords(item?.destination)}</Text>
+                        numberOfLines={1}>{item?.destination}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -164,17 +156,19 @@ function HomeScreen({ navigation }) {
                 }
                 data={popularTours}
                 numColumns={2}
-                renderItem={isLoading ?
-                    ({ item }) => (
-                        <View style={styles.View}>
-                            <SkeletonPlaceholder>
-                                <Image style={{ marginTop: 10, borderRadius: 8, marginStart: 10, marginEnd: 14, width: '90%', height: 150 }} />
-                                <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '100%', height: 14 }}></Text>
-                                <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '90%', height: 14 }}></Text>
-                            </SkeletonPlaceholder>
-                        </View>
-                    )
-                    : renderItem 
+                renderItem={
+                    isLoading ?
+                        ({ item }) => (
+                            <View
+                                style={styles.View}>
+                                <SkeletonPlaceholder>
+                                    <Image style={{ marginTop: 10, borderRadius: 8, marginStart: 10, marginEnd: 14, width: '90%', height: 150 }} />
+                                    <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '100%', height: 14 }}></Text>
+                                    <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '90%', height: 14 }}></Text>
+                                </SkeletonPlaceholder>
+                            </View>
+                        )
+                        : renderItem
                 }
                 style={styles.flatL}
             >
@@ -190,6 +184,9 @@ const styles = StyleSheet.create({
         color: '#4D4C4C',
         fontWeight: '600',
         marginTop: 20,
+    },
+    headerStyle: {
+        paddingBottom: 12,
     },
     flatL: {
         // backgroundColor: 'green'

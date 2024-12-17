@@ -64,7 +64,7 @@ function CustomBottom({ onPress, children }) {
           }}>
           <View
             style={{
-              backgroundColor: colors.primary_200,
+              backgroundColor: colors.primary_600,
               width: 60,
               height: 60,
               borderRadius: 30,
@@ -86,6 +86,7 @@ const ButtomNavigation = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.onPrimary,
@@ -113,7 +114,7 @@ const ButtomNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="lichtrinh"
+        name="Lịch Trình"
         component={LichTrinhs}
         options={{
 
@@ -126,8 +127,8 @@ const ButtomNavigation = () => {
                 height: 90,
                 // backgroundColor:colors.primary
               }}>
-              <IcGPS color={focused ? '#0572E7' : '#8A8A8A'} />
-              <Text style={{ fontSize: 12 }}>{ROUTES.schedule}</Text>
+              <IcVoucher color={focused ? '#0572E7' : '#8A8A8A'} />
+              <Text style={{ fontSize: 12 }}>Lịch trình</Text>
             </View>
           ),
         }}
@@ -143,9 +144,11 @@ const ButtomNavigation = () => {
                 alignItems: 'center',
                 width: '100%',
                 height: 90,
-                // backgroundColor:colors.primary
               }}>
-              <IcSearch color={focused ? '#0572E7' : '#8A8A8A'} />
+              <IcSearch />
+              {/* <IcFavorite color={focused ? '#0572E7' : '#8A8A8A'} />
+            
+              <Text style={{ fontSize: 12 }}>Tìm kiếm</Text> */}
             </View>
           ),
           tabBarButton: props => <CustomBottom {...props} />,

@@ -163,13 +163,12 @@ const SearchScreen = (props) => {
           onChangeText={(text) => onChangeTextSearch(text)}
           clearButtonMode="always"
         />
-        {searchText.length > 0 && <TouchableOpacity onPress={handleClearText}>
+        {/* <TouchableOpacity onPress={handleClearText}>
           <Image
             source={require('../../../../assets/images/close.png')}
             style={styles.image_clear}
           />
-        </TouchableOpacity>}
-
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={() => setisShowModal(true)}>
           <Image
             source={require('../../../../assets/images/Filter.png')}

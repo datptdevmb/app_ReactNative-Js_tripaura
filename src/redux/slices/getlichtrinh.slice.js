@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const LayDanhSachLichTrinh = createAsyncThunk('getVoucher', async (lichTrinhId) => {
-    console.log('User ID:', lichTrinhId);
+   
     const response = await fetch(
         `https://trip-aura-server-git-main-minhnhut2306s-projects.vercel.app/lichTrinh/api/getByLichTrinhId?lichTrinhId=${lichTrinhId}`,
         {
@@ -11,12 +11,10 @@ export const LayDanhSachLichTrinh = createAsyncThunk('getVoucher', async (lichTr
             },
         },
     );
-    console.log('response:', response);
 
 
     const lichtrinh = await response.json();
-    console.log('API Response:', lichtrinh);
-
+   
     if (response.ok) {
         return lichtrinh;
     }
