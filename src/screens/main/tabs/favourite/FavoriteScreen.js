@@ -12,7 +12,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const FavoriteScreen = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); //useDispatch: Dùng để Thực hiện các hành động tới Redux store, giúp cập nhật state hoặc gọi các action bên ngoài.
 
   const {user} = useSelector(state => state.reducer.auth);
   const {favoritesData} = useSelector(state => state.reducer.favorites);
@@ -22,75 +22,36 @@ const FavoriteScreen = () => {
     if (user?.user?._id) {
       dispatch(LayDanhSachYeuThich(user.user._id));
     }
-  }, [dispatch, user]);
+    console.log('dispatch', dispatch(LayDanhSachYeuThich(user.user._id)));
+  }, [dispatch, user]); // chi thay đổi nếu dispatch or user thay đổi
 
-  const handleToggleFavorite = selectedTourId => {
+  const handleToggleFavorite = tourId => {
     const userId = user.user._id;
-    if (!selectedTourId) {
+    if (!tourId) {
       Alert.alert('Thông báo', 'Không tìm thấy tourId');
       return;
     }
-    dispatch(themXoaYeuThichTour({userId, tourId: selectedTourId}));
+    dispatch(themXoaYeuThichTour({userId, tourId: tourId}));
   };
 
-  const renderSkeleton = () => (
-    <SkeletonPlaceholder>
-      <View style={styles.skeletonContainer}>
-        <View style={styles.skeletonImage} />
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.skeletonText1} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-        </View>
-      </View>
-      <View style={styles.skeletonContainer}>
-        <View style={styles.skeletonImage} />
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.skeletonText1} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-        </View>
-      </View>
-      <View style={styles.skeletonContainer}>
-        <View style={styles.skeletonImage} />
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.skeletonText1} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-        </View>
-      </View>
-      <View style={styles.skeletonContainer}>
-        <View style={styles.skeletonImage} />
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.skeletonText1} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-        </View>
-      </View>
-      <View style={styles.skeletonContainer}>
-        <View style={styles.skeletonImage} />
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.skeletonText1} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-        </View>
-      </View>
-      <View style={styles.skeletonContainer}>
-        <View style={styles.skeletonImage} />
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.skeletonText1} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-          <View style={styles.skeletonText} />
-        </View>
-      </View>
-    </SkeletonPlaceholder>
-  );
+  const renderSkeleton = () => {
+    const skeletonitem = new Array(6).fill(null);
+    return (
+      <SkeletonPlaceholder>
+        {skeletonitem.map((_, index) => (
+          <View key={index} style={styles.skeletonContainer}>
+            <View style={styles.skeletonImage} />
+            <View style={{flexDirection: 'column'}}>
+              <View style={styles.skeletonText1} />
+              <View style={styles.skeletonText} />
+              <View style={styles.skeletonText} />
+              <View style={styles.skeletonText} />
+            </View>
+          </View>
+        ))}
+      </SkeletonPlaceholder>
+    );
+  };
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -102,8 +63,6 @@ const FavoriteScreen = () => {
           onToggleFavorite={handleToggleFavorite}
           navigation={navigation}
         />
-      ) : favoritesStatus === 'success' ? (
-        <FavouriteScreenNoItem />
       ) : (
         <FavouriteScreenNoItem />
       )}

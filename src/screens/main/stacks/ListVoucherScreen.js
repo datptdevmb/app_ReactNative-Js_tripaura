@@ -9,16 +9,13 @@ import formatDate from '../../../untils/formatDate';
 
 const ChonVoucher = ({ navigation, route }) => {
     const { totalPrice } = route.params
-
+    // console.log("============price", totalPrice);
     const [btn, setbtn] = useState(false)
     const dispatch = useDispatch()
     const { getVoucherData, getVoucherStatus } = useSelector((state) => state.reducer.vouchers);
-
-
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user
     const [sortedData, setSortedData] = useState([]);
-    const [voucherId, setVoucherId] = useState(null)
 
     console.log(user.user._id);
 
@@ -28,8 +25,8 @@ const ChonVoucher = ({ navigation, route }) => {
 
         if (getVoucherData?.data) {
             const sorted = [...getVoucherData.data].sort((a, b) => {
-                const isAQualified = totalPrice >= a?.voucherId?.condition;
-                const isBQualified = totalPrice >= b?.voucherId?.condition;
+                const isAQualified = totalPrice >= a.voucherId.condition;
+                const isBQualified = totalPrice >= b.voucherId.condition;
                 // Nếu thỏa mãn điều kiện thì lên trên
                 return isBQualified - isAQualified;
             });
@@ -53,28 +50,23 @@ const ChonVoucher = ({ navigation, route }) => {
                 ToastAndroid.show('không đủ điều kiên', ToastAndroid.SHORT)
             }
         }
-
-
-
     }
-
-
     const renderItemSearch = ({ item }) => (
         <View style={styles.itemContainer}>
             <TouchableOpacity
-                onPress={() => onPressItem(item.voucherId.discount, item.voucherId?._id, item.voucherId?.condition)}
-                disabled={totalPrice < item.voucherId?.condition}>
+                onPress={() => onPressItem(item.voucherId.discount, item.voucherId._id, item.voucherId.condition)}
+                disabled={totalPrice < item.voucherId.condition}>
 
-                <View style={[styles.backgroundItem, totalPrice < item?.voucherId?.condition && { backgroundColor: 'grey' }]}>
+                <View style={[styles.backgroundItem, totalPrice < item.voucherId.condition && { backgroundColor: 'grey' }]}>
                     <View style={{
                         width: 100, height: 100, justifyContent: 'center', backgroundColor: '#0572E7', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, alignItems: 'center'
                     }}>
                         <Text style={styles.textTitle}>Trip Aura</Text>
                     </View>
                     <View>
-                        <Text style={styles.itemName} >{item?.voucherId?.description}</Text>
+                        <Text style={styles.itemName} >{item.voucherId.description}</Text>
 
-                        <Text style={styles.itemPrice}>Thời hạn: {formatDate(item?.voucherId?.endDay)} </Text>
+                        <Text style={styles.itemPrice}>Thời hạn: {formatDate(item.voucherId.endDay)} </Text>
                     </View>
                 </View>
 

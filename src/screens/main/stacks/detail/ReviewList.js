@@ -61,7 +61,7 @@ const ReviewList = ({ reviews, onSeeMore, tourId }) => {
               <View style={styles.flrow}>
                 <Image
                   style={styles.iconNotFoud}
-                  source={require('../../../../assets/icons/ic_Rate.png')} />
+                  source={require('../../../../assets/icons/ic_rate.png')} />
                 <Text style={styles.texta}>Hiện ko có đánh giá</Text>
               </View>
             )

@@ -85,12 +85,6 @@ const Icons = {
   image: image,
   slider: slider,
 
-
-
-  // images
-  avatar,
-  image,
-  slider,
 };
 
 export default Icons;

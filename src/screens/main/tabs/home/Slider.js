@@ -9,7 +9,7 @@ const Slider = (({images}) => {
       showsHorizontalScrollIndicator={false}
       autoplay
       loop
-      autoplayTimeout={3}>
+      autoplayTimeout={2}>
       {images.map((item, index) => (
         <Image key={index} style={styles.itemSwiper} source={{uri: item}} />
       ))}

@@ -74,7 +74,6 @@ function HomeScreen({ navigation }) {
 
 
         return (
-
             <TouchableOpacity
                 key={index.toString()}
                 onPress={
@@ -150,29 +149,24 @@ function HomeScreen({ navigation }) {
                                 isLoading={isLoading}
                                 categories={categories} />
                         </View>
+
                         <TourCardList
                             onClick={handleClickItem}
-                            isLoading={loading}
+                            isLoading={isLoading}
                             horizontal={true}
                             tours={tours} />
+                        <TouchableOpacity
+                        onPress={()=>{navigation.navigate('Voucher')}}
+                         style={styles.sliderContainer}>
+                            <Slider images={images} />
+                        </TouchableOpacity>
                         <Text style={styles.texth}>Tour được săn đón</Text>
                     </View>
                 }
                 data={popularTours}
                 numColumns={2}
                 renderItem={
-                    isLoading ?
-                        ({ item }) => (
-                            <View
-                                style={styles.View}>
-                                <SkeletonPlaceholder>
-                                    <Image style={{ marginTop: 10, borderRadius: 8, marginStart: 10, marginEnd: 14, width: '90%', height: 150 }} />
-                                    <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '100%', height: 14 }}></Text>
-                                    <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '90%', height: 14 }}></Text>
-                                </SkeletonPlaceholder>
-                            </View>
-                        )
-                        : renderItem
+                    renderItem
                 }
                 style={styles.flatL}
             >
@@ -188,6 +182,10 @@ const styles = StyleSheet.create({
         color: '#4D4C4C',
         fontWeight: '600',
         marginTop: 20,
+    },
+    sliderContainer: {
+        width: "100%",
+        height: 120,
     },
     headerStyle: {
         paddingBottom: 12,

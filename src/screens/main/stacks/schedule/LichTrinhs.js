@@ -7,14 +7,14 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {LayLichTrinhTheoUser} from '../../../../redux/slices/getLichTrinhUserSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { LayLichTrinhTheoUser } from '../../../../redux/slices/getLichTrinhUserSlice';
 import colors from '../../../../constants/colors';
 
 const LichTrinhs = props => {
-  const {navigation} = props;
-  const {lichTrinhByUserData, lichTrinhByUserStatus} = useSelector(
+  const { navigation } = props;
+  const { lichTrinhByUserData, lichTrinhByUserStatus } = useSelector(
     state => state.reducer.lichTrinhByUser,
   );
 
@@ -36,31 +36,31 @@ const LichTrinhs = props => {
     }
   }, [userId, dispatch, navigation]);
 
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     const imageSource = item?.locations?.[0]?.locations?.[0]?.images?.[0]
-      ? {uri: item.locations[0].locations[0].images[0]}
+      ? { uri: item.locations[0].locations[0].images[0] }
       : require('../../../../assets/images/Ve.png'); // Fallback image
 
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('Schduletour', {lichTrinhId: item._id})
+            navigation.navigate('Schduletour', { lichTrinhId: item._id })
           }>
           <View style={styles.headerItem}>
-            <Image style={styles.avarta} source={{uri: user?.user?.avatar}} />
+            <Image style={styles.avarta} source={{ uri: user?.user?.avatar }} />
             <Text
               style={{
                 fontSize: 14,
                 fontWeight: '700',
                 marginTop: 10,
-                    marginLeft: 10,
+                marginLeft: 10,
               }}>
               {user?.user?.fullname}
             </Text>
           </View>
           <Image style={styles.imageItem} source={imageSource} />
-          <Text style={{marginHorizontal: 16, fontSize: 14, fontWeight: '700'}}>
+          <Text style={{ marginHorizontal: 16, fontSize: 14, fontWeight: '700' }}>
             {item?.locations?.length} ngày đi {item?.destination?.name}
           </Text>
         </TouchableOpacity>
@@ -69,7 +69,7 @@ const LichTrinhs = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View
         style={{
           fontSize: 22,
@@ -78,10 +78,10 @@ const LichTrinhs = props => {
           height: 54,
           backgroundColor: 'white',
         }}>
-        <Text>Lịch trình của tôi</Text>
+        <Text style={{ fontSize: 18, color: '#000', fontWeight: '700' }}>Lịch trình của tôi</Text>
       </View>
       <View style={styles.container}>
-        <View style={{height: 24}}></View>
+        <View style={{ height: 24 }}></View>
 
         {lichTrinhByUserStatus === 'loading' ? (
           <View style={styles.loadingContainer}>
@@ -115,12 +115,12 @@ const LichTrinhs = props => {
           <TouchableOpacity
             style={styles.btnAdd}
             onPress={() => navigation.navigate('Schedule')}>
-            <Text style={{fontSize: 20, color: 'white'}}>+</Text>
+            <Text style={{ fontSize: 20, color: 'white' }}>+</Text>
           </TouchableOpacity>
         )}
-        <View style={{height: 100}}/>
+        <View style={{ height: 100 }} />
       </View>
-      
+
     </View>
   );
 };

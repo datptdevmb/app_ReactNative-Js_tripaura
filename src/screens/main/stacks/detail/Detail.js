@@ -52,6 +52,7 @@ import Accordion from '../../../../components/common/accordion/accordion';
 import { fetchReviewsByTourId } from '../../../../redux/slices/reviewTourducers';
 import colors from '../../../../constants/colors';
 import { useFocusEffect } from '@react-navigation/native';
+import { fetchDetailTicket } from '../../../../redux/slices/detailTotalTickets';
 
 
 const Detail = ({ navigation, route }) => {
@@ -74,8 +75,10 @@ const Detail = ({ navigation, route }) => {
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
 	);
-	console.log('adultTickets....................', adultTickets);
-	console.log('childTickets....................', childTickets);
+
+	const ticket = useSelector(state => state.reducer.detailTickets)
+	console.log('ticket', ticket);
+
 	const totalTicher = adultTickets + childTickets;
 	console.log('totalTickets................', totalTicher);
 	const { isTourFavorited, favoritesStatus, message } = useSelector(
@@ -89,6 +92,8 @@ const Detail = ({ navigation, route }) => {
 	const { user } = useSelector(state => state.reducer.auth);
 	const [showToast, setShowToast] = useState(false);
 	const { imges, tourName, description, location, details } = tourById;
+	const [maxTicket, setMaxTicket] = useState(null);
+	console.log('maxTicket/////////////////////////', maxTicket);
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
 	const handleIncreaseAdult = () => dispatch(increaseAdultTicket());
@@ -96,8 +101,6 @@ const Detail = ({ navigation, route }) => {
 	const handleDecreaseAdult = () => dispatch(decreaseAdultTicket());
 	const handleDecreaseChild = () => dispatch(decreaseChildTicket());
 	const handleBack = () => navigation.goBack();
-
-
 	const handleFavorite = () => {
 		console.log(typeof (user))
 		if (!user || !user.user || !user.user._id) {
@@ -117,6 +120,19 @@ const Detail = ({ navigation, route }) => {
 			setTimeout(() => setShowToast(false), 3000);
 		}
 	};
+	let Tickets = 0;
+	console.log('tickets', Tickets);
+
+	if (maxTicket != null) {
+		Tickets = maxTicket - (ticket?.getTotalTicketData?.data?.totalTickets || 0);
+	} else {
+
+	}
+	if (Tickets !== 0) {
+		if (totalTicher > Tickets) {
+			Alert.alert('Số lượng vé không đủ', 'Số lượng vé không đủ, vui lòng chọn ngày khác');
+		}
+	}
 
 	const handelNavigateToOrder = () => {
 		if (!user || !user.user || !user.user._id) {
@@ -138,6 +154,8 @@ const Detail = ({ navigation, route }) => {
 			);
 			return;
 		}
+		const checkTickets = totalTicher > Tickets;
+		console.log('checkTickets', checkTickets);
 		if (!selectedDate) {
 			Alert.alert('Lỗi', 'Vui lòng chọn ngày khởi hành.');
 			return;
@@ -146,14 +164,18 @@ const Detail = ({ navigation, route }) => {
 			Alert.alert('Lỗi', 'Vui lòng chọn số lượng vé.');
 			return;
 		}
+		if (checkTickets) {
+			Alert.alert('Số lượng vé không đủ', 'Số lượng vé không đủ vui lòng chọn ngày khác');
+			return;
+		}
 		navigation.navigate('Order', {
 			detailid,
 			adultPrice,
 			childPrice,
 		});
-
-
 	};
+
+
 	const handleNavigateToFavorite = () => {
 		navigation.navigate('FavoriteScreen');
 	};
@@ -169,6 +191,8 @@ const Detail = ({ navigation, route }) => {
 	const handleImagePress = image => {
 		setCurrentImage(image);
 	};
+
+
 
 	useEffect(() => {
 		const loadData = async () => {
@@ -187,6 +211,18 @@ const Detail = ({ navigation, route }) => {
 		loadData();
 	}, [dispatch, tourId, user]);
 
+	useEffect(() => {
+		const loadData = async () => {
+			try {
+				dispatch(fetchDetailTicket(detailid));
+				console.log('Data loaded successfully!');
+			} catch (err) {
+				console.error('Error loading data:', err);
+			}
+		};
+		loadData();
+	}, [dispatch, detailid]);
+
 
 	useEffect(() => {
 		if (imges && imges.length > 0) {
@@ -202,11 +238,7 @@ const Detail = ({ navigation, route }) => {
 			duration: 300,
 			useNativeDriver: true,
 		}).start();
-
-
 	};
-
-	const maxTickets = details?.[0]?.maxTicket;
 	return (
 		<View style={styles.container}>
 			{showToast &&
@@ -216,12 +248,9 @@ const Detail = ({ navigation, route }) => {
 			<TouchableOpacity onPress={handleBack} style={styles.btnBack}>
 				<IcleftArrow />
 			</TouchableOpacity>
-
-
 			<TouchableOpacity onPress={handleFavorite} style={styles.btnFavorite}>
 				{!isTourFavorited ? <Ic_ouFavorite /> : <IcFavorite color={'white'} />}
 			</TouchableOpacity>
-
 			<AnimatedScrollView
 				TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
 				headerImage={
@@ -349,10 +378,17 @@ const Detail = ({ navigation, route }) => {
 									<Ic_x onPress={toggleBottomSheet} />
 								</TouchableOpacity>
 								<Text style={styles.tourname}>{tourName}</Text>
+								{
+									Tickets !== 0 && <Text style={{
+										color: '#000', fontSize: 14, fontWeight: '600', marginTop: 10
+									}}>Số vé hiện có: {Tickets}</Text>
+								}
+
 								<DepartureDateSelector
 									onSelectDate={(date, id, minTicket, maxTicket) => {
 										dispatch(setSelectedDate(date));
 										setDetailId(id);
+										setMaxTicket(maxTicket);
 									}}
 									selectedDate={selectedDate}
 									data={details}

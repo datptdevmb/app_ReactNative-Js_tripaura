@@ -13,8 +13,8 @@ const TicketSelector = ({
     onDecreaseChild,
 
 }) => {
-    
-    
+    console.log('adultTickets....................', adultTickets);
+	console.log('childTickets....................', childTickets);
     return (
         <View>
             <Text style={style.text}>Chọn số lượng vé</Text>

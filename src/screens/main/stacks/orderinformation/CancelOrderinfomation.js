@@ -1,39 +1,30 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert, ScrollView } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, ScrollView, Modal, TextInput } from 'react-native';
+import React, { useState } from 'react';
 import Header from '../../../../components/common/header/Header';
-import { updateBookingStatus, updateMaxTicket } from '../../../../sevices/apiServices';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Headercomponet from '../../../../components/common/header/Headercomponet';
+import { addCancelOrder } from '../../../../redux/slices/cancelorderSlice';
 
 const CancelOrderinfomation = ({ route }) => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const [isShowModal, setisShowModal] = useState(false);
+    const [name, setName] = useState('');
+    const [bankName, setBankName] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [cancellationReason, setCancellationReason] = useState('');
 
     const bookingData = useSelector((state) => state.reducer.booking);
-    console.log('bookingData', bookingData);
     const booking = bookingData.bookingData.data;
-    console.log('booking', booking);
-
-
-    const numAdult = booking.numAdult;
-    const numChildren = booking.numChildren;
-    const maxTicket = booking.detailInfo.maxTicket;
     const bookingId = booking._id;
-    const detailId = booking.detailId;
-
-
-    console.log('numAdult', numAdult);
-    console.log('numChildren', numChildren);
-    console.log('maxTicket', maxTicket);
-    const ticker = maxTicket + ((numAdult || 0) + (numChildren || 0));
-    console.log('ticker', ticker);
-    console.log('bookingId', bookingId);
-    console.log('detailId', detailId);
-
-
+   
     const handleCancelPress = () => {
         Alert.alert(
             "Xác nhận hủy đơn hàng",
-            "Bạn chắc chắn muốn hủy đơn hàng? Chỉ hoàn lại 80% số tiền.",
+            "Bạn chắc chắn muốn hủy đơn hàng?",
             [
                 {
                     text: "Hủy",
@@ -42,30 +33,36 @@ const CancelOrderinfomation = ({ route }) => {
                 {
                     text: "Đồng ý",
                     onPress: () => {
-                        updateBookingStatus(bookingId, 'cancel');
-                        updateMaxTicket(detailId, ticker);
-                        navigation.navigate('MainTabNavigation');
+                        const cancelData = {
+                            name,
+                            bankname: bankName,
+                            accountnumber: accountNumber,
+                            email,
+                            phone,
+                            cancellationreason: cancellationReason,
+                            bookingId,
+                        };
+                        console.log(cancelData);  
+                        dispatch(addCancelOrder(cancelData));  
+                        Alert.alert('Thông báo', 'Đơn hàng đã được hủy thành công!');
+                        navigation.navigate('MainTabNavigation'); 
                     }
                 }
             ]
         );
     };
+    
 
     return (
         <View style={styles.container}>
             <Header title='Điều khoản hủy tour' />
-            <ScrollView contentContainerStyle={styles.content}
-                showsVerticalScrollIndicator={false}
-            >
+            <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <Text style={styles.title}>Điều khoản hủy tour</Text>
                 <Text style={styles.text}>
                     • Nếu bạn quyết định hủy tour trong vòng 24 giờ kể từ thời điểm đặt tour, chúng tôi cam kết hoàn lại 100% số tiền đã thanh toán. Điều này nhằm tạo sự linh hoạt và thuận tiện tối đa cho bạn khi có thay đổi đột xuất trong kế hoạch du lịch.
                 </Text>
                 <Text style={styles.text}>
-                    • Nếu bạn hủy tour sau 3 ngày kể từ thời điểm đặt, chúng tôi sẽ hoàn lại 80% số tiền đã thanh toán. 20% số tiền còn lại sẽ được giữ lại để chi trả cho các chi phí đã phát sinh liên quan đến việc đặt trước dịch vụ.
-                </Text>
-                <Text style={styles.text}>
-                    • Việc hủy tour trong vòng 5 ngày trước thời gian khởi hành sẽ không được hoàn lại, do các dịch vụ đã được đặt cọc và xác nhận với đối tác. Vui lòng cân nhắc kỹ trước khi đưa ra quyết định để tránh bất tiện.
+                    • Nếu bạn hủy tour sau 7 ngày kể từ thời điểm đặt, chúng tôi sẽ hoàn lại 80% số tiền đã thanh toán. 20% số tiền còn lại sẽ được giữ lại để chi trả cho các chi phí đã phát sinh liên quan đến việc đặt trước dịch vụ.
                 </Text>
                 <Text style={styles.text}>
                     • Số tiền hoàn lại sẽ được xử lý và hoàn tất trong vòng 24 giờ kể từ thời điểm hủy. Chúng tôi sẽ thông báo qua email hoặc số điện thoại ngay khi thủ tục hoàn tiền hoàn tất.
@@ -76,10 +73,72 @@ const CancelOrderinfomation = ({ route }) => {
                 <Text style={styles.text}>
                     • Xin cảm ơn bạn đã lựa chọn dịch vụ của chúng tôi. Chúng tôi mong muốn được phục vụ bạn trong những chuyến du lịch tiếp theo!
                 </Text>
-                <TouchableOpacity style={styles.button} onPress={handleCancelPress}>
+                <TouchableOpacity style={styles.button} onPress={() => setisShowModal(true)}>
                     <Text style={styles.buttonText}>Hủy đơn hàng</Text>
                 </TouchableOpacity>
             </ScrollView>
+
+            <Modal
+                transparent={true}
+                visible={isShowModal}
+                animationType="fade"
+                onRequestClose={() => setisShowModal(false)}
+            >
+                <View style={{ justifyContent: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.5)', flex: 1 }}>
+                    <View style={{
+                        height: 550, backgroundColor: 'white', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20
+                    }}>
+                        <Headercomponet
+                            leftIcon={require('../../../../assets/images/close.png')}
+                            title={"Hủy tour"}
+                            onPressLeftIcon={() => { setisShowModal(false); }}
+                        />
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10 }}>Nhập thông tin hủy đơn hàng</Text>
+
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Họ và tên"
+                            value={name}
+                            onChangeText={setName}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Tên ngân hàng"
+                            value={bankName}
+                            onChangeText={setBankName}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Số tài khoản"
+                            value={accountNumber}
+                            onChangeText={setAccountNumber}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            keyboardType="email-address"
+                            value={email}
+                            onChangeText={setEmail}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Phone"
+                            keyboardType="phone-pad"
+                            value={phone}
+                            onChangeText={setPhone}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Lý do hủy"
+                            value={cancellationReason}
+                            onChangeText={setCancellationReason}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={handleCancelPress}>
+                            <Text style={styles.buttonText}>Xác nhận hủy</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -114,7 +173,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#E74C3C',
         paddingVertical: 12,
         borderRadius: 10,
-        marginTop: 20,
         elevation: 3,
         width: '100%',
         justifyContent: 'center',
@@ -124,5 +182,13 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontWeight: 'bold',
         fontSize: 18,
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 15,
+        width: '100%',
     },
 });

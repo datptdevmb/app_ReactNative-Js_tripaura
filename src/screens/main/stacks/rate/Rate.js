@@ -141,7 +141,7 @@ const Rate = ({ route, navigation }) => {
       ) : !Array.isArray(danhSachDanhGia) || danhSachDanhGia.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Image
-            source={require('../../../../assets/icons/ic_Rate.png')}
+            source={require('../../../../assets/icons/ic_rate.png')}
             style={styles.emptyImage}
           />
           <Text style={styles.emptyText}>
