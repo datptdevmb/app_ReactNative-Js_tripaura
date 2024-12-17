@@ -33,9 +33,8 @@ import {
 
 const OrderReviewScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const { bookingId: routeBookingId } = route.params;
-  const [maxTicketState, setMaxTicketState] = useState(route.params.maxTicket);
-  const { tourById, adultPrice, childPrice, adultTickets, childTickets, totalPrice, selectedDate } =useSelector(state => state.reducer.tour);
+  const { bookingId: routeBookingId, detailid } = route.params;
+  const { tourById, adultPrice, childPrice, adultTickets, childTickets, totalPrice, selectedDate } = useSelector(state => state.reducer.tour);
   const { getVoucherData } = useSelector(state => state.reducer.vouchers);
   const [bookingId, setBookingId] = useState(routeBookingId);
   const paymentStatus = useSelector(state => state.reducer.payment.status);
@@ -45,16 +44,17 @@ const OrderReviewScreen = ({ route, navigation }) => {
       dispatch(fetchBookingById(bookingId));
     }
   }, [dispatch, bookingId]);
-
+  console.log('tourbyid', tourById);
   const bookingData = useSelector(state => state.reducer.booking);
+  console.log('booking data', bookingData);
 
   const booking = bookingData?.bookingData?.data;
-
+  console.log('booking', booking);
   useEffect(() => {
     return () => {
-        dispatch(clearBookingData());
+      dispatch(clearBookingData());
     };
-}, [dispatch]);
+  }, [dispatch]);
 
   console.log('booking:..........................', booking);
   const tourName = tourById?.tourName || booking?.tourInfo?.tourName;
@@ -70,21 +70,16 @@ const OrderReviewScreen = ({ route, navigation }) => {
   const priceAdult = booking?.priceAdult || adultPrice;
   console.log('priceAdult:..........................', priceAdult);
   const totalPriceTour = totalPrice || numAdult * priceAdult + numChildren * priceChildren;
-
   console.log('totalPriceTour..............', totalPriceTour);
-  const detailId = booking?.detailId || tourById?.details?.[0]?._id;
-  console.log('detailId:', detailId);
+  const detailId = detailid || booking?.detailId;
+  console.log('detailId.................:', detailId);
   const adultPricee = booking?.priceAdult || tourById?.details?.[0]?.priceAdult;
   console.log('adultPrice:', adultPricee);
 
-  const a = priceChildren * numAdult;
-  const b = priceAdult * numChildren;
-
-
+  const a = priceAdult * numAdult;
+  const b = priceChildren * numChildren;
   const { discount } = route.params;
   const { voucherId } = route.params;
-
-  let finalPrice = totalPrice && discount ? totalPrice - discount : totalPrice;
 
   const userReducer = useSelector(state => state.reducer.auth);
   const user = userReducer.user;
@@ -106,7 +101,6 @@ const OrderReviewScreen = ({ route, navigation }) => {
       Alert.alert('Thông báo', 'Vui lòng chọn phương thức thanh toán');
       return;
     }
-
     if (selectedMethod === 1) {
       handleSaveBooking();
       ZaloPayModule.createOrder(totalPriceString);
@@ -153,7 +147,6 @@ const OrderReviewScreen = ({ route, navigation }) => {
         navigation.navigate('PaymentScreen', {
           url: paymentInfo.paymentLink,
           bookingId,
-          maxTicket: maxTicketState,
           childTickets,
           adultTickets,
           detailId,
@@ -230,7 +223,7 @@ const OrderReviewScreen = ({ route, navigation }) => {
           {/* Tổng hoàn tất hoá đơn */}
           <TourInforTotal
             price={totalPriceTour}
-            adultPrice={a}  
+            adultPrice={a}
             childPrice={b}
             discount={discount || 0}
           />

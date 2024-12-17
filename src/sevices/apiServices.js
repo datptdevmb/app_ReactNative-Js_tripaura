@@ -1,10 +1,6 @@
 import Toast from 'react-native-toast-message';
 
-/**
- * Cập nhật trạng thái booking
- * @param {string} bookingId - ID của booking cần cập nhật
- * @param {string} status - Trạng thái cần cập nhật
- */
+
 export const updateBookingStatus = async (bookingId, status) => {
   try {
     const response = await fetch(`https://trip-aura-server.vercel.app/booking/api/update/${bookingId}`, {
@@ -35,12 +31,7 @@ export const updateBookingStatus = async (bookingId, status) => {
   }
 };
 
-/**
- * Cập nhật số lượng vé tối đa
- * @param {string} detailId - ID chi tiết cần cập nhật
- * @param {number} ticker - Số lượng vé tối đa mới
- * @returns {object|null} - Payload trả về từ server hoặc null nếu thất bại
- */
+
 export const updateMaxTicket = async (detailId, ticker) => {
   try {
     const response = await fetch(`https://trip-aura-server.vercel.app/detail/api/updateTicket/${detailId}`, {
@@ -50,7 +41,11 @@ export const updateMaxTicket = async (detailId, ticker) => {
       },
       body: JSON.stringify({ maxTicket: ticker }),
     });
+    console.log('response', response);
+    
     const responseData = await response.json();
+    console.log('responseData', responseData);
+    
     if (responseData.code === 200) {
       return responseData.payload;
     } else {
@@ -61,3 +56,5 @@ export const updateMaxTicket = async (detailId, ticker) => {
     return null;
   }
 };
+
+

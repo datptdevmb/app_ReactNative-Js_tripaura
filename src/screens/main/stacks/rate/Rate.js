@@ -1,19 +1,17 @@
-
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Headercomponet from '../../../../components/common/header/Headercomponet';
 import Icons from '../../../../constants/Icons';
-import { fetchReviewsByTourId, LayDanhSachDanhGia } from '../../../../redux/slices/reviewTourducers';
-import { Skeleton } from 'moti/skeleton';
+import {
+  fetchReviewsByTourId,
+  LayDanhSachDanhGia,
+} from '../../../../redux/slices/reviewTourducers';
 import styles from './RateStyle';
 
 const Rate = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { tourId } = route.params;
-  const [review, setreview] = useState([])
-  console.log('set review', review);
-
 
   const danhSachDanhGia = useSelector(
     state => state.reducer.reviews.reviewsData,
@@ -21,15 +19,10 @@ const Rate = ({ route, navigation }) => {
   const trangThaiDanhGia = useSelector(
     state => state.reducer.reviews.reviewsStatus,
   );
+  console.log('Danh sách đánh giá:', danhSachDanhGia);
+  console.log('Trạng thái đánh giá:', trangThaiDanhGia);
+
   const [isLoading, setIsLoading] = useState(false);
-
-
-  useEffect(() => {
-    if (Array.isArray(danhSachDanhGia)) {
-      const sortedReview = [...danhSachDanhGia].sort((a, b) => new Date(b.dayReview) - new Date(a.dayReview));
-      setreview(sortedReview);
-    }
-  }, [danhSachDanhGia]);
 
   useEffect(() => {
     if (tourId) {
@@ -40,15 +33,18 @@ const Rate = ({ route, navigation }) => {
   }, [dispatch, tourId]);
 
   const tinhTrungBinhSoSao = danhGia => {
-    if (!Array.isArray(danhGia) || danhGia.length === 0) {
+    // Kiểm tra nếu danhGia không phải là mảng hoặc mảng rỗng, trả về 0
+    if (danhGia.length === 0) {
       return 0;
     }
 
-    let tongSoSao = 0;
-    let soDanhGia = danhGia.length;
+    let tongSoSao = 0; // Biến để lưu tổng số sao
+    let soDanhGia = danhGia.length; // Số lượng đánh giá
     console.log('soDanhGia:', soDanhGia);
 
+    // Duyệt qua từng đánh giá và cộng điểm rating vào tongSoSao
     for (let i = 0; i < soDanhGia; i++) {
+      // Kiểm tra nếu có rating, nếu không thì thêm 0
       tongSoSao += danhGia[i].rating || 0;
     }
     console.log('tongSoSao:', tongSoSao);
@@ -65,27 +61,25 @@ const Rate = ({ route, navigation }) => {
   const soNguoiDanhGia = danhSachDanhGia.length;
 
   const taoMangSoSao = trungBinh => {
-    // Tính số sao đã đầy (số sao tròn)
-    const soSaoToiDa = Math.floor(trungBinh);
-    console.log('soSaoToiDa', soSaoToiDa);
-
-    // Kiểm tra nếu có phần thập phân, thì thêm một sao bị tắt (disabled)
-    // phép chia lấy phần dư)
-    const soSaoBiTat = trungBinh % 1 !== 0 ? 1 : 0;
-    console.log('soSaoBiTat', soSaoBiTat);
-
-    // Tạo mảng sao, gồm sao đầy và sao bị tắt
     const mangSoSao = [];
-    console.log('mangSoSao', mangSoSao);
+    const soSaoToiDa = 5;
 
-    // Thêm các sao đầy
-    for (let i = 0; i < soSaoToiDa; i++) {
+    // Tính số sao đầy
+    const soSaoDay = Math.floor(trungBinh);
+    console.log('soSaoDay', soSaoDay);
+
+    // Tính số sao rỗng
+    const soSaoRong = soSaoToiDa - soSaoDay;
+    console.log('soSaoRong', soSaoRong);
+
+    // Thêm sao đầy vào mảng
+    for (let i = 0; i < soSaoDay; i++) {
       mangSoSao.push('filled');
     }
 
-    // Thêm sao bị tắt nếu có phần thập phân
-    if (soSaoBiTat === 1) {
-      mangSoSao.push('disabled');
+    // Thêm sao rỗng vào mảng
+    for (let i = 0; i < soSaoRong; i++) {
+      mangSoSao.push('empty');
     }
 
     return mangSoSao;
@@ -98,8 +92,7 @@ const Rate = ({ route, navigation }) => {
       <View style={styles.userInfo}>
         <Image
           source={{ uri: item.avatar }}
-          style={styles.avatar}
-          onError={() => console.log('Error loading avatar')}
+          style={styles.avatar} onError={() => console.log('Error loading avatar')}
         />
         <View style={styles.userNameContainer}>
           <Text style={styles.fullname}>{item.fullname}</Text>
@@ -143,10 +136,8 @@ const Rate = ({ route, navigation }) => {
         />
       </View>
 
-      {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#3498db" />
-        </View>
+      {trangThaiDanhGia === 'loading' ? (
+        <Text></Text>
       ) : !Array.isArray(danhSachDanhGia) || danhSachDanhGia.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Image
@@ -154,12 +145,12 @@ const Rate = ({ route, navigation }) => {
             style={styles.emptyImage}
           />
           <Text style={styles.emptyText}>
-            Chưa có đánh giá nào cho tour này!
+            Chưa có đánh giá nào cho tour này !
           </Text>
         </View>
       ) : (
         <FlatList
-          data={review}
+          data={danhSachDanhGia}
           renderItem={renderReviewItem}
           keyExtractor={item => item._id}
           contentContainerStyle={styles.listContainer}
@@ -192,4 +183,3 @@ const Rate = ({ route, navigation }) => {
 };
 
 export default Rate;
-

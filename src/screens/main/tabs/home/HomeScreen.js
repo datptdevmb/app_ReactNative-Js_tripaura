@@ -65,10 +65,10 @@ function HomeScreen({ navigation }) {
         navigation.navigate('Detail', { _id });
 
     }
-
     function handlerClickSlider() {
         navigation.navigate('Voucher');
     }
+
     const renderItem = useCallback(({ item, index }) => {
         console.log(item)
         // if (index == 0) {
@@ -85,10 +85,8 @@ function HomeScreen({ navigation }) {
             if (!text) return '';
             const words = text.split(' ');
             return words.slice(0, 4).join(' ') + (words.length > 4 ? '...' : '');
-        };
-
+        };  
         return (
-
             <TouchableOpacity onPress={() => handleClickItem(item._id)} style={styles.View}>
                 <FastImage
                     style={{ width: '95%', height: '60%', borderRadius: 10 }}

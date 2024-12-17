@@ -22,7 +22,6 @@ const ChonVoucher = ({ navigation, route }) => {
     useEffect(() => {
         dispatch(LayDanhSachVoucher(user.user._id))
         console.log("======= data", getVoucherData?.data);
-
         if (getVoucherData?.data) {
             const sorted = [...getVoucherData.data].sort((a, b) => {
                 const isAQualified = totalPrice >= a.voucherId.condition;

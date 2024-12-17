@@ -10,22 +10,23 @@ import Toast from 'react-native-toast-message';
 const Purchasehistory = ({ navigation }) => {
     const dispatch = useDispatch();
     const { bookings } = useSelector((state) => state.reducer.booking);
+    
     const userReducer = useSelector(state => state.reducer.auth);
     const user = userReducer.user;
     const userId = user.user._id;
 
     const [selectedStatus, setSelectedStatus] = useState(0);
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (userId) {
-            setLoading(true); 
+            setLoading(true);
             dispatch(fetchBookingsByUserId(userId)).finally(() => {
                 setLoading(false);
             });
         }
     }, [userId, dispatch]);
-    
+
 
     useEffect(() => {
         if (Array.isArray(bookings)) {
@@ -38,7 +39,7 @@ const Purchasehistory = ({ navigation }) => {
                     updateBookingStatus(booking._id, 2);
                 }
             });
-            setLoading(false); 
+            setLoading(false);
         }
     }, [bookings]);
 
@@ -86,16 +87,9 @@ const Purchasehistory = ({ navigation }) => {
             : null;
 
         const {
-            numAdult,
-            numChildren,
-            priceAdult,
-            priceChildren,
-            status,
-            createAt,
             _id: bookingId,
             userInfo: { fullname, phone, email },
             tourInfo,
-            totalPrice,
         } = item;
 
         const tourName = tourInfo ? tourInfo.tourName : 'Không có tên tour';
@@ -150,7 +144,8 @@ const Purchasehistory = ({ navigation }) => {
                 <View style={styles.card}>
                     <Image style={styles.image} source={{ uri: image || Icons.image }} />
                     <View style={styles.containeritem}>
-                        <Text style={styles.dateText}>Ngày: {item.detailInfo.endDay ? new Date(item.detailInfo.endDay).toLocaleDateString() : 'N/A'}</Text>
+                        <Text style={styles.dateText}>Ngày: {item.createAt ? new Date(item.createAt
+                        ).toLocaleDateString() : 'N/A'}</Text>
                         <Text style={styles.tourText} numberOfLines={1}>Tour: {firstFourWords} {remainingWords}</Text>
                         <Text style={styles.priceText}>Tổng giá: {item.totalPrice ? item.totalPrice.toLocaleString() : 'N/A'} VNĐ</Text>
 

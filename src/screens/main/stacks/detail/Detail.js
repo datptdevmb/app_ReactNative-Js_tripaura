@@ -59,7 +59,8 @@ const Detail = ({ navigation, route }) => {
 	const { _id: tourId } = route.params;
 	console.log(tourId)
 	const dispatch = useDispatch();
-	const [detailId, setDetailId] = useState(null);
+	const [detailid, setDetailId] = useState(null);
+	console.log('detailId', detailid);
 	const {
 		tourById,
 		adultTickets,
@@ -73,23 +74,10 @@ const Detail = ({ navigation, route }) => {
 	const danhSachDanhGia = useSelector(
 		state => state.reducer.reviews.reviewsData,
 	);
-
 	console.log('adultTickets....................', adultTickets);
 	console.log('childTickets....................', childTickets);
-
 	const totalTicher = adultTickets + childTickets;
 	console.log('totalTickets................', totalTicher);
-
-
-
-
-
-
-	const [maxTicket, setMaxTicket] = useState(null);
-	console.log('maxTicket...............................................', maxTicket);
-
-
-
 	const { isTourFavorited, favoritesStatus, message } = useSelector(
 		state => state.reducer.favorites,
 	);
@@ -99,11 +87,8 @@ const Detail = ({ navigation, route }) => {
 			: 'https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg',
 	);
 	const { user } = useSelector(state => state.reducer.auth);
-
 	const [showToast, setShowToast] = useState(false);
-
 	const { imges, tourName, description, location, details } = tourById;
-
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 	const translateY = useRef(new Animated.Value(500)).current;
 	const handleIncreaseAdult = () => dispatch(increaseAdultTicket());
@@ -161,12 +146,8 @@ const Detail = ({ navigation, route }) => {
 			Alert.alert('Lỗi', 'Vui lòng chọn số lượng vé.');
 			return;
 		}
-		if (totalTicher > maxTicket) {
-			Alert.alert('Thông báo', 'Số lượng véo đã đạt giới hạn cho tour này');
-			return;
-		}
 		navigation.navigate('Order', {
-			detailId,
+			detailid,
 			adultPrice,
 			childPrice,
 		});
@@ -226,8 +207,6 @@ const Detail = ({ navigation, route }) => {
 	};
 
 	const maxTickets = details?.[0]?.maxTicket;
-
-
 	return (
 		<View style={styles.container}>
 			{showToast &&
@@ -242,7 +221,6 @@ const Detail = ({ navigation, route }) => {
 			<TouchableOpacity onPress={handleFavorite} style={styles.btnFavorite}>
 				{!isTourFavorited ? <Ic_ouFavorite /> : <IcFavorite color={'white'} />}
 			</TouchableOpacity>
-
 
 			<AnimatedScrollView
 				TopNavBarComponent={tourName && <TopNav tourName={tourName} />}
@@ -371,26 +349,14 @@ const Detail = ({ navigation, route }) => {
 									<Ic_x onPress={toggleBottomSheet} />
 								</TouchableOpacity>
 								<Text style={styles.tourname}>{tourName}</Text>
-
 								<DepartureDateSelector
 									onSelectDate={(date, id, minTicket, maxTicket) => {
 										dispatch(setSelectedDate(date));
 										setDetailId(id);
-										setMaxTicket(maxTicket);
 									}}
 									selectedDate={selectedDate}
 									data={details}
 								/>
-								{maxTicket ? (
-									<View>
-										<Text style={{ fontSize: 16, fontWeight: '600', color: '#000' }}>
-											Số vé còn lại: {maxTicket}
-										</Text>
-									</View>
-								) : null}
-
-
-
 								<TicketSelector
 									onIncreaseAdult={handleIncreaseAdult}
 									onIncreaseChild={handleIncreaseChild}
@@ -401,7 +367,6 @@ const Detail = ({ navigation, route }) => {
 									childTickets={childTickets}
 									adultTickets={adultTickets}
 								/>
-
 								<RefundPolicy />
 							</View>
 

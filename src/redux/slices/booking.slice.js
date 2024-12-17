@@ -58,7 +58,7 @@ const bookingSlice = createSlice({
     initialState,
     reducers: {
         clearBookingData: (state) => {
-            state.bookingData = null; // Đặt lại dữ liệu bookingData
+            state.bookingData = null;
         },
     },
     extraReducers: (builder) => {

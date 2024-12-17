@@ -25,7 +25,6 @@ const Evaluate = ({ route, navigation }) => {
     const tourId = booking?.detailInfo?.tourId;
     console.log('tourId', tourId);
     const [loadingImages, setLoadingImages] = useState([]);
-
     const screenWidth = Dimensions.get('window').width;
 
     useEffect(() => {

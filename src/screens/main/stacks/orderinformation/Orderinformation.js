@@ -8,10 +8,12 @@ import { fetchBookingById } from '../../../../redux/slices/booking.slice';
 const OrderInformation = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { bookingId } = route.params;
+  console.log('bookingId', bookingId);
   const [loading, setLoading] = useState(true);
 
   const bookingData = useSelector((state) => state.reducer.booking);
-
+  console.log('bookingData', bookingData);
+  
 
 
   useEffect(() => {
