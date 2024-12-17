@@ -20,7 +20,7 @@ const PanoramaViewer = () => {
       <script>
         pannellum.viewer('panorama', {
           "type": "equirectangular",
-          "panorama": "https://tse2.mm.bing.net/th?id=OIP.fvpWBNwMtY8a8uR6whk59QHaEt&pid=Api&P=0&h=220",
+          "panorama": "https://watermark.lovepik.com/photo/20211121/large/lovepik-overlooking-the-panorama-of-the-bund-picture_500604745.jpg",
           "autoLoad": true,
           "autoRotate": 0, // Không tự động quay
         });
