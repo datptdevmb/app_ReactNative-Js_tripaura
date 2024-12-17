@@ -63,7 +63,6 @@ function HomeScreen({ navigation }) {
 
     function handleClickItem(_id) {
         navigation.navigate('Detail', { _id });
-
     }
 
     function handlerClickSlider() {
@@ -71,24 +70,28 @@ function HomeScreen({ navigation }) {
     }
     const renderItem = useCallback(({ item, index }) => {
         console.log(item)
+
+
         return (
 
-            <TouchableOpacity onPress={() => handleClickItem(item._id)} style={styles.View}>
-                {/* <FastImage
+            <TouchableOpacity
+                key={index.toString()}
+                onPress={
+                    () => handleClickItem(item._id)}
+                style={styles.View}>
+                <FastImage
                     style={{ width: '95%', height: '60%', borderRadius: 10 }}
-                    source={{ uri: item?.image[0] }} /> */}
+                    source={{ uri: item?.image[0] }} />
                 <Text
                     numberOfLines={2}
                     style={styles.textName}>{item.tourName}</Text>
                 <View style={{ marginTop: 10, width: '100%', flexDirection: 'row' }}>
-                    <View style={{ marginStart: 8, marginEnd: 8 }}>
+                    <View style={{ marginStart: 8, marginEnd: 2 }}>
                         <IcLocate />
                     </View>
                     <Text
                         lineBreakMode='clip'
-                        numberOfLines={1}>
-                        {item?.detination}
-                    </Text>
+                        numberOfLines={1}>{item?.destination}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -123,7 +126,7 @@ function HomeScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.headerStyle}>
+            <View>
                 <HeaderHome />
                 <SearchView />
             </View>
@@ -143,7 +146,6 @@ function HomeScreen({ navigation }) {
                                 categories={categories} />
                         </View>
                         <TourCardList
-                            loading={loading}
                             onClick={handleClickItem}
                             isLoading={loading}
                             horizontal={true}
@@ -154,8 +156,18 @@ function HomeScreen({ navigation }) {
                 data={popularTours}
                 numColumns={2}
                 renderItem={
-
-                    renderItem 
+                    isLoading ?
+                        ({ item }) => (
+                            <View
+                                style={styles.View}>
+                                <SkeletonPlaceholder>
+                                    <Image style={{ marginTop: 10, borderRadius: 8, marginStart: 10, marginEnd: 14, width: '90%', height: 150 }} />
+                                    <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '100%', height: 14 }}></Text>
+                                    <Text style={{ marginTop: 10, marginStart: 10, marginEnd: 14, width: '90%', height: 14 }}></Text>
+                                </SkeletonPlaceholder>
+                            </View>
+                        )
+                        : renderItem
                 }
                 style={styles.flatL}
             >

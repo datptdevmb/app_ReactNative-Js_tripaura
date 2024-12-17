@@ -15,17 +15,17 @@ const Purchasehistory = ({ navigation }) => {
     const userId = user.user._id;
 
     const [selectedStatus, setSelectedStatus] = useState(0);
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (userId) {
-            setLoading(true); 
+            setLoading(true);
             dispatch(fetchBookingsByUserId(userId)).finally(() => {
                 setLoading(false);
             });
         }
     }, [userId, dispatch]);
-    
+
 
     useEffect(() => {
         if (Array.isArray(bookings)) {
@@ -38,7 +38,7 @@ const Purchasehistory = ({ navigation }) => {
                     updateBookingStatus(booking._id, 2);
                 }
             });
-            setLoading(false); 
+            setLoading(false);
         }
     }, [bookings]);
 
@@ -108,7 +108,7 @@ const Purchasehistory = ({ navigation }) => {
             if (selectedStatus === 3) {
                 return;
             }
-            navigation.navigate('OrderInformation', { bookingId: item._id });
+            navigation.navigate('OrderInformation', { bookingId: item._id, total: item.totalPrice });
         };
 
         const handlePaymentPress = () => {

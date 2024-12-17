@@ -32,7 +32,7 @@ export const fetchTourById = createAsyncThunk(
 
       // Chuẩn bị dữ liệu để trả về
       const imges = images?.linkImage || '';
-      const location = locations?.destination;
+      const location = locations.destination;
       console.log(location)
       const adultPrice = details[0]?.priceAdult || 0;
       const childPrice = details[0]?.priceChildren || 0;
