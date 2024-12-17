@@ -82,7 +82,11 @@ function HomeScreen({ navigation }) {
                 style={styles.View}>
                 <FastImage
                     style={{ width: '95%', height: '60%', borderRadius: 10 }}
-                    source={{ uri: item?.image[0] }} />
+                    source={{
+                        uri: item?.image[0] || 'https://example.com/default-image.jpg',
+                    }}
+                    fallback={true}
+                />
                 <Text
                     numberOfLines={2}
                     style={styles.textName}>{item.tourName}</Text>
