@@ -16,12 +16,29 @@ const CancelOrderinfomation = ({ route }) => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [cancellationReason, setCancellationReason] = useState('');
-
     const bookingData = useSelector((state) => state.reducer.booking);
     const booking = bookingData.bookingData.data;
+    console.log('booking', booking);
+
     const bookingId = booking._id;
-   
+    const formattedDate = new Date(booking.detailInfo.endDay).toLocaleDateString('vi-VN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    });
+
+    console.log('formatdata', formattedDate);
+
+    const bookingEndDate = new Date(booking.detailInfo.endDay);
+    const currentDate = new Date();  
+    const isDateInPast = bookingEndDate < currentDate;
+
     const handleCancelPress = () => {
+        if (isDateInPast) {
+            Alert.alert("Không thể hủy", "Đơn hàng đã hết hạn, bạn không thể hủy.");
+            return;  
+        }
+
         Alert.alert(
             "Xác nhận hủy đơn hàng",
             "Bạn chắc chắn muốn hủy đơn hàng?",
@@ -42,16 +59,15 @@ const CancelOrderinfomation = ({ route }) => {
                             cancellationreason: cancellationReason,
                             bookingId,
                         };
-                        console.log(cancelData);  
-                        dispatch(addCancelOrder(cancelData));  
-                        Alert.alert('Thông báo', 'Đơn hàng đã được hủy thành công!');
-                        navigation.navigate('MainTabNavigation'); 
+                        console.log(cancelData);
+                        dispatch(addCancelOrder(cancelData));
+                        Alert.alert('Thông báo', 'Đơn hàng đang chờ xét duyệt!');
+                        navigation.navigate('MainTabNavigation');
                     }
                 }
             ]
         );
     };
-    
 
     return (
         <View style={styles.container}>
@@ -59,10 +75,7 @@ const CancelOrderinfomation = ({ route }) => {
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <Text style={styles.title}>Điều khoản hủy tour</Text>
                 <Text style={styles.text}>
-                    • Nếu bạn quyết định hủy tour trong vòng 24 giờ kể từ thời điểm đặt tour, chúng tôi cam kết hoàn lại 100% số tiền đã thanh toán. Điều này nhằm tạo sự linh hoạt và thuận tiện tối đa cho bạn khi có thay đổi đột xuất trong kế hoạch du lịch.
-                </Text>
-                <Text style={styles.text}>
-                    • Nếu bạn hủy tour sau 7 ngày kể từ thời điểm đặt, chúng tôi sẽ hoàn lại 80% số tiền đã thanh toán. 20% số tiền còn lại sẽ được giữ lại để chi trả cho các chi phí đã phát sinh liên quan đến việc đặt trước dịch vụ.
+                    • Nếu bạn quyết định hủy tour trong vòng trước ngày tôi đi 7 ngày, chúng tôi cam kết hoàn lại 100% số tiền đã thanh toán. Điều này nhằm tạo sự linh hoạt và thuận tiện tối đa cho bạn khi có thay đổi đột xuất trong kế hoạch du lịch.
                 </Text>
                 <Text style={styles.text}>
                     • Số tiền hoàn lại sẽ được xử lý và hoàn tất trong vòng 24 giờ kể từ thời điểm hủy. Chúng tôi sẽ thông báo qua email hoặc số điện thoại ngay khi thủ tục hoàn tiền hoàn tất.

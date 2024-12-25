@@ -52,7 +52,7 @@ const SearchScreen = (props) => {
     )
     setisShowModal(false)
   }
-  const regions = ['Hà Nội', 'Hồ Chí Minh','Bình Thuận', 'Đà Nẵng', 'Quảng Bình', 'Nghệ An'];
+  const regions = ['Vũng Tàu', 'Phú Quốc','Bình Thuận', 'Nha Trang', 'Quảng Bình', 'Đà Nẵng'];
   const prices = [
     { '_id': 1, 'name': 'Dưới 1 triệu' },
     { '_id': 2, 'name': 'Từ 1 - 2 triệu' },

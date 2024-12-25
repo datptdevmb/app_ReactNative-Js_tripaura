@@ -14,8 +14,6 @@ const OrderInformation = ({ route, navigation }) => {
   const bookingData = useSelector((state) => state.reducer.booking);
   console.log('bookingData', bookingData);
   
-
-
   useEffect(() => {
     if (bookingId) {
       dispatch(fetchBookingById(bookingId));
@@ -54,7 +52,6 @@ const OrderInformation = ({ route, navigation }) => {
   const onBackPress = function () {
     navigation.navigate('MainTabNavigation');
   };
-
   const image = booking?.tourImages?.[0]?.linkImage?.[0];
   const totalCost = (booking?.numAdult * booking?.priceAdult) + (booking?.numChildren * booking?.priceChildren);
   console.log('Total cost:', totalCost);
@@ -80,7 +77,6 @@ const OrderInformation = ({ route, navigation }) => {
           <Text style={styles.infoText}>Email: <Text style={styles.highlight}>{booking?.userInfo?.email || 'N/A'}</Text></Text>
           <Text style={styles.infoText}>Số điện thoại: <Text style={styles.highlight}>{booking?.userInfo?.phone || 'Không có'}</Text></Text>
         </View>
-
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Chi tiết đơn hàng</Text>
           <Text style={styles.infoText}>Tour: <Text style={styles.highlight}>{booking?.tourInfo?.tourName || 'N/A'}</Text></Text>
@@ -88,7 +84,7 @@ const OrderInformation = ({ route, navigation }) => {
           {/* <Text style={styles.infoText}>Chi tiết tour: <Text style={styles.highlight}>{booking?.tourInfo?.description || 'N/A'}</Text></Text> */}
           <Text style={styles.infoText}>Số lượng người lớn: <Text style={styles.highlight}>{booking.numAdult || 0}</Text></Text>
           <Text style={styles.infoText}>Số lượng trẻ em: <Text style={styles.highlight}>{booking.numChildren || 0}</Text></Text>
-          <Text style={styles.infoText}>Ngày đ: <Text style={styles.highlight}>{formattedDate || 'N/A'}</Text></Text>
+          <Text style={styles.infoText}>Ngày kết thúc: <Text style={styles.highlight}>{formattedDate || 'N/A'}</Text></Text>
           <Text style={styles.infoText}>
             Giá tour người lớn: <Text style={styles.highlight}>{formatCurrency(booking?.priceAdult) || 'N/A'}</Text>
           </Text>

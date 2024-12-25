@@ -23,10 +23,6 @@ const CardFavorite = ({item, onToggleFavorite, navigation}) => {
             <IcLocate />
             <Text style={styles.location}>{item.locate}</Text>
           </View>
-          <View style={styles.ratingContainer}>
-            <Rating imageSize={12} startingValue={1} ratingCount={1} />
-            <Text>{item.rating} (100+ đánh giá)</Text>
-          </View>
           <Text style={styles.price}>{formatCurrencyVND(item.price)}</Text>
         </View>
         <TouchableOpacity
@@ -78,7 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#E74C3C',
-    marginTop: 4,
+    marginStart:7,
   },
   favoriteIcon: {
     position: 'absolute',

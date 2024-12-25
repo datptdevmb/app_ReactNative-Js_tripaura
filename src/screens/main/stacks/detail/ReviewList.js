@@ -22,17 +22,6 @@ const ReviewList = ({ reviews, onSeeMore, tourId }) => {
               <View>
 
                 <View style={styles.ratingContainer}>
-                  <View style={styles.row}>
-                    <Text style={styles.rating}>5</Text>
-                    <Text style={styles.text}>/5</Text>
-                  </View>
-
-                  <Rating
-                    style={styles.starRating}
-                    ratingCount={5}
-                    startingValue={5}
-                    imageSize={14}
-                  />
                   <Text style={styles.totalReviews}>{reviews.length} đánh giá</Text>
                 </View>
 
@@ -121,14 +110,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   totalReviews: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Lato',
     fontStyle: 'normal',
     fontWeight: 'bold',
     color: 'gray',
   },
   cardContainer: {
-    paddingRight: 10, // Thêm khoảng cách giữa các ReviewCard
+    paddingRight: 10,
   },
   iconNotFoud: {
     width: 80,

@@ -141,7 +141,7 @@ const Evaluate = ({ route, navigation }) => {
                     <View style={styles.container}>
                         <View style={styles.containerHeader}>
                             <Text style={styles.label}>Tên Tour: {booking?.tourInfo?.tourName}</Text>
-                            <Text style={styles.label}>Ngày đi: {formattedDate}</Text>
+                            <Text style={styles.label}>Ngày kết thúc: {formattedDate}</Text>
                             <Text style={styles.label}>Số người: {booking?.numAdult + booking?.numChildren}</Text>
                         </View>
                         {image ? (

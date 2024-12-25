@@ -69,29 +69,25 @@ const OrderReviewScreen = ({ route, navigation }) => {
   const priceChildren = booking?.priceChildren || childPrice;
   console.log('priceChildren:..........................', priceChildren);
   const priceAdult = booking?.priceAdult || adultPrice;
+  const { discount } = route.params;
+  console.log('discount:................................', discount);
   console.log('priceAdult:..........................', priceAdult);
-  const totalPriceTour = totalPrice || numAdult * priceAdult + numChildren * priceChildren;
+  const totalPriceTour = totalPrice && discount ? totalPrice - discount : totalPrice || numAdult * priceAdult + numChildren * priceChildren;
   console.log('totalPriceTour..............', totalPriceTour);
   const detailId = detailid || booking?.detailId;
   console.log('detailId.................:', detailId);
   const adultPricee = booking?.priceAdult || tourById?.details?.[0]?.priceAdult;
   console.log('adultPrice:', adultPricee);
-
   const a = priceAdult * numAdult;
   const b = priceChildren * numChildren;
-  const { discount } = route.params;
   const { voucherId } = route.params;
-
   const userReducer = useSelector(state => state.reducer.auth);
   const user = userReducer.user;
   const userId = user.user._id;
-
   const [selectedMethod, setSelectedMethod] = useState(null);
-
   useEffect(() => {
     dispatch(LayDanhSachVoucher(userId));
   }, [userId]);
-
   const handleVoucher = useCallback(() => {
     navigation.navigate('ListVoucherScreen', { totalPrice: totalPrice });
   });
@@ -123,7 +119,7 @@ const OrderReviewScreen = ({ route, navigation }) => {
 
   const handleSaveBooking = async () => {
     if (bookingId) {
-      console.log('Already have bookingId, no need to create a new one');
+      console.log('đã có booking id');
       return;
     }
     const bookingData = {
@@ -256,7 +252,7 @@ const OrderReviewScreen = ({ route, navigation }) => {
 
           <DepartureInfo />
           {/*Icon màu voucher */}
-          <SelecVoucher onPress={handleVoucher} discount={discount} />
+          {/* <SelecVoucher onPress={handleVoucher} discount={discount} /> */}
           <Paymethod
             selectedMethod={selectedMethod}
             setSelectedMethod={setSelectedMethod}
@@ -265,8 +261,7 @@ const OrderReviewScreen = ({ route, navigation }) => {
           <TourInforTotal
             price={totalPriceTour}
             adultPrice={a}
-            childPrice={b}
-            discount={discount || 0}
+            childPrice={b} 
           />
         </View>
       </ScrollView>
